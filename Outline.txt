@@ -1,0 +1,36 @@
+%-----------------------------------------------------------------------
+% Suffix Trees und Arrays
+%-----------------------------------------------------------------------
+
+Einführung
+    Motivation
+    Ausblick auf Anwendungsgebiete
+    Überblick über die Arbeit
+Terminologie
+Implementierung
+    Konstruktion
+    Suche
+    Eigenschaften des vorgestellten Algorithmus
+Geschichtliche Entwicklung
+    Morrison (1968)
+    Weiner (1973)
+    McCreight (1976)
+    Ukkonen (1995)
+    Giegerich & Kurtz (1995)
+Diskussion der verschiedenen Algorithmen
+Suffix Arrays
+    Motivation
+    Implementierung
+    Vergleich mit Suffixtrees
+Anwendungsfelder
+    ?Substringsuche
+    ?Wildcardsuche
+    ?k-mismatch
+    ?Levenshtein - Distanz
+    ?Ziv - Lempel data compression
+    ?Matching Statistics
+    ?Maximal Pair
+    ?Maximal Repeat
+    ?Longest Common Extension
+    ...
+Fazit
