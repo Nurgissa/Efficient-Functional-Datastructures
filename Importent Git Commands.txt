@@ -16,7 +16,7 @@ git pull origin X
 % Alle lokalen Änderungen in commit aufnehmen
 git add .
 
-% commit mit Kommentar X schließen
+% Commit mit Kommentar X schließen
 git commit -m 'X'
 
 % Commit in Branch X hochladen
