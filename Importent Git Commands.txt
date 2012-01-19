@@ -1,0 +1,21 @@
+%-------------------------------------------------------------------
+% Important Git Commands
+%-------------------------------------------------------------------
+
+% Verbindung zu Repository X aufbauen
+git add origin X
+
+% Statusabfrage
+git status
+
+% Letzte Version von Branch X (in unserem Falle X = master) herunterladen
+git pull origin X
+
+% Alle lokalen Änderungen in Changeset aufnehmen
+git add .
+
+% Commit mit Kommentar X durchführen
+git commit -m 'X'
+
+% Commit in Branch X hochladen
+git push origin X
