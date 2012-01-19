@@ -5,7 +5,7 @@
 Repository URL : git@github.com:SimonKaltenbacher/Efficient-Functional-Datastructures.git
 
 % Verbindung zu Repository X aufbauen
-git add origin X
+git remote add origin X
 
 % Statusabfrage
 git status
