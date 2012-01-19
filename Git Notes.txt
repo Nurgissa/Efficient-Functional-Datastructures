@@ -1,5 +1,5 @@
 %-------------------------------------------------------------------
-% Important Git Commands
+% Git Notes
 %-------------------------------------------------------------------
 
 Repository URL : git@github.com:SimonKaltenbacher/Efficient-Functional-Datastructures.git
