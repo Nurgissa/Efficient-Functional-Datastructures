@@ -528,22 +528,11 @@
 			}
 		},
 		{
-			"contents": "%------------------------------------------------------------------\n% Präsentation \"Suffix Trees und Suffix Arrays\"\n%------------------------------------------------------------------\n\n% Autoren   : Simon Kaltenbacher, Evgeny Novoseltsev\n% Semester  : WS 11/12\n% Vorlesung : Effiziente funktionale Datenstrukturen\n% Betreuer  : Prof. Martin Hofmann, PhD\n\n% Eine nützliche Sammlung von Beispielen für die Latex Beamer-Klasse kann unter folgendem Link gefunden werden: http://www.informatik.uni-freiburg.de/~frank/latex-kurs/latex-kurs-3/Latex-Kurs-3.html\n\n\\documentclass{beamer}\n\\usepackage{beamerthemeshadow}\n\\beamersetuncovermixins{\\opaqueness<1>{25}}{\\opaqueness<2->{15}}\n\\begin{document}\n\\title{Suffix Trees und Suffix Arrays}  \n\\author{Simon Kaltenbacher, Evgeny Novoseltsev}\n\\date{\\today}\n\\hallo\n%------------------------------------------------------------------\n% Titelseite\n%------------------------------------------------------------------\n\n\\frame{\\titlepage}\n\n%------------------------------------------------------------------\n% Inhaltsverzeichnis\n%------------------------------------------------------------------\n\n\\frame{\\frametitle{Inhaltsverzeichnis}\\tableofcontents}\n\n%------------------------------------------------------------------\n% Abschnitt Nr. 1\n%------------------------------------------------------------------\n\n\\section{Abschnitt Nr. 1}\n\\frame{\n\\frametitle{Titel}\nDie einzelnen Frames sollte einen Titel haben\n}\n\\section{Abschnitt Nr. 2}\n\\frame{\n\\frametitle{Abschnitt Nr. 2}\nDies ist ein Test\n}\n\n\\end{document}",
 			"file": "presentation.tex",
-			"file_size": 1581,
-			"file_write_time": 129714705580803927,
 			"settings":
 			{
-				"buffer_size": 1540,
+				"buffer_size": 1778,
 				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "/C/Users/Simon/Downloads/Beamer-class-Bsp5.tex",
-			"settings":
-			{
-				"buffer_size": 3727,
-				"line_ending": "Unix"
 			}
 		},
 		{
@@ -551,6 +540,14 @@
 			"settings":
 			{
 				"buffer_size": 1370,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "Git Notes.txt",
+			"settings":
+			{
+				"buffer_size": 585,
 				"line_ending": "Windows"
 			}
 		}
@@ -561,6 +558,10 @@
 		"height": 392.0,
 		"selected_items":
 		[
+			[
+				"user",
+				"Preferences: File Settings - User"
+			],
 			[
 				"prefe",
 				"Preferences: File Settings - Default"
@@ -678,10 +679,6 @@
 				"Set Syntax: Plain Text"
 			],
 			[
-				"user",
-				"Preferences: User File Settings"
-			],
-			[
 				"sql",
 				"Set Syntax: SQL"
 			],
@@ -775,10 +772,19 @@
 	},
 	"file_history":
 	[
+		"/C/Users/Simon/Documents/Documents/Studium/Vorlesung/Effiziente Funktionale Datenstrukturen/presentation outline.txt",
+		"/C/Users/Simon/Documents/Documents/Studium/Vorlesung/Effiziente Funktionale Datenstrukturen/Outline.txt",
+		"/C/Users/Simon/Documents/Documents/Studium/Vorlesung/Effiziente Funktionale Datenstrukturen/Importent Git Commands.txt",
+		"/C/Users/Simon/Downloads/beamer-class-bsp-2011-7a.tex",
+		"/C/Users/Simon/Documents/Documents/Studium/Vorlesung/Effiziente Funktionale Datenstrukturen/EFD.sublime-project",
+		"/C/Users/Simon/Documents/Documents/Studium/Vorlesung/Effiziente Funktionale Datenstrukturen/EFD.sublime-workspace",
+		"/C/Users/Simon/Documents/Documents/Studium/Vorlesung/Effiziente Funktionale Datenstrukturen/presentation.toc",
+		"/C/Users/Simon/Documents/Documents/Studium/Vorlesung/Effiziente Funktionale Datenstrukturen/presentation.nav",
+		"/C/Users/Simon/Downloads/Beamer-class-Bsp5.tex",
+		"/C/Users/Simon/AppData/Roaming/Sublime Text 2/Packages/User/Base File.sublime-settings",
 		"/C/Users/Simon/AppData/Roaming/Sublime Text 2/Packages/Default/Base File.sublime-settings",
 		"/C/Users/Simon/AppData/Roaming/Sublime Text 2/Packages/User/Sublime Settings.sublime-settings",
 		"/C/Users/Simon/AppData/Roaming/Sublime Text 2/Packages/User/Haskell.sublime-settings",
-		"/C/Users/Simon/AppData/Roaming/Sublime Text 2/Packages/User/Base File.sublime-settings",
 		"/C/Users/Simon/AppData/Roaming/Sublime Text 2/Packages/Default/Global.sublime-settings",
 		"/C/Users/Simon/AppData/Roaming/Sublime Text 2/Packages/Default/Default (Windows).sublime-keymap",
 		"/C/Users/Simon/AppData/Roaming/Sublime Text 2/Packages/LaTeXTools/LaTeX math.sublime-completions",
@@ -787,7 +793,6 @@
 		"/C/Users/Simon/AppData/Roaming/Sublime Text 2/Packages/LaTeXTools/Default (OSX).sublime-keymap",
 		"/C/Users/Simon/AppData/Roaming/Sublime Text 2/Packages/LaTeXTools/LaTeX.sublime-commands",
 		"/C/Users/Simon/AppData/Roaming/Sublime Text 2/Packages/User/LaTeX.sublime-settings",
-		"/C/Users/Simon/Documents/Documents/Studium/Vorlesung/Effiziente Funktionale Datenstrukturen/EFD.sublime-project",
 		"/C/Users/Simon/Documents/Documents/Prolog/Flat/requirements.pl",
 		"/C/Users/Simon/Documents/Documents/Prolog/Rezepte/rdf.pl",
 		"/C/Users/Simon/Documents/Documents/Prolog/Rezepte/recipes.pl",
@@ -796,7 +801,6 @@
 		"/C/Users/Simon/sshKey.pub",
 		"/C/Users/Simon/Documents/Documents/config.pl",
 		"/C/Users/Simon/Documents/Documents/Prolog/Flat/interface.pl",
-		"/C/Users/Simon/Documents/Documents/Studium/Vorlesung/Effiziente Funktionale Datenstrukturen/Outline.txt",
 		"/C/Users/Simon/Documents/Documents/Studium/Uebungen/Datenbanksysteme/Übungsblatt 10/Uebungsblatt 10.txt",
 		"/C/Users/Simon/AppData/Roaming/Sublime Text 2/Packages/User/Default (Windows).sublime-keymap",
 		"/C/Users/Simon/Desktop/Wohnungscheck.txt",
@@ -895,14 +899,7 @@
 		"/C/Users/Simon/Desktop/mercury/README.MinGW",
 		"/C/Users/Simon/Desktop/mercury/README.Java",
 		"/C/Users/Simon/AppData/Local/Temp/Rar$DI00.223/bewertung_3432.txt",
-		"/C/Users/Simon/Desktop/mercury/README.MS-Windows",
-		"/C/Users/Simon/Desktop/mercury/README",
-		"/C/Users/Simon/Desktop/mercury/Mmakefile",
-		"/C/Users/Simon/Desktop/mercury/README.DotNet",
-		"/C/Users/Simon/Desktop/Esthers Vorlage.txt",
-		"/C/Users/Simon/Dropbox/Misc/BOSS DS-2 Turbo Distortion.txt",
-		"/C/Users/Simon/Dropbox/Misc/BOSS OD-3 Overdrive.txt",
-		"/C/Users/Simon/Dropbox/Misc/Sherlock Holmes.txt"
+		"/C/Users/Simon/Desktop/mercury/README.MS-Windows"
 	],
 	"find":
 	{
@@ -921,6 +918,15 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"Implementierung",
+			"Repository",
+			"durchführen",
+			"Einführung",
+			"Titel",
+			"Einführung",
+			"frame",
+			"Goettingen",
+			"usepackage",
 			"show",
 			"%-----------------------------------------------------------------------",
 			"backup",
@@ -1039,16 +1045,7 @@
 			"=== ",
 			"mug",
 			"mango",
-			"!",
-			";",
-			"round",
-			"0",
-			"round",
-			"Value",
-			"Laim",
-			"Anwednungen",
-			"ungüsntig",
-			"r("
+			"!"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1130,7 +1127,7 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 3,
 			"sheets":
 			[
 				{
@@ -1164,15 +1161,15 @@
 					"file": "presentation.tex",
 					"settings":
 					{
-						"buffer_size": 1540,
+						"buffer_size": 1778,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								800,
-								800
+								1087,
+								1087
 							]
 						],
 						"settings":
@@ -1180,39 +1177,13 @@
 							"syntax": "Packages/LaTeX/LaTeX.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 96.0,
+						"translation.y": 48.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 2,
-					"file": "/C/Users/Simon/Downloads/Beamer-class-Bsp5.tex",
-					"settings":
-					{
-						"buffer_size": 3727,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3535,
-								3535
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/LaTeX/LaTeX.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 3,
 					"file": "LazyTree.hs",
 					"settings":
 					{
@@ -1223,13 +1194,39 @@
 						"selection":
 						[
 							[
-								0,
-								0
+								974,
+								973
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/Haskell/Haskell.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "Git Notes.txt",
+					"settings":
+					{
+						"buffer_size": 585,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								481,
+								481
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -1271,6 +1268,10 @@
 		]
 	},
 	"menu_visible": false,
+	"output.exec":
+	{
+		"height": 106.0
+	},
 	"replace":
 	{
 		"height": 62.0
@@ -1281,6 +1282,14 @@
 		"height": 0.0,
 		"selected_items":
 		[
+			[
+				"out",
+				"Outline.txt"
+			],
+			[
+				"pres",
+				"presentation.tex"
+			],
 			[
 				"un",
 				"/C/Users/Simon/Documents/Documents/Prolog/Rezepte/recipes.pl"
@@ -1395,7 +1404,7 @@
 	"show_minimap": true,
 	"show_open_files": true,
 	"show_tabs": true,
-	"side_bar_visible": false,
+	"side_bar_visible": true,
 	"side_bar_width": 235.0,
 	"status_bar_visible": true
 }
