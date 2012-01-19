@@ -1,0 +1,34 @@
+%-----------------------------------------------------------------------
+% Präsentation Gliederung
+%-----------------------------------------------------------------------
+
+Einführung
+    Motivation
+Terminologie
+Anwendungsfelder
+    ?Substringsuche
+    ?Wildcardsuche
+    ?k-mismatch
+    ?Levenshtein - Distanz
+    ?Ziv - Lempel data compression
+    ?Matching Statistics
+    ?Maximal Pair
+    ?Maximal Repeat
+    ?Longest Common Extension
+    ...
+Geschichtliche Entwicklung
+    Morrison (1968)
+    Weiner (1973)
+    McCreight (1976)
+    Ukkonen (1995)
+    Giegerich & Kurtz (1999)
+Suffixbaumkonstruktion
+    Funktionsweise
+    Implementierung in Haskell
+    Eigenschaften des vorgestellten Algorithmus
+Vergleich zu den vorangegangen Algorithmen
+Suffix Arrays
+    Motivation
+    Implementierung
+    Vergleich mit Suffixtrees
+Fazit
