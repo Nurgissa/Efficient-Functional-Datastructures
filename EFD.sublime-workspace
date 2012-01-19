@@ -4,6 +4,14 @@
 		"selected_items":
 		[
 			[
+				"fram",
+				"frametitle"
+			],
+			[
+				"N",
+				"Novoseltsev"
+			],
+			[
 				"bath",
 				"bathroomCupboard"
 			],
@@ -424,10 +432,6 @@
 				"Chunk"
 			],
 			[
-				"N",
-				"NumberedListMark"
-			],
-			[
 				"Co",
 				"ContentElement"
 			],
@@ -510,10 +514,6 @@
 			[
 				"hGr",
 				"hGroup1"
-			],
-			[
-				"high",
-				"highlight"
 			]
 		]
 	},
@@ -523,24 +523,63 @@
 			"file": "README",
 			"settings":
 			{
-				"buffer_size": 138,
+				"buffer_size": 191,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "%------------------------------------------------------------------\n% Präsentation \"Suffix Trees und Suffix Arrays\"\n%------------------------------------------------------------------\n\n% Autoren   : Simon Kaltenbacher, Evgeny Novoseltsev\n% Semester  : WS 11/12\n% Vorlesung : Effiziente funktionale Datenstrukturen\n% Betreuer  : Prof. Martin Hofmann, PhD\n\n% Eine nützliche Sammlung von Beispielen für die Latex Beamer-Klasse kann unter folgendem Link gefunden werden: http://www.informatik.uni-freiburg.de/~frank/latex-kurs/latex-kurs-3/Latex-Kurs-3.html\n\n\\documentclass{beamer}\n\\usepackage{beamerthemeshadow}\n\\beamersetuncovermixins{\\opaqueness<1>{25}}{\\opaqueness<2->{15}}\n\\begin{document}\n\\title{Suffix Trees und Suffix Arrays}  \n\\author{Simon Kaltenbacher, Evgeny Novoseltsev}\n\\date{\\today}\n\\hallo\n%------------------------------------------------------------------\n% Titelseite\n%------------------------------------------------------------------\n\n\\frame{\\titlepage}\n\n%------------------------------------------------------------------\n% Inhaltsverzeichnis\n%------------------------------------------------------------------\n\n\\frame{\\frametitle{Inhaltsverzeichnis}\\tableofcontents}\n\n%------------------------------------------------------------------\n% Abschnitt Nr. 1\n%------------------------------------------------------------------\n\n\\section{Abschnitt Nr. 1}\n\\frame{\n\\frametitle{Titel}\nDie einzelnen Frames sollte einen Titel haben\n}\n\\section{Abschnitt Nr. 2}\n\\frame{\n\\frametitle{Abschnitt Nr. 2}\nDies ist ein Test\n}\n\n\\end{document}",
+			"file": "presentation.tex",
+			"file_size": 1581,
+			"file_write_time": 129714705580803927,
+			"settings":
+			{
+				"buffer_size": 1540,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/Simon/Downloads/Beamer-class-Bsp5.tex",
+			"settings":
+			{
+				"buffer_size": 3727,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "LazyTree.hs",
+			"settings":
+			{
+				"buffer_size": 1370,
 				"line_ending": "Windows"
 			}
 		}
 	],
-	"build_system": "Packages/AAAPackageDev/Support/Json to tmLanguage.sublime-build",
+	"build_system": "Packages/LaTeXTools/LaTeX.sublime-build",
 	"command_palette":
 	{
-		"height": 58.0,
+		"height": 392.0,
 		"selected_items":
 		[
 			[
-				"prolo",
-				"Set Syntax: Prolog"
+				"prefe",
+				"Preferences: File Settings - Default"
 			],
 			[
 				"key",
 				"Preferences: Key Bindings - Default"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"prolo",
+				"Set Syntax: Prolog"
 			],
 			[
 				"pro",
@@ -719,7 +758,7 @@
 				"Set Syntax: OCaml"
 			]
 		],
-		"width": 392.0
+		"width": 400.0
 	},
 	"console":
 	{
@@ -736,6 +775,19 @@
 	},
 	"file_history":
 	[
+		"/C/Users/Simon/AppData/Roaming/Sublime Text 2/Packages/Default/Base File.sublime-settings",
+		"/C/Users/Simon/AppData/Roaming/Sublime Text 2/Packages/User/Sublime Settings.sublime-settings",
+		"/C/Users/Simon/AppData/Roaming/Sublime Text 2/Packages/User/Haskell.sublime-settings",
+		"/C/Users/Simon/AppData/Roaming/Sublime Text 2/Packages/User/Base File.sublime-settings",
+		"/C/Users/Simon/AppData/Roaming/Sublime Text 2/Packages/Default/Global.sublime-settings",
+		"/C/Users/Simon/AppData/Roaming/Sublime Text 2/Packages/Default/Default (Windows).sublime-keymap",
+		"/C/Users/Simon/AppData/Roaming/Sublime Text 2/Packages/LaTeXTools/LaTeX math.sublime-completions",
+		"/C/Users/Simon/AppData/Roaming/Sublime Text 2/Packages/LaTeXTools/Wrap in environment.sublime-snippet",
+		"/C/Users/Simon/AppData/Roaming/Sublime Text 2/Packages/LaTeXTools/Default (Windows).sublime-keymap",
+		"/C/Users/Simon/AppData/Roaming/Sublime Text 2/Packages/LaTeXTools/Default (OSX).sublime-keymap",
+		"/C/Users/Simon/AppData/Roaming/Sublime Text 2/Packages/LaTeXTools/LaTeX.sublime-commands",
+		"/C/Users/Simon/AppData/Roaming/Sublime Text 2/Packages/User/LaTeX.sublime-settings",
+		"/C/Users/Simon/Documents/Documents/Studium/Vorlesung/Effiziente Funktionale Datenstrukturen/EFD.sublime-project",
 		"/C/Users/Simon/Documents/Documents/Prolog/Flat/requirements.pl",
 		"/C/Users/Simon/Documents/Documents/Prolog/Rezepte/rdf.pl",
 		"/C/Users/Simon/Documents/Documents/Prolog/Rezepte/recipes.pl",
@@ -747,7 +799,6 @@
 		"/C/Users/Simon/Documents/Documents/Studium/Vorlesung/Effiziente Funktionale Datenstrukturen/Outline.txt",
 		"/C/Users/Simon/Documents/Documents/Studium/Uebungen/Datenbanksysteme/Übungsblatt 10/Uebungsblatt 10.txt",
 		"/C/Users/Simon/AppData/Roaming/Sublime Text 2/Packages/User/Default (Windows).sublime-keymap",
-		"/C/Users/Simon/AppData/Roaming/Sublime Text 2/Packages/Default/Default (Windows).sublime-keymap",
 		"/C/Users/Simon/Desktop/Wohnungscheck.txt",
 		"/C/Users/Simon/Documents/Documents/Prolog/Rezepte/interface.pl",
 		"/C/Users/Simon/Documents/Documents/Prolog/Rezepte/util.pl",
@@ -778,7 +829,6 @@
 		"/C/Users/Simon/Desktop/Suffix Tree.wt",
 		"/C/Users/Simon/Desktop/LazyTree.hs",
 		"/C/Users/Simon/Desktop/LazyTreeExt.hs",
-		"/C/Users/Simon/AppData/Roaming/Sublime Text 2/Packages/Default/Global.sublime-settings",
 		"/C/Users/Simon/AppData/Roaming/Sublime Text 2/Packages/User/Global.sublime-settings",
 		"/C/Users/Simon/Desktop/test.pl",
 		"/C/Users/Simon/Desktop/lazyTree.hs",
@@ -788,7 +838,6 @@
 		"/C/Users/Simon/Desktop/Wohnungssuche Stadtteile.txt",
 		"/C/Users/Simon/Documents/Documents/Prolog/Rezepte/Selleriesuppe mit Zimt-Apfel und Walnüssen.txt",
 		"/C/Users/Simon/Documents/Documents/Prolog/Knowledge Base/lambda.pl",
-		"/C/Users/Simon/AppData/Roaming/Sublime Text 2/Packages/Default/Base File.sublime-settings",
 		"/C/Users/Simon/Documents/Documents/Rezepte/rdf.pl",
 		"/C/Users/Simon/Documents/Documents/Rezepte/util.pl",
 		"/C/Users/Simon/Documents/Documents/Rezepte/interface.pl",
@@ -853,17 +902,7 @@
 		"/C/Users/Simon/Desktop/Esthers Vorlage.txt",
 		"/C/Users/Simon/Dropbox/Misc/BOSS DS-2 Turbo Distortion.txt",
 		"/C/Users/Simon/Dropbox/Misc/BOSS OD-3 Overdrive.txt",
-		"/C/Users/Simon/Dropbox/Misc/Sherlock Holmes.txt",
-		"/C/Users/Simon/Dropbox/Misc/Holzelefant.txt",
-		"/C/xampp/htdocs/pkm/LocalSettings.php",
-		"/C/Users/Simon/AppData/Roaming/Sublime Text 2/Packages/User/Base File.sublime-settings",
-		"/C/xampp/htdocs/pkm/extensions/README",
-		"/C/Users/Simon/AppData/Local/Temp/Rar$DR00.986/UsabilityInitiative/README",
-		"/C/xampp/htdocs/pkm/extensions/UsabilityInitiative/README",
-		"/C/Users/Simon/Desktop/PageRank.wt",
-		"/C/Users/Simon/Desktop/Holzelefant.txt",
-		"/C/Users/Simon/Desktop/BOSS DS-2 Turbo Distortion.txt",
-		"/C/Users/Simon/Desktop/BOSS OD-3 Overdrive.txt"
+		"/C/Users/Simon/Dropbox/Misc/Sherlock Holmes.txt"
 	],
 	"find":
 	{
@@ -882,6 +921,9 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"show",
+			"%-----------------------------------------------------------------------",
+			"backup",
 			"unit:g",
 			"unit",
 			"Umrechnung",
@@ -1006,10 +1048,7 @@
 			"Laim",
 			"Anwednungen",
 			"ungüsntig",
-			"r(",
-			"t(",
-			"\\:\\sigma_3",
-			"\\:\\sigma_2"
+			"r("
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1091,7 +1130,7 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 1,
 			"sheets":
 			[
 				{
@@ -1099,20 +1138,98 @@
 					"file": "README",
 					"settings":
 					{
-						"buffer_size": 138,
+						"buffer_size": 191,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								138,
-								138
+								191,
+								191
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "presentation.tex",
+					"settings":
+					{
+						"buffer_size": 1540,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								800,
+								800
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/LaTeX/LaTeX.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 96.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/C/Users/Simon/Downloads/Beamer-class-Bsp5.tex",
+					"settings":
+					{
+						"buffer_size": 3727,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3535,
+								3535
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/LaTeX/LaTeX.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "LazyTree.hs",
+					"settings":
+					{
+						"buffer_size": 1370,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Haskell/Haskell.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -1279,6 +1396,6 @@
 	"show_open_files": true,
 	"show_tabs": true,
 	"side_bar_visible": false,
-	"side_bar_width": 150.0,
+	"side_bar_width": 235.0,
 	"status_bar_visible": true
 }
