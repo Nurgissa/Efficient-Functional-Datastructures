@@ -16,6 +16,9 @@ git pull origin X
 % Alle lokalen Änderungen in commit aufnehmen
 git add .
 
+% Nimmt gelöschte Dateien in commit auf
+git add -u
+
 % Commit mit Kommentar X schließen
 git commit -m 'X'
 
