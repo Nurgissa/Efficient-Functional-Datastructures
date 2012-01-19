@@ -2,6 +2,8 @@
 % Important Git Commands
 %-------------------------------------------------------------------
 
+Repository URL : git@github.com:SimonKaltenbacher/Efficient-Functional-Datastructures.git
+
 % Verbindung zu Repository X aufbauen
 git add origin X
 
@@ -11,10 +13,10 @@ git status
 % Letzte Version von Branch X (in unserem Falle X = master) herunterladen
 git pull origin X
 
-% Alle lokalen Änderungen in Commit aufnehmen
+% Alle lokalen Änderungen in commit aufnehmen
 git add .
 
-% Commit mit Kommentar X schließen
+% commit mit Kommentar X schließen
 git commit -m 'X'
 
 % Commit in Branch X hochladen
