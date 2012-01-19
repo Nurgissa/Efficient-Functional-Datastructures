@@ -1,4 +1,4 @@
-%------------------------------------------------------------------
+﻿%------------------------------------------------------------------
 % Präsentation "Suffix Trees und Suffix Arrays"
 %------------------------------------------------------------------
 
@@ -10,8 +10,21 @@
 % Eine nützliche Sammlung von Beispielen für die Latex Beamer-Klasse kann unter folgendem Link gefunden werden: http://www.informatik.uni-freiburg.de/~frank/latex-kurs/latex-kurs-3/Latex-Kurs-3.html
 
 \documentclass{beamer}
-\usepackage{beamerthemeshadow}
+\usepackage[ngerman]{babel}
+% Umlaute in Ausgabedokument anzeigen
+\usepackage[T1]{fontenc}
+% Kodierung festlegen
+\usepackage{ucs} 
+\usepackage[utf8]{inputenc} 
+\usepackage{amsmath, amsfonts, amssymb}
+
+% Beamer Konfiguration
+\usetheme{Goettingen}
+%\usecolortheme{sidebartab}
+\useoutertheme{default}
 \beamersetuncovermixins{\opaqueness<1>{25}}{\opaqueness<2->{15}}
+
+% Dokument
 \begin{document}
 \title{Suffix Trees und Suffix Arrays}  
 \author{Simon Kaltenbacher, Evgeny Novoseltsev}
@@ -30,10 +43,10 @@
 \frame{\frametitle{Inhaltsverzeichnis}\tableofcontents}
 
 %------------------------------------------------------------------
-% Abschnitt Nr. 1
+% Einführung
 %------------------------------------------------------------------
 
-\section{Abschnitt Nr. 1}
+\section{Einführung}
 \frame{
 \frametitle{Titel}
 Die einzelnen Frames sollten einen Titel haben
