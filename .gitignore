@@ -1,0 +1,12 @@
+# Sublime files #
+
+*.sublime-workspace
+
+# Latex #
+
+*.aux
+*.nav
+*.out
+*.snm
+*.gz
+*.toc

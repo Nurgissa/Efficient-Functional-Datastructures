@@ -2,7 +2,7 @@
 	"folders":
 	[
 		{
-			"path": "/C/Users/Simon/Documents/Documents/Studium/Vorlesung/Effiziente Funktionale Datenstrukturen",
+			"path": ".",
 			"folder_exclude_patterns": [".git"],
 			"file_exclude_patterns":
 			[
