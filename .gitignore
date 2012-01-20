@@ -5,8 +5,9 @@
 # Latex #
 
 *.aux
+*.gz
+*.log
 *.nav
 *.out
 *.snm
-*.gz
 *.toc
