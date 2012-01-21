@@ -29,10 +29,15 @@
 %\useoutertheme{default}
 \beamersetuncovermixins{\opaqueness<1>{25}}{\opaqueness<2->{15}}
 
+\usetikzlibrary{trees, calc}
 
-\usetikzlibrary{trees}
+% Suffix Tree Layout
+% \tikzstyle{level 1}=[level distance=8mm, sibling distance=35mm]
+% \tikzstyle{level 2}=[level distance=8mm, sibling distance=20mm]
+% \tikzstyle{level 3}=[level distance=8mm, sibling distance=15mm]
+
 % Styledefinitionen für Suffix Trees
-\tikzstyle{branch} = [circle, width=3pt, fill, inner sep=0pt]
+\tikzstyle{branch} = [shape = circle, minimum size = 1mm, inner sep = 0mm, outer sep = 0.5mm, fill]
 
 % Titel
 \title{Suffix Trees und Suffix Arrays}  
@@ -82,16 +87,180 @@ Merged!
 
 \begin{frame}
 \frametitle{Atomic Suffix Tree}
-\begin{tikzpicture}
-    \node[branch]{Test}
+$ast$ für die Zeichenkette $agcgacgag$.
+\begin{tikzpicture} [
+    font = \small,
+    level/.style = {sibling distance = 3cm/#1, level distance = 7mm},
+    edge from parent/.style = {->, draw},
+]
+    \node[branch]{}
     child {
-        node[branch]{Test}
+        node[branch]{}
+        child {
+            node[branch]{}
+            child {
+                node[branch]{}
+                child {
+                    node[branch]{}
+                    child {
+                        edge from parent
+                        node[left]{$g$}
+                    }
+                    edge from parent
+                    node[left]{$a$}
+                }
+                edge from parent
+                node[left]{$g$}
+            }
+            edge from parent
+            node[left]{$c$}
+        }
+        child {
+            node[branch]{}
+            child {
+                node[branch]{}
+                child {
+                    node[branch]{}
+                    child {
+                        node[branch]{}
+                        child {
+                            node[branch]{}
+                            child {
+                                node[branch]{}
+                                    child {
+                                        node[branch]{}
+                                        child {
+                                            edge from parent
+                                            node[left]{$g$}
+                                        }
+                                        edge from parent
+                                        node[left]{$a$}
+                                    }
+                                edge from parent
+                                node[left]{$g$}
+                            }
+                            edge from parent
+                            node[left]{$c$}
+                        }
+                        edge from parent
+                        node[left]{$a$}
+                    }
+                    edge from parent
+                    node[left]{$g$}
+                }
+                edge from parent
+                node[left]{$c$}
+            }
+            edge from parent
+            node[right]{$g$}
+        }
+        edge from parent
+        node[above]{$a$}
     }
     child {
-        node[branch]{Test}
+        node[branch]{}
+        child {
+            node[branch]{}
+            child {
+                node[branch]{}
+                child {
+                    node[branch]{}
+                    child {
+                        node[branch]{}
+                        child {
+                            node[branch]{}
+                            child {
+                                edge from parent
+                                node[left]{$g$}
+                            }
+                            edge from parent
+                            node[left]{$a$}
+                        }
+                        edge from parent
+                        node[left]{$g$}
+                    }
+                    edge from parent
+                    node[left]{$c$}
+                }
+                child {
+                    edge from parent
+                    node[right]{$g$}
+                }
+                edge from parent
+                node[left]{$a$}
+            }
+            edge from parent
+            node[left]{$g$}
+        }
+        edge from parent
+        node[left]{$c$}
     }
     child {
-        node[branch]{Test}
+        node[branch]{}
+        child {
+            node[branch]{}
+            child {
+                node[branch]{}
+                child {
+                    node[branch]{}
+                    child {
+                        node[branch]{}
+                        child {
+                            edge from parent
+                            node[left]{$g$}
+                        }
+                        edge from parent
+                        node[left]{$a$}
+                    }
+                    edge from parent
+                    node[left]{$g$}
+                }
+                edge from parent
+                node[left]{$c$}
+            }
+            child {
+                edge from parent
+                node[right]{$g$}
+            }
+            edge from parent
+            node[left]{$a$}
+        }
+        child {
+            node[branch]{}
+            child {
+                node[branch]{}
+                child {
+                    node[branch]{}
+                    child {
+                        node[branch]{}
+                        child {
+                            node[branch]{}
+                            child {
+                                node[branch]{}
+                                child {
+                                    edge from parent
+                                    node[left]{$g$}
+                                }
+                                edge from parent
+                                node[left]{$a$}
+                            }
+                            edge from parent
+                            node[left]{$g$}
+                        }
+                        edge from parent
+                        node[left]{$c$}
+                    }
+                    edge from parent
+                    node[left]{$a$}
+                }
+                edge from parent
+                node[left]{$g$}
+            }
+            edge from parent
+            node[right]{$c$}
+        }
+        edge from parent
+        node[above]{$g$}
     };
 \end{tikzpicture}
 \end{frame}
