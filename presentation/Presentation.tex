@@ -31,11 +31,6 @@
 
 \usetikzlibrary{trees, calc}
 
-% Suffix Tree Layout
-% \tikzstyle{level 1}=[level distance=8mm, sibling distance=35mm]
-% \tikzstyle{level 2}=[level distance=8mm, sibling distance=20mm]
-% \tikzstyle{level 3}=[level distance=8mm, sibling distance=15mm]
-
 % Styledefinitionen für Suffix Trees
 \tikzstyle{branch} = [shape = circle, minimum size = 1mm, inner sep = 0mm, outer sep = 0.5mm, fill]
 
@@ -88,10 +83,13 @@ Merged!
 \begin{frame}
 \frametitle{Atomic Suffix Tree}
 $ast$ für die Zeichenkette $agcgacgag$.
-\begin{tikzpicture} [
+\begin{figure}
+\begin{tikzpicture}[
     font = \small,
-    level/.style = {sibling distance = 3cm/#1, level distance = 7mm},
-    edge from parent/.style = {->, draw},
+    level 1/.style = {level distance = 7mm, sibling distance = 30mm},
+    level 2/.style = {level distance = 7mm, sibling distance = 20mm},
+    level 3/.style = {level distance = 7mm, sibling distance = 10mm},
+    edge from parent/.style = {->, draw}
 ]
     \node[branch]{}
     child {
@@ -263,6 +261,7 @@ $ast$ für die Zeichenkette $agcgacgag$.
         node[above]{$g$}
     };
 \end{tikzpicture}
+\end{figure}
 \end{frame}
 
 \begin{frame}
