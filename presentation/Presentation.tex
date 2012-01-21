@@ -265,11 +265,142 @@ $ast$ für die Zeichenkette $agcgacgag$.
 \end{frame}
 
 \begin{frame}
-\frametitle{Position Suffix Tree}
-\end{frame}
+\frametitle{Position Suffix Tree and Compact Suffix Tree}
+$pst$ für die Zeichenkette $agcgacgag$.
+\begin{figure}
+\begin{tikzpicture}[
+    font = \small,
+    level 1/.style = {level distance = 7mm, sibling distance = 30mm},
+    level 2/.style = {level distance = 7mm, sibling distance = 20mm},
+    level 3/.style = {level distance = 7mm, sibling distance = 10mm},
+    edge from parent/.style = {->, draw}
+]
+    \node[branch]{}
+    child {
+        node[branch]{}
+        child {
+            edge from parent
+            node[left]{cgag}
+        }
+        child {
+            edge from parent
+            node[right]{gcgacgag}
+        }
+        edge from parent
+        node[above]{a}
+    }
+    child {
+        node[branch]{}
+        child {
+            node[branch]{}
+            child {
+                node[branch]{}
+                child {
+                    edge from parent
+                    node[left]{cgag}
+                }
+                child {
+                    edge from parent
+                    node[right]{g}
+                }
+                edge from parent
+                node[left]{a}
+            }
+            edge from parent
+            node[left]{g}
+        }
+        edge from parent
+        node[left]{c}
+    }
+    child {
+        node[branch]{}
+        child {
+            node[branch]{}
+            child {
+                node[branch]{}
+                edge from parent
+                node[left]{cgag}
+            }
+            child {
+                node[branch]{}
+                edge from parent
+                node[right]{g}
+            }
+            edge from parent
+            node[left]{a}
+        }
+        child {
+            edge from parent
+            node[right]{cgacgag}
+        }
+        edge from parent
+        node[above]{g}
+    };
+\end{tikzpicture}
+\end{figure}
 
-\begin{frame}
-\frametitle{Compact Suffix Tree}
+$cst$ für die Zeichenkette $agcgacgag$.
+\begin{figure}
+\begin{tikzpicture}[
+    font = \small,
+    level 1/.style = {level distance = 7mm, sibling distance = 30mm},
+    level 2/.style = {level distance = 7mm, sibling distance = 15mm},
+    level 3/.style = {level distance = 7mm, sibling distance = 10mm},
+    edge from parent/.style = {->, draw}
+]
+    \node[branch]{}
+    child {
+        node[branch]{}
+        child {
+            edge from parent
+            node[left]{cgag}
+        }
+        child {
+            edge from parent
+            node[right]{gcgacgag}
+        }
+        edge from parent
+        node[above]{a}
+    }
+    child[level distance = 16mm] {
+        node[branch]{}
+        child {
+            edge from parent
+            node[left]{cgag}
+        }
+        child {
+            edge from parent
+            node[right]{g}
+        }
+        edge from parent
+        node[left]{cga}
+    }
+    child {
+        node[branch]{}
+        child {
+            node[branch]{}
+            child {
+                node[branch]{}
+                edge from parent
+                node[left]{cgag}
+            }
+            child {
+                node[branch]{}
+                edge from parent
+                node[right]{g}
+            }
+            edge from parent
+            node[left]{a}
+        }
+        child {
+            edge from parent
+            node[right]{cgacgag}
+        }
+        edge from parent
+        node[above]{g}
+    };
+\end{tikzpicture}
+\end{figure}
 \end{frame}
 
 \end{document}
