@@ -412,21 +412,20 @@ $cst$ für die Zeichenkette $agcgacgag$.
 \begin{frame}[t]
 \frametitle{wotd-Algorithmus für cst}
 
-Write-only top-down construction for sufﬁx trees.\\
+    Write-only top-down construction for sufﬁx trees.\\
 
-\bigskip
+    \medskip
 
-Schritte:
-\begin{enumerate}
-\item Finde alle Siffixe vom gegebenen Wort.
-\item Gruppiere nach den Anfangsbuchstaben.
-\item Für jede Gruppe:
-\begin{enumerate}
-\item Finde das längste gemeinsame Präfix, erzeuge eine Kante mit der Beschriftung, entferne das Präfix von Wörter der Gruppe.
-\item Falls die Gruppe leer ist, gehe zu der nächste Gruppe.
-\item Falls es in der Gruppe noch Wörter gibt, kehre zum Schritt 2 zurück.
-\end{enumerate} 
-\end{enumerate}
+    Schritte:
+    \begin{enumerate}
+    \item Finde alle Siffixe vom gegebenen Wort.
+    \item Gruppiere nach den Anfangsbuchstaben. Erzeuge einen Knoten.
+    \item Für jede Gruppe:
+    \begin{enumerate}
+    \item Finde das längste gemeinsame Präfix, erzeuge eine Kante mit der Beschriftung vom Präfix, entferne das Präfix von Wörter der Gruppe.
+    \item Falls die Gruppe leer ist, erzeuge ein Blatt und gehe zu der nächste Gruppe. Falls es in der Gruppe noch Wörter gibt, kehre zum Schritt 2 zurück.
+    \end{enumerate} 
+    \end{enumerate}
 
 \end{frame}
 
@@ -436,18 +435,200 @@ Schritte:
 
 \subsection{cst-Konstruktion für das Wort $agcgacgag$}
 
-\begin{frame}[t]
-\frametitle{Schritt №1 und Schritt №2}
+%------------------------------------------------------------------
+% Beispiel: Schritt 1 und 2
+%------------------------------------------------------------------
 
-a g c g a c g a g \\
-g c g a c g a g \\
-c g a c g a g \\
-g a c g a g \\
-a c g a g \\
-c g a g \\
-g a g \\
-a g \\
-g \\
+\begin{frame}[t]
+\frametitle{Schritt 1 und Schritt 2}
+
+\begin{columns}
+
+    \begin{column}[t]{0.47\textwidth}
+        a g c g a c g a g \\
+        g c g a c g a g \\
+        c g a c g a g \\
+        g a c g a g \\
+        a c g a g \\
+        c g a g \\
+        g a g \\
+        a g \\
+        g \\
+    \end{column}
+
+    \begin{column}[t]{0.47\textwidth}
+        <Bild: der Wurzel.>
+    \end{column}
+
+\end{columns}
+
+\medskip
+
+\begin{columns}
+
+    \begin{column}[t]{0.3\textwidth}
+        1. Gruppe:\\
+        a g c g a c g a g \\
+        a c g a g \\
+        a g \\
+    \end{column}
+
+    \begin{column}[t]{0.3\textwidth}
+        2. Gruppe:\\
+        g c g a c g a g \\
+        g a c g a g \\
+        g a g \\
+        g \\
+    \end{column}
+
+    \begin{column}[t]{0.3\textwidth}
+        3. Gruppe:\\
+        c g a c g a g \\
+        c g a g \\
+    \end{column}
+
+\end{columns}
+
+\end{frame}
+
+%------------------------------------------------------------------
+% Beispiel: Schritt 3 für 1. Gruppe
+%------------------------------------------------------------------
+
+\begin{frame}[t]
+\frametitle{Schritt 3 für 1. Gruppe}
+    a g c g a c g a g \\
+    a c g a g \\
+    a g \\
+
+    \medskip
+
+    Schritt 3.1: Das längste gemeinsame Präfix is $a$. Erzeuge eine Kante mit der Beschriftung $a$, entferne $a$ von Wörter der Gruppe:
+
+    \medskip
+
+    \begin{columns}
+
+    \begin{column}[t]{0.3\textwidth}
+        1'. Gruppe:\\
+        g c g a c g a g \\
+        c g a g \\
+        g \\
+    \end{column}
+
+    \begin{column}[t]{0.3\textwidth}
+        <Bild: der Wurzel mit a-Kante.>
+    \end{column}
+
+\end{columns}
+
+    \medskip
+
+    Schritt 3.2: Die Gruppe ist nicht leer $\rightarrow$ Schritt 2:
+
+    \begin{columns}
+
+    \begin{column}[t]{0.3\textwidth}
+        1.1 Gruppe:\\
+        g c g a c g a g \\
+        g \\
+    \end{column}
+
+    \begin{column}[t]{0.3\textwidth}
+        1.2. Gruppe:\\
+        c g a g \\
+    \end{column}
+
+\end{columns}
+
+\end{frame}
+
+%------------------------------------------------------------------
+% Beispiel: 1.1 Gruppe bis zu Blätter
+%------------------------------------------------------------------
+
+\begin{frame}[t]
+\frametitle{Schritte für 1.1 Gruppe}
+
+    \begin{columns}
+
+        \begin{column}[t]{0.5\textwidth}
+
+            1.1 Gruppe:\\
+            g c g a c g a g \\
+            g \\
+
+            \medskip
+
+            Präfix: $g$
+
+        \end{column}
+
+        \begin{column}[t]{0.5\textwidth}
+            
+            <Bild: Neue Kante mit $g$>
+
+        \end{column}
+
+    \end{columns}
+
+    \bigskip
+
+    \begin{columns}
+
+        \begin{column}[t]{0.5\textwidth}
+
+                1.1' Gruppe:\\
+                c g a c g a g \\
+
+                \medskip
+
+                Präfix: $c g a c g a g$
+
+        \end{column}
+
+        \begin{column}[t]{0.5\textwidth}
+            
+             <Bild: Neue Kante mit $c g a c g a g$> 
+
+        \end{column}
+
+    \end{columns}
+
+\end{frame}
+
+%------------------------------------------------------------------
+% Beispiel: 1.2 Gruppe bis zu Blätter
+%------------------------------------------------------------------
+
+\begin{frame}[t]
+\frametitle{Schritte für 1.2 Gruppe}
+
+    \begin{columns}
+
+        \begin{column}[t]{0.5\textwidth}
+
+            1.2. Gruppe:\\
+            c g a g \\
+
+            \medskip
+
+            Präfix: $c g a g$
+
+        \end{column}
+
+        \begin{column}[t]{0.5\textwidth}
+            
+            <Bild: Neue Kante mit $c g a g $>
+
+        \end{column}
+
+    \end{columns}
+
+    \bigskip
+
+    <Bild: der gesamte Pfad vom Wurzel>
+
 \end{frame}
 
 \end{document}
