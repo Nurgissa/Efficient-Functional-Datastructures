@@ -403,4 +403,51 @@ $cst$ für die Zeichenkette $agcgacgag$.
 \end{figure}
 \end{frame}
 
+%------------------------------------------------------------------
+% wotd-Algorithmus: Schritte
+%------------------------------------------------------------------
+
+\section{wotd-Algorithmus}
+
+\begin{frame}[t]
+\frametitle{wotd-Algorithmus für cst}
+
+Write-only top-down construction for sufﬁx trees.\\
+
+\bigskip
+
+Schritte:
+\begin{enumerate}
+\item Finde alle Siffixe vom gegebenen Wort.
+\item Gruppiere nach den Anfangsbuchstaben.
+\item Für jede Gruppe:
+\begin{enumerate}
+\item Finde das längste gemeinsame Präfix, erzeuge eine Kante mit der Beschriftung, entferne das Präfix von Wörter der Gruppe.
+\item Falls die Gruppe leer ist, gehe zu der nächste Gruppe.
+\item Falls es in der Gruppe noch Wörter gibt, kehre zum Schritt 2 zurück.
+\end{enumerate} 
+\end{enumerate}
+
+\end{frame}
+
+%------------------------------------------------------------------
+% wotd-Algorithmus: Beispiel
+%------------------------------------------------------------------
+
+\subsection{cst-Konstruktion für das Wort $agcgacgag$}
+
+\begin{frame}[t]
+\frametitle{Schritt №1 und Schritt №2}
+
+a g c g a c g a g \\
+g c g a c g a g \\
+c g a c g a g \\
+g a c g a g \\
+a c g a g \\
+c g a g \\
+g a g \\
+a g \\
+g \\
+\end{frame}
+
 \end{document}
