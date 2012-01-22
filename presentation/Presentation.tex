@@ -296,55 +296,70 @@ $ast$ für die Zeichenkette $agcgacgag$.
 \end{definition}
 \begin{example}
 \begin{figure}
-\vspace{-2mm}
+\vspace{-6mm}
 \begin{tikzpicture}[
     font = \small,
     level 1/.style = {level distance = 7mm, sibling distance = 16mm},
-    level 2/.style = {level distance = 7mm, sibling distance = 10mm},
+    level 2/.style = {level distance = 7mm, sibling distance = 16mm},
+    level 3/.style = {level distance = 7mm, sibling distance = 10mm},
     edge from parent/.style = {->, draw}
 ]
     { [xshift = 0cm, yshift = 0cm]
-        \node[branch]{}
-        child[child anchor = north] {
-            node[subtree]{}
-            edge from parent[dotted]
-        }
+        \node {}
         child {
-            node[branch] (w) {}
+            node[branch] (s1) {}
             child[child anchor = north] {
                 node[subtree]{}
-                edge from parent
-                node[left]{$u'$}
+                edge from parent[dotted]
             }
-            edge from parent
-            node[left]{$u$}
-        }
-        child[child anchor = north] {
-            node[subtree]{}
+            child {
+                node[branch] (w1) {}
+                child {
+                    node[branch] (v1) {}
+                    edge from parent
+                    node[left]{$u'$}
+                }
+                edge from parent[solid]
+                node[left]{$u$}
+            }
+            child[child anchor = north] {
+                node[subtree]{}
+                edge from parent[dotted]
+            }
             edge from parent[dotted]
         };
     }
-    \draw[red, dashed] (w.center) circle (1mm);
-    \node[right] at (w.east){$\overline{w}$};
+    \draw[red, dashed] (w1.center) circle (1mm);
+    \node[subtree] at (v1.center);
+    \node[yshift = 2mm, xshift = 3mm] at (s1.center) {$\overline{s}$};
+    \node[right] at (w1.east) {$\overline{w}$};
+    \node[right] at (v1.center) {$\overline{v}$};
     { [xshift = 2.5cm, yshift = {-1cm}]
         \node{$\overset{\overline{w}}{\implies}$};
     }
     { [xshift = 5cm, yshift = 0cm]
-        \node[branch]{}
-        child[child anchor = north] {
-            node[subtree]{}
-            edge from parent[dotted]
-        }
+        \node{}
         child {
-            node[subtree]{}
-            edge from parent
-            node[left]{$uu'$}
-        }
-        child[child anchor = north] {
-            node[subtree]{}
+            node[branch] (s2) {}
+            child[child anchor = north] {
+                node[subtree]{}
+                edge from parent[dotted]
+            }
+            child[level distance = 12mm] {
+                node[branch] (v2) {}
+                edge from parent[solid]
+                node[left]{$uu'$}
+            }
+            child[child anchor = north] {
+                node[subtree]{}
+                edge from parent[dotted]
+            }
             edge from parent[dotted]
         };
     }
+    \node[subtree] at (v2.center);
+    \node[yshift = 2mm, xshift = 3mm] at (s2.center) {$\overline{s}$};
+    \node[right] at (v2.center) {$\overline{v}$};
 \end{tikzpicture}
 \end{figure}
 \end{example}
