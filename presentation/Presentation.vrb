@@ -1,0 +1,53 @@
+\frametitle{Kanteneleminierung}
+\begin{definition}
+    Kanteneleminierung ist eine Relation auf $\Sigma^+$-Bäumen, die durch ihre Kantenmengen repräsentiert werden. Sei $\overline{s}$, $\overline{w}$, $\overline{v} \in \Sigma^+$-Baum.
+    $$\left(E \uplus \{\overline{s}\:\xrightarrow{u}\:\overline{w},\overline{w}\:\xrightarrow{u'}\:\overline{v}\}\right) \overset{\overline{w}}{\implies} \left(E \uplus \{\overline{s}\:\xrightarrow{uu'}\:\overline{v}\}\right)$$
+    wenn $\overline{w} \xrightarrow{u'} \overline{v}$ ist die einzige ausgehende Kante von $\overline{w}$.
+\end{definition}
+\begin{example}
+\begin{figure}
+\begin{tikzpicture}[
+    font = \small,
+    level 1/.style = {level distance = 7mm, sibling distance = 20mm},
+    level 2/.style = {level distance = 7mm, sibling distance = 15mm},
+    level 3/.style = {level distance = 7mm, sibling distance = 10mm},
+    edge from parent/.style = {->, draw}
+]
+    \matrix {
+        \node[branch]{}
+        child[child anchor = north]{
+            node[subtree]{}
+            edge from parent[dotted]
+        }
+        child {
+            node[branch]{}
+            child[child anchor = north]{
+                node[subtree]{}
+                edge from parent
+                node[left]{$u'$}
+            }
+            edge from parent
+            node[left]{$u$}
+        }
+        child[child anchor = north]{
+            node[subtree]{}
+            edge from parent[dotted]
+        };&
+        \node[branch]{}
+        child[child anchor = north] {
+            node[subtree]{}
+            edge from parent[dotted]
+        }
+        child[child anchor = north] {
+            node[subtree]{}
+            edge from parent
+            node[left]{$uu'$}
+        }
+        child[child anchor = north] {
+            node[subtree]{}
+            edge from parent[dotted]
+        };\\
+    };
+\end{tikzpicture}
+\end{figure}
+\end{example}
