@@ -445,15 +445,15 @@ $cst$ für die Zeichenkette $agcgacgag$.
 \begin{columns}
 
     \begin{column}[t]{0.47\textwidth}
-        a g c g a c g a g \\
-        g c g a c g a g \\
-        c g a c g a g \\
-        g a c g a g \\
-        a c g a g \\
-        c g a g \\
-        g a g \\
-        a g \\
-        g \\
+        a g c g a c g a g   \\
+        g c g a c g a g     \\
+        c g a c g a g       \\
+        g a c g a g         \\
+        a c g a g           \\
+        c g a g             \\
+        g a g               \\
+        a g                 \\
+        g                   \\
     \end{column}
 
     \begin{column}[t]{0.47\textwidth}
@@ -467,24 +467,24 @@ $cst$ für die Zeichenkette $agcgacgag$.
 \begin{columns}
 
     \begin{column}[t]{0.3\textwidth}
-        1. Gruppe:\\
-        a g c g a c g a g \\
-        a c g a g \\
-        a g \\
+        1. Gruppe:          \\
+        a g c g a c g a g   \\
+        a c g a g           \\
+        a g                 \\
     \end{column}
 
     \begin{column}[t]{0.3\textwidth}
-        2. Gruppe:\\
+        2. Gruppe:      \\
         g c g a c g a g \\
-        g a c g a g \\
-        g a g \\
-        g \\
+        g a c g a g     \\
+        g a g           \\
+        g               \\
     \end{column}
 
     \begin{column}[t]{0.3\textwidth}
-        3. Gruppe:\\
-        c g a c g a g \\
-        c g a g \\
+        3. Gruppe:      \\
+        c g a c g a g   \\
+        c g a g         \\
     \end{column}
 
 \end{columns}
@@ -497,9 +497,9 @@ $cst$ für die Zeichenkette $agcgacgag$.
 
 \begin{frame}[t]
 \frametitle{Schritt 3 für 1. Gruppe}
-    a g c g a c g a g \\
-    a c g a g \\
-    a g \\
+    a g c g a c g a g   \\
+    a c g a g           \\
+    a g                 \\
 
     \medskip
 
@@ -510,10 +510,10 @@ $cst$ für die Zeichenkette $agcgacgag$.
     \begin{columns}
 
     \begin{column}[t]{0.3\textwidth}
-        1'. Gruppe:\\
+        1'. Gruppe:     \\
         g c g a c g a g \\
-        c g a g \\
-        g \\
+        c g a g         \\
+        g               \\
     \end{column}
 
     \begin{column}[t]{0.3\textwidth}
@@ -529,14 +529,14 @@ $cst$ für die Zeichenkette $agcgacgag$.
     \begin{columns}
 
     \begin{column}[t]{0.3\textwidth}
-        1.1 Gruppe:\\
+        1.1 Gruppe:     \\
         g c g a c g a g \\
-        g \\
+        g               \\
     \end{column}
 
     \begin{column}[t]{0.3\textwidth}
-        1.2. Gruppe:\\
-        c g a g \\
+        1.2. Gruppe:    \\
+        c g a g         \\
     \end{column}
 
 \end{columns}
@@ -554,9 +554,9 @@ $cst$ für die Zeichenkette $agcgacgag$.
 
         \begin{column}[t]{0.5\textwidth}
 
-            1.1 Gruppe:\\
+            1.1 Gruppe:     \\
             g c g a c g a g \\
-            g \\
+            g               \\
 
             \medskip
 
@@ -578,8 +578,8 @@ $cst$ für die Zeichenkette $agcgacgag$.
 
         \begin{column}[t]{0.5\textwidth}
 
-                1.1' Gruppe:\\
-                c g a c g a g \\
+                1.1' Gruppe:    \\
+                c g a c g a g   \\
 
                 \medskip
 
@@ -608,8 +608,8 @@ $cst$ für die Zeichenkette $agcgacgag$.
 
         \begin{column}[t]{0.5\textwidth}
 
-            1.2. Gruppe:\\
-            c g a g \\
+            1.2. Gruppe:    \\
+            c g a g         \\
 
             \medskip
 
@@ -628,6 +628,105 @@ $cst$ für die Zeichenkette $agcgacgag$.
     \bigskip
 
     <Bild: der gesamte Pfad vom Wurzel>
+
+\end{frame}
+
+%------------------------------------------------------------------
+% Beispiel: Schritte für 2. Gruppe
+%------------------------------------------------------------------
+
+\begin{frame}[t]
+\frametitle{Schritte für 2. Gruppe}
+
+    2. Gruppe:          \\
+    g c g a c g a g     \\
+    g a c g a g         \\
+    g a g               \\
+    g                   \\
+
+\bigskip
+
+<Bilder: kontinuierlicher Aufbau vom Pfad, paused?, mit Besichtigung von neuen Gruppen?>
+
+\bigskip
+
+<Ist es noch sowas für die Gruppe 3 nötig oder sofort das Ergebnis zeigen?>
+
+\end{frame}
+
+%------------------------------------------------------------------
+% Haskell-code
+%------------------------------------------------------------------
+
+\subsection{Haskell-code}
+
+%------------------------------------------------------------------
+% Haskell-code: Typdefinitionen.
+%------------------------------------------------------------------
+
+\begin{frame}[t]
+\frametitle{Haskell-code: Typdefinitionen}
+
+    Darstellung von Suffixbäumen:
+
+    \medskip
+
+    data STree alf = Leaf | Branch [(Label alf, STree alf)] deriving Eq
+
+    \bigskip
+
+    Darstellung von Beschriftungen:
+
+    \medskip
+
+    type Label alf = [alf]
+
+    \bigskip
+
+    Darstellung vom Kantenaufbau:
+
+    \medskip
+
+    type EdgeFunction alf = [[alf]] -> ([alf], [[alf]])
+
+\end{frame}
+
+%------------------------------------------------------------------
+% Haskell-code: Schritt 1.
+%------------------------------------------------------------------
+
+\begin{frame}[t]
+\frametitle{Haskell-code: Schritt 1}
+
+Liefert alle Suffixe von dem gegebenen Wort $aw$:
+
+\bigskip
+
+suffixes :: [alf] -> [[alf]]
+
+\bigskip
+
+suffixes []       = []              \\
+suffixes aw@(\_:w) = aw:suffixes w  \\
+
+\end{frame}
+
+%------------------------------------------------------------------
+% Haskell-code: Schritt 2.
+%------------------------------------------------------------------
+
+\begin{frame}[t]
+\frametitle{Haskell-code: Schritt 2}
+
+    Liefert die Liste mit allen Wörter aus $ss$ 
+
+    \bigskip
+
+    select :: (Eq alf) => [[alf]] -> alf -> [[alf]] 
+
+    \bigskip
+    
+    select ss a = [c:u | c:u <- ss, a == c]         
 
 \end{frame}
 
