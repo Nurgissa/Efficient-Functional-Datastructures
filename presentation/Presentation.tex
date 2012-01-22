@@ -84,7 +84,7 @@
 \section{Einführung}
 \begin{frame}
 \frametitle{Titel}
-Merged!
+Test
 \end{frame}
 
 %------------------------------------------------------------------
@@ -330,7 +330,7 @@ $ast$ für die Zeichenkette $agcgacgag$.
         };
     }
     \draw[red, dashed] (w1.center) circle (1mm);
-    \node[subtree] at (v1.center);
+    \node[subtree] at (v1.center) {};
     \node[yshift = 2mm, xshift = 3mm] at (s1.center) {$\overline{s}$};
     \node[right] at (w1.east) {$\overline{w}$};
     \node[right] at (v1.center) {$\overline{v}$};
@@ -357,7 +357,7 @@ $ast$ für die Zeichenkette $agcgacgag$.
             edge from parent[dotted]
         };
     }
-    \node[subtree] at (v2.center);
+    \node[subtree] at (v2.center) {};
     \node[yshift = 2mm, xshift = 3mm] at (s2.center) {$\overline{s}$};
     \node[right] at (v2.center) {$\overline{v}$};
 \end{tikzpicture}
@@ -508,19 +508,16 @@ $cst$ für die Zeichenkette $agcgacgag$.
 
 \begin{frame}[t]
 \frametitle{wotd-Algorithmus für cst}
-
-    Write-only top-down construction for sufﬁx trees.\\
-
+    Write-only top-down construction for suffix trees.
     \medskip
-
     Schritte:
     \begin{enumerate}
-    \item Finde alle Siffixe vom gegebenen Wort.
+    \item Finde alle Suffixe eines gegebenen Wortes.
     \item Gruppiere nach den Anfangsbuchstaben. Erzeuge einen Knoten.
     \item Für jede Gruppe:
     \begin{enumerate}
-    \item Finde das längste gemeinsame Präfix, erzeuge eine Kante mit der Beschriftung vom Präfix, entferne das Präfix von Wörter der Gruppe.
-    \item Falls die Gruppe leer ist, erzeuge ein Blatt und gehe zu der nächste Gruppe. Falls es in der Gruppe noch Wörter gibt, kehre zum Schritt 2 zurück.
+    \item Finde das längste gemeinsame Präfix, erzeuge eine Kante mit der Beschriftung vom Präfix, entferne das Präfix von den Wörtern der Gruppe.
+    \item Falls die Gruppe leer ist, erzeuge ein Blatt und gehe zu der nächsten Gruppe. Falls es in der Gruppe noch Wörter gibt, kehre zu Schritt 2 zurück.
     \end{enumerate}
     \end{enumerate}
 \end{frame}
@@ -537,9 +534,7 @@ $cst$ für die Zeichenkette $agcgacgag$.
 
 \begin{frame}[t]
 \frametitle{Schritt 1 und Schritt 2}
-
 \begin{columns}
-
     \begin{column}[t]{0.47\textwidth}
         a g c g a c g a g   \\
         g c g a c g a g     \\
@@ -551,24 +546,18 @@ $cst$ für die Zeichenkette $agcgacgag$.
         a g                 \\
         g                   \\
     \end{column}
-
     \begin{column}[t]{0.47\textwidth}
-        <Bild: der Wurzel.>
+        <Bild: der Wurzel>
     \end{column}
-
 \end{columns}
-
 \medskip
-
 \begin{columns}
-
     \begin{column}[t]{0.3\textwidth}
         1. Gruppe:          \\
         a g c g a c g a g   \\
         a c g a g           \\
         a g                 \\
     \end{column}
-
     \begin{column}[t]{0.3\textwidth}
         2. Gruppe:      \\
         g c g a c g a g \\
@@ -576,15 +565,12 @@ $cst$ für die Zeichenkette $agcgacgag$.
         g a g           \\
         g               \\
     \end{column}
-
     \begin{column}[t]{0.3\textwidth}
         3. Gruppe:      \\
         c g a c g a g   \\
         c g a g         \\
     \end{column}
-
 \end{columns}
-
 \end{frame}
 
 %------------------------------------------------------------------
@@ -596,47 +582,33 @@ $cst$ für die Zeichenkette $agcgacgag$.
     a g c g a c g a g   \\
     a c g a g           \\
     a g                 \\
-
     \medskip
-
     Schritt 3.1: Das längste gemeinsame Präfix is $a$. Erzeuge eine Kante mit der Beschriftung $a$, entferne $a$ von Wörter der Gruppe:
-
     \medskip
-
     \begin{columns}
-
     \begin{column}[t]{0.3\textwidth}
         1'. Gruppe:     \\
         g c g a c g a g \\
         c g a g         \\
         g               \\
     \end{column}
-
     \begin{column}[t]{0.3\textwidth}
         <Bild: der Wurzel mit a-Kante>
     \end{column}
-
 \end{columns}
-
     \medskip
-
     Schritt 3.2: Die Gruppe ist nicht leer $\rightarrow$ Schritt 2:
-
     \begin{columns}
-
     \begin{column}[t]{0.3\textwidth}
         1.1 Gruppe:     \\
         g c g a c g a g \\
         g               \\
     \end{column}
-
     \begin{column}[t]{0.3\textwidth}
         1.2. Gruppe:    \\
         c g a g         \\
     \end{column}
-
 \end{columns}
-
 \end{frame}
 
 %------------------------------------------------------------------
@@ -645,52 +617,30 @@ $cst$ für die Zeichenkette $agcgacgag$.
 
 \begin{frame}[t]
 \frametitle{Schritte für 1.1 Gruppe}
-
     \begin{columns}
-
         \begin{column}[t]{0.5\textwidth}
-
             1.1 Gruppe:     \\
             g c g a c g a g \\
             g               \\
-
             \medskip
-
             Präfix: $g$
-
         \end{column}
-
         \begin{column}[t]{0.5\textwidth}
-            
             <Bild: Neue Kante mit $g$>
-
         \end{column}
-
     \end{columns}
-
     \bigskip
-
     \begin{columns}
-
         \begin{column}[t]{0.5\textwidth}
-
                 1.1' Gruppe:    \\
                 c g a c g a g   \\
-
                 \medskip
-
                 Präfix: $c g a c g a g$
-
         \end{column}
-
         \begin{column}[t]{0.5\textwidth}
-            
-             <Bild: Neue Kante mit $c g a c g a g$> 
-
+             <Bild: Neue Kante mit $c g a c g a g$>
         \end{column}
-
     \end{columns}
-
 \end{frame}
 
 %------------------------------------------------------------------
@@ -699,32 +649,19 @@ $cst$ für die Zeichenkette $agcgacgag$.
 
 \begin{frame}[t]
 \frametitle{Schritte für 1.2 Gruppe}
-
     \begin{columns}
-
         \begin{column}[t]{0.5\textwidth}
-
             1.2. Gruppe:    \\
             c g a g         \\
-
             \medskip
-
             Präfix: $c g a g$
-
         \end{column}
-
         \begin{column}[t]{0.5\textwidth}
-            
-            <Bild: Neue Kante mit $c g a g $>
-
+            <Bild: Neue Kante mit $c g a g$>
         \end{column}
-
     \end{columns}
-
     \bigskip
-
     <Bild: der gesamte Pfad vom Wurzel>
-
 \end{frame}
 
 %------------------------------------------------------------------
@@ -733,21 +670,15 @@ $cst$ für die Zeichenkette $agcgacgag$.
 
 \begin{frame}[t]
 \frametitle{Schritte für 2. Gruppe}
-
     2. Gruppe:          \\
     g c g a c g a g     \\
     g a c g a g         \\
     g a g               \\
     g                   \\
-
 \bigskip
-
 <Bilder: kontinuierlicher Aufbau vom Pfad, paused?, mit Besichtigung von neuen Gruppen?>
-
 \bigskip
-
 <Ist es noch sowas für die Gruppe 3 nötig oder sofort das Ergebnis zeigen?>
-
 \end{frame}
 
 %------------------------------------------------------------------
@@ -762,29 +693,17 @@ $cst$ für die Zeichenkette $agcgacgag$.
 
 \begin{frame}[t]
 \frametitle{Haskell-code: Typdefinitionen}
-
     Darstellung von Suffixbäumen:
-
     \medskip
-
     data STree alf = Leaf | Branch [(Label alf, STree alf)] deriving Eq
-
     \bigskip
-
     Darstellung von Beschriftungen:
-
     \medskip
-
     type Label alf = [alf]
-
     \bigskip
-
     Darstellung vom Kantenaufbau:
-
     \medskip
-
     type EdgeFunction alf = [[alf]] -> ([alf], [[alf]])
-
 \end{frame}
 
 %------------------------------------------------------------------
@@ -793,18 +712,12 @@ $cst$ für die Zeichenkette $agcgacgag$.
 
 \begin{frame}[t]
 \frametitle{Haskell-code: Schritt 1}
-
 Liefert alle Suffixe von dem gegebenen Wort $aw$:
-
 \bigskip
-
 suffixes :: [alf] -> [[alf]]
-
 \bigskip
-
 suffixes []       = []              \\
 suffixes aw@(\_:w) = aw:suffixes w  \\
-
 \end{frame}
 
 %------------------------------------------------------------------
@@ -813,16 +726,10 @@ suffixes aw@(\_:w) = aw:suffixes w  \\
 
 \begin{frame}[t]
 \frametitle{Haskell-code: Schritt 2}
-
-    Liefert die Liste mit allen Wörter aus $ss$ 
-
+    Liefert die Liste mit allen Wörter aus $ss$
     \bigskip
-
-    select :: (Eq alf) => [[alf]] -> alf -> [[alf]] 
-
+    select :: (Eq alf) => [[alf]] -> alf -> [[alf]]
     \bigskip
-    
-    select ss a = [c:u | c:u <- ss, a == c]         
-
+    select ss a = [c:u | c:u <- ss, a == c]
 \end{frame}
 \end{document}
