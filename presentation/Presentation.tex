@@ -20,7 +20,7 @@
 %\usepackage{ucs}
 \usepackage[utf8]{inputenc}
 % Mathematische Notationen
-\usepackage{amsmath, amsfonts, amssymb}
+\usepackage{amsmath, amsfonts, amssymb, txfonts}
 % Bäume zeichnen
 \usepackage{tikz}
 % Code von Programmiersprachen erkennen
@@ -86,6 +86,25 @@
 %------------------------------------------------------------------
 \section{Terminologie}
 %------------------------------------------------------------------
+
+%------------------------------------------------------------------
+\subsection{Grundlegende Notationen}
+%------------------------------------------------------------------
+
+%--Folie: Grundlegende Notationen----------------------------------
+\begin{frame}
+    \frametitle{Grundlegende Notationen}
+    \begin{itemize}
+         \item $\Sigma$ endliches Alphabet
+         \item $\epsilon$ leeres Wort
+         \item $\Sigma^*$ Kleen'sche Hülle von $\Sigma$
+         \item $\Sigma^+ \coloneqq \Sigma^* \setminus \{\epsilon\}$ 
+    \end{itemize}
+    \begin{definition}
+        Sei $t = uvw$ mit $u, v, w \in \Sigma^*$. Dann ist $u$ ein Präfix und $w$ ein Suffix von $t$. $v$ wird als $t$-wort bezeichnet.
+    \end{definition}
+\end{frame}
+%--Folie-----------------------------------------------------------
 
 %------------------------------------------------------------------
 \subsection{Suffix Tree Klassen}
