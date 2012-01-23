@@ -28,7 +28,7 @@
 
 % listings-Konfiguration
 \lstloadlanguages{Haskell}
-\lstset{basicstyle=\small}
+\lstset{basicstyle=\tiny}
 
 % Beamer Konfiguration
 \usetheme{Goettingen}
@@ -495,39 +495,14 @@ $cst$ für die Zeichenkette $agcgacgag$.
 %--Folie-----------------------------------------------------------
 
 %------------------------------------------------------------------
-% wotd-Algorithmus: Schritte
-%------------------------------------------------------------------
-
-\section{wotd-Algorithmus}
-
-\subsection{Vorgehensweise}
-
-\begin{frame}[t]
-\frametitle{wotd-Algorithmus für cst}
-    Write-only top-down construction for suffix trees.
-    \medskip
-    Schritte:
-    \begin{enumerate}
-    \item Finde alle Suffixe eines gegebenen Wortes.
-    \item Gruppiere nach den Anfangsbuchstaben. Erzeuge einen Knoten.
-    \item Für jede Gruppe:
-    \begin{enumerate}
-    \item Finde das längste gemeinsame Präfix, erzeuge eine Kante mit der Beschriftung vom Präfix, entferne das Präfix von den Wörtern der Gruppe.
-    \item Falls die Gruppe leer ist, erzeuge ein Blatt. Falls es in der Gruppe noch Wörter gibt, kehre zu Schritt 2 zurück.
-    \end{enumerate}
-    \end{enumerate}
-\end{frame}
-
-%------------------------------------------------------------------
 % wotd-Algorithmus: Beispiel
 %------------------------------------------------------------------
 
+
+
 \subsection{Beispiel}
 
-%------------------------------------------------------------------
-% Beispiel
-%------------------------------------------------------------------
-
+%--Folie: Beispiel-------------------------------------------------
 \begin{frame}[t]
 \frametitle{Beispiel für $agcgacgag$}
 $Suffixe = \{agcgacgag, gcgacgag, cgacgag, gacgag, acgag, cgag, \newline gag, ag, g\}$
@@ -567,11 +542,9 @@ $Suffixe = \{agcgacgag, gcgacgag, cgacgag, gacgag, acgag, cgag, \newline gag, ag
 \medskip
 <Bild: Wurzel mit 3 Kanten>
 \end{frame}
+%--Folie-----------------------------------------------------------
 
-%------------------------------------------------------------------
-% Beispiel
-%------------------------------------------------------------------
-
+%--Folie: Beispiel-------------------------------------------------
 \begin{frame}[t]
 \frametitle{Beispiel für $agcgacgag$}
 \begin{columns}
@@ -608,6 +581,33 @@ $Suffixe = \{agcgacgag, gcgacgag, cgacgag, gacgag, acgag, cgag, \newline gag, ag
 \medskip
 <Bild>
 \end{frame}
+%--Folie-----------------------------------------------------------
+
+%------------------------------------------------------------------
+% wotd-Algorithmus: Schritte
+%------------------------------------------------------------------
+
+\section{wotd-Algorithmus}
+
+\subsection{Vorgehensweise}
+
+%--Folie: wotd-Algorithmus: Schritte-------------------------------
+\begin{frame}[t]
+\frametitle{wotd-Algorithmus für cst}
+    Write-only top-down construction for suffix trees.
+    \medskip
+    Schritte:
+    \begin{enumerate}
+    \item Finde alle Suffixe eines gegebenen Wortes.
+    \item Gruppiere nach den Anfangsbuchstaben. Erzeuge einen Knoten.
+    \item Für jede Gruppe:
+    \begin{enumerate}
+    \item Finde das längste gemeinsame Präfix, erzeuge eine Kante mit der Beschriftung vom Präfix, entferne das Präfix von den Wörtern der Gruppe.
+    \item Falls die Gruppe leer ist, erzeuge ein Blatt. Falls es in der Gruppe noch Wörter gibt, kehre zu Schritt 2 zurück.
+    \end{enumerate}
+    \end{enumerate}
+\end{frame}
+%--Folie-----------------------------------------------------------
 
 %------------------------------------------------------------------
 % Haskell-code
@@ -615,16 +615,12 @@ $Suffixe = \{agcgacgag, gcgacgag, cgacgag, gacgag, acgag, cgag, \newline gag, ag
 
 \subsection{Haskell-code}
 
-%------------------------------------------------------------------
-% Haskell-code: Typdefinitionen.
-%------------------------------------------------------------------
-
+%--Folie: Haskell-code: Typdefinitionen----------------------------
 \begin{frame}[fragile]
 \frametitle{Haskell-code: Typdefinitionen}
-Darstellung von Suffixbaeumen:
+Darstellung von Suffixbäumen:
 \begin{lstlisting}{haskell}
-data STree alf = 
-Leaf | Branch [(Label alf,STree alf)] deriving Eq
+data STree alf = Leaf | Branch [(Label alf,STree alf)] deriving Eq
 \end{lstlisting}
 \bigskip
 Darstellung von Beschriftungen:
@@ -637,10 +633,9 @@ Darstellung vom Kantenaufbau:
 type EdgeFunction alf = [[alf]] -> ([alf],[[alf]])
 \end{lstlisting}
 \end{frame}
+%--Folie-----------------------------------------------------------
 
-%------------------------------------------------------------------
-% Haskell-code: Liste von Suffixen.
-%------------------------------------------------------------------
+%--Folie: Haskell-code: Liste von Suffixen-------------------------
 \begin{frame}[fragile]
 \frametitle{Haskell-code: Liste von Suffixen}
     Folgende Funktion liefert alle Suffixe von dem gegebenen Wort $aw$:
@@ -655,11 +650,9 @@ type EdgeFunction alf = [[alf]] -> ([alf],[[alf]])
     aw@(_:w)
     \end{lstlisting} bedeutet, dass $aw$ wird mit $(\_:w)$ gematcht.
 \end{frame}
+%--Folie-----------------------------------------------------------
 
-%------------------------------------------------------------------
-% Haskell-code: Auswahl.
-%------------------------------------------------------------------
-
+%--Folie: Haskell-code: Auswahl------------------------------------
 \begin{frame}[fragile]
 \frametitle{Haskell-code: Auswahl einer Gruppe}
     Folgende Funktion liefert die Liste mit allen Wörter aus $ss$, die mit $a$ anfangen:
@@ -669,26 +662,26 @@ select :: (Eq alf) => [[alf]] -> alf -> [[alf]]
 select ss a = [c:u | c:u <- ss, a == c]
 \end{lstlisting}
 \bigskip
-Bemerkung: \begin{lstlisting}{haskell}
+\begin{remark}
+\begin{lstlisting}{haskell}
 c:u <- ss
 \end{lstlisting} bedeutet $c:u \in ss$
+\end{remark}
 \end{frame}
+%--Folie-----------------------------------------------------------
 
-%------------------------------------------------------------------
-% Haskell-code: Kantenerzeugung.
-%------------------------------------------------------------------
-
+%--Folie: Haskell-code: Kantenerzeugung----------------------------
 \begin{frame}[fragile]
 \frametitle{Haskell-code: Kantenerzeugung}
-Folgende Funktion erzeugt die Kante mit der längster-Präfix- Beschriftung für eine gegebene Liste von Wörter.
+Folgende Funktion erzeugt die Kante mit der längster-Präfix- Beschriftung für eine gegebene Liste von Wörter:
 \begin{lstlisting}{haskell}
 edge_cst :: (Eq alf) => EdgeFunction alf
 
 edge_cst [s] = ([s], [[]])
-edge_cst awss@((a:_):ss) 
-| all (\c:_ -> a == c) ss = (a:cp, rss)
-| otherwise               = ([], awss)
-where (cp, rss) = edge_cst ([t | _:t <- awss])
+edge_cst awss@((a:_):ss) | all (\c:_ -> a == c) ss = (a:cp, rss)
+                         | otherwise               = ([], awss)
+                           where 
+                           (cp, rss) = edge_cst ([t | _:t <- awss])
 \end{lstlisting}
 \bigskip
 Bemerkung:
@@ -699,26 +692,27 @@ all p [] = true
 all p x:xs = p x && all p xs
 \end{lstlisting} 
 \end{frame}
+%--Folie-----------------------------------------------------------
 
-%------------------------------------------------------------------
-% Haskell-code: Baumaufbau.
-%------------------------------------------------------------------
-
+%--Folie: Haskell-code: Baumaufbau---------------------------------
 \begin{frame}[fragile]
 \frametitle{Haskell-code: Baumaufbau}
-Die folgende Funktion baut den cst-Baum auf.
+Die folgende Funktion baut den cst-Baum auf:
 \begin{lstlisting}{haskell}
 lazy_cst :: (Eq alf) => 
 (EdgeFunction alf) -> [alf] -> [alf] -> STree alf
 
-lazy_cst edge_cst alpha t = 
-sTr (suffixes t)
+lazy_cst edge_cst alpha t = sTr (suffixes t)
 where sTr [[]] = Leaf
-      sTr ss   = 
-      Branch [(cp, sTr rss)|a <- alpha,
-                            let gs = select ss a,
-                            let (cp,rss) = edge_cst gs]
+      sTr ss   = Branch [(cp, sTr rss)|a <- alpha,
+                                       let gs = select ss a,
+                                       let (cp,rss) = edge_cst gs]
 \end{lstlisting}
+\end{frame}
+%--Folie-----------------------------------------------------------
+
+\begin{frame}
+    
 \end{frame}
 
 \end{document}
