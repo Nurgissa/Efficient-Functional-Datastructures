@@ -23,6 +23,11 @@
 \usepackage{amsmath, amsfonts, amssymb}
 % Bäume zeichnen
 \usepackage{tikz}
+% Code von Programmiersprachen erkennen
+\usepackage{listings}
+
+% listings-Konfiguration
+\lstloadlanguages{Haskell}
 
 % Beamer Konfiguration
 \usetheme{Goettingen}
@@ -712,12 +717,14 @@ $cst$ für die Zeichenkette $agcgacgag$.
 
 \begin{frame}[t]
 \frametitle{Haskell-code: Schritt 1}
-Liefert alle Suffixe von dem gegebenen Wort $aw$:
-\bigskip
-suffixes :: [alf] -> [[alf]]
-\bigskip
-suffixes []       = []              \\
-suffixes aw@(\_:w) = aw:suffixes w  \\
+    Liefert alle Suffixe von dem gegebenen Wort $aw$:
+
+    % \begin{lstlisting}
+    % suffixes :: [alf] -> [[alf]]
+    % suffixes []       = []              
+    % suffixes aw@(_:w) = aw:suffixes w  
+    % \end{lstlisting}
+
 \end{frame}
 
 %------------------------------------------------------------------
