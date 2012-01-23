@@ -28,7 +28,7 @@
 
 % listings-Konfiguration
 \lstloadlanguages{Haskell}
-\lstset{basicstyle=\tiny}
+\lstset{basicstyle=\scriptsize}
 
 % Beamer Konfiguration
 \usetheme{Goettingen}
@@ -642,7 +642,8 @@ $Suffixe = \{agcgacgag, gcgacgag, cgacgag, gacgag, acgag, cgag, \newline gag, ag
 \frametitle{Haskell-code: Typdefinitionen}
 Darstellung von Suffixbäumen:
 \begin{lstlisting}{haskell}
-data STree alf = Leaf | Branch [(Label alf,STree alf)] deriving Eq
+data STree alf = Leaf | 
+                 Branch [(Label alf,STree alf)] deriving Eq
 \end{lstlisting}
 \bigskip
 Darstellung von Beschriftungen:
@@ -700,10 +701,10 @@ Folgende Funktion erzeugt die Kante mit der längster-Präfix- Beschriftung für
 edge_cst :: (Eq alf) => EdgeFunction alf
 
 edge_cst [s] = ([s], [[]])
-edge_cst awss@((a:_):ss) | all (\c:_ -> a == c) ss = (a:cp, rss)
-                         | otherwise               = ([], awss)
-                           where 
-                           (cp, rss) = edge_cst ([t | _:t <- awss])
+edge_cst awss@((a:_):ss) 
+    | all (\c:_ -> a == c) ss =  (a:cp, rss)
+    | otherwise               =  ([], awss)
+      where (cp, rss)         =  edge_cst ([t | _:t <- awss])
 \end{lstlisting}
 \bigskip
 Bemerkung:
