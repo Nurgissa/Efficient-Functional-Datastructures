@@ -97,15 +97,23 @@
 %--Folie: Grundlegende Notationen----------------------------------
 \begin{frame}
     \frametitle{Grundlegende Notationen}
+    \vspace{-4mm}
     \begin{itemize}
         \item $\Sigma$ endliches Alphabet
         \item $\epsilon$ leeres Wort
         \item $\Sigma^*$ Kleen'sche Hülle von $\Sigma$
-        \item $\Sigma^+ \coloneqq \Sigma^* \setminus \{\epsilon\}$ 
+        \item $\Sigma^+ \coloneqq \Sigma^* \setminus \{\epsilon\}$
+        \item $uv$ Konkatenation der Wörter $u$ und $v$ mit $u, v \in \Sigma^+$
     \end{itemize}
     \begin{definition}
-        Sei $t = uvw$ mit $u, v, w \in \Sigma^*$. Dann ist $u$ ein Präfix und $w$ ein Suffix von $t$. $v$ wird als $t$-wort bezeichnet.
+        Sei $t = uvw$ mit $u, v, w \in \Sigma^*$. Dann ist $u$ ein Präfix und $w$ ein Suffix von $t$. $v$ wird als $t$-Wort bezeichnet.
     \end{definition}
+    \begin{definition}
+        Ein Suffix von $t$ heißt verschachtelt, wenn es mehrmals in $t$ vorkommt, d.h. $t = uvwv$ mit $u, v, w \in \Sigma^*$.
+    \end{definition}
+    \begin{example}
+        $ag$ ist ein verschachteltes Suffix von $agcgacgag$.
+    \end{example}
 \end{frame}
 %--Folie-----------------------------------------------------------
 
