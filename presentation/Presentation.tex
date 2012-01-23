@@ -700,6 +700,14 @@ edge_cst awss@((a:_):ss)
 | otherwise               = ([], awss)
 where (cp, rss) = edge_cst ([t | _:t <- awss])
 \end{lstlisting}
+\bigskip
+Bemerkung:
+\begin{lstlisting}{haskell}
+all :: (a -> Bool) -> [a] -> Bool
+
+all p [] = true
+all p x:xs = p x && all p xs
+\end{lstlisting} 
 \end{frame}
 
 \end{document}
