@@ -512,6 +512,8 @@ $cst$ für die Zeichenkette $agcgacgag$.
 
 \section{wotd-Algorithmus}
 
+\subsection{Vorgehensweise}
+
 \begin{frame}[t]
 \frametitle{wotd-Algorithmus für cst}
     Write-only top-down construction for suffix trees.
@@ -532,7 +534,7 @@ $cst$ für die Zeichenkette $agcgacgag$.
 % wotd-Algorithmus: Beispiel
 %------------------------------------------------------------------
 
-\subsection{cst-Konstruktion für das Wort $agcgacgag$}
+\subsection{Beispiel}
 
 %------------------------------------------------------------------
 % Beispiel
@@ -708,6 +710,27 @@ all :: (a -> Bool) -> [a] -> Bool
 all p [] = true
 all p x:xs = p x && all p xs
 \end{lstlisting} 
+\end{frame}
+
+%------------------------------------------------------------------
+% Haskell-code: Baumaufbau.
+%------------------------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Haskell-code: Baumaufbau}
+Die folgende Funktion baut den cst-Baum auf.
+\begin{lstlisting}{haskell}
+lazy_cst :: (Eq alf) => 
+(EdgeFunction alf) -> [alf] -> [alf] -> STree alf
+
+lazy_cst edge_cst alpha t = 
+sTr (suffixes t)
+where sTr [[]] = Leaf
+      sTr ss   = 
+      Branch [(cp, sTr rss)|a <- alpha,
+                            let gs = select ss a,
+                            let (cp,rss) = edge_cst gs]
+\end{lstlisting}
 \end{frame}
 
 \end{document}
