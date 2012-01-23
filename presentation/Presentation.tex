@@ -28,6 +28,7 @@
 
 % listings-Konfiguration
 \lstloadlanguages{Haskell}
+\lstset{basicstyle=\small}
 
 % Beamer Konfiguration
 \usetheme{Goettingen}
@@ -522,7 +523,7 @@ $cst$ für die Zeichenkette $agcgacgag$.
     \item Für jede Gruppe:
     \begin{enumerate}
     \item Finde das längste gemeinsame Präfix, erzeuge eine Kante mit der Beschriftung vom Präfix, entferne das Präfix von den Wörtern der Gruppe.
-    \item Falls die Gruppe leer ist, erzeuge ein Blatt und gehe zu der nächsten Gruppe. Falls es in der Gruppe noch Wörter gibt, kehre zu Schritt 2 zurück.
+    \item Falls die Gruppe leer ist, erzeuge ein Blatt. Falls es in der Gruppe noch Wörter gibt, kehre zu Schritt 2 zurück.
     \end{enumerate}
     \end{enumerate}
 \end{frame}
@@ -534,156 +535,88 @@ $cst$ für die Zeichenkette $agcgacgag$.
 \subsection{cst-Konstruktion für das Wort $agcgacgag$}
 
 %------------------------------------------------------------------
-% Beispiel: Schritt 1 und 2
+% Beispiel
 %------------------------------------------------------------------
 
 \begin{frame}[t]
-\frametitle{Schritt 1 und Schritt 2}
+\frametitle{Beispiel für $agcgacgag$}
+$Suffixe = \{agcgacgag, gcgacgag, cgacgag, gacgag, acgag, cgag, \newline gag, ag, g\}$
+\medskip
 \begin{columns}
-    \begin{column}[t]{0.47\textwidth}
-        a g c g a c g a g   \\
-        g c g a c g a g     \\
-        c g a c g a g       \\
-        g a c g a g         \\
-        a c g a g           \\
-        c g a g             \\
-        g a g               \\
-        a g                 \\
-        g                   \\
+    \begin{column}[t]{0.3\textwidth}
+        1. Gruppe:  
+        $agcgacgag$  \\
+        $acga$      \\  
+        $ag$         \\ 
     \end{column}
-    \begin{column}[t]{0.47\textwidth}
-        <Bild: der Wurzel>
+    \begin{column}[t]{0.3\textwidth}
+        2. Gruppe:        \\
+        $cgacgag$   \\
+        $cgag$         \\
+    \end{column}
+    \begin{column}[t]{0.3\textwidth}
+        3. Gruppe:      \\
+        $gcgacgag$ \\
+        $gacgag$     \\
+        $gag$           \\
+        $g$               \\
     \end{column}
 \end{columns}
 \medskip
 \begin{columns}
     \begin{column}[t]{0.3\textwidth}
-        1. Gruppe:          \\
-        a g c g a c g a g   \\
-        a c g a g           \\
-        a g                 \\
+        Präfix: $a$
     \end{column}
     \begin{column}[t]{0.3\textwidth}
-        2. Gruppe:      \\
-        g c g a c g a g \\
-        g a c g a g     \\
-        g a g           \\
-        g               \\
+        Präfix: $cga$
     \end{column}
     \begin{column}[t]{0.3\textwidth}
-        3. Gruppe:      \\
-        c g a c g a g   \\
-        c g a g         \\
+        Präfix: $g$
     \end{column}
 \end{columns}
+\medskip
+<Bild: Wurzel mit 3 Kanten>
 \end{frame}
 
 %------------------------------------------------------------------
-% Beispiel: Schritt 3 für 1. Gruppe
+% Beispiel
 %------------------------------------------------------------------
 
 \begin{frame}[t]
-\frametitle{Schritt 3 für 1. Gruppe}
-    a g c g a c g a g   \\
-    a c g a g           \\
-    a g                 \\
-    \medskip
-    Schritt 3.1: Das längste gemeinsame Präfix is $a$. Erzeuge eine Kante mit der Beschriftung $a$, entferne $a$ von Wörter der Gruppe:
-    \medskip
-    \begin{columns}
+\frametitle{Beispiel für $agcgacgag$}
+\begin{columns}
     \begin{column}[t]{0.3\textwidth}
-        1'. Gruppe:     \\
-        g c g a c g a g \\
-        c g a g         \\
-        g               \\
+        1.1 Gruppe:  
+        $gcgacgag$ \\  
+        $g$        \\  
     \end{column}
     \begin{column}[t]{0.3\textwidth}
-        <Bild: der Wurzel mit a-Kante>
-    \end{column}
-\end{columns}
-    \medskip
-    Schritt 3.2: Die Gruppe ist nicht leer $\rightarrow$ Schritt 2:
-    \begin{columns}
-    \begin{column}[t]{0.3\textwidth}
-        1.1 Gruppe:     \\
-        g c g a c g a g \\
-        g               \\
+        2.1 Gruppe: \\
+        $cgag$      \\
     \end{column}
     \begin{column}[t]{0.3\textwidth}
-        1.2. Gruppe:    \\
-        c g a g         \\
+        3.1 Gruppe: \\
+        $acgag$     \\
+        $ag$        \\
     \end{column}
 \end{columns}
-\end{frame}
-
-%------------------------------------------------------------------
-% Beispiel: 1.1 Gruppe bis zu Blätter
-%------------------------------------------------------------------
-
-\begin{frame}[t]
-\frametitle{Schritte für 1.1 Gruppe}
-    \begin{columns}
-        \begin{column}[t]{0.5\textwidth}
-            1.1 Gruppe:     \\
-            g c g a c g a g \\
-            g               \\
-            \medskip
-            Präfix: $g$
-        \end{column}
-        \begin{column}[t]{0.5\textwidth}
-            <Bild: Neue Kante mit $g$>
-        \end{column}
-    \end{columns}
-    \bigskip
-    \begin{columns}
-        \begin{column}[t]{0.5\textwidth}
-                1.1' Gruppe:    \\
-                c g a c g a g   \\
-                \medskip
-                Präfix: $c g a c g a g$
-        \end{column}
-        \begin{column}[t]{0.5\textwidth}
-             <Bild: Neue Kante mit $c g a c g a g$>
-        \end{column}
-    \end{columns}
-\end{frame}
-
-%------------------------------------------------------------------
-% Beispiel: 1.2 Gruppe bis zu Blätter
-%------------------------------------------------------------------
-
-\begin{frame}[t]
-\frametitle{Schritte für 1.2 Gruppe}
-    \begin{columns}
-        \begin{column}[t]{0.5\textwidth}
-            1.2. Gruppe:    \\
-            c g a g         \\
-            \medskip
-            Präfix: $c g a g$
-        \end{column}
-        \begin{column}[t]{0.5\textwidth}
-            <Bild: Neue Kante mit $c g a g$>
-        \end{column}
-    \end{columns}
-    \bigskip
-    <Bild: der gesamte Pfad vom Wurzel>
-\end{frame}
-
-%------------------------------------------------------------------
-% Beispiel: Schritte für 2. Gruppe
-%------------------------------------------------------------------
-
-\begin{frame}[t]
-\frametitle{Schritte für 2. Gruppe}
-    2. Gruppe:          \\
-    g c g a c g a g     \\
-    g a c g a g         \\
-    g a g               \\
-    g                   \\
-\bigskip
-<Bilder: kontinuierlicher Aufbau vom Pfad, paused?, mit Besichtigung von neuen Gruppen?>
-\bigskip
-<Ist es noch sowas für die Gruppe 3 nötig oder sofort das Ergebnis zeigen?>
+\medskip
+\begin{columns}
+    \begin{column}[t]{0.3\textwidth}
+        1.2 Gruppe:\\
+        $cga$      \\  
+    \end{column}
+    \begin{column}[t]{0.3\textwidth}
+        2.2 Gruppe: \\
+        $g$         \\
+    \end{column}
+    \begin{column}[t]{0.3\textwidth}
+        3.2 Gruppe: \\
+        $cgacgag$   \\
+    \end{column}
+\end{columns}
+\medskip
+<Bild>
 \end{frame}
 
 %------------------------------------------------------------------
@@ -696,47 +629,79 @@ $cst$ für die Zeichenkette $agcgacgag$.
 % Haskell-code: Typdefinitionen.
 %------------------------------------------------------------------
 
-\begin{frame}[t]
+\begin{frame}[fragile]
 \frametitle{Haskell-code: Typdefinitionen}
-    Darstellung von Suffixbäumen:
-    \medskip
-    data STree alf = Leaf | Branch [(Label alf, STree alf)] deriving Eq
-    \bigskip
-    Darstellung von Beschriftungen:
-    \medskip
-    type Label alf = [alf]
-    \bigskip
-    Darstellung vom Kantenaufbau:
-    \medskip
-    type EdgeFunction alf = [[alf]] -> ([alf], [[alf]])
+Darstellung von Suffixbaeumen:
+\begin{lstlisting}{haskell}
+data STree alf = 
+Leaf | Branch [(Label alf,STree alf)] deriving Eq
+\end{lstlisting}
+\bigskip
+Darstellung von Beschriftungen:
+\begin{lstlisting}{haskell}
+type Label alf = [alf]
+\end{lstlisting}
+\bigskip
+Darstellung vom Kantenaufbau:
+\begin{lstlisting}{haskell}
+type EdgeFunction alf = [[alf]] -> ([alf],[[alf]])
+\end{lstlisting}
 \end{frame}
 
 %------------------------------------------------------------------
-% Haskell-code: Schritt 1.
+% Haskell-code: Liste von Suffixen.
 %------------------------------------------------------------------
+\begin{frame}[fragile]
+\frametitle{Haskell-code: Liste von Suffixen}
+    Folgende Funktion liefert alle Suffixe von dem gegebenen Wort $aw$:
+    \begin{lstlisting}{haskell}
+    suffixes :: [alf] -> [[alf]]
 
-\begin{frame}[t]
-\frametitle{Haskell-code: Schritt 1}
-    Liefert alle Suffixe von dem gegebenen Wort $aw$:
-
-    % \begin{lstlisting}
-    % suffixes :: [alf] -> [[alf]]
-    % suffixes []       = []              
-    % suffixes aw@(_:w) = aw:suffixes w  
-    % \end{lstlisting}
-
+    suffixes []       = []              
+    suffixes aw@(_:w) = aw:suffixes w 
+    \end{lstlisting}
+    \bigskip
+    Bemerkung: \begin{lstlisting}{haskell}
+    aw@(_:w)
+    \end{lstlisting} bedeutet, dass $aw$ wird mit $(\_:w)$ gematcht.
 \end{frame}
 
 %------------------------------------------------------------------
-% Haskell-code: Schritt 2.
+% Haskell-code: Auswahl.
 %------------------------------------------------------------------
 
-\begin{frame}[t]
-\frametitle{Haskell-code: Schritt 2}
-    Liefert die Liste mit allen Wörter aus $ss$
-    \bigskip
-    select :: (Eq alf) => [[alf]] -> alf -> [[alf]]
-    \bigskip
-    select ss a = [c:u | c:u <- ss, a == c]
+\begin{frame}[fragile]
+\frametitle{Haskell-code: Auswahl einer Gruppe}
+    Folgende Funktion liefert die Liste mit allen Wörter aus $ss$, die mit $a$ anfangen:
+\begin{lstlisting}{haskell}
+select :: (Eq alf) => [[alf]] -> alf -> [[alf]]
+
+select ss a = [c:u | c:u <- ss, a == c]
+\end{lstlisting}
+\bigskip
+Bemerkung: \begin{lstlisting}{haskell}
+c:u <- ss
+\end{lstlisting} bedeutet $c:u \in ss$
 \end{frame}
+
+%------------------------------------------------------------------
+% Haskell-code: Kantenerzeugung.
+%------------------------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Haskell-code: Kantenerzeugung}
+Folgende Funktion erzeugt die Kante mit der längster-Präfix- Beschriftung für eine gegebene Liste von Wörter.
+\begin{lstlisting}{haskell}
+edge_cst :: (Eq alf) => EdgeFunction alf
+
+edge_cst [s] = ([s], [[]])
+edge_cst awss@((a:_):ss) 
+| all (\c:_ -> a == c) ss = (a:cp, rss)
+| otherwise               = ([], awss)
+where (cp, rss) = edge_cst ([t | _:t <- awss])
+\end{lstlisting}
+\end{frame}
+
 \end{document}
+
+
