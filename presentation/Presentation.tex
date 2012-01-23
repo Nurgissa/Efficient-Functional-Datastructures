@@ -91,29 +91,106 @@
 %------------------------------------------------------------------
 
 %------------------------------------------------------------------
-\subsection{Grundlegende Notationen}
+\subsection{Grundlagen}
 %------------------------------------------------------------------
 
-%--Folie: Grundlegende Notationen----------------------------------
+%--Folie: Grundlagen-----------------------------------------------
 \begin{frame}
-    \frametitle{Grundlegende Notationen}
-    \vspace{-4mm}
+\frametitle{Grundlagen}
+\begin{itemize}
+    \item $\Sigma$ endliches Alphabet
+    \item $\epsilon$ leeres Wort
+    \item $\Sigma^*$ Kleen'sche Hülle von $\Sigma$
+    \item $\Sigma^+ \coloneqq \Sigma^* \setminus \{\epsilon\}$
+    \item Im Folgenden bezeichnen
     \begin{itemize}
-        \item $\Sigma$ endliches Alphabet
-        \item $\epsilon$ leeres Wort
-        \item $\Sigma^*$ Kleen'sche Hülle von $\Sigma$
-        \item $\Sigma^+ \coloneqq \Sigma^* \setminus \{\epsilon\}$
-        \item $uv$ Konkatenation der Wörter $u$ und $v$ mit $u, v \in \Sigma^+$
+        \item $a$ - $g$ Buchstaben
+        \item $t$ - $z$ Wörter
     \end{itemize}
-    \begin{definition}
-        Sei $t = uvw$ mit $u, v, w \in \Sigma^*$. Dann ist $u$ ein Präfix und $w$ ein Suffix von $t$. $v$ wird als $t$-Wort bezeichnet.
-    \end{definition}
-    \begin{definition}
-        Ein Suffix von $t$ heißt verschachtelt, wenn es mehrmals in $t$ vorkommt, d.h. $t = uvwv$ mit $u, v, w \in \Sigma^*$.
-    \end{definition}
-    \begin{example}
-        $ag$ ist ein verschachteltes Suffix von $agcgacgag$.
-    \end{example}
+    \item $uv$ Konkatenation der Wörter $u$ und $v$ mit $u, v \in \Sigma^+$
+\end{itemize}
+\begin{definition}[Präfix, Suffix, $t$-Wort]
+    Sei $t = uvw$ mit $u, v, w \in \Sigma^*$. Dann ist $u$ ein Präfix und $w$ ein Suffix von $t$. $v$ wird als $t$-Wort bezeichnet.
+\end{definition}
+\end{frame}
+%--Folie-----------------------------------------------------------
+
+%--Folie: Grundlagen-----------------------------------------------
+\begin{frame}
+\frametitle{Grundlagen}
+\begin{definition}[$\Sigma^+$-Baum]
+    $\Sigma^+$-Baum ist ein Baum mit Kantenbeschriftungen aus $\Sigma^+$. Für alle $a \in \Sigma$ existiert höchstens eine $a$-Kante mit $k \xrightarrow{aw} k'$. Die Menge aller $\Sigma^+$-Bäume bezeichnen wir mit $T\:(\Sigma^+)$.
+\end{definition}
+\begin{example}
+Sei $\Sigma = \left\{a, \dots, z\right\}$
+\begin{figure}
+\begin{tikzpicture}[
+    font = \small,
+    level 1/.style = {level distance = 7mm, sibling distance = 25mm},
+    level 2/.style = {level distance = 7mm, sibling distance = 15mm},
+    level 3/.style = {level distance = 7mm, sibling distance = 10mm},
+    edge from parent/.style = {->, draw}
+]
+    \node[branch]{}
+    child {
+        node[branch]{}
+        child[child anchor = north] {
+            node[subtree]{}
+            edge from parent
+            node[left, yshift = 0.5mm]{g}
+        }
+        child[child anchor = north] {
+            node[subtree]{}
+            edge from parent
+            node[right, yshift = 0.5mm]{h}
+        }
+        edge from parent
+        node[above]{ab}
+    }
+    child {
+        node[branch]{}
+        child[child anchor = north] {
+            node[subtree]{}
+            edge from parent
+            node[left, yshift = 0.5mm]{i}
+        }
+        edge from parent
+        node[left]{c}
+    }
+    child {
+        node[branch]{}
+        child[child anchor = north] {
+            node[subtree]{}
+            edge from parent
+            node[left, yshift = 0.5mm]{j}
+        }
+        child[child anchor = north] {
+            node[subtree]{}
+            edge from parent
+            node[right, yshift = 0.5mm]{kl}
+        }
+        edge from parent
+        node[above]{def}
+    };
+\end{tikzpicture}
+\end{figure}
+\end{example}
+\end{frame}
+%--Folie-----------------------------------------------------------
+
+%--Folie: Grundlagen-----------------------------------------------
+\begin{frame}
+\frametitle{Grundlagen}
+\begin{definition}[Suffix Tree]
+    Ein Suffix Tree $S_t$ für ein gegebenes Wort $t$ ist ein $\Sigma^+$-Baum, sodass gilt:
+    $$w \in S_t  \Longleftrightarrow w \text{ ist ein }t\text{-Wort}$$
+\end{definition}
+\begin{definition}[Verschachteltes Suffix]
+    Ein Suffix von $t$ heißt verschachtelt, wenn es mehrmals in $t$ vorkommt, d.h. $t = uvwv$ mit $u, v, w \in \Sigma^*$.
+\end{definition}
+\begin{example}
+    $\boldsymbol{ag}$ ist ein verschachteltes Suffix von $\boldsymbol{ag}cgacg\boldsymbol{ag}$.
+\end{example}
 \end{frame}
 %--Folie-----------------------------------------------------------
 
