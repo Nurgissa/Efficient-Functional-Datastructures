@@ -59,6 +59,9 @@
     font = \tiny
 ]
 
+% Umgebung Bemerkung
+\newtheorem{remark}[theorem]{Bemerkung}
+
 % Titel
 \title{Suffix Trees und Suffix Arrays}  
 
@@ -95,10 +98,10 @@
 \begin{frame}
     \frametitle{Grundlegende Notationen}
     \begin{itemize}
-         \item $\Sigma$ endliches Alphabet
-         \item $\epsilon$ leeres Wort
-         \item $\Sigma^*$ Kleen'sche Hülle von $\Sigma$
-         \item $\Sigma^+ \coloneqq \Sigma^* \setminus \{\epsilon\}$ 
+        \item $\Sigma$ endliches Alphabet
+        \item $\epsilon$ leeres Wort
+        \item $\Sigma^*$ Kleen'sche Hülle von $\Sigma$
+        \item $\Sigma^+ \coloneqq \Sigma^* \setminus \{\epsilon\}$ 
     \end{itemize}
     \begin{definition}
         Sei $t = uvw$ mit $u, v, w \in \Sigma^*$. Dann ist $u$ ein Präfix und $w$ ein Suffix von $t$. $v$ wird als $t$-wort bezeichnet.
