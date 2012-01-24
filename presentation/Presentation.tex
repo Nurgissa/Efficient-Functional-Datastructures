@@ -20,7 +20,7 @@
 %\usepackage{ucs}
 \usepackage[utf8]{inputenc}
 % Mathematische Notationen
-\usepackage{amsmath, amsfonts, amssymb, txfonts, mathtools}
+\usepackage{amsmath, amsfonts, amssymb, mathtools}
 % Bäume zeichnen
 \usepackage{tikz}
 % Code von Programmiersprachen erkennen
@@ -64,19 +64,7 @@
 % Umgebung Bemerkung
 \newtheorem{remark}[theorem]{Bemerkung}
 
-\def\mathllap{\mathpalette\mathllapinternal}
-\def\mathllapinternal#1#2{%
-  \llap{$\mathsurround=0pt#1{#2}$}% $
-}
-\def\clap#1{\hbox to 0pt{\hss#1\hss}}
-\def\mathclap{\mathpalette\mathclapinternal}
-\def\mathclapinternal#1#2{%
-   \clap{$\mathsurround=0pt#1{#2}$}%
-}
-\def\mathrlap{\mathpalette\mathrlapinternal}
-\def\mathrlapinternal#1#2{%
-   \rlap{$\mathsurround=0pt#1{#2}$}% $
-}
+\newcommand{\coloneqq}{\mathrel{\mathop:}=}
 %------------------------------------------------------------------
 
 % Titel
@@ -199,7 +187,7 @@ Sei $\Sigma = \left\{a, \dots, z\right\}$
 \begin{frame}
 \frametitle{Grundlagen}
 \begin{definition}[Pfad]
-    Die Funktion $path(k)$ bezeichnet die Konkatenation der Kantenbeschriftungen von der Wurzel bis zum Knoten $k$.
+    Die Funktion $path(k)$ bezeichnet die Konkatenation der Kantenbeschriftungen von der Wurzel eines $\Sigma^+$-Baumes bis zum Knoten $k$.
     \begin{remark}
     $\overline{w}$ bezeichnet genau dann einen Knoten $k$, wenn $path(k) = w$.
     \end{remark}
@@ -223,7 +211,6 @@ Sei $\Sigma = \left\{a, \dots, z\right\}$
 \begin{remark}
     Jedes $t$-Wort $w$ lässt sich darstellen als: $t = vs, s = wu$
     $$t = a \dots b \underbrace{\overbrace{c \dots d}^{\text{Präfix }w} e \dots f}_{\text{Suffix }s}$$
-
     Ein Wort $w$ ist genau dann in einem $\Sigma^+$-Baum enthalten, wenn ein Knoten $\overline{wu}$ in diesem Baum existiert.
 \end{remark}
 \end{frame}
@@ -423,7 +410,7 @@ $ast$ für die Zeichenkette $agcgacgag$.
 \begin{frame}
 \frametitle{Kantenverschmelzung}
 \begin{definition}
-    Kantenverschmelzung ist eine Relation auf $\Sigma^+$-Bäumen, die durch ihre Kantenmengen repräsentiert werden. Sei $\overline{s}$, $\overline{w}$, $\overline{v} \in \Sigma^+$-Baum.
+    Kantenverschmelzung ist eine Relation auf $\Sigma^+$-Bäumen, die durch ihre Kantenmengen repräsentiert werden.
     $$\left(E \uplus \{\overline{s}\:\xrightarrow{u}\:\overline{w},\overline{w}\:\xrightarrow{u'}\:\overline{v}\}\right) \overset{\overline{w}}{\implies} \left(E \uplus \{\overline{s}\:\xrightarrow{uu'}\:\overline{v}\}\right)$$
     wenn $\overline{w} \xrightarrow{u'} \overline{v}$ ist die einzige ausgehende Kante von $\overline{w}$.
 \end{definition}
@@ -499,9 +486,195 @@ $ast$ für die Zeichenkette $agcgacgag$.
 \end{frame}
 %--Folie-----------------------------------------------------------
 
-%--Folie: Position Suffix Tree and Compact Suffix Tree-------------
+%--Folie: Atomic Suffix Tree -> Position Suffix Tree---------------
 \begin{frame}
-\frametitle{Position Suffix Tree and Compact Suffix Tree}
+\frametitle{Atomic Suffix Tree $\rightarrow$ Position Suffix Tree}
+$ast$ für die Zeichenkette $agcgacgag$.
+\begin{figure}
+\begin{tikzpicture}[
+    font = \small,
+    level 1/.style = {level distance = 7mm, sibling distance = 30mm},
+    level 2/.style = {level distance = 7mm, sibling distance = 20mm},
+    level 3/.style = {level distance = 7mm, sibling distance = 10mm},
+    edge from parent/.style = {->, draw}
+]
+    \node[branch]{}
+    child {
+        node[branch]{}
+        child {
+            node[branch]{}
+            child {
+                node[branch]{}
+                child {
+                    node[branch]{}
+                    child {
+                        edge from parent
+                        node[left]{$g$}
+                    }
+                    edge from parent
+                    node[left]{$a$}
+                }
+                edge from parent
+                node[left]{$g$}
+            }
+            edge from parent[dotted]
+            node[left]{$c$}
+        }
+        child {
+            node[branch]{}
+            child {
+                node[branch]{}
+                child {
+                    node[branch]{}
+                    child {
+                        node[branch]{}
+                        child {
+                            node[branch]{}
+                            child {
+                                node[branch]{}
+                                    child {
+                                        node[branch]{}
+                                        child {
+                                            edge from parent
+                                            node[left]{$g$}
+                                        }
+                                        edge from parent
+                                        node[left]{$a$}
+                                    }
+                                edge from parent
+                                node[left]{$g$}
+                            }
+                            edge from parent
+                            node[left]{$c$}
+                        }
+                        edge from parent
+                        node[left]{$a$}
+                    }
+                    edge from parent
+                    node[left]{$g$}
+                }
+                edge from parent
+                node[left]{$c$}
+            }
+            edge from parent[dotted]
+            node[right]{$g$}
+        }
+        edge from parent
+        node[above]{$a$}
+    }
+    child {
+        node[branch]{}
+        child {
+            node[branch]{}
+            child {
+                node[branch]{}
+                child {
+                    node[branch]{}
+                    child {
+                        node[branch]{}
+                        child {
+                            node[branch]{}
+                            child {
+                                edge from parent
+                                node[left]{$g$}
+                            }
+                            edge from parent
+                            node[left]{$a$}
+                        }
+                        edge from parent
+                        node[left]{$g$}
+                    }
+                    edge from parent[dotted]
+                    node[left]{$c$}
+                }
+                child {
+                    edge from parent
+                    node[right]{$g$}
+                }
+                edge from parent
+                node[left]{$a$}
+            }
+            edge from parent
+            node[left]{$g$}
+        }
+        edge from parent
+        node[left]{$c$}
+    }
+    child {
+        node[branch]{}
+        child {
+            node[branch]{}
+            child {
+                node[branch]{}
+                child {
+                    node[branch]{}
+                    child {
+                        node[branch]{}
+                        child {
+                            edge from parent
+                            node[left]{$g$}
+                        }
+                        edge from parent
+                        node[left]{$a$}
+                    }
+                    edge from parent
+                    node[left]{$g$}
+                }
+                edge from parent[dotted]
+                node[left]{$c$}
+            }
+            child {
+                edge from parent
+                node[right]{$g$}
+            }
+            edge from parent
+            node[left]{$a$}
+        }
+        child {
+            node[branch]{}
+            child {
+                node[branch]{}
+                child {
+                    node[branch]{}
+                    child {
+                        node[branch]{}
+                        child {
+                            node[branch]{}
+                            child {
+                                node[branch]{}
+                                child {
+                                    edge from parent
+                                    node[left]{$g$}
+                                }
+                                edge from parent
+                                node[left]{$a$}
+                            }
+                            edge from parent
+                            node[left]{$g$}
+                        }
+                        edge from parent
+                        node[left]{$c$}
+                    }
+                    edge from parent
+                    node[left]{$a$}
+                }
+                edge from parent
+                node[left]{$g$}
+            }
+            edge from parent[dotted]
+            node[right]{$c$}
+        }
+        edge from parent
+        node[above]{$g$}
+    };
+\end{tikzpicture}
+\end{figure}
+\end{frame}
+%--Folie-----------------------------------------------------------
+
+%--Folie: Position Suffix Tree -> Compact Suffix Tree--------------
+\begin{frame}
+\frametitle{Position Suffix Tree $\rightarrow$ Compact Suffix Tree}
 $pst$ für die Zeichenkette $agcgacgag$.
 \begin{figure}
 \begin{tikzpicture}[
@@ -532,11 +705,11 @@ $pst$ für die Zeichenkette $agcgacgag$.
             child {
                 node[branch]{}
                 child {
-                    edge from parent
+                    edge from parent[solid]
                     node[left]{cgag}
                 }
                 child {
-                    edge from parent
+                    edge from parent[solid]
                     node[right]{g}
                 }
                 edge from parent
@@ -545,7 +718,7 @@ $pst$ für die Zeichenkette $agcgacgag$.
             edge from parent
             node[left]{g}
         }
-        edge from parent
+        edge from parent[dotted]
         node[left]{c}
     }
     child {
@@ -639,8 +812,6 @@ $cst$ für die Zeichenkette $agcgacgag$.
 %------------------------------------------------------------------
 % wotd-Algorithmus: Beispiel
 %------------------------------------------------------------------
-
-
 
 \subsection{Beispiel}
 
