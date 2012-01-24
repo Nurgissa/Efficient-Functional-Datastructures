@@ -1027,6 +1027,33 @@ $Suffixe = \{agcgacgag, gcgacgag, cgacgag, gacgag, acgag, cgag, \newline gag, ag
 \end{frame}
 %--Folie-----------------------------------------------------------
 
+%--Folie: Haskell: List-comprehension------------------------------
+\begin{frame}[fragile]
+\frametitle{Haskell: List-comprehension}  
+Ein Konstrukt, mit dem Liste erzeugt werden können. Syntax:
+\begin{lstlisting}
+      [Ausdruck | Variablebindungen, Praedikate]
+\end{lstlisting}
+\begin{example}
+\begin{lstlisting}
+1. [(i,j) | i <- [1,2], j <- [1..4]] 
+   ergibt 
+   [(1,1),(1,2),(1,3),(1,4),(2,1),(2,2),(2,3),(2,4)]
+
+2. [2*x | x <- [0..10], x^2 > 5]
+   ergibt
+   [6,8,10,12,14,16,18,20]
+
+   Man kann es so verstehen:
+
+   for each x from 0 to 10 do
+    if x^2 > 5 then produce 2*x
+\end{lstlisting}
+\end{example}
+\bigskip   
+\end{frame}
+%--Folie-----------------------------------------------------------
+
 %------------------------------------------------------------------
 \subsection{Haskell-code}
 %------------------------------------------------------------------
@@ -1037,7 +1064,8 @@ $Suffixe = \{agcgacgag, gcgacgag, cgacgag, gacgag, acgag, cgag, \newline gag, ag
 Darstellung von Suffixbäumen:
 \begin{lstlisting}{haskell}
 data STree alf = Leaf | 
-                 Branch [(Label alf,STree alf)] deriving Eq
+                 Branch [(Label alf,STree alf)] 
+                 deriving Eq
 \end{lstlisting}
 \bigskip
 Darstellung von Beschriftungen:
@@ -1064,9 +1092,10 @@ type EdgeFunction alf = [[alf]] -> ([alf],[[alf]])
     \end{lstlisting}
     \bigskip
     \begin{remark}
-    \begin{lstlisting}{haskell}
-    aw@(_:w)
-    \end{lstlisting} bedeutet, dass $aw$ mit $(\_:w)$ gematcht wird.         
+    \begin{description}[l]
+        \item[Operator $":\:"$] ist 'Append-head'-Operator. $a:b$ beduetet, dass $a$ der Kopf der Liste ist (also, ein Element) und $b$ ist der Rest von der Liste ist (also, eine Liste). 
+        \item[Operator $"@\:"$] ist 'Read As'-Operator in pattern matching. $aw@(\_:w)$ bedeutet, dass $aw$ mit $(\_:w)$ gematcht wird.  
+    \end{description}       
     \end{remark}
 \end{frame}
 %--Folie-----------------------------------------------------------
@@ -1084,7 +1113,7 @@ select ss a = [c:u | c:u <- ss, a == c]
 \begin{remark}
 \begin{lstlisting}{haskell}
 c:u <- ss
-\end{lstlisting} bedeutet $c:u \in ss$
+\end{lstlisting} bedeutet, dass die Liste $c:u$ in $ss$ vorkommt. $ss$ hat der Typ $[[alf]]$, $c:u$ hat der Typ $[alf]$.
 \end{remark}
 \end{frame}
 %--Folie-----------------------------------------------------------
@@ -1122,11 +1151,11 @@ Die folgende Funktion baut den cst-Baum auf:
 lazy_cst :: (Eq alf) => 
 (EdgeFunction alf) -> [alf] -> [alf] -> STree alf
 
-lazy_cst edge_cst alpha t = sTr (suffixes t)
-where sTr [[]] = Leaf
-      sTr ss   = Branch[(cp, sTr rss)|a <- alpha,
-                                      let gs = select ss a,
-                                      let (cp,rss) = edge_cst gs]
+lazy_cst edge_cst alpha t = sTr (suffixes t) where 
+sTr [[]] = Leaf
+sTr ss   = Branch[(cp,sTr rss)|a <- alpha,
+                               let gs       = select ss a,
+                               let (cp,rss) = edge_cst gs]
 \end{lstlisting}
 \end{frame}
 %--Folie-----------------------------------------------------------
