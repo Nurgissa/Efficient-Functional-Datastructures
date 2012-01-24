@@ -1012,7 +1012,7 @@ $Suffixe = \{agcgacgag, gcgacgag, cgacgag, gacgag, acgag, cgag, \newline gag, ag
 %--Folie: wotd-Algorithmus: Schritte-------------------------------
 \begin{frame}[t]
 \frametitle{wotd-Algorithmus für cst}
-    Write-only top-down construction for suffix trees.
+    wotd: write-only top-down\\
     \medskip
     Schritte:
     \begin{enumerate}
@@ -1110,11 +1110,6 @@ select :: (Eq alf) => [[alf]] -> alf -> [[alf]]
 select ss a = [c:u | c:u <- ss, a == c]
 \end{lstlisting}
 \bigskip
-\begin{remark}
-\begin{lstlisting}{haskell}
-c:u <- ss
-\end{lstlisting} bedeutet, dass die Liste $c:u$ in $ss$ vorkommt. $ss$ hat der Typ $[[alf]]$, $c:u$ hat der Typ $[alf]$.
-\end{remark}
 \end{frame}
 %--Folie-----------------------------------------------------------
 
