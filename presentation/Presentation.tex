@@ -142,40 +142,40 @@ Sei $\Sigma = \left\{a, \dots, z\right\}$
         child[child anchor = north] {
             node[subtree]{}
             edge from parent
-            node[left, yshift = 0.5mm]{g}
+            node[left, yshift = 0.5mm]{$g$}
         }
         child[child anchor = north] {
             node[subtree]{}
             edge from parent
-            node[right, yshift = 0.5mm]{h}
+            node[right, yshift = 0.5mm]{$h$}
         }
         edge from parent
-        node[above]{ab}
+        node[above]{$ab$}
     }
     child {
         node[branch]{}
         child[child anchor = north] {
             node[subtree]{}
             edge from parent
-            node[left, yshift = 0.5mm]{i}
+            node[left, yshift = 0.5mm]{$i$}
         }
         edge from parent
-        node[left]{c}
+        node[left]{$c$}
     }
     child {
         node[branch]{}
         child[child anchor = north] {
             node[subtree]{}
             edge from parent
-            node[left, yshift = 0.5mm]{j}
+            node[left, yshift = 0.5mm]{$j$}
         }
         child[child anchor = north] {
             node[subtree]{}
             edge from parent
-            node[right, yshift = 0.5mm]{kl}
+            node[right, yshift = 0.5mm]{$kl$}
         }
         edge from parent
-        node[above]{def}
+        node[above]{$def$}
     };
 \end{tikzpicture}
 \end{figure}
@@ -189,7 +189,7 @@ Sei $\Sigma = \left\{a, \dots, z\right\}$
 \begin{definition}[Pfad]
     Die Funktion $path(k)$ bezeichnet die Konkatenation der Kantenbeschriftungen von der Wurzel eines $\Sigma^+$-Baumes bis zum Knoten $k$.
     \begin{remark}
-    $\overline{w}$ bezeichnet genau dann einen Knoten $k$, wenn $path(k) = w$.
+    $\overline{w}$ bezeichnet genau dann den Knoten $k$, wenn $path(k) = w$.
     \end{remark}
 \end{definition}
 \begin{definition}[Verschachteltes Suffix]
@@ -223,7 +223,9 @@ Sei $\Sigma = \left\{a, \dots, z\right\}$
 %--Folie: Atomic Suffix Tree---------------------------------------
 \begin{frame}
 \frametitle{Atomic Suffix Tree}
-$ast$ für die Zeichenkette $agcgacgag$.
+\vspace{-2mm}
+$ast(t)$ für die Zeichenkette $t = agcgacgag$.
+\vspace{-2mm}
 \begin{figure}
 \begin{tikzpicture}[
     font = \small,
@@ -403,6 +405,8 @@ $ast$ für die Zeichenkette $agcgacgag$.
     };
 \end{tikzpicture}
 \end{figure}
+\vspace{-2mm}
+Jedes Blatt repräsentiert ein Suffix von $t$.
 \end{frame}
 %--Folie-----------------------------------------------------------
 
@@ -810,10 +814,12 @@ $cst$ für die Zeichenkette $agcgacgag$.
 %--Folie-----------------------------------------------------------
 
 %------------------------------------------------------------------
-% wotd-Algorithmus: Beispiel
+\section{wotd-Algorithmus}
 %------------------------------------------------------------------
 
+%------------------------------------------------------------------
 \subsection{Beispiel}
+%------------------------------------------------------------------
 
 %--Folie: Beispiel-------------------------------------------------
 \begin{frame}[t]
@@ -1000,12 +1006,8 @@ $Suffixe = \{agcgacgag, gcgacgag, cgacgag, gacgag, acgag, cgag, \newline gag, ag
 %--Folie-----------------------------------------------------------
 
 %------------------------------------------------------------------
-% wotd-Algorithmus: Schritte
-%------------------------------------------------------------------
-
-\section{wotd-Algorithmus}
-
 \subsection{Vorgehensweise}
+%------------------------------------------------------------------
 
 %--Folie: wotd-Algorithmus: Schritte-------------------------------
 \begin{frame}[t]
@@ -1026,10 +1028,8 @@ $Suffixe = \{agcgacgag, gcgacgag, cgacgag, gacgag, acgag, cgag, \newline gag, ag
 %--Folie-----------------------------------------------------------
 
 %------------------------------------------------------------------
-% Haskell-code
-%------------------------------------------------------------------
-
 \subsection{Haskell-code}
+%------------------------------------------------------------------
 
 %--Folie: Haskell-code: Typdefinitionen----------------------------
 \begin{frame}[fragile]
