@@ -1032,24 +1032,24 @@ $Suffixe = \{agcgacgag, gcgacgag, cgacgag, gacgag, acgag, cgag, \newline gag, ag
 \frametitle{Haskell: List-comprehension}  
 Ein Konstrukt, mit dem Liste erzeugt werden können. Syntax:
 \begin{lstlisting}
-      [Ausdruck | Variablebindungen, Praedikate]
+[Ausdruck(x1,...,xn) | Variablebindungen(x1,...,xn),
+                       Praedikate(x1,...,xn)]
 \end{lstlisting}
-\begin{example}
+\begin{examples}
+\begin{description}
+\item[1.]Das folgende im Haskell Code
 \begin{lstlisting}
-1. [(i,j) | i <- [1,2], j <- [1..4]] 
-   ergibt 
-   [(1,1),(1,2),(1,3),(1,4),(2,1),(2,2),(2,3),(2,4)]
-
-2. [2*x | x <- [0..10], x^2 > 5]
-   ergibt
-   [6,8,10,12,14,16,18,20]
-
-   Man kann es so verstehen:
-
-   for each x from 0 to 10 do
-    if x^2 > 5 then produce 2*x
+[(i,j) | i <- [1,2], j <- [1..4]] 
 \end{lstlisting}
-\end{example}
+bedeutet $\{(i,j)\:|\: i \in \{1,2\}, \: j \in \{1,\dots,4\} \}$
+\item[2.]Beispiel mit einem Prädikat
+\begin{lstlisting}
+[2*x | x <- [0..10], x^2 > 5]
+ergibt
+[6,8,10,12,14,16,18,20]
+\end{lstlisting}
+\end{description}
+\end{examples}
 \bigskip   
 \end{frame}
 %--Folie-----------------------------------------------------------
@@ -1093,6 +1093,7 @@ type EdgeFunction alf = [[alf]] -> ([alf],[[alf]])
     \bigskip
     \begin{remark}
     \begin{description}[l]
+        \item[Operator $"::\:"$] ist Type-Spezifikation Operator.
         \item[Operator $":\:"$] ist 'Append-head'-Operator. $a:b$ beduetet, dass $a$ der Kopf der Liste ist (also, ein Element) und $b$ ist der Rest von der Liste ist (also, eine Liste). 
         \item[Operator $"@\:"$] ist 'Read As'-Operator in pattern matching. $aw@(\_:w)$ bedeutet, dass $aw$ mit $(\_:w)$ gematcht wird.  
     \end{description}       
@@ -1156,7 +1157,6 @@ sTr ss   = Branch[(cp,sTr rss)|a <- alpha,
 %--Folie-----------------------------------------------------------
 
 \begin{frame}
-    
 \end{frame}
 
 \end{document}
