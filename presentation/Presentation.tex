@@ -124,16 +124,19 @@
 \begin{frame}
 \frametitle{Grundlagen}
 \begin{definition}[$\Sigma^+$-Baum]
-    $\Sigma^+$-Baum ist ein Baum mit Kantenbeschriftungen aus $\Sigma^+$. Für alle $a \in \Sigma$ existiert höchstens eine $a$-Kante mit $k \xrightarrow{aw} k'$. Die Menge aller $\Sigma^+$-Bäume bezeichnen wir mit $T\:(\Sigma^+)$.
+    \begin{itemize}
+    \item Die Kanten eines $\Sigma^+$-Baums sind mit Wörtern aus $\Sigma^+$ beschriftet.
+    \item Für alle $a \in \Sigma$ und alle Knoten $k$ existiert höchstens ein Knoten $k'$, sodass $k \xrightarrow{aw} k'$.
+    \end{itemize}
 \end{definition}
 \begin{example}
 Sei $\Sigma = \left\{a, \dots, z\right\}$
 \begin{figure}
 \begin{tikzpicture}[
     font = \small,
-    level 1/.style = {level distance = 7mm, sibling distance = 25mm},
-    level 2/.style = {level distance = 7mm, sibling distance = 15mm},
-    level 3/.style = {level distance = 7mm, sibling distance = 10mm},
+    level 1/.style = {level distance = 8mm, sibling distance = 25mm},
+    level 2/.style = {level distance = 8mm, sibling distance = 15mm},
+    level 3/.style = {level distance = 8mm, sibling distance = 10mm},
     edge from parent/.style = {->, draw}
 ]
     \node[branch]{}
@@ -142,40 +145,40 @@ Sei $\Sigma = \left\{a, \dots, z\right\}$
         child[child anchor = north] {
             node[subtree]{}
             edge from parent
-            node[left, yshift = 0.5mm]{$g$}
+            node[left, yshift = 0.5mm]{$ad$}
         }
         child[child anchor = north] {
             node[subtree]{}
             edge from parent
-            node[right, yshift = 0.5mm]{$h$}
+            node[right, yshift = 0.5mm]{$gd$}
         }
         edge from parent
-        node[above]{$ab$}
+        node[above]{$ad$}
     }
     child {
         node[branch]{}
         child[child anchor = north] {
             node[subtree]{}
             edge from parent
-            node[left, yshift = 0.5mm]{$i$}
+            node[left, yshift = 0.5mm]{$a$}
         }
         edge from parent
-        node[left]{$c$}
+        node[left]{$cg$}
     }
     child {
         node[branch]{}
         child[child anchor = north] {
             node[subtree]{}
             edge from parent
-            node[left, yshift = 0.5mm]{$j$}
+            node[left, yshift = 0.5mm]{$ga$}
         }
         child[child anchor = north] {
             node[subtree]{}
-            edge from parent
-            node[right, yshift = 0.5mm]{$kl$}
+            edge from parent[dotted]
+            node[right, yshift = 0.5mm, red]{$gc$}
         }
         edge from parent
-        node[above]{$def$}
+        node[above]{$gac$}
     };
 \end{tikzpicture}
 \end{figure}
