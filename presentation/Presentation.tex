@@ -20,7 +20,7 @@
 %\usepackage{ucs}
 \usepackage[utf8]{inputenc}
 % Mathematische Notationen
-\usepackage{amsmath, amsfonts, amssymb, txfonts}
+\usepackage{amsmath, amsfonts, amssymb, txfonts, mathtools}
 % Bäume zeichnen
 \usepackage{tikz}
 % Code von Programmiersprachen erkennen
@@ -59,8 +59,25 @@
     font = \tiny
 ]
 
+%--Benutzerdefinierte Makros---------------------------------------
+
 % Umgebung Bemerkung
 \newtheorem{remark}[theorem]{Bemerkung}
+
+\def\mathllap{\mathpalette\mathllapinternal}
+\def\mathllapinternal#1#2{%
+  \llap{$\mathsurround=0pt#1{#2}$}% $
+}
+\def\clap#1{\hbox to 0pt{\hss#1\hss}}
+\def\mathclap{\mathpalette\mathclapinternal}
+\def\mathclapinternal#1#2{%
+   \clap{$\mathsurround=0pt#1{#2}$}%
+}
+\def\mathrlap{\mathpalette\mathrlapinternal}
+\def\mathrlapinternal#1#2{%
+   \rlap{$\mathsurround=0pt#1{#2}$}% $
+}
+%------------------------------------------------------------------
 
 % Titel
 \title{Suffix Trees und Suffix Arrays}  
@@ -181,16 +198,34 @@ Sei $\Sigma = \left\{a, \dots, z\right\}$
 %--Folie: Grundlagen-----------------------------------------------
 \begin{frame}
 \frametitle{Grundlagen}
+\begin{definition}[Pfad]
+    Die Funktion $path(k)$ bezeichnet die Konkatenation der Kantenbeschriftungen von der Wurzel bis zum Knoten $k$.
+    \begin{remark}
+    $\overline{w}$ bezeichnet genau dann einen Knoten $k$, wenn $path(k) = w$.
+    \end{remark}
+\end{definition}
+\begin{definition}[Verschachteltes Suffix]
+    Ein Suffix von $t$ heißt verschachtelt, wenn es mehrmals in $t$ vorkommt, d.h. $t = uvwv$.
+\end{definition}
+\begin{example}
+    $ag$ ist ein verschachteltes Suffix von $\underline{ag}cgacg\underline{ag}$.
+\end{example}
+\end{frame}
+%--Folie-----------------------------------------------------------
+
+%--Folie: Grundlagen-----------------------------------------------
+\begin{frame}
+\frametitle{Grundlagen}
 \begin{definition}[Suffix Tree]
     Ein Suffix Tree $S_t$ für ein gegebenes Wort $t$ ist ein $\Sigma^+$-Baum, sodass gilt:
     $$w \in S_t  \Longleftrightarrow w \text{ ist ein }t\text{-Wort}$$
 \end{definition}
-\begin{definition}[Verschachteltes Suffix]
-    Ein Suffix von $t$ heißt verschachtelt, wenn es mehrmals in $t$ vorkommt, d.h. $t = uvwv$ mit $u, v, w \in \Sigma^*$.
-\end{definition}
-\begin{example}
-    $\boldsymbol{ag}$ ist ein verschachteltes Suffix von $\boldsymbol{ag}cgacg\boldsymbol{ag}$.
-\end{example}
+\begin{remark}
+    Jedes $t$-Wort $w$ lässt sich darstellen als: $t = vs, s = wu$
+    $$t = a \dots b \underbrace{\overbrace{c \dots d}^{\text{Präfix }w} e \dots f}_{\text{Suffix }s}$$
+
+    Ein Wort $w$ ist genau dann in einem $\Sigma^+$-Baum enthalten, wenn ein Knoten $\overline{wu}$ in diesem Baum existiert.
+\end{remark}
 \end{frame}
 %--Folie-----------------------------------------------------------
 
