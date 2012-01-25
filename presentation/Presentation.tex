@@ -25,6 +25,10 @@
 \usepackage{tikz}
 % Code von Programmiersprachen erkennen
 \usepackage{listings}
+% Tabellen
+\usepackage{booktabs}
+\usepackage{tabularx}
+% \usepackage{ctable}
 
 % listings-Konfiguration
 \lstloadlanguages{Haskell}
@@ -220,8 +224,23 @@ Sei $\Sigma = \left\{a, \dots, z\right\}$
 %--Folie-----------------------------------------------------------
 
 %------------------------------------------------------------------
-\subsection{Suffix Tree Klassen}
+\section{Suffix Tree Klassen}
 %------------------------------------------------------------------
+
+%--Folie: Suffix Tree Klassen--------------------------------------
+\begin{frame}
+    \frametitle{Suffix Tree Klassen}
+    \begin{itemize}
+        \item Drei Arten von Suffix Trees
+        \begin{itemize}
+            \item Atomic Suffix Tree (ast)
+            \item Position Suffix Tree (pst)
+            \item Compact Suffix Tree (cst)
+        \end{itemize}
+        \item ast, pst, cst stehen durch Kantenverschmelzung in Relation zueinander 
+    \end{itemize}
+\end{frame}
+%--Folie-----------------------------------------------------------
 
 %--Folie: Atomic Suffix Tree---------------------------------------
 \begin{frame}
@@ -825,65 +844,25 @@ $cst$ für die Zeichenkette $agcgacgag$.
 %------------------------------------------------------------------
 
 %--Folie: Beispiel-------------------------------------------------
-\begin{frame}[t]
+\begin{frame}
 \frametitle{Beispiel für $agcgacgag$}
-$Suffixe = \{agcgacgag, gcgacgag, cgacgag, gacgag, acgag, cgag, \newline gag, ag, g\}$
-\medskip
-\begin{columns}
-    \begin{column}[t]{0.3\textwidth}
-        1. Gruppe:  
-        $agcgacgag$  \\
-        $acgag$      \\  
-        $ag$         \\ 
-    \end{column}
-    \begin{column}[t]{0.3\textwidth}
-        2. Gruppe:        \\
-        $cgacgag$   \\
-        $cgag$         \\
-    \end{column}
-    \begin{column}[t]{0.3\textwidth}
-        3. Gruppe:      \\
-        $gcgacgag$ \\
-        $gacgag$     \\
-        $gag$           \\
-        $g$               \\
-    \end{column}
-\end{columns}
-\medskip
-\begin{columns}
-    \begin{column}[t]{0.3\textwidth}
-        Präfix: $a$
-    \end{column}
-    \begin{column}[t]{0.3\textwidth}
-        Präfix: $cga$
-    \end{column}
-    \begin{column}[t]{0.3\textwidth}
-        Präfix: $g$
-    \end{column}
-\end{columns}
-\begin{figure}
-\begin{tikzpicture}[
-    font = \small,
-    level 1/.style = {level distance = 7mm, sibling distance = 30mm},
-    level 2/.style = {level distance = 7mm, sibling distance = 15mm},
-    level 3/.style = {level distance = 7mm, sibling distance = 10mm},
-    edge from parent/.style = {->, draw}
-]
-    \node[branch]{}
-    child {
-        edge from parent
-        node[above]{a}
-    }
-    child[level distance = 8mm] {
-        edge from parent
-        node[left]{cga}
-    }
-    child {
-        edge from parent
-        node[above]{g}
-    };
-\end{tikzpicture}
-\end{figure}
+\begin{tabularx}{\textwidth}{L X}
+    Suffixe &  $agcgacgag$, $gcgacgag$, $cgacgag$, $gacgag$, $acgag$, $cgag$, $gag$, $ag$, $g$
+\end{tabularx}
+\begin{table}
+    \begin{tabular}{l l l}
+        \toprule
+        Gruppe 1                 & Gruppe 2               & Gruppe 3                \\
+        \midrule 
+        $\boldsymbol{a}gcgacgag$ & $\boldsymbol{cga}cgag$ & $\boldsymbol{g}cgacgag$ \\
+        $\boldsymbol{a}cgag$     & $\boldsymbol{cga}g$    & $\boldsymbol{g}acgag$   \\
+        $\boldsymbol{a}g$        &                        & $\boldsymbol{g}ag$      \\
+                                 &                        & $\boldsymbol{g}$        \\
+        \midrule
+        $a$                      & $cga$                  & $g$                     \\
+        \bottomrule
+    \end{tabular}
+\end{table}
 \end{frame}
 %--Folie-----------------------------------------------------------
 
@@ -898,90 +877,24 @@ $Suffixe = \{agcgacgag, gcgacgag, cgacgag, gacgag, acgag, cgag, \newline gag, ag
     level 3/.style = {level distance = 7mm, sibling distance = 10mm},
     edge from parent/.style = {->, draw}
 ]
-    \node[branch]{}
-    child {
-        node[branch]{}
+    { [yshift = 5cm]
+        \node[branch]{}
         child {
             edge from parent
-            node[left]{cgag}
+            node[above]{a}
+        }
+        child[level distance = 8mm] {
+            edge from parent
+            node[left]{cga}
         }
         child {
             edge from parent
-            node[right]{g}
-        }
-        edge from parent
-        node[above]{a}
+            node[above]{g}
+        };
     }
-    child[level distance = 16mm] {
-        node[branch]{}
-        child {
-            edge from parent
-            node[left]{cgag}
-        }
-        child {
-            edge from parent
-            node[right]{g}
-        }
-        edge from parent
-        node[left]{cga}
-    }
-    child {
-        node[branch]{}
-        child {
-            edge from parent
-            node[left]{a}
-        }
-        child {
-            edge from parent
-            node[right]{cgacgag}
-        }
-        edge from parent
-        node[above]{g}
-    };
-\end{tikzpicture}
-\end{figure}
-\begin{figure}
-\begin{tikzpicture}[
-    font = \small,
-    level 1/.style = {level distance = 7mm, sibling distance = 30mm},
-    level 2/.style = {level distance = 7mm, sibling distance = 15mm},
-    level 3/.style = {level distance = 7mm, sibling distance = 10mm},
-    edge from parent/.style = {->, draw}
-]
-    \node[branch]{}
-    child {
-        node[branch]{}
-        child {
-            edge from parent
-            node[left]{cgag}
-        }
-        child {
-            node[branch] (v) {}
-            child[level distance = 10mm]{
-                edge from parent
-                node[left]{cgacgag}
-            }
-            edge from parent
-            node[right]{g}
-        }
-        edge from parent
-        node[above]{a}
-    }
-    child[level distance = 16mm] {
-        node[branch]{}
-        child {
-            edge from parent
-            node[left]{cgag}
-        }
-        child {
-            edge from parent
-            node[right]{g}
-        }
-        edge from parent
-        node[left]{cga}
-    }
-    child {
-        node[branch]{}
+    \draw[dotted] (-4.5, 3.75) -- (5, 3.75);
+    { [yshift = 3.25cm]
+        \node[branch]{}
         child {
             node[branch]{}
             child {
@@ -993,16 +906,87 @@ $Suffixe = \{agcgacgag, gcgacgag, cgacgag, gacgag, acgag, cgag, \newline gag, ag
                 node[right]{g}
             }
             edge from parent
-            node[left]{a}
+            node[above]{a}
+        }
+        child[level distance = 16mm] {
+            node[branch]{}
+            child {
+                edge from parent
+                node[left]{cgag}
+            }
+            child {
+                edge from parent
+                node[right]{g}
+            }
+            edge from parent
+            node[left]{cga}
         }
         child {
+            node[branch]{}
+            child {
+                edge from parent
+                node[left]{a}
+            }
+            child {
+                edge from parent
+                node[right]{cgacgag}
+            }
             edge from parent
-            node[right]{cgacgag}
+            node[above]{g}
+        };
+    }
+    \draw[dotted] (-4.5, 0.5) -- (5, 0.5);
+    { [yshift = 0cm]
+        \node[branch]{}
+        child {
+            node[branch]{}
+            child {
+                edge from parent
+                node[left]{cgag}
+            }
+            child {
+                edge from parent
+                node[right]{gcgacgag}
+            }
+            edge from parent
+            node[above]{a}
         }
-        edge from parent
-        node[above]{g}
-    };
-    \draw[red, dashed] (v.center) circle (1mm);
+        child[level distance = 16mm] {
+            node[branch]{}
+            child {
+                edge from parent
+                node[left]{cgag}
+            }
+            child {
+                edge from parent
+                node[right]{g}
+            }
+            edge from parent
+            node[left]{cga}
+        }
+        child {
+            node[branch]{}
+            child {
+                node[branch]{}
+                child {
+                    edge from parent
+                    node[left]{cgag}
+                }
+                child {
+                    edge from parent
+                    node[right]{g}
+                }
+                edge from parent
+                node[left]{a}
+            }
+            child {
+                edge from parent
+                node[right]{cgacgag}
+            }
+            edge from parent
+            node[above]{g}
+        };
+    }
 \end{tikzpicture}
 \end{figure}
 \end{frame}
@@ -1163,5 +1147,3 @@ sTr ss   = Branch[(cp,sTr rss)|a <- alpha,
 \end{frame}
 
 \end{document}
-
-
