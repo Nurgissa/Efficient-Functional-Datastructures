@@ -50,6 +50,13 @@
     outer sep = 0.5mm,
     fill
 ]
+\tikzstyle{ghostbranch} = [
+    shape = circle,
+    draw,
+    minimum size = 1mm,
+    inner sep = 0mm,
+    outer sep = 0.5mm,
+]
 \tikzstyle{subtree} = [
     isosceles triangle,
     dotted,
@@ -203,7 +210,7 @@ Sei $\Sigma = \left\{a, \dots, z\right\}$
     Ein Suffix von $t$ heißt verschachtelt, wenn es mehrmals in $t$ vorkommt, d.h. $t = uvwv$.
 \end{definition}
 \begin{example}
-    $ag$ ist ein verschachteltes Suffix von $\underline{ag}cgacg\underline{ag}$.
+    $\boldsymbol{ag}$ ist ein verschachteltes Suffix von $\boldsymbol{ag}cgacg\boldsymbol{ag}$.
 \end{example}
 \end{frame}
 %--Folie-----------------------------------------------------------
@@ -869,6 +876,7 @@ $cst$ für die Zeichenkette $agcgacgag$.
 %--Folie: Beispiel-------------------------------------------------
 \begin{frame}
 \frametitle{Beispiel für $agcgacgag$}
+Erstes und zweites Level
 \begin{figure}
 \begin{tikzpicture}[
     font = \small,
@@ -877,23 +885,29 @@ $cst$ für die Zeichenkette $agcgacgag$.
     level 3/.style = {level distance = 7mm, sibling distance = 10mm},
     edge from parent/.style = {->, draw}
 ]
-    { [yshift = 5cm]
+    { [yshift = 3.5cm]
         \node[branch]{}
         child {
+            node[ghostbranch] (u) {}
             edge from parent
             node[above]{a}
         }
         child[level distance = 8mm] {
+            node[ghostbranch] (v) {}
             edge from parent
             node[left]{cga}
         }
         child {
+            node[ghostbranch] (w) {}
             edge from parent
             node[above]{g}
         };
+        \node[align = left, anchor = north, yshift = {-1mm}] at (u.center) {$gcgacgag$ \\ $cgag$ \\ $g$};
+        \node[align = left, anchor = north, yshift = {-1mm}] at (v.center) {$cgag$ \\ $g$};
+        \node[align = left, anchor = north, yshift = {-1mm}] at (w.center) {$cgacgag$ \\ $acgag$ \\ $ag$};
     }
-    \draw[dotted] (-4.5, 3.75) -- (5, 3.75);
-    { [yshift = 3.25cm]
+    \draw[dotted] (-4.5, 0.75) -- (5, 0.75);
+    { [yshift = 0cm]
         \node[branch]{}
         child {
             node[branch]{}
@@ -903,7 +917,7 @@ $cst$ für die Zeichenkette $agcgacgag$.
             }
             child {
                 edge from parent
-                node[right]{g}
+                node[right]{gcgacgag}
             }
             edge from parent
             node[above]{a}
@@ -924,6 +938,7 @@ $cst$ für die Zeichenkette $agcgacgag$.
         child {
             node[branch]{}
             child {
+                node[ghostbranch] (u) {}
                 edge from parent
                 node[left]{a}
             }
@@ -934,8 +949,25 @@ $cst$ für die Zeichenkette $agcgacgag$.
             edge from parent
             node[above]{g}
         };
+        \node[align = left, anchor = north, yshift = {-1mm}] at (u.center) {$cgag$ \\ $g$};
     }
-    \draw[dotted] (-4.5, 0.5) -- (5, 0.5);
+\end{tikzpicture}
+\end{figure}
+\end{frame}
+%--Folie-----------------------------------------------------------
+
+%--Folie: Beispiel-------------------------------------------------
+\begin{frame}[t]
+\frametitle{Beispiel für $agcgacgag$}
+Drittes und letztes Level
+\begin{figure}
+\begin{tikzpicture}[
+    font = \small,
+    level 1/.style = {level distance = 7mm, sibling distance = 30mm},
+    level 2/.style = {level distance = 7mm, sibling distance = 15mm},
+    level 3/.style = {level distance = 7mm, sibling distance = 10mm},
+    edge from parent/.style = {->, draw}
+]
     { [yshift = 0cm]
         \node[branch]{}
         child {
@@ -1003,13 +1035,13 @@ $cst$ für die Zeichenkette $agcgacgag$.
     \medskip
     Schritte:
     \begin{enumerate}
-    \item Finde alle Suffixe eines gegebenen Wortes.
-    \item Gruppiere nach den Anfangsbuchstaben. Erzeuge einen Knoten.
-    \item Für jede Gruppe:
-    \begin{enumerate}
-    \item Finde das längste gemeinsame Präfix, erzeuge eine Kante mit der Beschriftung vom Präfix, entferne das Präfix von den Wörtern der Gruppe.
-    \item Falls die Gruppe leer ist, erzeuge ein Blatt. Falls es in der Gruppe noch Wörter gibt, kehre zu Schritt 2 zurück.
-    \end{enumerate}
+        \item Finde alle Suffixe eines gegebenen Wortes.
+        \item Gruppiere nach den Anfangsbuchstaben. Erzeuge einen Knoten.
+        \item Für jede Gruppe:
+        \begin{enumerate}
+            \item Finde das längste gemeinsame Präfix, erzeuge eine Kante mit der Beschriftung vom Präfix, entferne das Präfix von den Wörtern der Gruppe.
+            \item Falls die Gruppe leer ist, erzeuge ein Blatt. Falls es in der Gruppe noch Wörter gibt, kehre zu Schritt 2 zurück.
+        \end{enumerate}
     \end{enumerate}
 \end{frame}
 %--Folie-----------------------------------------------------------
@@ -1023,19 +1055,19 @@ Ein Konstrukt, mit dem Liste erzeugt werden können. Syntax:
                        Praedikate(x1,...,xn)]
 \end{lstlisting}
 \begin{examples}
-\begin{description}
-\item[1.]Das folgende im Haskell Code
+\begin{enumerate}
+\item Das folgende im Haskell Code
 \begin{lstlisting}
 [(i,j) | i <- [1,2], j <- [1..4]] 
 \end{lstlisting}
-bedeutet $\{(i,j)\:|\: i \in \{1,2\}, \: j \in \{1,\dots,4\} \}$
-\item[2.]Beispiel mit einem Prädikat
+bedeutet $\left\{\left(i,j\right)\vert \: i \in \left\{1, 2\right\}, \: j \in \left\{1, \dots, 4\right\}\right\}$
+\item Beispiel mit einem Prädikat
 \begin{lstlisting}
 [2*x | x <- [0..10], x^2 > 5]
 ergibt
 [6,8,10,12,14,16,18,20]
 \end{lstlisting}
-\end{description}
+\end{enumerate}
 \end{examples}
 \bigskip   
 \end{frame}
