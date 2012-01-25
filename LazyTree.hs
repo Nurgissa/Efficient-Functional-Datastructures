@@ -1,8 +1,11 @@
 module LazyTreeExt where
 
 import Data.List
+
 data STree alph = Leaf | Branch [(Word alph,STree alph)] deriving Eq
+
 type Word alph = [alph]
+
 type EdgeFunction alph = [Word alph] -> (Word alph,[Word alph])
 
 suffixes :: (Word alph) -> [Word alph]
@@ -21,4 +24,4 @@ edge_cst awss@((a:_):ss) | all (\(c:_) -> a == c) ss =  (a:cp, rss)
 lazy_cst :: (Eq alph) => (EdgeFunction alph) -> Word alph -> Word alph -> STree alph
 lazy_cst edge_cst alphabet t = sTr (suffixes t) 
 	where sTr [[]] = Leaf 
-		  sTr ss = Branch[(cp,sTr rss)| a <- alpha, let gs = select ss a, let (cp,rss) = edge_cst gs]
+		  sTr ss   = Branch[(cp,sTr rss)| a <- alpha, let gs = select ss a, let (cp,rss) = edge_cst gs]
