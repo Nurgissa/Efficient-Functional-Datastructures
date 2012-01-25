@@ -1035,13 +1035,13 @@ Drittes und letztes Level
     \medskip
     Schritte:
     \begin{enumerate}
-    \item Finde alle Suffixe eines gegebenen Wortes.
-    \item Gruppiere nach den Anfangsbuchstaben. Erzeuge einen Knoten.
-    \item Für jede Gruppe:
-    \begin{enumerate}
-    \item Finde das längste gemeinsame Präfix, erzeuge eine Kante mit der Beschriftung vom Präfix, entferne das Präfix von den Wörtern der Gruppe.
-    \item Falls die Gruppe leer ist, erzeuge ein Blatt. Falls es in der Gruppe noch Wörter gibt, kehre zu Schritt 2 zurück.
-    \end{enumerate}
+        \item Finde alle Suffixe eines gegebenen Wortes.
+        \item Gruppiere nach den Anfangsbuchstaben. Erzeuge einen Knoten.
+        \item Für jede Gruppe:
+        \begin{enumerate}
+            \item Finde das längste gemeinsame Präfix, erzeuge eine Kante mit der Beschriftung vom Präfix, entferne das Präfix von den Wörtern der Gruppe.
+            \item Falls die Gruppe leer ist, erzeuge ein Blatt. Falls es in der Gruppe noch Wörter gibt, kehre zu Schritt 2 zurück.
+        \end{enumerate}
     \end{enumerate}
 \end{frame}
 %--Folie-----------------------------------------------------------
@@ -1055,19 +1055,19 @@ Ein Konstrukt, mit dem Liste erzeugt werden können. Syntax:
                        Praedikate(x1,...,xn)]
 \end{lstlisting}
 \begin{examples}
-\begin{description}
-\item[1.]Das folgende im Haskell Code
+\begin{enumerate}
+\item Das folgende im Haskell Code
 \begin{lstlisting}
 [(i,j) | i <- [1,2], j <- [1..4]] 
 \end{lstlisting}
-bedeutet $\{(i,j)\:|\: i \in \{1,2\}, \: j \in \{1,\dots,4\} \}$
-\item[2.]Beispiel mit einem Prädikat
+bedeutet $\left\{\left(i,j\right)\vert \: i \in \left\{1, 2\right\}, \: j \in \left\{1, \dots, 4\right\}\right\}$
+\item Beispiel mit einem Prädikat
 \begin{lstlisting}
 [2*x | x <- [0..10], x^2 > 5]
 ergibt
 [6,8,10,12,14,16,18,20]
 \end{lstlisting}
-\end{description}
+\end{enumerate}
 \end{examples}
 \bigskip   
 \end{frame}
