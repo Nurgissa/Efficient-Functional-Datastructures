@@ -38,10 +38,13 @@ common_prefix ws = common_prefix_aux ws []
           common_prefix_aux ws@((x:xs):xxs) aux | is_same_firstLetter ((x:xs):xxs) = common_prefix_aux ([ys | _:ys <- ws]) (x:aux)
                                                 | otherwise                        = reverse aux
 
-let 
-    alphabet = ["a","b","c","d","e","f","g"]
-    word = ["a","g","c","g","a","c","g","a","g"]
-in  lazy_cst edge_cst alphabet word
+instance Show (STree alph) where
+    show t = "" 
+
+main = 
+    let alphabet = ["a","b","c","d","e","f","g"]
+        word = ["a","g","c","g","a","c","g","a","g"]
+    in  lazy_cst edge_cst alphabet word
                                                 
 --search :: (Eq alph) => Word alph -> STree alph -> Bool
 --search w Leaf = False
