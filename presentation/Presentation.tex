@@ -50,6 +50,13 @@
     outer sep = 0.5mm,
     fill
 ]
+\tikzstyle{ghostbranch} = [
+    shape = circle,
+    draw,
+    minimum size = 1mm,
+    inner sep = 0mm,
+    outer sep = 0.5mm,
+]
 \tikzstyle{subtree} = [
     isosceles triangle,
     dotted,
@@ -869,6 +876,7 @@ $cst$ für die Zeichenkette $agcgacgag$.
 %--Folie: Beispiel-------------------------------------------------
 \begin{frame}
 \frametitle{Beispiel für $agcgacgag$}
+Erstes und zweites Level
 \begin{figure}
 \begin{tikzpicture}[
     font = \small,
@@ -877,23 +885,29 @@ $cst$ für die Zeichenkette $agcgacgag$.
     level 3/.style = {level distance = 7mm, sibling distance = 10mm},
     edge from parent/.style = {->, draw}
 ]
-    { [yshift = 5cm]
+    { [yshift = 3.5cm]
         \node[branch]{}
         child {
+            node[ghostbranch] (u) {}
             edge from parent
             node[above]{a}
         }
         child[level distance = 8mm] {
+            node[ghostbranch] (v) {}
             edge from parent
             node[left]{cga}
         }
         child {
+            node[ghostbranch] (w) {}
             edge from parent
             node[above]{g}
         };
+        \node[align = left, anchor = north, yshift = {-1mm}] at (u.center) {$gcgacgag$ \\ $cgag$ \\ $g$};
+        \node[align = left, anchor = north, yshift = {-1mm}] at (v.center) {$cgag$ \\ $g$};
+        \node[align = left, anchor = north, yshift = {-1mm}] at (w.center) {$cgacgag$ \\ $acgag$ \\ $ag$};
     }
-    \draw[dotted] (-4.5, 3.75) -- (5, 3.75);
-    { [yshift = 3.25cm]
+    \draw[dotted] (-4.5, 0.75) -- (5, 0.75);
+    { [yshift = 0cm]
         \node[branch]{}
         child {
             node[branch]{}
@@ -903,7 +917,7 @@ $cst$ für die Zeichenkette $agcgacgag$.
             }
             child {
                 edge from parent
-                node[right]{g}
+                node[right]{gcgacgag}
             }
             edge from parent
             node[above]{a}
@@ -924,6 +938,7 @@ $cst$ für die Zeichenkette $agcgacgag$.
         child {
             node[branch]{}
             child {
+                node[ghostbranch] (u) {}
                 edge from parent
                 node[left]{a}
             }
@@ -934,8 +949,25 @@ $cst$ für die Zeichenkette $agcgacgag$.
             edge from parent
             node[above]{g}
         };
+        \node[align = left, anchor = north, yshift = {-1mm}] at (u.center) {$cgag$ \\ $g$};
     }
-    \draw[dotted] (-4.5, 0.5) -- (5, 0.5);
+\end{tikzpicture}
+\end{figure}
+\end{frame}
+%--Folie-----------------------------------------------------------
+
+%--Folie: Beispiel-------------------------------------------------
+\begin{frame}[t]
+\frametitle{Beispiel für $agcgacgag$}
+Drittes und letztes Level
+\begin{figure}
+\begin{tikzpicture}[
+    font = \small,
+    level 1/.style = {level distance = 7mm, sibling distance = 30mm},
+    level 2/.style = {level distance = 7mm, sibling distance = 15mm},
+    level 3/.style = {level distance = 7mm, sibling distance = 10mm},
+    edge from parent/.style = {->, draw}
+]
     { [yshift = 0cm]
         \node[branch]{}
         child {
