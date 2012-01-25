@@ -38,10 +38,6 @@ common_prefix ws = common_prefix_aux ws []
           common_prefix_aux ws@((x:xs):xxs) aux | is_same_firstLetter ((x:xs):xxs) = common_prefix_aux ([ys | _:ys <- ws]) (x:aux)
                                                 | otherwise                        = reverse aux
 
-del :: (Eq alph) => Word alph -> Word alph -> Word alph
-del w [] = w
-del (x:xs) (y:ys) = del xs ys 
-
 let 
     alphabet = ["a","b","c","d","e","f","g"]
     word = ["a","g","c","g","a","c","g","a","g"]
@@ -50,6 +46,6 @@ in  lazy_cst edge_cst alphabet word
 --search :: (Eq alph) => Word alph -> STree alph -> Bool
 --search w Leaf = False
 --search w1 (Branch[(w2, st):lst]) =  if common_prefix (w1:w2:[]) == [] then search w1 lst
---                                    else if common_prefix (w1:w2:[]) == w2 then search (del w1 w2) st
+--                                    else if common_prefix (w1:w2:[]) == w2 then search (stripPrefix w2 w1) st
 --                                    else if common_prefix (w1:w2:[]) == w1 then True
 --                                    else False
