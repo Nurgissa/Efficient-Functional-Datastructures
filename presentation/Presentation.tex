@@ -1,6 +1,6 @@
-%------------------------------------------------------------------
+%------------------------------------------------------------------------------
 % Präsentation "Suffix Trees und Suffix Arrays"
-%------------------------------------------------------------------
+%------------------------------------------------------------------------------
 
 % Autoren   : Simon Kaltenbacher, Evgeny Novoseltsev
 % Semester  : WS 11/12
@@ -24,19 +24,38 @@
 % Bäume zeichnen
 \usepackage{tikz}
 % Code von Programmiersprachen erkennen
-\usepackage{listings}
+\usepackage{listings, courier, xcolor}
 % Tabellen
 \usepackage{booktabs}
 \usepackage{tabularx}
 % \usepackage{ctable}
 
 % listings-Konfiguration
+\definecolor{verylightgray}{RGB}{230, 230, 230}
 \lstloadlanguages{Haskell}
-\lstset{basicstyle=\scriptsize}
+\lstset {
+    language = Haskell,
+    tabsize = 4,
+    showstringspaces = false,
+    breaklines=true,
+    basicstyle=\ttfamily\fontsize{9}{10}\selectfont,
+    keywordstyle = \color{blue},
+    commentstyle =\color{darkgray},
+    frame = lines,
+    extendedchars = true,
+    framextopmargin = 5pt,
+    xleftmargin = 5pt,
+    framexleftmargin = 5pt,
+    framexrightmargin = 5pt,
+    framexbottommargin = 5pt,
+    framerule = 0.5pt,
+    rulecolor = \color{gray},
+    backgroundcolor = \color{verylightgray}
+}
+% \lstset{basicstyle=\scriptsize}
 
 % Beamer Konfiguration
 \usetheme{Goettingen}
-%\usecolortheme{sidebartab}
 %\useoutertheme{default}
 \beamersetuncovermixins{\opaqueness<1>{25}}{\opaqueness<2->{15}}
 
@@ -70,13 +89,15 @@
     font = \tiny
 ]
 
-%--Benutzerdefinierte Makros---------------------------------------
+%--Benutzerdefinierte Makros---------------------------------------------------
 
 % Umgebung Bemerkung
 \newtheorem{remark}[theorem]{Bemerkung}
 
 \newcommand{\coloneqq}{\mathrel{\mathop:}=}
-%------------------------------------------------------------------
+
+\newcommand{\abs}[1]{\left|#1\right|}
+%------------------------------------------------------------------------------
 
 % Titel
 \title{Suffix Trees und Suffix Arrays}  
@@ -90,27 +111,27 @@
 % Dokument
 \begin{document}
 
-%--Folie: Titelfolie-----------------------------------------------
+%--Folie: Titelfolie-----------------------------------------------------------
 \frame{\titlepage}
-%--Folie-----------------------------------------------------------
+%--Folie-----------------------------------------------------------------------
 
-%--Folie: Inhaltsverzeichnis---------------------------------------
+%--Folie: Inhaltsverzeichnis---------------------------------------------------
 \frame{\frametitle{Inhaltsverzeichnis}\tableofcontents}
-%--Folie-----------------------------------------------------------
+%--Folie-----------------------------------------------------------------------
 
-%------------------------------------------------------------------
+%------------------------------------------------------------------------------
 \section{Einführung}
-%------------------------------------------------------------------
+%------------------------------------------------------------------------------
 
-%------------------------------------------------------------------
+%------------------------------------------------------------------------------
 \section{Terminologie}
-%------------------------------------------------------------------
+%------------------------------------------------------------------------------
 
-%------------------------------------------------------------------
+%------------------------------------------------------------------------------
 \subsection{Grundlagen}
-%------------------------------------------------------------------
+%------------------------------------------------------------------------------
 
-%--Folie: Grundlagen-----------------------------------------------
+%--Folie: Grundlagen-----------------------------------------------------------
 \begin{frame}
 \frametitle{Grundlagen}
 \begin{itemize}
@@ -129,9 +150,9 @@
     Sei $t = uvw$ mit $u, v, w \in \Sigma^*$. Dann ist $u$ ein Präfix und $w$ ein Suffix von $t$. $v$ wird als $t$-Wort bezeichnet.
 \end{definition}
 \end{frame}
-%--Folie-----------------------------------------------------------
+%--Folie-----------------------------------------------------------------------
 
-%--Folie: Grundlagen-----------------------------------------------
+%--Folie: Grundlagen-----------------------------------------------------------
 \begin{frame}
 \frametitle{Grundlagen}
 \begin{definition}[$\Sigma^+$-Baum]
@@ -195,9 +216,9 @@ Sei $\Sigma = \left\{a, \dots, z\right\}$
 \end{figure}
 \end{example}
 \end{frame}
-%--Folie-----------------------------------------------------------
+%--Folie-----------------------------------------------------------------------
 
-%--Folie: Grundlagen-----------------------------------------------
+%--Folie: Grundlagen-----------------------------------------------------------
 \begin{frame}
 \frametitle{Grundlagen}
 \begin{definition}[Pfad]
@@ -213,9 +234,9 @@ Sei $\Sigma = \left\{a, \dots, z\right\}$
     $\boldsymbol{ag}$ ist ein verschachteltes Suffix von $\boldsymbol{ag}cgacg\boldsymbol{ag}$.
 \end{example}
 \end{frame}
-%--Folie-----------------------------------------------------------
+%--Folie-----------------------------------------------------------------------
 
-%--Folie: Grundlagen-----------------------------------------------
+%--Folie: Grundlagen-----------------------------------------------------------
 \begin{frame}
 \frametitle{Grundlagen}
 \begin{definition}[Suffix Tree]
@@ -228,13 +249,13 @@ Sei $\Sigma = \left\{a, \dots, z\right\}$
     Ein Wort $w$ ist genau dann in einem $\Sigma^+$-Baum enthalten, wenn ein Knoten $\overline{wu}$ in diesem Baum existiert.
 \end{remark}
 \end{frame}
-%--Folie-----------------------------------------------------------
+%--Folie-----------------------------------------------------------------------
 
-%------------------------------------------------------------------
+%------------------------------------------------------------------------------
 \section{Suffix Tree Klassen}
-%------------------------------------------------------------------
+%------------------------------------------------------------------------------
 
-%--Folie: Suffix Tree Klassen--------------------------------------
+%--Folie: Suffix Tree Klassen--------------------------------------------------
 \begin{frame}
     \frametitle{Suffix Tree Klassen}
     \begin{itemize}
@@ -244,12 +265,12 @@ Sei $\Sigma = \left\{a, \dots, z\right\}$
             \item Position Suffix Tree (pst)
             \item Compact Suffix Tree (cst)
         \end{itemize}
-        \item ast, pst, cst stehen durch Kantenverschmelzung in Relation zueinander 
+        \item ast, pst, cst stehen durch Kantenverschmelzung in Relation zueinander. 
     \end{itemize}
 \end{frame}
-%--Folie-----------------------------------------------------------
+%--Folie-----------------------------------------------------------------------
 
-%--Folie: Atomic Suffix Tree---------------------------------------
+%--Folie: Atomic Suffix Tree---------------------------------------------------
 \begin{frame}
 \frametitle{Atomic Suffix Tree}
 \vspace{-2mm}
@@ -437,9 +458,9 @@ $ast(t)$ für die Zeichenkette $t = agcgacgag$.
 \vspace{-2mm}
 Jedes Blatt repräsentiert ein Suffix von $t$.
 \end{frame}
-%--Folie-----------------------------------------------------------
+%--Folie-----------------------------------------------------------------------
 
-%--Folie: Kantenverschmelzung--------------------------------------
+%--Folie: Kantenverschmelzung--------------------------------------------------
 \begin{frame}
 \frametitle{Kantenverschmelzung}
 \begin{definition}
@@ -517,9 +538,9 @@ Jedes Blatt repräsentiert ein Suffix von $t$.
 \end{figure}
 \end{example}
 \end{frame}
-%--Folie-----------------------------------------------------------
+%--Folie-----------------------------------------------------------------------
 
-%--Folie: Atomic Suffix Tree -> Position Suffix Tree---------------
+%--Folie: Atomic Suffix Tree -> Position Suffix Tree---------------------------
 \begin{frame}
 \frametitle{Atomic Suffix Tree $\rightarrow$ Position Suffix Tree}
 $ast$ für die Zeichenkette $agcgacgag$.
@@ -703,9 +724,9 @@ $ast$ für die Zeichenkette $agcgacgag$.
 \end{tikzpicture}
 \end{figure}
 \end{frame}
-%--Folie-----------------------------------------------------------
+%--Folie-----------------------------------------------------------------------
 
-%--Folie: Position Suffix Tree -> Compact Suffix Tree--------------
+%--Folie: Position Suffix Tree -> Compact Suffix Tree--------------------------
 \begin{frame}
 \frametitle{Position Suffix Tree $\rightarrow$ Compact Suffix Tree}
 $pst$ für die Zeichenkette $agcgacgag$.
@@ -722,14 +743,14 @@ $pst$ für die Zeichenkette $agcgacgag$.
         node[branch]{}
         child {
             edge from parent
-            node[left]{cgag}
+            node[left]{$cgag$}
         }
         child {
             edge from parent
-            node[right]{gcgacgag}
+            node[right]{$gcgacgag$}
         }
         edge from parent
-        node[above]{a}
+        node[above]{$a$}
     }
     child {
         node[branch]{}
@@ -739,20 +760,20 @@ $pst$ für die Zeichenkette $agcgacgag$.
                 node[branch]{}
                 child {
                     edge from parent[solid]
-                    node[left]{cgag}
+                    node[left]{$cgag$}
                 }
                 child {
                     edge from parent[solid]
-                    node[right]{g}
+                    node[right]{$g$}
                 }
                 edge from parent
-                node[left]{a}
+                node[left]{$a$}
             }
             edge from parent
-            node[left]{g}
+            node[left]{$g$}
         }
         edge from parent[dotted]
-        node[left]{c}
+        node[left]{$c$}
     }
     child {
         node[branch]{}
@@ -760,21 +781,21 @@ $pst$ für die Zeichenkette $agcgacgag$.
             node[branch]{}
             child {
                 edge from parent
-                node[left]{cgag}
+                node[left]{$cgag$}
             }
             child {
                 edge from parent
-                node[right]{g}
+                node[right]{$g$}
             }
             edge from parent
-            node[left]{a}
+            node[left]{$a$}
         }
         child {
             edge from parent
-            node[right]{cgacgag}
+            node[right]{$cgacgag$}
         }
         edge from parent
-        node[above]{g}
+        node[above]{$g$}
     };
 \end{tikzpicture}
 \end{figure}
@@ -793,27 +814,27 @@ $cst$ für die Zeichenkette $agcgacgag$.
         node[branch]{}
         child {
             edge from parent
-            node[left]{cgag}
+            node[left]{$cgag$}
         }
         child {
             edge from parent
-            node[right]{gcgacgag}
+            node[right]{$gcgacgag$}
         }
         edge from parent
-        node[above]{a}
+        node[above]{$a$}
     }
     child[level distance = 16mm] {
         node[branch]{}
         child {
             edge from parent
-            node[left]{cgag}
+            node[left]{$cgag$}
         }
         child {
             edge from parent
-            node[right]{g}
+            node[right]{$g$}
         }
         edge from parent
-        node[left]{cga}
+        node[left]{$cga$}
     }
     child {
         node[branch]{}
@@ -821,36 +842,53 @@ $cst$ für die Zeichenkette $agcgacgag$.
             node[branch]{}
             child {
                 edge from parent
-                node[left]{cgag}
+                node[left]{$cgag$}
             }
             child {
                 edge from parent
-                node[right]{g}
+                node[right]{$g$}
             }
             edge from parent
-            node[left]{a}
+            node[left]{$a$}
         }
         child {
             edge from parent
-            node[right]{cgacgag}
+            node[right]{$cgacgag$}
         }
         edge from parent
-        node[above]{g}
+        node[above]{$g$}
     };
 \end{tikzpicture}
 \end{figure}
 \end{frame}
-%--Folie-----------------------------------------------------------
+%--Folie-----------------------------------------------------------------------
 
-%------------------------------------------------------------------
+%--Folie: Suffix Tree Klassen--------------------------------------------------
+\begin{frame}[t]
+\frametitle{Suffix Tree Klassen}
+\begin{definition}
+Sei $S_t$ ein Suffix Tree für ein Wort $t$, repräsentiert durch seine Kantenmenge $E$ und $n = \abs{t}$. $S_t$ wird bezeichnet als:
+\begin{itemize}
+    \item Atomic Suffix Tree, wenn $\abs{E}$ maximal ist.
+    \item Position Suffix Tree, wenn die Länge aller inneren Kantenbeschriftungen $1$ beträgt.
+    \item Compact Suffix Tree, wenn $\abs{E}$ minimal ist.
+\end{itemize}    
+\end{definition}
+\begin{lemma}
+    Seien $T_1$ und $T_2$ $\Sigma^+$-Bäume mit $T_1 \implies T_2$. Dann enthält $T_1$ genau dann das Wort $w$, wenn $T_2$ das Wort $w$ enthält.
+\end{lemma}
+\end{frame}
+%--Folie-----------------------------------------------------------------------
+
+%------------------------------------------------------------------------------
 \section{wotd-Algorithmus}
-%------------------------------------------------------------------
+%------------------------------------------------------------------------------
 
-%------------------------------------------------------------------
+%------------------------------------------------------------------------------
 \subsection{Beispiel}
-%------------------------------------------------------------------
+%------------------------------------------------------------------------------
 
-%--Folie: Beispiel-------------------------------------------------
+%--Folie: Beispiel-------------------------------------------------------------
 \begin{frame}
 \frametitle{Beispiel für $agcgacgag$}
 \begin{tabularx}{\textwidth}{L X}
@@ -871,9 +909,9 @@ $cst$ für die Zeichenkette $agcgacgag$.
     \end{tabular}
 \end{table}
 \end{frame}
-%--Folie-----------------------------------------------------------
+%--Folie-----------------------------------------------------------------------
 
-%--Folie: Beispiel-------------------------------------------------
+%--Folie: Beispiel-------------------------------------------------------------
 \begin{frame}
 \frametitle{Beispiel für $agcgacgag$}
 Erstes und zweites Level
@@ -890,17 +928,17 @@ Erstes und zweites Level
         child {
             node[ghostbranch] (u) {}
             edge from parent
-            node[above]{a}
+            node[above]{$a$}
         }
         child[level distance = 8mm] {
             node[ghostbranch] (v) {}
             edge from parent
-            node[left]{cga}
+            node[left]{$cga$}
         }
         child {
             node[ghostbranch] (w) {}
             edge from parent
-            node[above]{g}
+            node[above]{$g$}
         };
         \node[align = left, anchor = north, yshift = {-1mm}] at (u.center) {$gcgacgag$ \\ $cgag$ \\ $g$};
         \node[align = left, anchor = north, yshift = {-1mm}] at (v.center) {$cgag$ \\ $g$};
@@ -913,50 +951,50 @@ Erstes und zweites Level
             node[branch]{}
             child {
                 edge from parent
-                node[left]{cgag}
+                node[left]{$cgag$}
             }
             child {
                 edge from parent
-                node[right]{gcgacgag}
+                node[right]{$gcgacgag$}
             }
             edge from parent
-            node[above]{a}
+            node[above]{$a$}
         }
         child[level distance = 16mm] {
             node[branch]{}
             child {
                 edge from parent
-                node[left]{cgag}
+                node[left]{$cgag$}
             }
             child {
                 edge from parent
-                node[right]{g}
+                node[right]{$g$}
             }
             edge from parent
-            node[left]{cga}
+            node[left]{$cga$}
         }
         child {
             node[branch]{}
             child {
                 node[ghostbranch] (u) {}
                 edge from parent
-                node[left]{a}
+                node[left]{$a$}
             }
             child {
                 edge from parent
-                node[right]{cgacgag}
+                node[right]{$cgacgag$}
             }
             edge from parent
-            node[above]{g}
+            node[above]{$g$}
         };
         \node[align = left, anchor = north, yshift = {-1mm}] at (u.center) {$cgag$ \\ $g$};
     }
 \end{tikzpicture}
 \end{figure}
 \end{frame}
-%--Folie-----------------------------------------------------------
+%--Folie-----------------------------------------------------------------------
 
-%--Folie: Beispiel-------------------------------------------------
+%--Folie: Beispiel-------------------------------------------------------------
 \begin{frame}[t]
 \frametitle{Beispiel für $agcgacgag$}
 Drittes und letztes Level
@@ -974,27 +1012,27 @@ Drittes und letztes Level
             node[branch]{}
             child {
                 edge from parent
-                node[left]{cgag}
+                node[left]{$cgag$}
             }
             child {
                 edge from parent
-                node[right]{gcgacgag}
+                node[right]{$gcgacgag$}
             }
             edge from parent
-            node[above]{a}
+            node[above]{$a$}
         }
         child[level distance = 16mm] {
             node[branch]{}
             child {
                 edge from parent
-                node[left]{cgag}
+                node[left]{$cgag$}
             }
             child {
                 edge from parent
-                node[right]{g}
+                node[right]{$g$}
             }
             edge from parent
-            node[left]{cga}
+            node[left]{$cga$}
         }
         child {
             node[branch]{}
@@ -1002,33 +1040,33 @@ Drittes und letztes Level
                 node[branch]{}
                 child {
                     edge from parent
-                    node[left]{cgag}
+                    node[left]{$cgag$}
                 }
                 child {
                     edge from parent
-                    node[right]{g}
+                    node[right]{$g$}
                 }
                 edge from parent
-                node[left]{a}
+                node[left]{$a$}
             }
             child {
                 edge from parent
-                node[right]{cgacgag}
+                node[right]{$cgacgag$}
             }
             edge from parent
-            node[above]{g}
+            node[above]{$g$}
         };
     }
 \end{tikzpicture}
 \end{figure}
 \end{frame}
-%--Folie-----------------------------------------------------------
+%--Folie-----------------------------------------------------------------------
 
-%------------------------------------------------------------------
+%------------------------------------------------------------------------------
 \subsection{Vorgehensweise}
-%------------------------------------------------------------------
+%------------------------------------------------------------------------------
 
-%--Folie: wotd-Algorithmus: Schritte-------------------------------
+%--Folie: wotd-Algorithmus: Schritte-------------------------------------------
 \begin{frame}[t]
 \frametitle{wotd-Algorithmus für cst}
     wotd: write-only top-down\\
@@ -1044,9 +1082,9 @@ Drittes und letztes Level
         \end{enumerate}
     \end{enumerate}
 \end{frame}
-%--Folie-----------------------------------------------------------
+%--Folie-----------------------------------------------------------------------
 
-%--Folie: Haskell: List-comprehension------------------------------
+%--Folie: Haskell: List-comprehension------------------------------------------
 \begin{frame}[fragile]
 \frametitle{Haskell: List-comprehension}  
 Ein Konstrukt, mit dem Liste erzeugt werden können. Syntax:
@@ -1071,101 +1109,91 @@ ergibt
 \end{examples}
 \bigskip   
 \end{frame}
-%--Folie-----------------------------------------------------------
+%--Folie-----------------------------------------------------------------------
 
-%------------------------------------------------------------------
+%------------------------------------------------------------------------------
 \subsection{Haskell-code}
-%------------------------------------------------------------------
+%------------------------------------------------------------------------------
 
-%--Folie: Haskell-code: Typdefinitionen----------------------------
+%--Folie: Haskell-code: Typdefinitionen----------------------------------------
 \begin{frame}[fragile]
 \frametitle{Haskell-code: Typdefinitionen}
-Darstellung von Suffixbäumen:
-\begin{lstlisting}{haskell}
-data STree alf = Leaf | 
-                 Branch [(Label alf,STree alf)] 
+\begin{lstlisting}
+-- | Darstellung von Suffix Trees
+data STree alf = Leaf
+               | Branch [(Label alf, STree alf)]
                  deriving Eq
-\end{lstlisting}
-\bigskip
-Darstellung von Beschriftungen:
-\begin{lstlisting}{haskell}
+
+-- | Darstellung von Beschriftungen
 type Label alf = [alf]
-\end{lstlisting}
-\bigskip
-Darstellung vom Kantenaufbau:
-\begin{lstlisting}{haskell}
+
+-- | Darstellung vom Kantenaufbau
 type EdgeFunction alf = [[alf]] -> ([alf],[[alf]])
 \end{lstlisting}
 \end{frame}
-%--Folie-----------------------------------------------------------
+%--Folie-----------------------------------------------------------------------
 
-%--Folie: Haskell-code: Liste von Suffixen-------------------------
+%--Folie: Haskell-code: Liste von Suffixen-------------------------------------
 \begin{frame}[fragile]
 \frametitle{Haskell-code: Liste von Suffixen}
-    Folgende Funktion liefert alle Suffixe von dem gegebenen Wort $aw$:
-    \begin{lstlisting}{haskell}
-    suffixes :: [alf] -> [[alf]]
-
-    suffixes []       = []              
-    suffixes aw@(_:w) = aw:suffixes w 
-    \end{lstlisting}
-    \bigskip
-    \begin{remark}
-    \begin{description}[l]
-        \item[Operator $"::\:"$] ist Type-Spezifikation Operator.
-        \item[Operator $":\:"$] ist 'Append-head'-Operator. $a:b$ beduetet, dass $a$ der Kopf der Liste ist (also, ein Element) und $b$ ist der Rest von der Liste ist (also, eine Liste). 
-        \item[Operator $"@\:"$] ist 'Read As'-Operator in pattern matching. $aw@(\_:w)$ bedeutet, dass $aw$ mit $(\_:w)$ gematcht wird.  
-    \end{description}       
-    \end{remark}
+Folgende Funktion liefert alle Suffixe von dem gegebenen Wort $aw$:
+\begin{lstlisting}
+suffixes :: [alf] -> [[alf]]
+suffixes []       = []
+suffixes aw@(_:w) = aw:suffixes w
+\end{lstlisting}
+\bigskip
+\begin{remark}
+\begin{description}[l]
+    \item[Operator $(::)$] Typ-Spezifikations-Operator
+    \item[Operator $(:)$] Cons-Operator: Erzeugt aus einer Liste $l$ und einem Element $h$ eine neue Liste, indem das Element $h$ der Liste $l$ vorangestellt wird.
+    \item[Operator $(@)$] Read-As-Operator: $aw@(\_:w)$ bedeutet, dass $aw$ mit $(\_:w)$ gematcht wird.  
+\end{description}
+\end{remark}
 \end{frame}
-%--Folie-----------------------------------------------------------
+%--Folie-----------------------------------------------------------------------
 
-%--Folie: Haskell-code: Auswahl------------------------------------
+%--Folie: Haskell-code: Auswahl------------------------------------------------
 \begin{frame}[fragile]
 \frametitle{Haskell-code: Auswahl einer Gruppe}
     Folgende Funktion liefert die Liste mit allen Wörter aus $ss$, die mit $a$ anfangen:
-\begin{lstlisting}{haskell}
+\begin{lstlisting}
 select :: (Eq alf) => [[alf]] -> alf -> [[alf]]
-
 select ss a = [c:u | c:u <- ss, a == c]
 \end{lstlisting}
 \bigskip
 \end{frame}
-%--Folie-----------------------------------------------------------
+%--Folie-----------------------------------------------------------------------
 
-%--Folie: Haskell-code: Kantenerzeugung----------------------------
+%--Folie: Haskell-code: Kantenerzeugung----------------------------------------
 \begin{frame}[fragile]
 \frametitle{Haskell-code: Kantenerzeugung}
 Folgende Funktion erzeugt die Kante mit der längster-Präfix- Beschriftung für eine gegebene Liste von Wörter:
-\begin{lstlisting}{haskell}
+\begin{lstlisting}
 edge_cst :: (Eq alf) => EdgeFunction alf
-
 edge_cst [s] = ([s], [[]])
 edge_cst awss@((a:_):ss) 
-    | all (\c:_ -> a == c) ss =  (a:cp, rss)
-    | otherwise               =  ([], awss)
-      where (cp, rss)         =  edge_cst ([t | _:t <- awss])
+    | all (\c:_ -> a == c) ss = (a:cp, rss)
+    | otherwise               = ([], awss)
+      where (cp, rss) = edge_cst ([t | _:t <- awss])
 \end{lstlisting}
 \bigskip
 \begin{remark}
-\begin{lstlisting}{haskell}
+\begin{lstlisting}
 all :: (a -> Bool) -> [a] -> Bool
-
 all p [] = true
 all p x:xs = p x && all p xs
 \end{lstlisting}     
 \end{remark}
 \end{frame}
-%--Folie-----------------------------------------------------------
+%--Folie-----------------------------------------------------------------------
 
-%--Folie: Haskell-code: Baumaufbau---------------------------------
+%--Folie: Haskell-code: Baumaufbau---------------------------------------------
 \begin{frame}[fragile]
 \frametitle{Haskell-code: Baumaufbau}
 Die folgende Funktion baut den cst-Baum auf:
-\begin{lstlisting}{haskell}
-lazy_cst :: (Eq alf) => 
-(EdgeFunction alf) -> [alf] -> [alf] -> STree alf
-
+\begin{lstlisting}
+lazy_cst :: (Eq alf) => (EdgeFunction alf) -> [alf] -> [alf] -> STree alf
 lazy_cst edge_cst alpha t = sTr (suffixes t) where 
 sTr [[]] = Leaf
 sTr ss   = Branch[(cp,sTr rss)|a <- alpha,
@@ -1173,9 +1201,7 @@ sTr ss   = Branch[(cp,sTr rss)|a <- alpha,
                                let (cp,rss) = edge_cst gs]
 \end{lstlisting}
 \end{frame}
-%--Folie-----------------------------------------------------------
-
+%--Folie-----------------------------------------------------------------------
 \begin{frame}
 \end{frame}
-
 \end{document}
