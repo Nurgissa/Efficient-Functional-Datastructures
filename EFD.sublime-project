@@ -15,7 +15,8 @@
 				"*.sublime-workspace",
 				"*.snm",
 				"*.toc",
-				"*.pdf"
+				"*.pdf",
+				"*.vrb"
 			]
 		}
 	]

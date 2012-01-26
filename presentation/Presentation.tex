@@ -108,7 +108,6 @@
 
 \newcommand{\abs}[1]{\left|#1\right|}
 
-
 %//////////////////////////////////////////////////////////////////////////////
 % Dokumenteigenschaften
 %//////////////////////////////////////////////////////////////////////////////
@@ -1157,30 +1156,38 @@ Drittes und letztes Level
 \end{frame}
 %--Folie-----------------------------------------------------------------------
 
-%--Folie: Haskell: List-comprehension------------------------------------------
+%--Folie: Haskell: List comprehension------------------------------------------
 \begin{frame}[fragile]
-\frametitle{Haskell: List-comprehension}  
-Ein Konstrukt, mit dem Liste erzeugt werden können. Syntax:
-\begin{lstlisting}
-[Ausdruck(x1,...,xn) | Variablebindungen(x1,...,xn),
-                       Praedikate(x1,...,xn)]
-\end{lstlisting}
+\frametitle{Haskell: List comprehension}
+List comprehensions ermöglichen es in Anlehnung an die mathematische Mengennotation Listen auf eine prägnante Art und Weise zu erzeugen.
+$$\left\{\left(i,j\right)\vert\: i \in \left\{1, 2\right\},\: j \in \left\{1, \dots, 4\right\}\right\}$$
+ist äquivalent zu
+$$\left[\left(i, j\right)\vert\: i \leftarrow \left[1,2\right],\: j \leftarrow \left[1..4]\right]\right$$
+Syntax: $\left[e \:\vert\: q_1, \dots, q_n]\right, n \geq 1$ , wobei die $q_i$ entweder 
+\begin{itemize}
+    \item Generatoren, z. B. $i \leftarrow \left[1..4\right]$
+    \item lokale Definitionen, z. B. $let\:i = x * x$
+    \item Prädikate, z. B. $x > 2$
+\end{itemize}
+sind.
+\end{frame}
+%--Folie-----------------------------------------------------------------------
+
+%--Folie: Haskell: List comprehension------------------------------------------
+\begin{frame}[t, fragile]
+\frametitle{Haskell: List comprehension}
 \begin{examples}
 \begin{enumerate}
-\item Das folgende im Haskell Code
-\begin{lstlisting}
-[(i,j) | i <- [1,2], j <- [1..4]] 
-\end{lstlisting}
-bedeutet $\left\{\left(i,j\right)\vert \: i \in \left\{1, 2\right\}, \: j \in \left\{1, \dots, 4\right\}\right\}$
-\item Beispiel mit einem Prädikat
+\item Mit Prädikat
 \begin{lstlisting}
 [2*x | x <- [0..10], x^2 > 5]
-ergibt
+-- ergibt
 [6,8,10,12,14,16,18,20]
 \end{lstlisting}
+\item Mit lokaler Definition
+% TODO: Beispiel für List comprehension mit lokaler Definition hinzufügen!
 \end{enumerate}
 \end{examples}
-\bigskip   
 \end{frame}
 %--Folie-----------------------------------------------------------------------
 
