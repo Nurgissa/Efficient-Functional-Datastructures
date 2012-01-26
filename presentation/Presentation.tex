@@ -1,15 +1,13 @@
-%------------------------------------------------------------------------------
+%//////////////////////////////////////////////////////////////////////////////
 % Präsentation "Suffix Trees und Suffix Arrays"
-%------------------------------------------------------------------------------
+%//////////////////////////////////////////////////////////////////////////////
 
 % Autoren   : Simon Kaltenbacher, Evgeny Novoseltsev
 % Semester  : WS 11/12
 % Vorlesung : Effiziente funktionale Datenstrukturen
 % Betreuer  : Prof. Martin Hofmann, PhD
 
-% Latex Beamer Tutorial kann unter folgendem Link gefunden werden: http://www.math.umbc.edu/~rouben/beamer/quickstart.html
-
-% Eine nützliche Sammlung von Beispielen für die Latex Beamer-Klasse kann unter folgendem Link gefunden werden: http://www.informatik.uni-freiburg.de/~frank/latex-kurs/latex-kurs-3/Latex-Kurs-3.html
+%//////////////////////////////////////////////////////////////////////////////
 
 \documentclass{beamer}
 
@@ -170,7 +168,7 @@
         \item $a$ - $g$ Buchstaben
         \item $t$ - $z$ Wörter
     \end{itemize}
-    \item $uv$ Konkatenation der Wörter $u$ und $v$ mit $u, v \in \Sigma^+$
+    \item $uv$ Konkatenation der Wörter $u$ und $v$ mit $u, v \in \Sigma^*$
 \end{itemize}
 \begin{definition}[Präfix, Suffix, $t$-Wort]
     Sei $t = uvw$ mit $u, v, w \in \Sigma^*$. Dann ist $u$ ein Präfix und $w$ ein Suffix von $t$. $v$ wird als $t$-Wort bezeichnet.
