@@ -30,7 +30,8 @@
 \usepackage{tabularx}
 % \usepackage{ctable}
 
-% listings-Konfiguration
+%--listings-Konfiguration------------------------------------------------------
+
 \definecolor{verylightgray}{RGB}{230, 230, 230}
 \lstloadlanguages{Haskell}
 \lstset {
@@ -52,16 +53,18 @@
     rulecolor = \color{gray},
     backgroundcolor = \color{verylightgray}
 }
-% \lstset{basicstyle=\scriptsize}
 
-% Beamer Konfiguration
+%--Beamer Konfiguration--------------------------------------------------------
+
 \usetheme{Goettingen}
-%\useoutertheme{default}
 \beamersetuncovermixins{\opaqueness<1>{25}}{\opaqueness<2->{15}}
+
+%--TikZ Konfiguration----------------------------------------------------------
 
 \usetikzlibrary{trees, calc, shapes, scopes}
 
-% Styledefinitionen für Suffix Trees
+%--Styledefinitionen für Suffix Trees------------------------------------------
+
 \tikzstyle{branch} = [
     shape = circle,
     minimum size = 1mm,
@@ -97,6 +100,7 @@
 \newcommand{\coloneqq}{\mathrel{\mathop:}=}
 
 \newcommand{\abs}[1]{\left|#1\right|}
+
 %------------------------------------------------------------------------------
 
 % Titel
@@ -125,10 +129,6 @@
 
 %//////////////////////////////////////////////////////////////////////////////
 \section{Terminologie}
-%//////////////////////////////////////////////////////////////////////////////
-
-%//////////////////////////////////////////////////////////////////////////////
-\subsection{Grundlagen}
 %//////////////////////////////////////////////////////////////////////////////
 
 %--Folie: Grundlagen-----------------------------------------------------------
