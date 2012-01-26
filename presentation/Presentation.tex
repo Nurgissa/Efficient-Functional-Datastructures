@@ -1160,10 +1160,10 @@ Drittes und letztes Level
 \begin{frame}[fragile]
 \frametitle{Haskell: List comprehension}
 List comprehensions ermöglichen es in Anlehnung an die mathematische Mengennotation Listen auf eine prägnante Art und Weise zu erzeugen.
-$$\left\{\left(i,j\right)\vert\: i \in \left\{1, 2\right\},\: j \in \left\{1, \dots, 4\right\}\right\}$$
+$$\{(i,j)\vert \: i \in \{1, 2\},\: j \in \{1, \dots, 4\}\}$$
 ist äquivalent zu
-$$\left[\left(i, j\right)\vert\: i \leftarrow \left[1,2\right],\: j \leftarrow \left[1..4]\right]\right$$
-Syntax: $\left[e \:\vert\: q_1, \dots, q_n]\right, n \geq 1$ , wobei die $q_i$ entweder 
+$$[(i, j)\vert\: i \leftarrow [1,2],\: j \leftarrow [1..4]]$$
+Syntax: $[e \:\vert\: q_1, \dots, q_n], n \geq 1$ , wobei die $q_i$ entweder 
 \begin{itemize}
     \item Generatoren, z. B. $i \leftarrow \left[1..4\right]$
     \item lokale Definitionen, z. B. $let\:i = x * x$
