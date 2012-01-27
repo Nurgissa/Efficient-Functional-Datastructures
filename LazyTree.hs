@@ -40,21 +40,18 @@ printTree i (Branch es) = g i es
 main = 
     let alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
         word = "agcgacgag"
-    in  printTree 0 $ lazy_cst edge_cst alphabet word
+    in  search "gag" $ lazy_cst edge_cst alphabet word
 
 commonPrefix :: (Eq alph) => Word alph -> Word alph -> (Word alph, Word alph, Word alph)
 commonPrefix w1 w2 = commonPrefix_aux w1 w2 []
-                     where commonPrefix_aux [] w2 acc           = ([], w2, reverse acc)
-                           commonPrefix_aux w1 [] acc           = (w1, [], reverse acc)
-                           commonPrefix_aux (x:xs) (y:ys) acc
-                                                   | (x == y)   = commonPrefix_aux xs ys (x:acc)
-                                                   | otherwise  = (x:xs, y:ys, reverse acc)
+                     where commonPrefix_aux (x:xs) (y:ys) cp | (x == y) = commonPrefix_aux xs ys (x:cp)
+                           commonPrefix_aux  w1     w2    cp            = (w1, w2, reverse cp)
 
 search :: (Eq alph) => Word alph -> STree alph -> Bool
-search w (Leaf)                  = False
-search w1 (Branch((w2, st):lst)) =  g w1 (((w2, st):lst))
-                                    where g w1 (((w2, st):lst)) = case commonPrefix w1 w2 of
-                                                                       (w1, w2, []) -> g w1 lst
-                                                                       (v1, [], w2) -> search v1 st
-                                                                       ([], v2, w1) -> True
-                                                                       (v1, v2, cp) -> False
+search ss Leaf                = False
+search ss (Branch es) =  g ss es
+    where g ss (((l, st):es)) = case commonPrefix ss l of
+                                  ([], _, _)   -> True
+                                  (_, _, [])   -> g ss es
+                                  (ss', [], _) -> search ss' st
+                                  _            -> False
