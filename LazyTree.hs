@@ -31,7 +31,7 @@ lazy_cst edge_cst alphabet t = sTr (suffixes t)
     where sTr [[]] = Leaf 
           sTr ss   = Branch[(a:cp, sTr rss)| a <- alphabet, let gs = select ss a, length gs > 0, let (cp, rss) = edge_cst gs]
 
-printTree :: (Show alf) => Int -> STree alf -> IO ()
+printTree :: (Show alph) => Int -> STree alph -> IO ()
 printTree i Leaf        = return ()
 printTree i (Branch es) = g i es
     where
@@ -46,13 +46,19 @@ main =
         word = "agcgacgag"
     in  printTree 0 $ lazy_cst edge_cst alphabet word
 
-                                                
---search :: (Eq alph) => Word alph -> STree alph -> Bool
---search w (Leaf)                  = False
---search w1 (Branch((w2, st):lst)) =  case g w1 ((w2, st):lst)) of 
---                                         ([],_) -> g w1 lst
---                                         (w2, v1:_) 
---                                    else if commonPrefix (w1:w2:[]) == w2 then search (stripPrefix w2 w1) st
---                                    else if commonPrefix (w1:w2:[]) == w1 then True
---                                    else False
---                                    where g w1 ((w2, st):lst)) = commonPrefix (w1:w2:[])
+commonPrefix :: (Eq alph) => Word alph -> Word alph -> (Word alph, Word alph, Word alph)
+commonPrefix w1 w2 = commonPrefix_aux w1 w2 []
+                     where commonPrefix_aux [] w2 acc           = ([], w2, reverse acc)
+                           commonPrefix_aux w1 [] acc           = (w1, [], reverse acc)
+                           commonPrefix_aux (x:xs) (y:ys) acc
+                                                   | (x == y)   = commonPrefix_aux xs ys (x:acc)
+                                                   | otherwise  = (x:xs, y:ys, reverse acc)
+
+search :: (Eq alph) => Word alph -> STree alph -> Bool
+search w (Leaf)                  = False
+search w1 (Branch((w2, st):lst)) =  g w1 (((w2, st):lst))
+                                    where g w1 (((w2, st):lst)) = case commonPrefix w1 w2 of
+                                                                       (w1, w2, []) -> g w1 lst
+                                                                       (v1, [], w2) -> search v1 st
+                                                                       ([], v2, w1) -> True
+                                                                       (v1, v2, cp) -> False
