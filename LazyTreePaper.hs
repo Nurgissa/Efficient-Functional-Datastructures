@@ -27,7 +27,7 @@ edge_cst :: (Eq alf) => EdgeFunction alf
 edge_cst [s] = (length s, [[]])
 edge_cst awss@((a:w):ss)
     | [] == [0 | c:_ <- ss, a /= c] = (1 + cpl, rss)
-    | otherwise                  = (0, awss)
+    | otherwise                     = (0, awss)
         where (cpl, rss) = edge_cst (w:[u | _:u <- ss])
 
 printTree :: (Show alf) => Int -> STree alf -> IO ()
@@ -41,6 +41,6 @@ printTree i (Branch es) = g i es
                                      g i lst
 
 main = 
-    let alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
-        word = "agcgacgag"
+    let alphabet = ['a']
+        word = "aaaaaa"
     in  printTree 0 $ lazy_cst alphabet word
