@@ -13,23 +13,19 @@ suffixes []       = []
 suffixes aw@(_:w) = aw:suffixes w 
 
 select :: (Eq alph) => [Word alph] -> alph -> [Word alph]
-select ss a = [u | c:u <- ss, length u > 0, a == c]
+select ss a = [c:u | c:u <- ss, a == c]
 
 edge_cst :: (Eq alph) => EdgeFunction alph
-edge_cst []     = ([], [])
 edge_cst [s]    = (s, [[]])
-edge_cst ([]:w) = ([], w)
 edge_cst awss@((a:_):ss)
-    | all p ss  = (a:cp, rss)
-    | otherwise = ([], awss)
-        where p []    = False
-              p (c:_) = a == c
-              (cp, rss) = edge_cst ([t | _:t <- awss])
+    | all (\(c:_) -> a == c) ss  = (a:cp, rss)
+    | otherwise                  = ([], awss)
+        where (cp, rss) = edge_cst ([t | _:t <- awss, length t > 0])
 
 lazy_cst :: (Eq alph) => (EdgeFunction alph) -> Word alph -> Word alph -> STree alph
 lazy_cst edge_cst alphabet t = sTr (suffixes t) 
     where sTr [[]] = Leaf 
-          sTr ss   = Branch[(a:cp, sTr rss)| a <- alphabet, let gs = select ss a, length gs > 0, let (cp, rss) = edge_cst gs]
+          sTr ss   = Branch[(cp, sTr rss)| a <- alphabet, let gs = select ss a, length gs > 0, let (cp, rss) = edge_cst gs]
 
 printTree :: (Show alph) => Int -> STree alph -> IO ()
 printTree i Leaf        = return ()
