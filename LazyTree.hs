@@ -37,11 +37,6 @@ printTree i (Branch es) = g i es
                                printTree (i + 1) st
                                g i lst
 
-main = 
-    let alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
-        word = "agcgacgag"
-    in  search "gag" $ lazy_cst edge_cst alphabet word
-
 commonPrefix :: (Eq alph) => Word alph -> Word alph -> (Word alph, Word alph, Word alph)
 commonPrefix w1 w2 = commonPrefix_aux w1 w2 []
                      where commonPrefix_aux (x:xs) (y:ys) cp | (x == y) = commonPrefix_aux xs ys (x:cp)
@@ -55,3 +50,8 @@ search ss (Branch es) =  g ss es
                                   (_, _, [])   -> g ss es
                                   (ss', [], _) -> search ss' st
                                   _            -> False
+
+main = 
+    let alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
+        word = "agcgacgag"
+    in  search "gag" $ lazy_cst edge_cst alphabet word
