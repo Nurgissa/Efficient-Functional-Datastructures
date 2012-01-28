@@ -22,8 +22,8 @@ edge_cst awss@((a:_):ss)
     | otherwise                  = ([], awss)
         where (cp, rss) = edge_cst ([t | _:t <- awss, length t > 0])
 
-lazy_cst :: (Eq alph) => (EdgeFunction alph) -> Word alph -> Word alph -> STree alph
-lazy_cst edge_cst alphabet t = sTr (suffixes t) 
+lazyTree :: (Eq alph) => (EdgeFunction alph) -> Word alph -> Word alph -> STree alph
+lazyTree edge_cst alphabet t = sTr (suffixes t) 
     where sTr [[]] = Leaf 
           sTr ss   = Branch[(cp, sTr rss)| a <- alphabet, let gs = select ss a, length gs > 0, let (cp, rss) = edge_cst gs]
 
