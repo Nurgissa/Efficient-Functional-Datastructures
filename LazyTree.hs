@@ -22,8 +22,8 @@ edge_cst awss@((a:_):ss)
     | otherwise                  = ([], awss)
         where (cp, rss) = edge_cst ([t | _:t <- awss, length t > 0])
 
-lazy_cst :: (Eq alph) => (EdgeFunction alph) -> Word alph -> Word alph -> STree alph
-lazy_cst edge_cst alphabet t = sTr (suffixes t) 
+lazyTree :: (Eq alph) => (EdgeFunction alph) -> Word alph -> Word alph -> STree alph
+lazyTree edge_cst alphabet t = sTr (suffixes t) 
     where sTr [[]] = Leaf 
           sTr ss   = Branch[(cp, sTr rss)| a <- alphabet, let gs = select ss a, length gs > 0, let (cp, rss) = edge_cst gs]
 
@@ -36,11 +36,6 @@ printTree i (Branch es) = g i es
                                print w
                                printTree (i + 1) st
                                g i lst
-
-main = 
-    let alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
-        word = "agcgacgag"
-    in  search "gag" $ lazy_cst edge_cst alphabet word
 
 commonPrefix :: (Eq alph) => Word alph -> Word alph -> (Word alph, Word alph, Word alph)
 commonPrefix w1 w2 = commonPrefix_aux w1 w2 []
@@ -55,3 +50,8 @@ search ss (Branch es) =  g ss es
                                   (_, _, [])   -> g ss es
                                   (ss', [], _) -> search ss' st
                                   _            -> False
+
+main = 
+    let alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
+        word = "agcgacgag"
+    in  search "gag" $ lazy_cst edge_cst alphabet word
