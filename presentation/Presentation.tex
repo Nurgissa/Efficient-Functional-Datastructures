@@ -1255,7 +1255,7 @@ edge_cst [s] = ([s], [[]])
 edge_cst awss@((a:_):ss) 
     | all (\c:_ -> a == c) ss = (a:cp, rss)
     | otherwise               = ([], awss)
-      where (cp, rss) = edge_cst ([t | _:t <- awss])
+      where (cp, rss) = edge_cst ([t | _:t <- awss, length t > 0])
 \end{lstlisting}
 \bigskip
 \begin{remark}
@@ -1278,10 +1278,38 @@ lazy_cst edge_cst alpha t = sTr (suffixes t) where
 sTr [[]] = Leaf
 sTr ss   = Branch[(cp,sTr rss)|a <- alpha,
                                let gs       = select ss a,
+                               length gs    > 0,
                                let (cp,rss) = edge_cst gs]
 \end{lstlisting}
 \end{frame}
 %--Folie-----------------------------------------------------------------------
+
+%//////////////////////////////////////////////////////////////////////////////
+\subsection{Suche in Bäumen}
+%//////////////////////////////////////////////////////////////////////////////
+
+%--Folie: Suche in Bäumen------------------------------------------------------
+\begin{frame}[fragile]
+\frametitle{Suche in Bäumen}
+\begin{lstlisting}
+search :: (Eq alph) => Word alph -> STree alph -> Bool
+search ss Leaf        = False
+search ss (Branch es) =  g ss es
+    where g ss (((l, st):es)) = case commonPrefix ss l of
+                                  ([], _, _)   -> True
+                                  (_, _, [])   -> g ss es
+                                  (ss', [], _) -> search ss' st
+                                  _            -> False 
+
+commonPrefix :: (Eq alph) => Word alph -> Word alph 
+                -> (Word alph, Word alph, Word alph)
+commonPrefix w1 w2 = commonPrefix_aux w1 w2 []
+    where commonPrefix_aux (x:xs) (y:ys) cp | (x == y) = commonPrefix_aux xs ys (x:cp)
+          commonPrefix_aux  w1     w2    cp            = (w1, w2, reverse cp)       
+\end{lstlisting}    
+\end{frame}
+%--Folie-----------------------------------------------------------------------
+
 
 %//////////////////////////////////////////////////////////////////////////////
 \subsubsection{Laufzeitanalyse}
