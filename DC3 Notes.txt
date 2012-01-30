@@ -1,0 +1,41 @@
+-----------------------
+0 1 2 3 4 5 6 7 8 9 10
+-----------------------
+m i s s i s s i p p i
+
+ 0    1    2    3    4    5    6    7    8    9    10
+mis, iss, ssi, sis, iss, ssi, sip, ipp, ppi, pi0, i00
+
+DC3!
+
+R_0 = mis, sis, sip, pi0
+R_1 = iss, iss, ipp, i00
+R_2 = ssi, ssi, ppi
+
+R = iss, iss, ipp, i00, ssi, ssi, ppi
+sort(R) = i00, ipp, iss, iss, ppi, ssi, ssi
+
+DC3!
+
+R_0' = i00, iss, ssi
+R_1' = ipp, ppi
+R_2' = iss, ssi
+
+R' = ipp, ppi, iss, ssi
+sort(R') = (1) ipp, (2) iss, (3) ppi, (4) ssi
+
+(1) ipp|i
+(2) iss|ippi
+(3) ppi
+(4) ssi|ssippi
+
+mississippi00
+R'------------------------
+       ippi   R_1' -> (i, ppi) 
+ ississippi   R_2' -> ()
+        ppi   R_1' -> (p, pi0)
+  ssissippi   R_2' -> ()
+R_0'----------------------
+          i00 -> (i, 0) 
+    issippi   -> ()
+     ssippi   -> ()
