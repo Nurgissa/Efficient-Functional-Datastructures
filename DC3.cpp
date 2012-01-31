@@ -82,7 +82,7 @@ void suffixArray(int* T, int* SA, int n, int K) {
 
 	//******* Step 3: Merge ********
 	// merge sorted SA0 suffixes and sorted SA12 suffixes
-	for (int p = 0, t= n0 - n1, k = 0; k < n; k++) {
+	for (int p = 0, t = n0 - n1, k = 0; k < n; k++) {
 		#define GetI() (SA12[t] < n0 ? SA12[t] * 3 + 1 : (SA12[t] - n0) * 3 + 2)
 		int i = GetI(); // pos of current offset 12 suffix
 		int j = SA0[p]; // pos of current offset 0
