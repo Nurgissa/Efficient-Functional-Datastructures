@@ -3,12 +3,12 @@
 ------------------------------------
 y  a  b  b  a  d  a  b  b  a  d  o
 
- 0    1    2    3    4    5    6    7    8    9    10   11
-yab, abb, bba, bad, ada, dab, abb, bba, bad, ado, do0, o00
-
 %-----------------------------------------------------------
 % DC3 - 1
 %-----------------------------------------------------------
+
+     0    1    2    3    4    5    6    7    8    9    10   11
+t = yab, abb, bba, bad, ada, dab, abb, bba, bad, ado, do0, o00
 
 B_0 = {0, 3, 6, 9}
 B_1 = {1, 4, 7, 10}
@@ -28,6 +28,11 @@ R_2 = bba dab, bad, o00
 % DC3 - 2
 %-----------------------------------------------------------
 
+     0    1    2    3    4    5    6    7
+t = abb, ada, bad, bba, bba, dab, do0, o00
+
+% Schritt 0
+
 B_0 = {0, 3, 6}
 B_1 = {1, 4, 7}
 B_2 = {2, 5}
@@ -36,8 +41,19 @@ R_0 = abb, bba, do0
 R_1 = ada, bba, o00
 R_2 = bad, dab
 
+% Schritt 1
+
+Trigramme sind eindeutig!
+
 Rank   0    1    2    3    4
 ------------------------------
  R  = ada, bba, o00, bad, dab
 ------------------------------
  R' = ada, bad, bba, dab, o00
+
+% Schritt 2
+
+Paare erzeugen: Für jedes S_i aus S_{B_0}
+
+	S_0 -> (a, rank(S_1)) = (a, 0)
+	S_3 -> (b, rank(S_4)) = (b, )
