@@ -1301,8 +1301,7 @@ search ss (Branch es) =  g ss es
                                   (ss', [], _) -> search ss' st
                                   _            -> False 
 
-commonPrefix :: (Eq alph) => Word alph -> Word alph 
-                -> (Word alph, Word alph, Word alph)
+commonPrefix :: (Eq alph) => Word alph -> Word alph -> (Word alph, Word alph, Word alph)
 commonPrefix w1 w2 = commonPrefix_aux w1 w2 []
     where commonPrefix_aux (x:xs) (y:ys) cp | (x == y) = commonPrefix_aux xs ys (x:cp)
           commonPrefix_aux  w1     w2    cp            = (w1, w2, reverse cp)       
