@@ -57,8 +57,8 @@ void suffixArray(int* T, int* SA, int n, int K) {
 		if (T[SA12[i]] != c0 || T[SA12[i] + 1] != c1 || T[SA12[i] + 2] != c2) {
 			name++;
 			c0 = T[SA12[i]];
-			c1 = T[SA12[i]+1];
-			c2 = T[SA12[i]+2];
+			c1 = T[SA12[i] + 1];
+			c2 = T[SA12[i] + 2];
 		}
 		if (SA12[i] % 3 == 1) {
 			R[SA12[i] / 3] = name; // write to R1
