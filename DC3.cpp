@@ -23,11 +23,12 @@ static void radixPass(int* a, int* b, int* r, int n, int K)
 	for (int i = 0, sum = 0; i <= K; i++) { // exclusive prefix sums
 		int t = c[i];
 		c[i] = sum;
-		sum += t; }
-		for (int i = 0; i < n; i++) b[c[r[a[i]]]++] = a[i];
-		// sort
-		delete [] c;
+		sum += t;
 	}
+	for (int i = 0; i < n; i++) b[c[r[a[i]]]++] = a[i];
+	// sort
+	delete [] c;
+}
 
 // find the suffix array SA of T[0..n-1] in {1..K}^n
 // require T[n] = T[n+1] = T[n+2] =0, n >= 2

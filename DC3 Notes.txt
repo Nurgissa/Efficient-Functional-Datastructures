@@ -1,41 +1,43 @@
------------------------
-0 1 2 3 4 5 6 7 8 9 10
------------------------
-m i s s i s s i p p i
+------------------------------------
+0  1  2  3  4  5  6  7  8  9  10 11
+------------------------------------
+y  a  b  b  a  d  a  b  b  a  d  o
 
- 0    1    2    3    4    5    6    7    8    9    10
-mis, iss, ssi, sis, iss, ssi, sip, ipp, ppi, pi0, i00
+ 0    1    2    3    4    5    6    7    8    9    10   11
+yab, abb, bba, bad, ada, dab, abb, bba, bad, ado, do0, o00
 
-DC3!
+%-----------------------------------------------------------
+% DC3 - 1
+%-----------------------------------------------------------
 
-R_0 = mis, sis, sip, pi0
-R_1 = iss, iss, ipp, i00
-R_2 = ssi, ssi, ppi
+B_0 = {0, 3, 6, 9}
+B_1 = {1, 4, 7, 10}
+B_2 = {2, 5, 8, 11}
 
-R = iss, iss, ipp, i00, ssi, ssi, ppi
-sort(R) = i00, ipp, iss, iss, ppi, ssi, ssi
+R_0 = yab, bad, abb, ado
+R_1 = abb, ada, bba do0
+R_2 = bba dab, bad, o00
 
-DC3!
+       0    1    2    3    4    5    6    7
+---------------------------------------------
+ R  = abb, ada, bba, do0, bba, dab, bad, o00
+---------------------------------------------
+ R' = abb, ada, bad, bba, bba, dab, do0, o00
 
-R_0' = i00, iss, ssi
-R_1' = ipp, ppi
-R_2' = iss, ssi
+%-----------------------------------------------------------
+% DC3 - 2
+%-----------------------------------------------------------
 
-R' = ipp, ppi, iss, ssi
-sort(R') = (1) ipp, (2) iss, (3) ppi, (4) ssi
+B_0 = {0, 3, 6}
+B_1 = {1, 4, 7}
+B_2 = {2, 5}
 
-(1) ipp|i
-(2) iss|ippi
-(3) ppi
-(4) ssi|ssippi
+R_0 = abb, bba, do0
+R_1 = ada, bba, o00
+R_2 = bad, dab
 
-mississippi00
-R'------------------------
-       ippi   R_1' -> (i, ppi) 
- ississippi   R_2' -> ()
-        ppi   R_1' -> (p, pi0)
-  ssissippi   R_2' -> ()
-R_0'----------------------
-          i00 -> (i, 0) 
-    issippi   -> ()
-     ssippi   -> ()
+Rank   0    1    2    3    4
+------------------------------
+ R  = ada, bba, o00, bad, dab
+------------------------------
+ R' = ada, bad, bba, dab, o00
