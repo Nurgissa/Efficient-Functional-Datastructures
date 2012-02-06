@@ -1,19 +1,19 @@
-%//////////////////////////////////////////////////////////////////////////////
+%////////////////////////////////////////////////////////////////////////////
 % Präsentation "Suffix Trees und Suffix Arrays"
-%//////////////////////////////////////////////////////////////////////////////
+%////////////////////////////////////////////////////////////////////////////
 
 % Autoren   : Simon Kaltenbacher, Evgeny Novoseltsev
 % Semester  : WS 11/12
 % Vorlesung : Effiziente funktionale Datenstrukturen
 % Betreuer  : Prof. Martin Hofmann, PhD
 
-%//////////////////////////////////////////////////////////////////////////////
+%////////////////////////////////////////////////////////////////////////////
 
 \documentclass{beamer}
 
-%//////////////////////////////////////////////////////////////////////////////
+%////////////////////////////////////////////////////////////////////////////
 % Import
-%//////////////////////////////////////////////////////////////////////////////
+%////////////////////////////////////////////////////////////////////////////
 
 \usepackage[ngerman]{babel}
 \usepackage{textcomp}
@@ -33,11 +33,11 @@
 \usepackage{tabularx}
 % \usepackage{ctable}
 
-%//////////////////////////////////////////////////////////////////////////////
+%////////////////////////////////////////////////////////////////////////////
 % Konfiguration
-%//////////////////////////////////////////////////////////////////////////////
+%////////////////////////////////////////////////////////////////////////////
 
-%--listings-Konfiguration------------------------------------------------------
+%--listings-Konfiguration----------------------------------------------------
 
 \definecolor{verylightgray}{RGB}{230, 230, 230}
 \lstloadlanguages{Haskell}
@@ -45,7 +45,7 @@
     language = Haskell,
     tabsize = 4,
     showstringspaces = false,
-    breaklines = true,
+    breaklines = true,S
     basicstyle= \ttfamily\fontsize{9}{10}\selectfont,
     keywordstyle = \color{blue},
     commentstyle = \color{darkgray},
@@ -61,16 +61,16 @@
     backgroundcolor = \color{verylightgray}
 }
 
-%--Beamer Konfiguration--------------------------------------------------------
+%--Beamer Konfiguration------------------------------------------------------
 
 \usetheme{Goettingen}
 \beamersetuncovermixins{\opaqueness<1>{25}}{\opaqueness<2->{15}}
 
-%--TikZ Konfiguration----------------------------------------------------------
+%--TikZ Konfiguration--------------------------------------------------------
 
 \usetikzlibrary{trees, calc, shapes, scopes}
 
-%--Styledefinitionen für Suffix Trees------------------------------------------
+%--Styledefinitionen für Suffix Trees----------------------------------------
 
 \tikzstyle{branch} = [
     shape = circle,
@@ -99,7 +99,7 @@
     font = \tiny
 ]
 
-%--Benutzerdefinierte Makros---------------------------------------------------
+%--Benutzerdefinierte Makros-------------------------------------------------
 
 % Umgebung Bemerkung
 \newtheorem{remark}[theorem]{Bemerkung}
@@ -108,12 +108,12 @@
 
 \newcommand{\abs}[1]{\left|#1\right|}
 
-%//////////////////////////////////////////////////////////////////////////////
+%////////////////////////////////////////////////////////////////////////////
 % Dokumenteigenschaften
-%//////////////////////////////////////////////////////////////////////////////
+%////////////////////////////////////////////////////////////////////////////
 
 % Titel
-\title{Suffix Trees und Suffix Arrays}  
+\title{Suffix Trees und Suffix Arrays}
 
 % Autoren
 \author{Simon Kaltenbacher, Evgeny Novoseltsev}
@@ -121,40 +121,40 @@
 % Erstellungsdatum
 \date{\today}
 
-%//////////////////////////////////////////////////////////////////////////////
+%////////////////////////////////////////////////////////////////////////////
 % Dokument
-%//////////////////////////////////////////////////////////////////////////////
+%////////////////////////////////////////////////////////////////////////////
 
 \begin{document}
 
-%--Folie: Titelfolie-----------------------------------------------------------
+%--Folie: Titelfolie---------------------------------------------------------
 \frame{\titlepage}
-%--Folie-----------------------------------------------------------------------
+%--Folie---------------------------------------------------------------------
 
 %--Folie: Inhaltsverzeichnis---------------------------------------------------
 \frame{\frametitle{Inhaltsverzeichnis}\tableofcontents}
-%--Folie-----------------------------------------------------------------------
+%--Folie---------------------------------------------------------------------
 
-%//////////////////////////////////////////////////////////////////////////////
+%////////////////////////////////////////////////////////////////////////////
 \section{Einführung}
-%//////////////////////////////////////////////////////////////////////////////
+%////////////////////////////////////////////////////////////////////////////
 
-%--Folie: Einführung-----------------------------------------------------------
+%--Folie: Einführung---------------------------------------------------------
 \begin{frame}
 \frametitle{Einführung}
 % TODO Einführung ausarbeiten!
 \end{frame}
-%--Folie-----------------------------------------------------------------------
+%--Folie---------------------------------------------------------------------
 
-%//////////////////////////////////////////////////////////////////////////////
+%////////////////////////////////////////////////////////////////////////////
 \section{Suffix Tree}
-%//////////////////////////////////////////////////////////////////////////////
+%////////////////////////////////////////////////////////////////////////////
 
-%//////////////////////////////////////////////////////////////////////////////
+%////////////////////////////////////////////////////////////////////////////
 \subsection{Terminologie}
-%//////////////////////////////////////////////////////////////////////////////
+%////////////////////////////////////////////////////////////////////////////
 
-%--Folie: Grundlagen-----------------------------------------------------------
+%--Folie: Grundlagen---------------------------------------------------------
 \begin{frame}
 \frametitle{Grundlagen}
 \begin{itemize}
@@ -173,9 +173,9 @@
     Sei $t = uvw$ mit $u, v, w \in \Sigma^*$. Dann ist $u$ ein Präfix und $w$ ein Suffix von $t$. $v$ wird als $t$-Wort bezeichnet.
 \end{definition}
 \end{frame}
-%--Folie-----------------------------------------------------------------------
+%--Folie---------------------------------------------------------------------
 
-%--Folie: Grundlagen-----------------------------------------------------------
+%--Folie: Grundlagen---------------------------------------------------------
 \begin{frame}
 \frametitle{Grundlagen}
 \begin{definition}[$\Sigma^+$-Baum]
@@ -239,9 +239,9 @@ Sei $\Sigma = \left\{a, \dots, z\right\}$
 \end{figure}
 \end{example}
 \end{frame}
-%--Folie-----------------------------------------------------------------------
+%--Folie---------------------------------------------------------------------
 
-%--Folie: Grundlagen-----------------------------------------------------------
+%--Folie: Grundlagen---------------------------------------------------------
 \begin{frame}
 \frametitle{Grundlagen}
 \begin{definition}[Pfad]
@@ -257,9 +257,9 @@ Sei $\Sigma = \left\{a, \dots, z\right\}$
     $\boldsymbol{ag}$ ist ein verschachteltes Suffix von $\boldsymbol{ag}cgacg\boldsymbol{ag}$.
 \end{example}
 \end{frame}
-%--Folie-----------------------------------------------------------------------
+%--Folie---------------------------------------------------------------------
 
-%--Folie: Grundlagen-----------------------------------------------------------
+%--Folie: Grundlagen---------------------------------------------------------
 \begin{frame}
 \frametitle{Grundlagen}
 \begin{definition}[Suffix Tree]
@@ -272,13 +272,13 @@ Sei $\Sigma = \left\{a, \dots, z\right\}$
     Ein Wort $w$ ist genau dann in einem $\Sigma^+$-Baum enthalten, wenn ein Knoten $\overline{wu}$ in diesem Baum existiert.
 \end{remark}
 \end{frame}
-%--Folie-----------------------------------------------------------------------
+%--Folie---------------------------------------------------------------------
 
-%//////////////////////////////////////////////////////////////////////////////
+%////////////////////////////////////////////////////////////////////////////
 \subsection{Suffix Tree Klassen}
-%//////////////////////////////////////////////////////////////////////////////
+%////////////////////////////////////////////////////////////////////////////
 
-%--Folie: Suffix Tree Klassen--------------------------------------------------
+%--Folie: Suffix Tree Klassen------------------------------------------------
 \begin{frame}
     \frametitle{Suffix Tree Klassen}
     \begin{itemize}
@@ -288,12 +288,12 @@ Sei $\Sigma = \left\{a, \dots, z\right\}$
             \item Position Suffix Tree (pst)
             \item Compact Suffix Tree (cst)
         \end{itemize}
-        \item ast, pst, cst stehen durch Kantenverschmelzung in Relation zueinander. 
+        \item ast, pst, cst stehen durch Kantenverschmelzung in Relation zueinander.
     \end{itemize}
 \end{frame}
-%--Folie-----------------------------------------------------------------------
+%--Folie---------------------------------------------------------------------
 
-%--Folie: Atomic Suffix Tree---------------------------------------------------
+%--Folie: Atomic Suffix Tree-------------------------------------------------
 \begin{frame}
 \frametitle{Atomic Suffix Tree}
 \vspace{-2mm}
@@ -481,9 +481,9 @@ $ast(t)$ für die Zeichenkette $t = agcgacgag$.
 \vspace{-2mm}
 Jedes Blatt repräsentiert ein Suffix von $t$.
 \end{frame}
-%--Folie-----------------------------------------------------------------------
+%--Folie---------------------------------------------------------------------
 
-%--Folie: Kantenverschmelzung--------------------------------------------------
+%--Folie: Kantenverschmelzung------------------------------------------------
 \begin{frame}
 \frametitle{Kantenverschmelzung}
 \begin{definition}
@@ -561,9 +561,9 @@ Jedes Blatt repräsentiert ein Suffix von $t$.
 \end{figure}
 \end{example}
 \end{frame}
-%--Folie-----------------------------------------------------------------------
+%--Folie---------------------------------------------------------------------
 
-%--Folie: Atomic Suffix Tree -> Position Suffix Tree---------------------------
+%--Folie: Atomic Suffix Tree -> Position Suffix Tree-------------------------
 \begin{frame}
 \frametitle{Atomic Suffix Tree $\rightarrow$ Position Suffix Tree}
 $ast$ für die Zeichenkette $agcgacgag$.
@@ -747,9 +747,9 @@ $ast$ für die Zeichenkette $agcgacgag$.
 \end{tikzpicture}
 \end{figure}
 \end{frame}
-%--Folie-----------------------------------------------------------------------
+%--Folie---------------------------------------------------------------------
 
-%--Folie: Position Suffix Tree -> Compact Suffix Tree--------------------------
+%--Folie: Position Suffix Tree -> Compact Suffix Tree------------------------
 \begin{frame}
 \frametitle{Position Suffix Tree $\rightarrow$ Compact Suffix Tree}
 $pst$ für die Zeichenkette $agcgacgag$.
@@ -884,9 +884,9 @@ $cst$ für die Zeichenkette $agcgacgag$.
 \end{tikzpicture}
 \end{figure}
 \end{frame}
-%--Folie-----------------------------------------------------------------------
+%--Folie---------------------------------------------------------------------
 
-%--Folie: Suffix Tree Klassen--------------------------------------------------
+%--Folie: Suffix Tree Klassen------------------------------------------------
 \begin{frame}[t]
 \frametitle{Suffix Tree Klassen}
 \begin{definition}
@@ -901,20 +901,20 @@ Sei $S_t$ ein Suffix Tree für ein Wort $t$, repräsentiert durch seine Kantenme
     Seien $T_1$ und $T_2$ $\Sigma^+$-Bäume mit $T_1 \implies T_2$. Dann enthält $T_1$ genau dann das Wort $w$, wenn $T_2$ das Wort $w$ enthält.
 \end{lemma}
 \end{frame}
-%--Folie-----------------------------------------------------------------------
+%--Folie---------------------------------------------------------------------
 
-%--Folie: Speicherplatzbedarf--------------------------------------------------
+%--Folie: Speicherplatzbedarf------------------------------------------------
 \begin{frame}
 \frametitle{Speicherplatzbedarf}
 % TODO Folie Speicherplatzbedarf ausarbeiten!
 \end{frame}
-%--Folie-----------------------------------------------------------------------
+%--Folie---------------------------------------------------------------------
 
-%//////////////////////////////////////////////////////////////////////////////
+%////////////////////////////////////////////////////////////////////////////
 \subsection{Anwendungsgebiete}
-%//////////////////////////////////////////////////////////////////////////////
+%////////////////////////////////////////////////////////////////////////////
 
-%--Folie: Anwendungsgebiete----------------------------------------------------
+%--Folie: Anwendungsgebiete--------------------------------------------------
 \begin{frame}
 \frametitle{Anwendungsgebiete}
 Suffix Trees eignen sich insbesondere für Problemlösungen im Bereich der Stringverarbeitung.
@@ -938,13 +938,13 @@ Suffix Trees eignen sich insbesondere für Problemlösungen im Bereich der Strin
 \end{tabular}
 \end{figure}
 \end{frame}
-%--Folie-----------------------------------------------------------------------
+%--Folie---------------------------------------------------------------------
 
 % TODO Ein Anwendungsgebiet auswählen und vorstellen!
 
-%//////////////////////////////////////////////////////////////////////////////
+%////////////////////////////////////////////////////////////////////////////
 \subsection{Geschichte}
-%//////////////////////////////////////////////////////////////////////////////
+%////////////////////////////////////////////////////////////////////////////
 
 % TODO Morrison (1968)
 % TODO Weiner (1973)
@@ -952,15 +952,15 @@ Suffix Trees eignen sich insbesondere für Problemlösungen im Bereich der Strin
 % TODO Ukkonen (1995)
 % TODO Giegerich & Kurtz (1999)
 
-%//////////////////////////////////////////////////////////////////////////////
+%////////////////////////////////////////////////////////////////////////////
 \subsection{wotd-Algorithmus}
-%//////////////////////////////////////////////////////////////////////////////
+%////////////////////////////////////////////////////////////////////////////
 
-%//////////////////////////////////////////////////////////////////////////////
+%////////////////////////////////////////////////////////////////////////////
 \subsubsection{Beispiel}
-%//////////////////////////////////////////////////////////////////////////////
+%////////////////////////////////////////////////////////////////////////////
 
-%--Folie: Beispiel-------------------------------------------------------------
+%--Folie: Beispiel-----------------------------------------------------------
 \begin{frame}
 \frametitle{Beispiel für $agcgacgag$}
 \begin{tabularx}{\textwidth}{L X}
@@ -970,7 +970,7 @@ Suffix Trees eignen sich insbesondere für Problemlösungen im Bereich der Strin
     \begin{tabular}{l l l}
         \toprule
         Gruppe 1                 & Gruppe 2               & Gruppe 3                \\
-        \midrule 
+        \midrule
         $\boldsymbol{a}gcgacgag$ & $\boldsymbol{cga}cgag$ & $\boldsymbol{g}cgacgag$ \\
         $\boldsymbol{a}cgag$     & $\boldsymbol{cga}g$    & $\boldsymbol{g}acgag$   \\
         $\boldsymbol{a}g$        &                        & $\boldsymbol{g}ag$      \\
@@ -981,9 +981,9 @@ Suffix Trees eignen sich insbesondere für Problemlösungen im Bereich der Strin
     \end{tabular}
 \end{table}
 \end{frame}
-%--Folie-----------------------------------------------------------------------
+%--Folie---------------------------------------------------------------------
 
-%--Folie: Beispiel-------------------------------------------------------------
+%--Folie: Beispiel-----------------------------------------------------------
 \begin{frame}
 \frametitle{Beispiel für $agcgacgag$}
 Erstes und zweites Level
@@ -1064,9 +1064,9 @@ Erstes und zweites Level
 \end{tikzpicture}
 \end{figure}
 \end{frame}
-%--Folie-----------------------------------------------------------------------
+%--Folie---------------------------------------------------------------------
 
-%--Folie: Beispiel-------------------------------------------------------------
+%--Folie: Beispiel-----------------------------------------------------------
 \begin{frame}[t]
 \frametitle{Beispiel für $agcgacgag$}
 Drittes und letztes Level
@@ -1132,13 +1132,13 @@ Drittes und letztes Level
 \end{tikzpicture}
 \end{figure}
 \end{frame}
-%--Folie-----------------------------------------------------------------------
+%--Folie---------------------------------------------------------------------
 
-%//////////////////////////////////////////////////////////////////////////////
+%////////////////////////////////////////////////////////////////////////////
 \subsubsection{Vorgehensweise}
-%//////////////////////////////////////////////////////////////////////////////
+%////////////////////////////////////////////////////////////////////////////
 
-%--Folie: wotd-Algorithmus: Schritte-------------------------------------------
+%--Folie: wotd-Algorithmus: Schritte-----------------------------------------
 \begin{frame}[t]
 \frametitle{wotd-Algorithmus für cst}
     wotd: write-only top-down\\
@@ -1154,16 +1154,16 @@ Drittes und letztes Level
         \end{enumerate}
     \end{enumerate}
 \end{frame}
-%--Folie-----------------------------------------------------------------------
+%--Folie---------------------------------------------------------------------
 
-%--Folie: Haskell: List comprehension------------------------------------------
+%--Folie: Haskell: List comprehension----------------------------------------
 \begin{frame}[fragile]
 \frametitle{Haskell: List comprehension}
 List comprehensions ermöglichen es in Anlehnung an die mathematische Mengennotation Listen auf eine prägnante Art und Weise zu erzeugen.
 $$\{(i,j)\vert \: i \in \{1, 2\},\: j \in \{1, \dots, 4\}\}$$
 ist äquivalent zu
 $$[(i, j)\vert\: i \leftarrow [1,2],\: j \leftarrow [1..4]]$$
-Syntax: $[e \:\vert\: q_1, \dots, q_n], n \geq 1$ , wobei die $q_i$ entweder 
+Syntax: $[e \:\vert\: q_1, \dots, q_n], n \geq 1$ , wobei die $q_i$ entweder
 \begin{itemize}
     \item Generatoren, z. B. $i \leftarrow \left[1..4\right]$
     \item lokale Definitionen, z. B. $let\:i = x * x$
@@ -1171,9 +1171,9 @@ Syntax: $[e \:\vert\: q_1, \dots, q_n], n \geq 1$ , wobei die $q_i$ entweder
 \end{itemize}
 sind.
 \end{frame}
-%--Folie-----------------------------------------------------------------------
+%--Folie---------------------------------------------------------------------
 
-%--Folie: Haskell: List comprehension------------------------------------------
+%--Folie: Haskell: List comprehension----------------------------------------
 \begin{frame}[t, fragile]
 \frametitle{Haskell: List comprehension}
 \begin{examples}
@@ -1189,13 +1189,13 @@ sind.
 \end{enumerate}
 \end{examples}
 \end{frame}
-%--Folie-----------------------------------------------------------------------
+%--Folie---------------------------------------------------------------------
 
-%//////////////////////////////////////////////////////////////////////////////
+%////////////////////////////////////////////////////////////////////////////
 \subsubsection{Haskell-code}
-%//////////////////////////////////////////////////////////////////////////////
+%////////////////////////////////////////////////////////////////////////////
 
-%--Folie: Haskell-code: Typdefinitionen----------------------------------------
+%--Folie: Haskell-code: Typdefinitionen--------------------------------------
 \begin{frame}[fragile]
 \frametitle{Haskell-code: Typdefinitionen}
 \begin{lstlisting}
@@ -1211,9 +1211,9 @@ type Label alf = [alf]
 type EdgeFunction alf = [[alf]] -> ([alf],[[alf]])
 \end{lstlisting}
 \end{frame}
-%--Folie-----------------------------------------------------------------------
+%--Folie---------------------------------------------------------------------
 
-%--Folie: Haskell-code: Liste von Suffixen-------------------------------------
+%--Folie: Haskell-code: Liste von Suffixen-----------------------------------
 \begin{frame}[fragile]
 \frametitle{Haskell-code: Liste von Suffixen}
 Folgende Funktion liefert alle Suffixe von dem gegebenen Wort $aw$:
@@ -1227,13 +1227,13 @@ suffixes aw@(_:w) = aw:suffixes w
 \begin{description}[l]
     \item[Operator $(::)$] Typ-Spezifikations-Operator
     \item[Operator $(:)$] Cons-Operator: Erzeugt aus einer Liste $l$ und einem Element $h$ eine neue Liste, indem das Element $h$ der Liste $l$ vorangestellt wird.
-    \item[Operator $(@)$] Read-As-Operator: $aw@(\_:w)$ bedeutet, dass $aw$ mit $(\_:w)$ gematcht wird.  
+    \item[Operator $(@)$] Read-As-Operator: $aw@(\_:w)$ bedeutet, dass $aw$ mit $(\_:w)$ gematcht wird.
 \end{description}
 \end{remark}
 \end{frame}
-%--Folie-----------------------------------------------------------------------
+%--Folie---------------------------------------------------------------------
 
-%--Folie: Haskell-code: Auswahl------------------------------------------------
+%--Folie: Haskell-code: Auswahl----------------------------------------------
 \begin{frame}[fragile]
 \frametitle{Haskell-code: Auswahl einer Gruppe}
     Folgende Funktion liefert die Liste mit allen Wörter aus $ss$, die mit $a$ anfangen:
@@ -1243,16 +1243,16 @@ select ss a = [c:u | c:u <- ss, a == c]
 \end{lstlisting}
 \bigskip
 \end{frame}
-%--Folie-----------------------------------------------------------------------
+%--Folie---------------------------------------------------------------------
 
-%--Folie: Haskell-code: Kantenerzeugung----------------------------------------
+%--Folie: Haskell-code: Kantenerzeugung--------------------------------------
 \begin{frame}[fragile]
 \frametitle{Haskell-code: Kantenerzeugung}
 Folgende Funktion erzeugt die Kante mit der längster-Präfix- Beschriftung für eine gegebene Liste von Wörter:
 \begin{lstlisting}
 edge_cst :: (Eq alf) => EdgeFunction alf
 edge_cst [s] = ([s], [[]])
-edge_cst awss@((a:_):ss) 
+edge_cst awss@((a:_):ss)
     | all (\c:_ -> a == c) ss = (a:cp, rss)
     | otherwise               = ([], awss)
       where (cp, rss) = edge_cst ([t | _:t <- awss, length t > 0])
@@ -1263,18 +1263,18 @@ edge_cst awss@((a:_):ss)
 all :: (a -> Bool) -> [a] -> Bool
 all p [] = true
 all p x:xs = p x && all p xs
-\end{lstlisting}     
+\end{lstlisting}
 \end{remark}
 \end{frame}
-%--Folie-----------------------------------------------------------------------
+%--Folie---------------------------------------------------------------------
 
-%--Folie: Haskell-code: Baumaufbau---------------------------------------------
+%--Folie: Haskell-code: Baumaufbau-------------------------------------------
 \begin{frame}[fragile]
 \frametitle{Haskell-code: Baumaufbau}
 Die folgende Funktion baut den cst-Baum auf:
 \begin{lstlisting}
 lazy_cst :: (Eq alf) => (EdgeFunction alf) -> [alf] -> [alf] -> STree alf
-lazy_cst edge_cst alpha t = sTr (suffixes t) where 
+lazy_cst edge_cst alpha t = sTr (suffixes t) where
 sTr [[]] = Leaf
 sTr ss   = Branch[(cp,sTr rss)|a <- alpha,
                                let gs       = select ss a,
@@ -1282,13 +1282,13 @@ sTr ss   = Branch[(cp,sTr rss)|a <- alpha,
                                let (cp,rss) = edge_cst gs]
 \end{lstlisting}
 \end{frame}
-%--Folie-----------------------------------------------------------------------
+%--Folie---------------------------------------------------------------------
 
-%//////////////////////////////////////////////////////////////////////////////
+%////////////////////////////////////////////////////////////////////////////
 \subsection{Suche in Bäumen}
-%//////////////////////////////////////////////////////////////////////////////
+%////////////////////////////////////////////////////////////////////////////
 
-%--Folie: Suche in Bäumen------------------------------------------------------
+%--Folie: Suche in Bäumen----------------------------------------------------
 \begin{frame}[fragile]
 \frametitle{Suche in Bäumen}
 \begin{lstlisting}
@@ -1299,38 +1299,38 @@ search ss (Branch es) =  g ss es
                                   ([], _, _)   -> True
                                   (_, _, [])   -> g ss es
                                   (ss', [], _) -> search ss' st
-                                  _            -> False 
+                                  _            -> False
 
 commonPrefix :: (Eq alph) => Word alph -> Word alph -> (Word alph, Word alph, Word alph)
 commonPrefix w1 w2 = commonPrefix_aux w1 w2 []
     where commonPrefix_aux (x:xs) (y:ys) cp | (x == y) = commonPrefix_aux xs ys (x:cp)
-          commonPrefix_aux  w1     w2    cp            = (w1, w2, reverse cp)       
-\end{lstlisting}    
+          commonPrefix_aux  w1     w2    cp            = (w1, w2, reverse cp)
+\end{lstlisting}
 \end{frame}
-%--Folie-----------------------------------------------------------------------
+%--Folie---------------------------------------------------------------------
 
 
-%//////////////////////////////////////////////////////////////////////////////
+%////////////////////////////////////////////////////////////////////////////
 \subsubsection{Laufzeitanalyse}
-%//////////////////////////////////////////////////////////////////////////////
+%////////////////////////////////////////////////////////////////////////////
 
-%--Folie: Laufzeitanalyse------------------------------------------------------
+%--Folie: Laufzeitanalyse----------------------------------------------------
 \begin{frame}[fragile]
 \frametitle{Laufzeitanalyse}
 % TODO Laufzeitanalyse
 \end{frame}
-%--Folie-----------------------------------------------------------------------
+%--Folie---------------------------------------------------------------------
 
-%//////////////////////////////////////////////////////////////////////////////
+%////////////////////////////////////////////////////////////////////////////
 \section{Suffix Array}
-%//////////////////////////////////////////////////////////////////////////////
+%////////////////////////////////////////////////////////////////////////////
 
-%--Folie: Motiviation----------------------------------------------------------
+%--Folie: Motiviation--------------------------------------------------------
 \begin{frame}[fragile]
 \frametitle{Motivation}
 % TODO Folie Motivation für Suffix Arrays ausarbeiten!
 \end{frame}
-%--Folie-----------------------------------------------------------------------
+%--Folie---------------------------------------------------------------------
 
 % TODO Kapitel Suffix Arrays ausarbeiten!
 \end{document}
