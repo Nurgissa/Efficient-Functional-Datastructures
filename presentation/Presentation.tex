@@ -1306,7 +1306,7 @@ Die folgende Funktion baut den cst-Baum auf:
 lazy_cst ::(Eq alf) => (EdgeFunction alf) -> [alf] -> [alf] -> STree alf
 
 lazy_cst edge alpha t = sTr (suffixes t) 
-where
+ where
  sTr [[]] = Leaf
  sTr ss   = Branch[(cp,sTr rss) |
                    a <- alpha,
@@ -1322,23 +1322,39 @@ where
 \subsection{Suche in Bäumen}
 %////////////////////////////////////////////////////////////////////////////
 
-%--Folie: Suche in Bäumen----------------------------------------------------
+%--Folie: Haskell-Code: commonPrefix für die Suche---------------------------
+\begin{frame}[fragile]
+\frametitle{Suche in Bäumen}
+Hilfsfunktion:
+\begin{lstlisting}
+commonPrefix :: 
+ (Eq alph) => Word alph -> Word alph -> 
+ (Word alph, Word alph, Word alph)
+
+commonPrefix w1 w2 = g w1 w2 []
+ where
+ g (x:xs) (y:ys) cp | (x == y) = 
+                      g xs ys (x:cp)
+ g w1 w2 cp  = (w1, w2, reverse cp)
+\end{lstlisting}
+\end{frame}
+%--Folie---------------------------------------------------------------------
+
+%--Folie: Haskell-Code: Suche------------------------------------------------
 \begin{frame}[fragile]
 \frametitle{Suche in Bäumen}
 \begin{lstlisting}
-search :: (Eq alph) => Word alph -> STree alph -> Bool
+search :: (Eq alph) => 
+          Word alph -> STree alph -> Bool
+
 search ss Leaf        = False
 search ss (Branch es) =  g ss es
-    where g ss (((l, st):es)) = case commonPrefix ss l of
-                                  ([], _, _)   -> True
-                                  (_, _, [])   -> g ss es
-                                  (ss', [], _) -> search ss' st
-                                  _            -> False
-
-commonPrefix :: (Eq alph) => Word alph -> Word alph -> (Word alph, Word alph, Word alph)
-commonPrefix w1 w2 = commonPrefix_aux w1 w2 []
-    where commonPrefix_aux (x:xs) (y:ys) cp | (x == y) = commonPrefix_aux xs ys (x:cp)
-          commonPrefix_aux  w1     w2    cp            = (w1, w2, reverse cp)
+    where g ss (((l, st):es)) = 
+            case commonPrefix ss l of
+            ([], _, _)   -> True
+            (_, _, [])   -> g ss es
+            (ss', [], _) -> search ss' st
+            _            -> False
 \end{lstlisting}
 \end{frame}
 %--Folie---------------------------------------------------------------------
