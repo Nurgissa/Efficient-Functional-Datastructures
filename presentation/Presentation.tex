@@ -986,7 +986,7 @@ Suffix Trees eignen sich insbesondere für Problemlösungen im Bereich der Strin
 %--Folie: Beispiel-----------------------------------------------------------
 \begin{frame}
 \frametitle{Beispiel für $agcgacgag$}
-Erstes und zweites Level
+Erstes Level
 \begin{figure}
 \begin{tikzpicture}[
     font = \small,
@@ -1016,7 +1016,36 @@ Erstes und zweites Level
         \node[align = left, anchor = north, yshift = {-1mm}] at (v.center) {$cgag$ \\ $g$};
         \node[align = left, anchor = north, yshift = {-1mm}] at (w.center) {$cgacgag$ \\ $acgag$ \\ $ag$};
     }
-    \draw[dotted] (-4.5, 0.75) -- (5, 0.75);
+\end{tikzpicture}
+\end{figure}
+Die gebliebene Wörter werden wieder in Gruppen geteilt. Aus der ersten Gruppe werden folgende zwei teilgruppen erzeugt:
+\begin{table}
+    \begin{tabular}{l l}
+        \toprule
+        Gruppe 1                 & Gruppe 2               \\
+        \midrule
+        $\boldsymbol{g}cgacgag$  & $\boldsymbol{cgag}$    \\
+        $\boldsymbol{g}$         &                        \\
+        \midrule
+        $gcgacgag$\footnote{Falls nur $g$ als das gemeinsame Präfix genommen wurde, dann hätte \\ man eine unnötige Kante im Baum}                         & $cgag$                 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+\end{frame}
+%--Folie---------------------------------------------------------------------
+
+%--Folie: Beispiel-----------------------------------------------------------
+\begin{frame}[t]
+\frametitle{Beispiel für $agcgacgag$}
+Zweites und drittes Level
+\begin{figure}
+\begin{tikzpicture}[
+    font = \small,
+    level 1/.style = {level distance = 7mm, sibling distance = 30mm},
+    level 2/.style = {level distance = 7mm, sibling distance = 15mm},
+    level 3/.style = {level distance = 7mm, sibling distance = 10mm},
+    edge from parent/.style = {->, draw}
+    ]
     { [yshift = 0cm]
         \node[branch]{}
         child {
@@ -1063,13 +1092,6 @@ Erstes und zweites Level
     }
 \end{tikzpicture}
 \end{figure}
-\end{frame}
-%--Folie---------------------------------------------------------------------
-
-%--Folie: Beispiel-----------------------------------------------------------
-\begin{frame}[t]
-\frametitle{Beispiel für $agcgacgag$}
-Drittes und letztes Level
 \begin{figure}
 \begin{tikzpicture}[
     font = \small,
@@ -1078,6 +1100,7 @@ Drittes und letztes Level
     level 3/.style = {level distance = 7mm, sibling distance = 10mm},
     edge from parent/.style = {->, draw}
     ]
+    \draw[dotted] (-4.5, 0.75) -- (5, 0.75);
     { [yshift = 0cm]
         \node[branch]{}
         child {
@@ -1149,7 +1172,7 @@ Drittes und letztes Level
         \item Gruppiere nach den Anfangsbuchstaben. Erzeuge einen Knoten.
         \item Für jede Gruppe:
         \begin{enumerate}
-            \item Finde das längste gemeinsame Präfix, erzeuge eine Kante mit der Beschriftung vom Präfix, entferne das Präfix von den Wörtern der Gruppe.
+            \item Finde das längste gemeinsame Präfix\footnote{When ein Wort der Gruppe sich endet, wird das Präfix weiter gesucht}, erzeuge eine Kante mit der Beschriftung vom Präfix, entferne das Präfix von den Wörtern der Gruppe.
             \item Falls die Gruppe leer ist, erzeuge ein Blatt. Falls es in der Gruppe noch Wörter gibt, kehre zu Schritt 2 zurück.
         \end{enumerate}
     \end{enumerate}
@@ -1185,7 +1208,12 @@ sind.
 [6,8,10,12,14,16,18,20]
 \end{lstlisting}
 \item Mit lokaler Definition
-% TODO Beispiel für List comprehension mit lokaler Definition hinzufügen!
+\begin{lstlisting}
+[(i,j) | i <- [1,2], let k = i*i, 
+         j <- [1..k]]
+-- ergibt
+[(1,1),(2,1),(2,2),(2,3),(2,4)]
+\end{lstlisting}
 \end{enumerate}
 \end{examples}
 \end{frame}
@@ -1200,15 +1228,16 @@ sind.
 \frametitle{Haskell-code: Typdefinitionen}
 \begin{lstlisting}
 -- | Darstellung von Suffix Trees
-data STree alf = Leaf
-               | Branch [(Label alf, STree alf)]
-                 deriving Eq
+data STree alf = 
+    Leaf | Branch [(Label alf,STree alf)] 
+    deriving Eq
 
 -- | Darstellung von Beschriftungen
 type Label alf = [alf]
 
 -- | Darstellung vom Kantenaufbau
-type EdgeFunction alf = [[alf]] -> ([alf],[[alf]])
+type EdgeFunction alf = [[alf]] -> 
+                        ([alf],[[alf]])
 \end{lstlisting}
 \end{frame}
 %--Folie---------------------------------------------------------------------
@@ -1238,7 +1267,8 @@ suffixes aw@(_:w) = aw:suffixes w
 \frametitle{Haskell-code: Auswahl einer Gruppe}
     Folgende Funktion liefert die Liste mit allen Wörter aus $ss$, die mit $a$ anfangen:
 \begin{lstlisting}
-select :: (Eq alf) => [[alf]] -> alf -> [[alf]]
+select :: (Eq alf) => 
+          [[alf]] -> alf -> [[alf]]
 select ss a = [c:u | c:u <- ss, a == c]
 \end{lstlisting}
 \bigskip
@@ -1250,12 +1280,12 @@ select ss a = [c:u | c:u <- ss, a == c]
 \frametitle{Haskell-code: Kantenerzeugung}
 Folgende Funktion erzeugt die Kante mit der längster-Präfix- Beschriftung für eine gegebene Liste von Wörter:
 \begin{lstlisting}
-edge_cst :: (Eq alf) => EdgeFunction alf
-edge_cst [s] = ([s], [[]])
-edge_cst awss@((a:_):ss)
-    | all (\c:_ -> a == c) ss = (a:cp, rss)
-    | otherwise               = ([], awss)
-      where (cp, rss) = edge_cst ([t | _:t <- awss, length t > 0])
+edge :: (Eq alf) => EdgeFunction alf
+edge [s] = ([s], [[]])
+edge awss@((a:_):ss)
+ | all (\c:_ -> a == c) ss = (a:cp, rss)
+ | otherwise               = ([], awss)
+ where (cp, rss) = edge ([t | _:t <- awss, length t > 0])
 \end{lstlisting}
 \bigskip
 \begin{remark}
@@ -1273,13 +1303,17 @@ all p x:xs = p x && all p xs
 \frametitle{Haskell-code: Baumaufbau}
 Die folgende Funktion baut den cst-Baum auf:
 \begin{lstlisting}
-lazy_cst :: (Eq alf) => (EdgeFunction alf) -> [alf] -> [alf] -> STree alf
-lazy_cst edge_cst alpha t = sTr (suffixes t) where
-sTr [[]] = Leaf
-sTr ss   = Branch[(cp,sTr rss)|a <- alpha,
-                               let gs       = select ss a,
-                               length gs    > 0,
-                               let (cp,rss) = edge_cst gs]
+lazy_cst ::(Eq alf) => (EdgeFunction alf) -> [alf] -> [alf] -> STree alf
+
+lazy_cst edge alpha t = sTr (suffixes t) 
+where
+ sTr [[]] = Leaf
+ sTr ss   = Branch[(cp,sTr rss) |
+                   a <- alpha,
+                   let gs = select ss a,
+                   length gs > 0,
+                   let (cp,rss) = edge gs
+                   ]
 \end{lstlisting}
 \end{frame}
 %--Folie---------------------------------------------------------------------
