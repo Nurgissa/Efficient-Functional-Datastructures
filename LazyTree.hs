@@ -22,8 +22,8 @@ edge_cst awss@((a:_):ss)
     | otherwise                  = ([], awss)
         where (cp, rss) = edge_cst ([t | _:t <- awss, length t > 0])
 
-lazyTree :: (Eq alph) => (EdgeFunction alph) -> Word alph -> Word alph -> STree alph
-lazyTree edge_cst alphabet t = sTr (suffixes t) 
+lazy_cst :: (Eq alph) => (EdgeFunction alph) -> Word alph -> Word alph -> STree alph
+lazy_cst edge_cst alphabet t = sTr (suffixes t) 
     where sTr [[]] = Leaf 
           sTr ss   = Branch[(cp, sTr rss)| a <- alphabet, let gs = select ss a, length gs > 0, let (cp, rss) = edge_cst gs]
 
@@ -38,9 +38,9 @@ printTree i (Branch es) = g i es
                                g i lst
 
 commonPrefix :: (Eq alph) => Word alph -> Word alph -> (Word alph, Word alph, Word alph)
-commonPrefix w1 w2 = commonPrefix_aux w1 w2 []
-                     where commonPrefix_aux (x:xs) (y:ys) cp | (x == y) = commonPrefix_aux xs ys (x:cp)
-                           commonPrefix_aux  w1     w2    cp            = (w1, w2, reverse cp)
+commonPrefix w1 w2 = g w1 w2 []
+  where g (x:xs) (y:ys) cp | (x == y) = g xs ys (x:cp)
+        g  w1     w2    cp            = (w1, w2, reverse cp)
 
 search :: (Eq alph) => Word alph -> STree alph -> Bool
 search ss Leaf                = False

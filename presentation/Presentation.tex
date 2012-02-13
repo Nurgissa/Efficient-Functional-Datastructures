@@ -907,6 +907,17 @@ Sei $S_t$ ein Suffix Tree für ein Wort $t$, repräsentiert durch seine Kantenme
 \begin{frame}
 \frametitle{Speicherplatzbedarf}
 % TODO Folie Speicherplatzbedarf ausarbeiten!
+\begin{lemma}
+    cst kann als eine Datentruktur dargestellt werden, deren Speicherplatzbedarf $O(n)$ ist.
+\end{lemma}
+\begin{proof}
+    \begin{itemize}
+        \item cst hat nicht mehr als $n$ Blätter\footnote{abhängig davon, ob man Leafs zählt... erklären}. 
+        \item jeder innere Knoten ist eine Verzweigung, die Anzahl von Blätter mindestens um 1 erhöht.
+    \end{itemize}
+    $\rightarrow$ 
+    cst hat nicht mehr als $n$ innere Knoten und damit nicht mehr als $2n$ Kanten.
+\end{proof}
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
