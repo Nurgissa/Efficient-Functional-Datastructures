@@ -903,21 +903,31 @@ Sei $S_t$ ein Suffix Tree für ein Wort $t$, repräsentiert durch seine Kantenme
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
-%--Folie: Speicherplatzbedarf------------------------------------------------
+%--Folie: Speicherplatzbedarf, cst-------------------------------------------
 \begin{frame}
 \frametitle{Speicherplatzbedarf}
-% TODO Folie Speicherplatzbedarf ausarbeiten!
 \begin{lemma}
     cst kann als eine Datentruktur dargestellt werden, deren Speicherplatzbedarf $O(n)$ ist.
 \end{lemma}
 \begin{proof}
     \begin{itemize}
-        \item cst hat nicht mehr als $n$ Blätter\footnote{abhängig davon, ob man Leafs zählt... erklären}. 
-        \item jeder innere Knoten ist eine Verzweigung, die Anzahl von Blätter mindestens um 1 erhöht.
+        \item cst hat nicht mehr als $n$ Blätter. 
+        \item jeder innere Knoten ist eine Verzweigung, die die Anzahl von Blätter während dem Aufbau mindestens um 1 erhöht.
     \end{itemize}
     $\rightarrow$ 
     cst hat nicht mehr als $n$ innere Knoten und damit nicht mehr als $2n$ Kanten.
 \end{proof}
+\end{frame}
+%--Folie---------------------------------------------------------------------
+
+%--Folie: Speicherplatzbedarf, ast und pst-----------------------------------
+\begin{frame}
+\frametitle{Speicherplatzbedarf}
+ast und pst brauchen mehr Speicherplatz:
+\begin{itemize}
+    \item ast hat $O(n^2)$ Knoten: für jedes Suffix $s$ wird $|s|$ Knoten benötigt. 
+    \item pst hat $O(n^2)$ Knoten in worth-case (z.B. für $a^nb^na^nb^n$), aber in der Praxis hat pst $O(n)$ Knoten.
+\end{itemize}
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
