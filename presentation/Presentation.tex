@@ -911,10 +911,10 @@ Sei $S_t$ ein Suffix Tree für ein Wort $t$, repräsentiert durch seine Kantenme
 \end{lemma}
 \begin{proof}
     \begin{itemize}
-        \item cst hat nicht mehr als $n$ Blätter. 
+        \item cst hat nicht mehr als $n$ Blätter.
         \item jeder innere Knoten ist eine Verzweigung, die die Anzahl von Blätter während dem Aufbau mindestens um 1 erhöht.
     \end{itemize}
-    $\rightarrow$ 
+    $\rightarrow$
     cst hat nicht mehr als $n$ innere Knoten und damit nicht mehr als $2n$ Kanten.
 \end{proof}
 \end{frame}
@@ -923,10 +923,10 @@ Sei $S_t$ ein Suffix Tree für ein Wort $t$, repräsentiert durch seine Kantenme
 %--Folie: Speicherplatzbedarf, ast und pst-----------------------------------
 \begin{frame}
 \frametitle{Speicherplatzbedarf}
-ast und pst brauchen mehr Speicherplatz:
+ast und pst benötigen mehr Speicherplatz:
 \begin{itemize}
-    \item ast hat $O(n^2)$ Knoten: für jedes Suffix $s$ wird $|s|$ Knoten benötigt. 
-    \item pst hat $O(n^2)$ Knoten in worth-case (z.B. für $a^nb^na^nb^n$), aber in der Praxis hat pst $O(n)$ Knoten.
+    \item ast hat $O(n^2)$ Knoten: für jedes Suffix $s$ wird $|s|$ Knoten benötigt.
+    \item pst hat $O(n^2)$ Knoten im Worst-Case (z.B. für $a^nb^na^nb^n$), aber in der Praxis hat pst $O(n)$ Knoten.
 \end{itemize}
 \end{frame}
 %--Folie---------------------------------------------------------------------
@@ -1230,7 +1230,7 @@ sind.
 \end{lstlisting}
 \item Mit lokaler Definition
 \begin{lstlisting}
-[(i,j) | i <- [1,2], let k = i*i, 
+[(i,j) | i <- [1,2], let k = i*i,
          j <- [1..k]]
 -- ergibt
 [(1,1),(2,1),(2,2),(2,3),(2,4)]
@@ -1249,15 +1249,15 @@ sind.
 \frametitle{Haskell-code: Typdefinitionen}
 \begin{lstlisting}
 -- | Darstellung von Suffix Trees
-data STree alf = 
-    Leaf | Branch [(Label alf,STree alf)] 
+data STree alf =
+    Leaf | Branch [(Label alf,STree alf)]
     deriving Eq
 
 -- | Darstellung von Beschriftungen
 type Label alf = [alf]
 
 -- | Darstellung vom Kantenaufbau
-type EdgeFunction alf = [[alf]] -> 
+type EdgeFunction alf = [[alf]] ->
                         ([alf],[[alf]])
 \end{lstlisting}
 \end{frame}
@@ -1288,7 +1288,7 @@ suffixes aw@(_:w) = aw:suffixes w
 \frametitle{Haskell-code: Auswahl einer Gruppe}
     Folgende Funktion liefert die Liste mit allen Wörter aus $ss$, die mit $a$ anfangen:
 \begin{lstlisting}
-select :: (Eq alf) => 
+select :: (Eq alf) =>
           [[alf]] -> alf -> [[alf]]
 select ss a = [c:u | c:u <- ss, a == c]
 \end{lstlisting}
@@ -1326,7 +1326,7 @@ Die folgende Funktion baut den cst-Baum auf:
 \begin{lstlisting}
 lazy_cst ::(Eq alf) => (EdgeFunction alf) -> [alf] -> [alf] -> STree alf
 
-lazy_cst edge alpha t = sTr (suffixes t) 
+lazy_cst edge alpha t = sTr (suffixes t)
  where
  sTr [[]] = Leaf
  sTr ss   = Branch[(cp,sTr rss) |
@@ -1348,13 +1348,13 @@ lazy_cst edge alpha t = sTr (suffixes t)
 \frametitle{Suche in Bäumen}
 Hilfsfunktion:
 \begin{lstlisting}
-commonPrefix :: 
- (Eq alph) => Word alph -> Word alph -> 
+commonPrefix ::
+ (Eq alph) => Word alph -> Word alph ->
  (Word alph, Word alph, Word alph)
 
 commonPrefix w1 w2 = g w1 w2 []
  where
- g (x:xs) (y:ys) cp | (x == y) = 
+ g (x:xs) (y:ys) cp | (x == y) =
                       g xs ys (x:cp)
  g w1 w2 cp  = (w1, w2, reverse cp)
 \end{lstlisting}
@@ -1365,12 +1365,12 @@ commonPrefix w1 w2 = g w1 w2 []
 \begin{frame}[fragile]
 \frametitle{Suche in Bäumen}
 \begin{lstlisting}
-search :: (Eq alph) => 
+search :: (Eq alph) =>
           Word alph -> STree alph -> Bool
 
 search ss Leaf        = False
 search ss (Branch es) =  g ss es
-    where g ss (((l, st):es)) = 
+    where g ss (((l, st):es)) =
             case commonPrefix ss l of
             ([], _, _)   -> True
             (_, _, [])   -> g ss es
