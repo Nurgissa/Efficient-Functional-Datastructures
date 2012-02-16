@@ -9,8 +9,8 @@ type Word alph = [alph]
 type EdgeFunction alph = [Word alph] -> (Word alph,[Word alph])
 
 suffixes :: (Word alph) -> [Word alph]
-suffixes []       = []              
-suffixes aw@(_:w) = aw:suffixes w 
+suffixes []       = []
+suffixes aw@(_:w) = aw:suffixes w
 
 select :: (Eq alph) => [Word alph] -> alph -> [Word alph]
 select ss a = [c:u | c:u <- ss, a == c]
@@ -23,8 +23,8 @@ edge_cst awss@((a:_):ss)
         where (cp, rss) = edge_cst ([t | _:t <- awss, length t > 0])
 
 lazy_cst :: (Eq alph) => (EdgeFunction alph) -> Word alph -> Word alph -> STree alph
-lazy_cst edge_cst alphabet t = sTr (suffixes t) 
-    where sTr [[]] = Leaf 
+lazy_cst edge_cst alphabet t = sTr (suffixes t)
+    where sTr [[]] = Leaf
           sTr ss   = Branch[(cp, sTr rss)| a <- alphabet, let gs = select ss a, length gs > 0, let (cp, rss) = edge_cst gs]
 
 printTree :: (Show alph) => Int -> STree alph -> IO ()
@@ -43,15 +43,15 @@ commonPrefix w1 w2 = g w1 w2 []
         g  w1     w2    cp            = (w1, w2, reverse cp)
 
 search :: (Eq alph) => Word alph -> STree alph -> Bool
-search ss Leaf                = False
-search ss (Branch es) =  g ss es
+search ss Leaf        = False
+search ss (Branch es) = g ss es
     where g ss (((l, st):es)) = case commonPrefix ss l of
                                   ([], _, _)   -> True
                                   (_, _, [])   -> g ss es
                                   (ss', [], _) -> search ss' st
                                   _            -> False
 
-main = 
+main =
     let alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
         word = "agcgacgag"
     in  search "gag" $ lazy_cst edge_cst alphabet word
