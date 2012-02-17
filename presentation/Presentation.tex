@@ -27,7 +27,9 @@
 % Bäume zeichnen
 \usepackage{tikz}
 % Code von Programmiersprachen erkennen
-\usepackage{listings, courier, xcolor}
+% \usepackage{courier}
+\usepackage{inconsolata}
+\usepackage{listings, xcolor}
 % Tabellen
 \usepackage{booktabs}
 \usepackage{tabularx}
@@ -45,8 +47,8 @@
     language = Haskell,
     tabsize = 4,
     showstringspaces = false,
-    breaklines = true,S
-    basicstyle= \ttfamily\fontsize{9}{10}\selectfont,
+    breaklines = true,
+    basicstyle = \ttfamily\fontsize{8}{8}\selectfont,
     keywordstyle = \color{blue},
     commentstyle = \color{darkgray},
     frame = lines,
@@ -131,7 +133,7 @@
 \frame{\titlepage}
 %--Folie---------------------------------------------------------------------
 
-%--Folie: Inhaltsverzeichnis---------------------------------------------------
+%--Folie: Inhaltsverzeichnis-------------------------------------------------
 \frame{\frametitle{Inhaltsverzeichnis}\tableofcontents}
 %--Folie---------------------------------------------------------------------
 
@@ -984,8 +986,8 @@ Suffix Trees eignen sich insbesondere für Problemlösungen im Bereich der Strin
 %--Folie: Beispiel-----------------------------------------------------------
 \begin{frame}
 \frametitle{Beispiel für $agcgacgag$}
-\begin{tabularx}{\textwidth}{L X}
-    Suffixe &  $agcgacgag$, $gcgacgag$, $cgacgag$, $gacgag$, $acgag$, $cgag$, $gag$, $ag$, $g$
+\begin{tabularx}{\textwidth}{l X}
+    Suffixe &  $agcgacgag$, $gcgacgag$, $cgacgag$, $gacgag$, $acgag$, $cgag$, $gag$, $ag$, $g$ \\
 \end{tabularx}
 \begin{table}
     \begin{tabular}{l l l}
@@ -1048,7 +1050,7 @@ Die gebliebene Wörter werden wieder in Gruppen geteilt. Aus der ersten Gruppe w
         $\boldsymbol{g}cgacgag$  & $\boldsymbol{cgag}$    \\
         $\boldsymbol{g}$         &                        \\
         \midrule
-        $gcgacgag$\footnote{Falls nur $g$ als das gemeinsame Präfix genommen wurde, dann hätte \\ man eine unnötige Kante im Baum}                         & $cgag$                 \\
+        $gcgacgag$\footnote{Falls nur $g$ als das gemeinsame Präfix genommen wurde, dann hätte \\ man eine unnötige Kante im Baum} & $cgag$ \\
         \bottomrule
     \end{tabular}
 \end{table}
@@ -1288,8 +1290,7 @@ suffixes aw@(_:w) = aw:suffixes w
 \frametitle{Haskell-code: Auswahl einer Gruppe}
     Folgende Funktion liefert die Liste mit allen Wörter aus $ss$, die mit $a$ anfangen:
 \begin{lstlisting}
-select :: (Eq alf) =>
-          [[alf]] -> alf -> [[alf]]
+select :: (Eq alf) => [[alf]] -> alf -> [[alf]]
 select ss a = [c:u | c:u <- ss, a == c]
 \end{lstlisting}
 \bigskip
@@ -1304,9 +1305,9 @@ Folgende Funktion erzeugt die Kante mit der längster-Präfix- Beschriftung für
 edge :: (Eq alf) => EdgeFunction alf
 edge [s] = ([s], [[]])
 edge awss@((a:_):ss)
- | all (\c:_ -> a == c) ss = (a:cp, rss)
- | otherwise               = ([], awss)
- where (cp, rss) = edge ([t | _:t <- awss, length t > 0])
+    | all (\c:_ -> a == c) ss = (a:cp, rss)
+    | otherwise               = ([], awss)
+    where (cp, rss) = edge ([t | _:t <- awss, length t > 0])
 \end{lstlisting}
 \bigskip
 \begin{remark}
@@ -1327,9 +1328,9 @@ Die folgende Funktion baut den cst-Baum auf:
 lazy_cst ::(Eq alf) => (EdgeFunction alf) -> [alf] -> [alf] -> STree alf
 
 lazy_cst edge alpha t = sTr (suffixes t)
- where
- sTr [[]] = Leaf
- sTr ss   = Branch[(cp,sTr rss) |
+    where
+    sTr [[]] = Leaf
+    sTr ss   = Branch[(cp,sTr rss) |
                    a <- alpha,
                    let gs = select ss a,
                    length gs > 0,
