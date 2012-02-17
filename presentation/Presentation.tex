@@ -1388,7 +1388,12 @@ search ss (Branch es) =  g ss es
 %--Folie: Laufzeitanalyse----------------------------------------------------
 \begin{frame}[fragile]
 \frametitle{Laufzeitanalyse}
-% TODO Laufzeitanalyse
+% TODO Folie Laufzeitanalyse ausarbeiten!
+Aufwand der Schritte:
+\begin{itemize}
+    \item Sortiere $k$ Suffixe nach dem ersten Zeichen: $O(k), k \le n$
+    
+\end{itemize}
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
@@ -1400,6 +1405,62 @@ search ss (Branch es) =  g ss es
 \begin{frame}[fragile]
 \frametitle{Motivation}
 % TODO Folie Motivation für Suffix Arrays ausarbeiten!
+\end{frame}
+%--Folie---------------------------------------------------------------------
+
+%////////////////////////////////////////////////////////////////////////////
+\subsubsection{Kärkkäinen-Sanders Algorithmus}
+%////////////////////////////////////////////////////////////////////////////
+
+%////////////////////////////////////////////////////////////////////////////
+\subsubsection{Beispiel}
+%////////////////////////////////////////////////////////////////////////////
+
+%--Folie: DC3----------------------------------------------------------------
+\begin{frame}[fragile]
+\frametitle{Notation}
+\begin{itemize}
+    \item String $T = T[0,n) = t_0t_1 \dots t_{n-1}$
+    \item Suffix $S_i = T[i,n) = t_it_{i+1} \dots t_{n-1}$
+    \item $S_c = \{ S_i \mid i \in C\}$, wobei $C \subseteq [0,n]$ 
+    \item Suffixarray $SA$ von $T$ ist eine Permutation von $[0,n]$ mit $S_{SA[0]} \prec S_{SA[1]} \prec \dots \prec S_{SA[n]}$, wobei $\prec$-Relation "kleiner"-Relation über strings ist. 
+\end{itemize}
+\begin{example}
+\begin{itemize}
+    \item $T = T[0,12) = yabbadabbado$, $t_0 = y$, $t_{11} = o$
+    \item $S_5 = T[5,12) = dabbado$ 
+    \item $C = \{ 9,10,11\}$, dann $S_c = \{ \{ \}, \{ \}, \{ \}, \{ \}, \{ \}, \{ \}\}$ 
+    \item 
+\end{itemize}
+\end{example}
+\end{frame}
+%--Folie---------------------------------------------------------------------
+
+%--Folie: DC3----------------------------------------------------------------
+\begin{frame}[fragile]
+\frametitle{Beispiel für $yabbadabbado$}
+\begin{table}
+    \begin{tabular}{l|l l l l l l l l l l l l l l}
+        \toprule
+        i & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 \\
+        \midrule
+        T[i,n) & y & a & b & b & a & d & a & b & b & a & d & o & 0 & 0  \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+$B_k = \{ i \in [0,n]\ \mid i \: mod \: 3 = k \}$, dann     \\
+$B_0 = \{ 0, 3, 6, 9 \}$,                                   \\
+$B_1 = \{ 1, 4, 7, 10 \}$,                                  \\
+$B_2 = \{ 2, 5, 8, 11 \}$,                                  \\
+\medskip
+$C   = B_1 \cup B_2 = \{ 1, 4, 7, 10, 2, 5, 8, 11\}$.       \\
+\medskip
+$R_0 = [yab][bad][abb][ado]$
+$R_1 = [abb][ada][bba][do0]$                                \\
+$R_2 = [bba][dab][bad][o00]$                                \\
+\medskip
+$R   = [abb][ada][bba][do0][bba][dab][bad][o00]$            \\
+                                                              
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
