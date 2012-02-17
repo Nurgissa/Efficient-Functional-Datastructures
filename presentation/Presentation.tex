@@ -1349,15 +1349,12 @@ lazy_cst edge alpha t = sTr (suffixes t)
 \frametitle{Suche in Bäumen}
 Hilfsfunktion:
 \begin{lstlisting}
-commonPrefix ::
- (Eq alph) => Word alph -> Word alph ->
- (Word alph, Word alph, Word alph)
+commonPrefix :: (Eq alph) => Word alph -> Word alph -> (Word alph, Word alph, Word alph)
 
 commonPrefix w1 w2 = g w1 w2 []
- where
- g (x:xs) (y:ys) cp | (x == y) =
-                      g xs ys (x:cp)
- g w1 w2 cp  = (w1, w2, reverse cp)
+    where
+    g (x:xs) (y:ys) cp | (x == y) = g xs ys (x:cp)
+    g w1 w2 cp  = (w1, w2, reverse cp)
 \end{lstlisting}
 \end{frame}
 %--Folie---------------------------------------------------------------------
