@@ -1428,36 +1428,34 @@ search ss (Branch es) =  g ss es
 
 %--Folie: DC3, Notation------------------------------------------------------
 \begin{frame}[fragile]
-\frametitle{Notation}
-\begin{definition}[Suffix Array]
+\frametitle{Suffix Array}
+\begin{definition}
     \item Suffixarray $SA$ von $T$ ist eine Permutation von $[0,n]$ mit $S_{SA[0]} \prec S_{SA[1]} \prec \dots \prec S_{SA[n]}$, wobei $\prec$ die lexikographische Ordnung auf Zeichenketten bezeichnet.
 \end{definition}
 \begin{example}
-\begin{itemize}
-    \item Suffixarray für $yabbadabbado$ ist $SA = (12, 1, 6, 4, 9, 3, 8, 2, 7, 5, 10, 11, 0)$, wobei
-    % \begin{table}
-    %     \begin{tabular}{l|l}
-    %         \toprule
-    %         i & 13 \\
-    %         \midrule
-    %         T[i,n) & y\\
-    %         \bottomrule
-    %     \end{tabular}
-    % \end{table}
-    \begin{table}
-    \begin{tabular}{l r|l r}
-        \toprule
-        $S_{12}$    & $00$                      & $S_2$     & $b b a d a b b a d o 0 0$     \\
-        $S_1$   & $a b b a d a b b a d o 0 0$   & $S_7$     & $b b a d o 0 0$               \\
-        $S_6$   & $a b b a d o 0 0$             & $S_5$     & $d a b b a d o 0 0$           \\
-        $S_4$   & $a d a b b a d o 0 0$         & $S_{10}$  & $d o 0 0$                     \\
-        $S_9$   & $a d o 0 0$                   & $S_{11}$  & $o 0 0$                       \\
-        $S_3$   & $b a d a b b a d o 0 0$       & $S_0$     & $y a b b a d a b b a d o 0 0$ \\
-        $S_8$   & $b a d o 0 0$                 &           &                               \\
-        \bottomrule
-    \end{tabular}
-    \end{table}
-\end{itemize}
+Suffixarray für $yabbadabbado$ ist $SA = (12, 1, 6, 4, 9, 3, 8, 2, 7, 5, 10, 11, 0)$, wobei
+% \begin{table}
+%     \begin{tabular}{l|l}
+%         \toprule
+%         i & 13 \\
+%         \midrule
+%         T[i,n) & y\\
+%         \bottomrule
+%     \end{tabular}
+% \end{table}
+\begin{table}
+\begin{tabular}{l r|l r}
+    \toprule
+    $S_{12}$    & $00$                      & $S_2$     & $b b a d a b b a d o 0 0$     \\
+    $S_1$   & $a b b a d a b b a d o 0 0$   & $S_7$     & $b b a d o 0 0$               \\
+    $S_6$   & $a b b a d o 0 0$             & $S_5$     & $d a b b a d o 0 0$           \\
+    $S_4$   & $a d a b b a d o 0 0$         & $S_{10}$  & $d o 0 0$                     \\
+    $S_9$   & $a d o 0 0$                   & $S_{11}$  & $o 0 0$                       \\
+    $S_3$   & $b a d a b b a d o 0 0$       & $S_0$     & $y a b b a d a b b a d o 0 0$ \\
+    $S_8$   & $b a d o 0 0$                 &           &                               \\
+    \bottomrule
+\end{tabular}
+\end{table}
 \end{example}
 \end{frame}
 %--Folie---------------------------------------------------------------------
