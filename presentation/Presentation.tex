@@ -1211,10 +1211,10 @@ Zweites und drittes Level
 \begin{frame}[fragile]
 \frametitle{Haskell: List comprehension}
 List comprehensions ermöglichen es in Anlehnung an die mathematische Mengennotation Listen auf eine prägnante Art und Weise zu erzeugen.
-$$\{(i,j)\vert \: i \in \{1, 2\},\: j \in \{1, \dots, 4\}\}$$
+$$\{(i,j) \mid i \in \{1, 2\},\: j \in \{1, \dots, 4\}\}$$
 ist äquivalent zu
-$$[(i, j)\vert\: i \leftarrow [1,2],\: j \leftarrow [1..4]]$$
-Syntax: $[e \:\vert\: q_1, \dots, q_n], n \geq 1$ , wobei die $q_i$ entweder
+$$[(i, j) \mid i \leftarrow [1,2],\: j \leftarrow [1..4]]$$
+Syntax: $[e \mid q_1, \dots, q_n], n \geq 1$ , wobei die $q_i$ entweder
 \begin{itemize}
     \item Generatoren, z. B. $i \leftarrow \left[1..4\right]$
     \item lokale Definitionen, z. B. $let\:i = x * x$
@@ -1420,7 +1420,7 @@ search ss (Branch es) =  g ss es
 \begin{itemize}
     \item $T = T[0,12) = yabbadabbado$, $t_0 = y$, $t_{11} = o$
     \item $S_5 = T[5,12) = dabbado$
-    \item $C = \{2,10\}$, dann $S_c = \{ \{S_2\}, \{S_{10}\}\} = \{bbadabbado, do\}$
+    \item $C = \{2,10\}$, dann $S_c = \{ S_2, S_{10}\} = \{bbadabbado, do\}$
 \end{itemize}
 \end{example}
 \end{frame}
