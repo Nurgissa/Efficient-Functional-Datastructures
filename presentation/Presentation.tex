@@ -1202,6 +1202,10 @@ Zweites und drittes Level
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
+%////////////////////////////////////////////////////////////////////////////
+\subsubsection{Haskell-code}
+%////////////////////////////////////////////////////////////////////////////
+
 %--Folie: Haskell: List comprehension----------------------------------------
 \begin{frame}[fragile]
 \frametitle{Haskell: List comprehension}
@@ -1241,10 +1245,6 @@ sind.
 \end{examples}
 \end{frame}
 %--Folie---------------------------------------------------------------------
-
-%////////////////////////////////////////////////////////////////////////////
-\subsubsection{Haskell-code}
-%////////////////////////////////////////////////////////////////////////////
 
 %--Folie: Haskell-code: Typdefinitionen--------------------------------------
 \begin{frame}[fragile]
@@ -1341,6 +1341,22 @@ lazy_cst edge alpha t = sTr (suffixes t)
 %--Folie---------------------------------------------------------------------
 
 %////////////////////////////////////////////////////////////////////////////
+\subsubsection{Laufzeitanalyse}
+%////////////////////////////////////////////////////////////////////////////
+
+%--Folie: Laufzeitanalyse----------------------------------------------------
+\begin{frame}[fragile]
+\frametitle{Laufzeitanalyse}
+% TODO Folie Laufzeitanalyse ausarbeiten!
+Aufwand der Schritte:
+\begin{itemize}
+    \item Sortiere $k$ Suffixe nach dem ersten Zeichen: $O(k), k \le n$
+    
+\end{itemize}
+\end{frame}
+%--Folie---------------------------------------------------------------------
+
+%////////////////////////////////////////////////////////////////////////////
 \subsection{Suche in Bäumen}
 %////////////////////////////////////////////////////////////////////////////
 
@@ -1378,18 +1394,6 @@ search ss (Branch es) =  g ss es
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
-
-%////////////////////////////////////////////////////////////////////////////
-\subsubsection{Laufzeitanalyse}
-%////////////////////////////////////////////////////////////////////////////
-
-%--Folie: Laufzeitanalyse----------------------------------------------------
-\begin{frame}[fragile]
-\frametitle{Laufzeitanalyse}
-% TODO Laufzeitanalyse
-\end{frame}
-%--Folie---------------------------------------------------------------------
-
 %////////////////////////////////////////////////////////////////////////////
 \section{Suffix Array}
 %////////////////////////////////////////////////////////////////////////////
@@ -1398,6 +1402,131 @@ search ss (Branch es) =  g ss es
 \begin{frame}[fragile]
 \frametitle{Motivation}
 % TODO Folie Motivation für Suffix Arrays ausarbeiten!
+\end{frame}
+%--Folie---------------------------------------------------------------------
+
+%////////////////////////////////////////////////////////////////////////////
+\subsection{Notation}
+%////////////////////////////////////////////////////////////////////////////
+
+%--Folie: DC3, Notation------------------------------------------------------
+\begin{frame}[fragile]
+\frametitle{Notation}
+\begin{itemize}
+    \item String $T = T[0,n) = t_0t_1 \dots t_{n-1}$
+    \item Suffix $S_i = T[i,n) = t_it_{i+1} \dots t_{n-1}$
+    \item Suffixmenge $S_c = \{ S_i \mid i \in C\}$, wobei $C \subseteq [0,n]$ 
+\end{itemize}
+\begin{example}
+\begin{itemize}
+    \item $T = T[0,12) = yabbadabbado$, $t_0 = y$, $t_{11} = o$
+    \item $S_5 = T[5,12) = dabbado$ 
+    \item $C = \{2,10\}$, dann $S_c = \{ \{S_2\}, \{S_{10}\}\} = \{bbadabbado, do\}$ 
+\end{itemize}
+\end{example}
+\end{frame}
+%--Folie---------------------------------------------------------------------
+
+%--Folie: DC3, Notation------------------------------------------------------
+\begin{frame}[fragile]
+\frametitle{Notation}
+\begin{itemize}
+    \item Suffixarray $SA$ von $T$ ist eine Permutation von $[0,n]$ mit $S_{SA[0]} \prec S_{SA[1]} \prec \dots \prec S_{SA[n]}$, wobei $\prec$-Relation kleiner-Relation über strings ist. 
+\end{itemize}
+\begin{example}
+\begin{itemize}
+    \item Suffixarray für $yabbadabbado$ ist $SA = (12,1,6,4,9,3,8,2,7,5,10,11,0)$, wobei
+    % \begin{table}
+    %     \begin{tabular}{l|l}
+    %         \toprule
+    %         i & 13 \\
+    %         \midrule
+    %         T[i,n) & y\\
+    %         \bottomrule
+    %     \end{tabular}
+    % \end{table}
+    \begin{table}
+    \begin{tabular}{c|c|c|c}
+        \toprule
+        $S_{12}$    & $00$                      & $S_2$     & $b b a d a b b a d o 0 0$     \\
+        \midrule
+        $S_1$   & $a b b a d a b b a d o 0 0$   & $S_7$     & $b b a d o 0 0$               \\
+        \midrule
+        $S_6$   & $a b b a d o 0 0$             & $S_5$     & $d a b b a d o 0 0$           \\ 
+        \midrule
+        $S_4$   & $a d a b b a d o 0 0$         & $S_{10}$  & $d o 0 0$                     \\
+        \midrule
+        $S_9$   & $a d o 0 0$                   & $S_{11}$  & $o 0 0$                       \\
+        \midrule
+        $S_3$   & $b a d a b b a d o 0 0$       & $S_0$     & $y a b b a d a b b a d o 0 0$ \\
+        \midrule
+        $S_8$   & $b a d o 0 0$                 &           &                               \\
+        \bottomrule
+    \end{tabular}
+    \end{table}
+\end{itemize}
+\end{example}
+\end{frame}
+%--Folie---------------------------------------------------------------------
+
+%////////////////////////////////////////////////////////////////////////////
+\subsection{Kärkkäinen-Sanders Algorithmus}
+%////////////////////////////////////////////////////////////////////////////
+
+%////////////////////////////////////////////////////////////////////////////
+\subsubsection{Beispiel}
+%////////////////////////////////////////////////////////////////////////////
+
+%--Folie: DC3----------------------------------------------------------------
+\begin{frame}[fragile]
+\frametitle{Beispiel für $yabbadabbado$}
+\begin{table}
+    \begin{tabular}{l|l l l l l l l l l l l l l l}
+        \toprule
+        i & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 \\
+        \midrule
+        T[i,n) & y & a & b & b & a & d & a & b & b & a & d & o & 0 & 0  \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+$B_k = \{ i \in [0,n]\ \mid i \: mod \: 3 = k \}$, dann     \\
+$B_0 = \{ 0, 3, 6, 9 \}$,                                   \\
+$B_1 = \{ 1, 4, 7, 10 \}$,                                  \\
+$B_2 = \{ 2, 5, 8, 11 \}$,                                  \\
+\medskip
+$C   = B_1 \cup B_2 = \{ 1, 4, 7, 10, 2, 5, 8, 11\}$.       \\
+\medskip
+$R_0 = [yab][bad][abb][ado]$
+$R_1 = [abb][ada][bba][do0]$                                \\
+$R_2 = [bba][dab][bad][o00]$                                \\
+\medskip
+$R   = [abb][ada][bba][do0][bba][dab][bad][o00]$            \\
+\medskip 
+Ziel: $R_0$ und $R$ getrennt sortieren und dann vereinigen. 
+\begin{remark}
+   Suffixe von $R$ korrespondieren mit $S_c$. $R_i \prec R_j \leftrightarrow S_i \prec S_j$
+\end{remark}                                                       
+\end{frame}
+%--Folie---------------------------------------------------------------------
+
+%--Folie: DC3----------------------------------------------------------------
+\begin{frame}[fragile]
+\frametitle{Beispiel für $yabbadabbado$}
+\begin{description}[l]
+    \item[Schritt 1:] Sortieren von $R$.
+\end{description}
+Die Elemente von $R$ werden mit Radix-Sort sortiert, um den Rang festzustellen:
+\begin{table}
+    \begin{tabular}{l l l l l l l l l l l}
+        \toprule
+        1 & 2 & 3 & 4 & 5 & 6 & 7                          \\
+        \midrule
+        $[abb]$ & $[ada]$ & $[bad]$ & $[bba]$ & $[dab]$ & $[do0]$ & $[o00]$                                               \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+$R$ wird in $R'$ umgewandelt durch Ersetzen der Elementen mit seinen Ränge:                                                     \\
+$R' = (1,2,4,6,4,5,3,7)$
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
