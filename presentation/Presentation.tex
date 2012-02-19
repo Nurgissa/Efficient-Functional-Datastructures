@@ -908,6 +908,7 @@ Sei $S_t$ ein Suffix Tree für ein Wort $t$, repräsentiert durch seine Kantenme
 %--Folie: Speicherplatzbedarf, cst-------------------------------------------
 \begin{frame}
 \frametitle{Speicherplatzbedarf}
+% TODO Kanten müssen mit Paaren (i, j) beschriftet werden, um O(n) im Worst-Case zu erreichen.
 \begin{lemma}
     cst kann als eine Datentruktur dargestellt werden, deren Speicherplatzbedarf $O(n)$ ist.
 \end{lemma}
@@ -1041,7 +1042,7 @@ Erstes Level
     }
 \end{tikzpicture}
 \end{figure}
-Die gebliebene Wörter werden wieder in Gruppen geteilt. Aus der ersten Gruppe werden folgende zwei teilgruppen erzeugt:
+Die Restwörter werden abermals gruppiert.
 \begin{table}
     \begin{tabular}{l l}
         \toprule
@@ -1195,7 +1196,7 @@ Zweites und drittes Level
         \item Gruppiere nach den Anfangsbuchstaben. Erzeuge einen Knoten.
         \item Für jede Gruppe:
         \begin{enumerate}
-            \item Finde das längste gemeinsame Präfix\footnote{When ein Wort der Gruppe sich endet, wird das Präfix weiter gesucht}, erzeuge eine Kante mit der Beschriftung vom Präfix, entferne das Präfix von den Wörtern der Gruppe.
+            \item Finde das längste gemeinsame Präfix\footnote{Wenn ein Wort der Gruppe sich endet, wird das Präfix weiter gesucht}, erzeuge eine Kante mit der Beschriftung vom Präfix, entferne das Präfix von den Wörtern der Gruppe.
             \item Falls die Gruppe leer ist, erzeuge ein Blatt. Falls es in der Gruppe noch Wörter gibt, kehre zu Schritt 2 zurück.
         \end{enumerate}
     \end{enumerate}
@@ -1259,8 +1260,7 @@ data STree alf =
 type Label alf = [alf]
 
 -- | Darstellung vom Kantenaufbau
-type EdgeFunction alf = [[alf]] ->
-                        ([alf],[[alf]])
+type EdgeFunction alf = [[alf]] -> ([alf],[[alf]])
 \end{lstlisting}
 \end{frame}
 %--Folie---------------------------------------------------------------------
@@ -1351,33 +1351,32 @@ lazy_cst edge alpha t = sTr (suffixes t)
 Aufwand der Schritte:
 \begin{itemize}
     \item Sortiere $k$ Suffixe nach dem ersten Zeichen: $O(k), k \le n$
-    
+
 \end{itemize}
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
 %////////////////////////////////////////////////////////////////////////////
-\subsection{Suche in Bäumen}
+\subsection{Teilwortsuche}
 %////////////////////////////////////////////////////////////////////////////
 
-%--Folie: Haskell-Code: commonPrefix für die Suche---------------------------
+%--Folie: Haskell-Code: Teilwortsuche----------------------------------------
 \begin{frame}[fragile]
-\frametitle{Suche in Bäumen}
-Hilfsfunktion:
+\frametitle{Teilwortsuche}
+Hilfsfunktion
 \begin{lstlisting}
 commonPrefix :: (Eq alph) => Word alph -> Word alph -> (Word alph, Word alph, Word alph)
 
 commonPrefix w1 w2 = g w1 w2 []
-    where
-    g (x:xs) (y:ys) cp | (x == y) = g xs ys (x:cp)
-    g w1 w2 cp  = (w1, w2, reverse cp)
+    where g (x:xs) (y:ys) cp | (x == y) = g xs ys (x:cp)
+          g w1 w2 cp  = (w1, w2, reverse cp)
 \end{lstlisting}
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
 %--Folie: Haskell-Code: Suche------------------------------------------------
 \begin{frame}[fragile]
-\frametitle{Suche in Bäumen}
+\frametitle{Teilwortsuche}
 \begin{lstlisting}
 search :: (Eq alph) =>
           Word alph -> STree alph -> Bool
@@ -1415,13 +1414,13 @@ search ss (Branch es) =  g ss es
 \begin{itemize}
     \item String $T = T[0,n) = t_0t_1 \dots t_{n-1}$
     \item Suffix $S_i = T[i,n) = t_it_{i+1} \dots t_{n-1}$
-    \item Suffixmenge $S_c = \{ S_i \mid i \in C\}$, wobei $C \subseteq [0,n]$ 
+    \item Suffixmenge $S_c = \{ S_i \mid i \in C\}$, wobei $C \subseteq [0,n]$
 \end{itemize}
 \begin{example}
 \begin{itemize}
     \item $T = T[0,12) = yabbadabbado$, $t_0 = y$, $t_{11} = o$
-    \item $S_5 = T[5,12) = dabbado$ 
-    \item $C = \{2,10\}$, dann $S_c = \{ \{S_2\}, \{S_{10}\}\} = \{bbadabbado, do\}$ 
+    \item $S_5 = T[5,12) = dabbado$
+    \item $C = \{2,10\}$, dann $S_c = \{ \{S_2\}, \{S_{10}\}\} = \{bbadabbado, do\}$
 \end{itemize}
 \end{example}
 \end{frame}
@@ -1431,11 +1430,11 @@ search ss (Branch es) =  g ss es
 \begin{frame}[fragile]
 \frametitle{Notation}
 \begin{itemize}
-    \item Suffixarray $SA$ von $T$ ist eine Permutation von $[0,n]$ mit $S_{SA[0]} \prec S_{SA[1]} \prec \dots \prec S_{SA[n]}$, wobei $\prec$-Relation kleiner-Relation über strings ist. 
+    \item Suffixarray $SA$ von $T$ ist eine Permutation von $[0,n]$ mit $S_{SA[0]} \prec S_{SA[1]} \prec \dots \prec S_{SA[n]}$, wobei $\prec$ lexikographische Ordnung auf Zeichenketten bezeichnet.
 \end{itemize}
 \begin{example}
 \begin{itemize}
-    \item Suffixarray für $yabbadabbado$ ist $SA = (12,1,6,4,9,3,8,2,7,5,10,11,0)$, wobei
+    \item Suffixarray für $yabbadabbado$ ist $SA = (12, 1, 6, 4, 9, 3, 8, 2, 7, 5, 10, 11, 0)$, wobei
     % \begin{table}
     %     \begin{tabular}{l|l}
     %         \toprule
@@ -1446,20 +1445,14 @@ search ss (Branch es) =  g ss es
     %     \end{tabular}
     % \end{table}
     \begin{table}
-    \begin{tabular}{c|c|c|c}
+    \begin{tabular}{l r|l r}
         \toprule
         $S_{12}$    & $00$                      & $S_2$     & $b b a d a b b a d o 0 0$     \\
-        \midrule
         $S_1$   & $a b b a d a b b a d o 0 0$   & $S_7$     & $b b a d o 0 0$               \\
-        \midrule
-        $S_6$   & $a b b a d o 0 0$             & $S_5$     & $d a b b a d o 0 0$           \\ 
-        \midrule
+        $S_6$   & $a b b a d o 0 0$             & $S_5$     & $d a b b a d o 0 0$           \\
         $S_4$   & $a d a b b a d o 0 0$         & $S_{10}$  & $d o 0 0$                     \\
-        \midrule
         $S_9$   & $a d o 0 0$                   & $S_{11}$  & $o 0 0$                       \\
-        \midrule
         $S_3$   & $b a d a b b a d o 0 0$       & $S_0$     & $y a b b a d a b b a d o 0 0$ \\
-        \midrule
         $S_8$   & $b a d o 0 0$                 &           &                               \\
         \bottomrule
     \end{tabular}
@@ -1501,11 +1494,11 @@ $R_1 = [abb][ada][bba][do0]$                                \\
 $R_2 = [bba][dab][bad][o00]$                                \\
 \medskip
 $R   = [abb][ada][bba][do0][bba][dab][bad][o00]$            \\
-\medskip 
-Ziel: $R_0$ und $R$ getrennt sortieren und dann vereinigen. 
+\medskip
+Ziel: $R_0$ und $R$ getrennt sortieren und dann vereinigen.
 \begin{remark}
    Suffixe von $R$ korrespondieren mit $S_c$. $R_i \prec R_j \leftrightarrow S_i \prec S_j$
-\end{remark}                                                       
+\end{remark}
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
@@ -1515,20 +1508,21 @@ Ziel: $R_0$ und $R$ getrennt sortieren und dann vereinigen.
 \begin{description}[l]
     \item[Schritt 1:] Sortieren von $R$.
 \end{description}
-Die Elemente von $R$ werden mit Radix-Sort sortiert, um den Rang festzustellen:
+Die Elemente von $R$ werden mit Radix-Sort sortiert um den Rang bestimmen
 \begin{table}
-    \begin{tabular}{l l l l l l l l l l l}
+    \begin{tabular}{c c c c c c c c c c c}
         \toprule
-        1 & 2 & 3 & 4 & 5 & 6 & 7                          \\
+        1 & 2 & 3 & 4 & 5 & 6 & 7                                           \\
         \midrule
-        $[abb]$ & $[ada]$ & $[bad]$ & $[bba]$ & $[dab]$ & $[do0]$ & $[o00]$                                               \\
+        $[abb]$ & $[ada]$ & $[bad]$ & $[bba]$ & $[dab]$ & $[do0]$ & $[o00]$ \\
         \bottomrule
     \end{tabular}
 \end{table}
-$R$ wird in $R'$ umgewandelt durch Ersetzen der Elementen mit seinen Ränge:                                                     \\
-$R' = (1,2,4,6,4,5,3,7)$
+Wir erhalten $R$ aus $R'$, indem die Elemente von $R$ durch ihren Rang ersetzt werden.
+\begin{gather*}
+R' = (1,2,4,6,4,5,3,7)
+\end{gather*}
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
-% TODO Kapitel Suffix Arrays ausarbeiten!
 \end{document}
