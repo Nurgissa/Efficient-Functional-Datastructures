@@ -1429,9 +1429,9 @@ search ss (Branch es) =  g ss es
 %--Folie: DC3, Notation------------------------------------------------------
 \begin{frame}[fragile]
 \frametitle{Notation}
-\begin{itemize}
-    \item Suffixarray $SA$ von $T$ ist eine Permutation von $[0,n]$ mit $S_{SA[0]} \prec S_{SA[1]} \prec \dots \prec S_{SA[n]}$, wobei $\prec$ lexikographische Ordnung auf Zeichenketten bezeichnet.
-\end{itemize}
+\begin{definition}[Suffix Array]
+    \item Suffixarray $SA$ von $T$ ist eine Permutation von $[0,n]$ mit $S_{SA[0]} \prec S_{SA[1]} \prec \dots \prec S_{SA[n]}$, wobei $\prec$ die lexikographische Ordnung auf Zeichenketten bezeichnet.
+\end{definition}
 \begin{example}
 \begin{itemize}
     \item Suffixarray für $yabbadabbado$ ist $SA = (12, 1, 6, 4, 9, 3, 8, 2, 7, 5, 10, 11, 0)$, wobei
