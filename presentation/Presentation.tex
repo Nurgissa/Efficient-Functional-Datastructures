@@ -1229,18 +1229,18 @@ sind.
 \frametitle{Haskell: List comprehension}
 \begin{examples}
 \begin{enumerate}
-\item Mit Prädikat
-\begin{lstlisting}
-[2*x | x <- [0..10], x^2 > 5]
--- ergibt
-[6,8,10,12,14,16,18,20]
-\end{lstlisting}
-\item Mit lokaler Definition
-\begin{lstlisting}
-[(i,j) | i <- [1,2], let k = i*i,
-         j <- [1..k]]
--- ergibt
-[(1,1),(2,1),(2,2),(2,3),(2,4)]
+    \item Mit Prädikat
+    \begin{lstlisting}
+    [2*x | x <- [0..10], x^2 > 5]
+    -- ergibt
+    [6,8,10,12,14,16,18,20]
+    \end{lstlisting}
+    \item Mit lokaler Definition
+    \begin{lstlisting}
+    [(i,j) | i <- [1,2], let k = i*i,
+             j <- [1..k]]
+    -- ergibt
+    [(1,1),(2,1),(2,2),(2,3),(2,4)]
 \end{lstlisting}
 \end{enumerate}
 \end{examples}
@@ -1429,7 +1429,7 @@ search ss (Branch es) =  g ss es
 \begin{frame}[fragile]
 \frametitle{Suffix Array}
 \begin{definition}
-    \item Suffixarray $SA$ von $T$ ist eine Permutation von $[0,n]$ mit $S_{SA[0]} \prec S_{SA[1]} \prec \dots \prec S_{SA[n]}$, wobei $\prec$ die lexikographische Ordnung auf Zeichenketten bezeichnet.
+    Suffixarray $SA$ von $T$ ist eine Permutation von $[0,n]$ mit $S_{SA[0]} \prec S_{SA[1]} \prec \dots \prec S_{SA[n]}$, wobei $\prec$ die lexikographische Ordnung auf Zeichenketten bezeichnet.
 \end{definition}
 \begin{example}
 Suffixarray für $yabbadabbado$ ist $SA = (12, 1, 6, 4, 9, 3, 8, 2, 7, 5, 10, 11, 0)$, wobei
@@ -1480,9 +1480,9 @@ Suffixarray für $yabbadabbado$ ist $SA = (12, 1, 6, 4, 9, 3, 8, 2, 7, 5, 10, 11
     \end{tabular}
 \end{table}
 $B_k = \{ i \in [0,n]\ \mid i \: mod \: 3 = k \}$, dann     \\
-$B_0 = \{ 0, 3, 6, 9 \}$,                                   \\
-$B_1 = \{ 1, 4, 7, 10 \}$,                                  \\
-$B_2 = \{ 2, 5, 8, 11 \}$,                                  \\
+$B_0 = \{0, 3, 6, 9 \}$,                                   \\
+$B_1 = \{1, 4, 7, 10 \}$,                                  \\
+$B_2 = \{2, 5, 8, 11 \}$,                                  \\
 \medskip
 $C   = B_1 \cup B_2 = \{1, 4, 7, 10, 2, 5, 8, 11\}$.       \\
 \medskip
