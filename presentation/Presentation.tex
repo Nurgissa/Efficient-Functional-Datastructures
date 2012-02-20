@@ -928,7 +928,7 @@ Sei $S_t$ ein Suffix Tree für ein Wort $t$, repräsentiert durch seine Kantenme
 \frametitle{Speicherplatzbedarf}
 ast und pst benötigen mehr Speicherplatz:
 \begin{itemize}
-    \item ast hat $O(n^2)$ Knoten: für jedes Suffix $s$ wird $|s|$ Knoten benötigt.
+    \item ast hat $O(n^2)$ Knoten: für jedes Suffix $s$ wird $\abs{s}$ Knoten benötigt.
     \item pst hat $O(n^2)$ Knoten im Worst-Case (z.B. für $a^nb^na^nb^n$), aber in der Praxis hat pst $O(n)$ Knoten.
 \end{itemize}
 \end{frame}
@@ -1351,7 +1351,6 @@ lazy_cst edge alpha t = sTr (suffixes t)
 Aufwand der Schritte:
 \begin{itemize}
     \item Sortiere $k$ Suffixe nach dem ersten Zeichen: $O(k), k \le n$
-
 \end{itemize}
 \end{frame}
 %--Folie---------------------------------------------------------------------
@@ -1485,7 +1484,7 @@ $B_0 = \{ 0, 3, 6, 9 \}$,                                   \\
 $B_1 = \{ 1, 4, 7, 10 \}$,                                  \\
 $B_2 = \{ 2, 5, 8, 11 \}$,                                  \\
 \medskip
-$C   = B_1 \cup B_2 = \{ 1, 4, 7, 10, 2, 5, 8, 11\}$.       \\
+$C   = B_1 \cup B_2 = \{1, 4, 7, 10, 2, 5, 8, 11\}$.       \\
 \medskip
 $R_0 = [yab][bad][abb][ado]$
 $R_1 = [abb][ada][bba][do0]$                                \\

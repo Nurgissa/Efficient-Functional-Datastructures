@@ -1,6 +1,16 @@
 i   | 0 1 2 3 4 5 6 7 8 9 10 11 12
 t_i | y a b b a d a b b a d  o  $
 
+v = 3
+
+ 1 abb|adabbado
+ 2 bba|dabbado
+ 4 ada|bbado
+ 5 dab|bado
+ 7 bba|do
+ 8 bad|o
+10 do
+11 o
 
 B_0 = {0, 3, 6, 9, 12}
 B_1 = {1, 4, 7, 10}
@@ -10,22 +20,39 @@ C   = {1, 4, 7, 10, 2, 5, 8, 11}
 R_1 = abb, ada, bba, do$
 R_2 = bba, dab, bad, o$$
 
-     1          2        4          6         4         5         3         7
+     1          2        	4          6	         4         5         3	         7
 R = abb(-> 1), ada(-> 4), bba(-> 7), do$(-> 10), bba(-> 2), dab(-> 5), bad(-> 8), o$$(-> 11),
 
-(->n) bedeutet, dass sie Trigramme zu dem Pltz n referenziert.
+(->n) bedeutet, dass die Trigramme zu dem Platz n referenziert.
 
 R' = 1 2 4 6 4 5 3 7 0  (0 appended)
 
 Es gibt zwei gleiche Nummer -> rekursiver Aufruf für R'
 -------------------------------------------------
 i   | 0 1 2 3 4 5 6 7 8
-t_i | 1 2 4 6 4 5 3 7 0
+t_i | 1 2 4 6 4 5 3 7 0 <- Rang aus vorherigem Aufruf
+      _     _     _
+
+  2    4    6
+[ada][bba][do$]
+
+  4    5    3
+[bba][dab][bad]
+
+  7
+[o$$]
 
 R_1' = 246, 453, 70$
+
+  4    6    4
+[bba][do$][bba]
+
+  5    3    7
+[dab][bad][o$$]
+
 R_2' = 464, 537, 0$$
 
-       2         3         6         4         5         1
+       2         	3         6         	4         5         1
 R_1 = 246(-> 1), 453(-> 4), 70$(-> 7), 464(-> 2), 537(-> 5), 0$$(-> 8)
 
 R_1' = 2 3 6 4 5 1 0
@@ -59,7 +86,7 @@ SA(R') = 8 0 1 6 4 2 5 3 7
 -------------------------------------------------
 i           | 0 1 2 3 4 5 6 7 8 9 10 11 12
 t_i         | y a b b a d a b b a d  o  $
-rank(S_i)   | _ 1 4 _ 2 6 _ 5 3 _ 7  8  _    <- Nummern der Trigrammen bei Plätzen, zu denen sie eine Refrerenz haben.
+rank(S_i)   | _ 1 4 _ 2 6 _ 5 3 _ 7  8  _    <- Nummern der Trigrammen bei Plätzen, zu denen sie eine Referenz haben.
 
 S_0 = y a b b a d a b b a d o = yS_1 = (y,1)
 S_3 = b a d a b b a d o = bS_4 = (b,2)
