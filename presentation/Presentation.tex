@@ -144,7 +144,7 @@
 %--Folie: Einführung---------------------------------------------------------
 \begin{frame}
 \frametitle{Einführung}
-% TODO Einführung ausarbeiten!
+TODO Einführung ausarbeiten!
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
@@ -266,11 +266,15 @@ Sei $\Sigma = \left\{a, \dots, z\right\}$
 \frametitle{Grundlagen}
 \begin{definition}[Suffix Tree]
     Ein Suffix Tree $S_t$ für ein gegebenes Wort $t$ ist ein $\Sigma^+$-Baum, sodass gilt:
-    $$w \in S_t  \Longleftrightarrow w \text{ ist ein }t\text{-Wort}$$
+    \begin{gather*}
+        w \in S_t  \Longleftrightarrow w \text{ ist ein }t\text{-Wort}
+    \end{gather*}
 \end{definition}
 \begin{remark}
     Jedes $t$-Wort $w$ lässt sich darstellen als: $t = vs, s = wu$
-    $$t = a \dots b \underbrace{\overbrace{c \dots d}^{\text{Präfix }w} e \dots f}_{\text{Suffix }s}$$
+    \begin{gather*}
+        t = a \dots b \underbrace{\overbrace{c \dots d}^{\text{Präfix }w} e \dots f}_{\text{Suffix }s}
+    \end{gather*}
     Ein Wort $w$ ist genau dann in einem $\Sigma^+$-Baum enthalten, wenn ein Knoten $\overline{wu}$ in diesem Baum existiert.
 \end{remark}
 \end{frame}
@@ -490,7 +494,9 @@ Jedes Blatt repräsentiert ein Suffix von $t$.
 \frametitle{Kantenverschmelzung}
 \begin{definition}
     Kantenverschmelzung ist eine Relation auf $\Sigma^+$-Bäumen, die durch ihre Kantenmengen repräsentiert werden.
-    $$\left(E \uplus \{\overline{s}\:\xrightarrow{u}\:\overline{w},\overline{w}\:\xrightarrow{u'}\:\overline{v}\}\right) \overset{\overline{w}}{\implies} \left(E \uplus \{\overline{s}\:\xrightarrow{uu'}\:\overline{v}\}\right)$$
+    \begin{gather*}
+        \left(E \uplus \{\overline{s}\:\xrightarrow{u}\:\overline{w},\overline{w}\:\xrightarrow{u'}\:\overline{v}\}\right) \overset{\overline{w}}{\implies} \left(E \uplus \{\overline{s}\:\xrightarrow{uu'}\:\overline{v}\}\right)
+    \end{gather*}
     wenn $\overline{w} \xrightarrow{u'} \overline{v}$ ist die einzige ausgehende Kante von $\overline{w}$.
 \end{definition}
 \begin{example}
@@ -908,7 +914,7 @@ Sei $S_t$ ein Suffix Tree für ein Wort $t$, repräsentiert durch seine Kantenme
 %--Folie: Speicherplatzbedarf, cst-------------------------------------------
 \begin{frame}
 \frametitle{Speicherplatzbedarf}
-% TODO Kanten müssen mit Paaren (i, j) beschriftet werden, um O(n) im Worst-Case zu erreichen.
+TODO Kanten müssen mit Paaren (i, j) beschriftet werden, um O(n) im Worst-Case zu erreichen.
 \begin{lemma}
     cst kann als eine Datentruktur dargestellt werden, deren Speicherplatzbedarf $O(n)$ ist.
 \end{lemma}
@@ -935,6 +941,78 @@ ast und pst benötigen mehr Speicherplatz:
 %--Folie---------------------------------------------------------------------
 
 %////////////////////////////////////////////////////////////////////////////
+\subsection{Generalized Suffix Tree}
+%////////////////////////////////////////////////////////////////////////////
+
+\begin{frame}
+\frametitle{Generalized Suffix Tree}
+\begin{definition}
+Sei $D = \{s_1, \dots, s_n\}$ eine Menge von Strings über $\Sigma$. $T = \{t_1, \dots, t_n\}$ eine Menge von Terminalsymbolen mit $T \cap \Sigma = \emptyset$. Ein GST $S_D$ ist ein $\Sigma^+$-Baum, sodass für alle $i \leq n$ gilt:
+\begin{gather*}
+    w \in S_D \Longleftrightarrow w \text{ ist ein } s_it_i\text{-Wort}
+\end{gather*}
+\end{definition}
+\vspace{-3mm}
+\begin{example}
+GST für $D = \{agcg, acg\}$ und $T = \{\$, \#\}$
+\begin{figure}
+\begin{tikzpicture}[
+    font = \small,
+    level 1/.style = {level distance = 8mm, sibling distance = 30mm},
+    level 2/.style = {level distance = 8mm, sibling distance = 15mm},
+    edge from parent/.style = {->, draw}
+    ]
+    \node[branch]{}
+    child {
+        node[branch]{}
+        child {
+            edge from parent
+            node[left]{$gcg\$$}
+        }
+        child {
+            edge from parent
+            node[right]{$cg\#$}
+        }
+        edge from parent
+        node[above]{$a$}
+    }
+    child {
+        node[branch]{}
+        child {
+            edge from parent
+            node[left]{$\$$}
+        }
+        child {
+            edge from parent
+            node[right]{$\#$}
+        }
+        edge from parent
+        node[left]{$cg$}
+    }
+    child {
+        node[branch]{}
+        child {
+            edge from parent
+            node[left]{$cg\$$}
+        }
+        child {
+            edge from parent
+            node[left]{$\$$}
+        }
+        child {
+            node[branch]{}
+            edge from parent
+            node[right]{$\#$}
+        }
+        edge from parent
+        node[above]{$g$}
+    };
+\end{tikzpicture}
+\end{figure}
+\end{example}
+\end{frame}
+
+%////////////////////////////////////////////////////////////////////////////
 \subsection{Anwendungsgebiete}
 %////////////////////////////////////////////////////////////////////////////
 
@@ -950,8 +1028,8 @@ Suffix Trees eignen sich insbesondere für Problemlösungen im Bereich der Strin
     Construction of DAWGs                 \\
     Exact set matching                    \\
     Exact string matching                 \\
-    \textbf{k-mismatch}                   \\
-    Longest common substring              \\
+    k-mismatch                            \\
+    \textbf{Longest common substring}     \\
     Matching statistics                   \\
     Maximal repeated pairs                \\
     Maximal repeats                       \\
@@ -964,11 +1042,19 @@ Suffix Trees eignen sich insbesondere für Problemlösungen im Bereich der Strin
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
-% TODO Ein Anwendungsgebiet auswählen und vorstellen!
+%--Folie: ... ---------------------------------------------------------------
+\begin{frame}
+\frametitle{Longest common substring}
+TODO Anwendungsgebiet auswählen und vorstellen!
+\end{frame}
+%--Folie---------------------------------------------------------------------
+
 
 %////////////////////////////////////////////////////////////////////////////
-\subsection{Geschichte}
+% \subsection{Geschichte}
 %////////////////////////////////////////////////////////////////////////////
+
+% TODO Geschichte im Vortrag?
 
 % TODO Morrison (1968)
 % TODO Weiner (1973)
@@ -1211,9 +1297,13 @@ Zweites und drittes Level
 \begin{frame}[fragile]
 \frametitle{Haskell: List comprehension}
 List comprehensions ermöglichen es in Anlehnung an die mathematische Mengennotation Listen auf eine prägnante Art und Weise zu erzeugen.
-$$\{(i,j) \mid i \in \{1, 2\},\: j \in \{1, \dots, 4\}\}$$
+\begin{gather*}
+    \{(i,j) \mid i \in \{1, 2\},\: j \in \{1, \dots, 4\}\}
+\end{gather*}
 ist äquivalent zu
-$$[(i, j) \mid i \leftarrow [1,2],\: j \leftarrow [1..4]]$$
+\begin{gather*}
+    [(i, j) \mid i \leftarrow [1,2],\: j \leftarrow [1..4]]
+\end{gather*}
 Syntax: $[e \mid q_1, \dots, q_n], n \geq 1$ , wobei die $q_i$ entweder
 \begin{itemize}
     \item Generatoren, z. B. $i \leftarrow \left[1..4\right]$
@@ -1347,11 +1437,11 @@ lazy_cst edge alpha t = sTr (suffixes t)
 %--Folie: Laufzeitanalyse----------------------------------------------------
 \begin{frame}[fragile]
 \frametitle{Laufzeitanalyse}
-% TODO Folie Laufzeitanalyse ausarbeiten!
-Aufwand der Schritte:
-\begin{itemize}
-    \item Sortiere $k$ Suffixe nach dem ersten Zeichen: $O(k), k \le n$
-\end{itemize}
+TODO Folie Laufzeitanalyse ausarbeiten!
+% Aufwand der Schritte:
+% \begin{itemize}
+%     \item Sortiere $k$ Suffixe nach dem ersten Zeichen: $O(k), k \le n$
+% \end{itemize}
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
@@ -1377,17 +1467,16 @@ commonPrefix w1 w2 = g w1 w2 []
 \begin{frame}[fragile]
 \frametitle{Teilwortsuche}
 \begin{lstlisting}
-search :: (Eq alph) =>
-          Word alph -> STree alph -> Bool
+search :: (Eq alph) => Word alph -> STree alph -> Bool
 
 search ss Leaf        = False
 search ss (Branch es) =  g ss es
     where g ss (((l, st):es)) =
-            case commonPrefix ss l of
-            ([], _, _)   -> True
-            (_, _, [])   -> g ss es
-            (ss', [], _) -> search ss' st
-            _            -> False
+        case commonPrefix ss l of
+         ([], _, _)   -> True
+         (_, _, [])   -> g ss es
+         (ss', [], _) -> search ss' st
+         _            -> False
 \end{lstlisting}
 \end{frame}
 %--Folie---------------------------------------------------------------------
@@ -1399,7 +1488,7 @@ search ss (Branch es) =  g ss es
 %--Folie: Motiviation--------------------------------------------------------
 \begin{frame}[fragile]
 \frametitle{Motivation}
-% TODO Folie Motivation für Suffix Arrays ausarbeiten!
+TODO Motivation für Suffix Arrays ausarbeiten!
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
@@ -1445,13 +1534,13 @@ Suffixarray für $yabbadabbado$ ist $SA = (12, 1, 6, 4, 9, 3, 8, 2, 7, 5, 10, 11
 \begin{table}
 \begin{tabular}{l r|l r}
     \toprule
-    $S_{12}$    & $00$                      & $S_2$     & $b b a d a b b a d o 0 0$     \\
-    $S_1$   & $a b b a d a b b a d o 0 0$   & $S_7$     & $b b a d o 0 0$               \\
-    $S_6$   & $a b b a d o 0 0$             & $S_5$     & $d a b b a d o 0 0$           \\
-    $S_4$   & $a d a b b a d o 0 0$         & $S_{10}$  & $d o 0 0$                     \\
-    $S_9$   & $a d o 0 0$                   & $S_{11}$  & $o 0 0$                       \\
-    $S_3$   & $b a d a b b a d o 0 0$       & $S_0$     & $y a b b a d a b b a d o 0 0$ \\
-    $S_8$   & $b a d o 0 0$                 &           &                               \\
+    $S_{12}$    & $00$                          & $S_2$     & $b b a d a b b a d o 0 0$     \\
+    $S_1$       & $a b b a d a b b a d o 0 0$   & $S_7$     & $b b a d o 0 0$               \\
+    $S_6$       & $a b b a d o 0 0$             & $S_5$     & $d a b b a d o 0 0$           \\
+    $S_4$       & $a d a b b a d o 0 0$         & $S_{10}$  & $d o 0 0$                     \\
+    $S_9$       & $a d o 0 0$                   & $S_{11}$  & $o 0 0$                       \\
+    $S_3$       & $b a d a b b a d o 0 0$       & $S_0$     & $y a b b a d a b b a d o 0 0$ \\
+    $S_8$       & $b a d o 0 0$                 &           &                               \\
     \bottomrule
 \end{tabular}
 \end{table}
@@ -1460,7 +1549,7 @@ Suffixarray für $yabbadabbado$ ist $SA = (12, 1, 6, 4, 9, 3, 8, 2, 7, 5, 10, 11
 %--Folie---------------------------------------------------------------------
 
 %////////////////////////////////////////////////////////////////////////////
-\subsection{Kärkkäinen-Sanders Algorithmus}
+\subsection{DC3}
 %////////////////////////////////////////////////////////////////////////////
 
 %////////////////////////////////////////////////////////////////////////////
@@ -1517,7 +1606,7 @@ Die Elemente von $R$ werden mit Radix-Sort sortiert um den Rang bestimmen
 \end{table}
 Wir erhalten $R$ aus $R'$, indem die Elemente von $R$ durch ihren Rang ersetzt werden.
 \begin{gather*}
-R' = (1,2,4,6,4,5,3,7)
+    R' = (1,2,4,6,4,5,3,7)
 \end{gather*}
 \end{frame}
 %--Folie---------------------------------------------------------------------
