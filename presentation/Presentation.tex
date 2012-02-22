@@ -1250,8 +1250,8 @@ Sei $D = \{gaga, agga\}$
         edge from parent
         node[above]{$g$}
     };
-    \node[yshift = 3mm, xshift = -7mm] at (w1.center) {$\overline{w}$};
-    \node[yshift = 3mm, xshift = -7mm] at (w2.center) {$\overline{w}$};
+    \node[yshift = 3mm, xshift = -7mm] at (w1.center) {$\overline{w}$} edge [dotted] (w1);
+    \node[yshift = 3mm, xshift = -7mm] at (w2.center) {$\overline{w}$} edge [dotted] (w2);
 \end{tikzpicture}
 \end{figure}
 \end{example}
