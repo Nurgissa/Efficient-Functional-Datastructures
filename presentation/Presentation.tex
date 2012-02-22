@@ -23,7 +23,7 @@
 %\usepackage{ucs}
 \usepackage[utf8]{inputenc}
 % Mathematische Notationen
-\usepackage{amsmath, amsfonts, amssymb, mathtools}
+\usepackage{amsmath, amsthm, amsfonts, amssymb, mathtools}
 % Bäume zeichnen
 \usepackage{tikz}
 % Code von Programmiersprachen erkennen
@@ -104,7 +104,7 @@
 %--Benutzerdefinierte Makros-------------------------------------------------
 
 % Umgebung Bemerkung
-\newtheorem{remark}[theorem]{Bemerkung}
+\newtheorem{remark}{Bemerkung}
 
 \newcommand{\coloneqq}{\mathrel{\mathop:}=}
 
@@ -247,16 +247,16 @@ Sei $\Sigma = \left\{a, \dots, z\right\}$
 \begin{frame}
 \frametitle{Grundlagen}
 \begin{definition}[Pfad]
-    Die Funktion $path(k)$ bezeichnet die Konkatenation der Kantenbeschriftungen von der Wurzel eines $\Sigma^+$-Baumes bis zum Knoten $k$.
-    \begin{remark}
-    $\overline{w}$ bezeichnet genau dann den Knoten $k$, wenn $path(k) = w$.
-    \end{remark}
+Die Funktion $path(k)$ bezeichnet die Konkatenation der Kantenbeschriftungen von der Wurzel eines $\Sigma^+$-Baumes bis zum Knoten $k$.
+\begin{remark}
+$\overline{w}$ bezeichnet genau dann den Knoten $k$, wenn $path(k) = w$.
+\end{remark}
 \end{definition}
 \begin{definition}[Verschachteltes Suffix]
-    Ein Suffix von $t$ heißt verschachtelt, wenn es mehrmals in $t$ vorkommt, d.h. $t = uvwv$.
+Ein Suffix von $t$ heißt verschachtelt, wenn es mehrmals in $t$ vorkommt, d.h. $t = uvwv$.
 \end{definition}
 \begin{example}
-    $\boldsymbol{ag}$ ist ein verschachteltes Suffix von $\boldsymbol{ag}cgacg\boldsymbol{ag}$.
+$\boldsymbol{ag}$ ist ein verschachteltes Suffix von $\boldsymbol{ag}cgacg\boldsymbol{ag}$.
 \end{example}
 \end{frame}
 %--Folie---------------------------------------------------------------------
@@ -265,17 +265,17 @@ Sei $\Sigma = \left\{a, \dots, z\right\}$
 \begin{frame}
 \frametitle{Grundlagen}
 \begin{definition}[Suffix Tree]
-    Ein Suffix Tree $S_t$ für ein gegebenes Wort $t$ ist ein $\Sigma^+$-Baum, sodass gilt:
-    \begin{gather*}
-        w \in S_t  \Longleftrightarrow w \text{ ist ein }t\text{-Wort}
-    \end{gather*}
+Ein Suffix Tree $S_t$ für ein gegebenes Wort $t$ ist ein $\Sigma^+$-Baum, sodass gilt:
+\begin{gather*}
+    w \in S_t  \Longleftrightarrow w \text{ ist ein }t\text{-Wort}
+\end{gather*}
 \end{definition}
 \begin{remark}
-    Jedes $t$-Wort $w$ lässt sich darstellen als: $t = vs, s = wu$
-    \begin{gather*}
-        t = a \dots b \underbrace{\overbrace{c \dots d}^{\text{Präfix }w} e \dots f}_{\text{Suffix }s}
-    \end{gather*}
-    Ein Wort $w$ ist genau dann in einem $\Sigma^+$-Baum enthalten, wenn ein Knoten $\overline{wu}$ in diesem Baum existiert.
+Jedes $t$-Wort $w$ lässt sich darstellen als: $t = vs, s = wu$
+\begin{gather*}
+    t = a \dots b \underbrace{\overbrace{c \dots d}^{\text{Präfix }w} e \dots f}_{\text{Suffix }s}
+\end{gather*}
+Ein Wort $w$ ist genau dann in einem $\Sigma^+$-Baum enthalten, wenn ein Knoten $\overline{wu}$ in diesem Baum existiert.
 \end{remark}
 \end{frame}
 %--Folie---------------------------------------------------------------------
@@ -286,16 +286,16 @@ Sei $\Sigma = \left\{a, \dots, z\right\}$
 
 %--Folie: Suffix Tree Klassen------------------------------------------------
 \begin{frame}
-    \frametitle{Suffix Tree Klassen}
+\frametitle{Suffix Tree Klassen}
+\begin{itemize}
+    \item Drei Arten von Suffix Trees
     \begin{itemize}
-        \item Drei Arten von Suffix Trees
-        \begin{itemize}
-            \item Atomic Suffix Tree (ast)
-            \item Position Suffix Tree (pst)
-            \item Compact Suffix Tree (cst)
-        \end{itemize}
-        \item ast, pst, cst stehen durch Kantenverschmelzung in Relation zueinander.
+        \item Atomic Suffix Tree (ast)
+        \item Position Suffix Tree (pst)
+        \item Compact Suffix Tree (cst)
     \end{itemize}
+    \item ast, pst, cst stehen durch Kantenverschmelzung in Relation zueinander.
+\end{itemize}
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
@@ -493,11 +493,11 @@ Jedes Blatt repräsentiert ein Suffix von $t$.
 \begin{frame}
 \frametitle{Kantenverschmelzung}
 \begin{definition}
-    Kantenverschmelzung ist eine Relation auf $\Sigma^+$-Bäumen, die durch ihre Kantenmengen repräsentiert werden.
-    \begin{gather*}
-        \left(E \uplus \{\overline{s}\:\xrightarrow{u}\:\overline{w},\overline{w}\:\xrightarrow{u'}\:\overline{v}\}\right) \overset{\overline{w}}{\implies} \left(E \uplus \{\overline{s}\:\xrightarrow{uu'}\:\overline{v}\}\right)
-    \end{gather*}
-    wenn $\overline{w} \xrightarrow{u'} \overline{v}$ ist die einzige ausgehende Kante von $\overline{w}$.
+Kantenverschmelzung ist eine Relation auf $\Sigma^+$-Bäumen, die durch ihre Kantenmengen repräsentiert werden.
+\begin{gather*}
+    \left(E \uplus \{\overline{s}\:\xrightarrow{u}\:\overline{w},\overline{w}\:\xrightarrow{u'}\:\overline{v}\}\right) \overset{\overline{w}}{\implies} \left(E \uplus \{\overline{s}\:\xrightarrow{uu'}\:\overline{v}\}\right)
+\end{gather*}
+wenn $\overline{w} \xrightarrow{u'} \overline{v}$ ist die einzige ausgehende Kante von $\overline{w}$.
 \end{definition}
 \begin{example}
 \begin{figure}
@@ -906,7 +906,7 @@ Sei $S_t$ ein Suffix Tree für ein Wort $t$, repräsentiert durch seine Kantenme
 \end{itemize}
 \end{definition}
 \begin{lemma}
-    Seien $T_1$ und $T_2$ $\Sigma^+$-Bäume mit $T_1 \implies T_2$. Dann enthält $T_1$ genau dann das Wort $w$, wenn $T_2$ das Wort $w$ enthält.
+Seien $T_1$ und $T_2$ $\Sigma^+$-Bäume mit $T_1 \implies T_2$. Dann enthält $T_1$ genau dann das Wort $w$, wenn $T_2$ das Wort $w$ enthält.
 \end{lemma}
 \end{frame}
 %--Folie---------------------------------------------------------------------
@@ -916,15 +916,14 @@ Sei $S_t$ ein Suffix Tree für ein Wort $t$, repräsentiert durch seine Kantenme
 \frametitle{Speicherplatzbedarf}
 TODO Kanten müssen mit Paaren (i, j) beschriftet werden, um O(n) im Worst-Case zu erreichen.
 \begin{lemma}
-    cst kann als eine Datentruktur dargestellt werden, deren Speicherplatzbedarf $O(n)$ ist.
+cst kann als eine Datentruktur dargestellt werden, deren Speicherplatzbedarf $O(n)$ ist.
 \end{lemma}
 \begin{proof}
-    \begin{itemize}
-        \item cst hat nicht mehr als $n$ Blätter.
-        \item jeder innere Knoten ist eine Verzweigung, die die Anzahl von Blätter während dem Aufbau mindestens um 1 erhöht.
-    \end{itemize}
-    $\rightarrow$
-    cst hat nicht mehr als $n$ innere Knoten und damit nicht mehr als $2n$ Kanten.
+\begin{itemize}
+    \item cst hat nicht mehr als $n$ Blätter.
+    \item jeder innere Knoten ist eine Verzweigung, die die Anzahl von Blätter während dem Aufbau mindestens um 1 erhöht.
+\end{itemize}
+$\rightarrow$ cst hat nicht mehr als $n$ innere Knoten und damit nicht mehr als $2n$ Kanten.
 \end{proof}
 \end{frame}
 %--Folie---------------------------------------------------------------------
@@ -947,10 +946,14 @@ ast und pst benötigen mehr Speicherplatz:
 \begin{frame}
 \frametitle{Generalized Suffix Tree}
 \begin{definition}
-Sei $D = \{s_1, \dots, s_n\}$ eine Menge von Strings über $\Sigma$. $T = \{t_1, \dots, t_n\}$ eine Menge von Terminalsymbolen mit $T \cap \Sigma = \emptyset$. Ein GST $S_D$ ist ein $\Sigma^+$-Baum, sodass für alle $i \leq n$ gilt:
-\begin{gather*}
-    w \in S_D \Longleftrightarrow w \text{ ist ein } s_it_i\text{-Wort}
+\begin{itemize}
+    \item $D = \{s_1, \dots, s_n\}$ eine Menge von Strings über $\Sigma$
+    \item $T = \{t_1, \dots, t_n\}$ eine Menge von Terminalsymbolen mit $T \cap \Sigma = \emptyset$
+    \item Ein $GST_D$ ist ein $\Sigma^+$-Baum, sodass für alle $i \leq n$ gilt:
+    \begin{gather*}
+    w \in GST_D \Longleftrightarrow w \text{ ist ein } s_it_i\text{-Wort}
 \end{gather*}
+\end{itemize}
 \end{definition}
 \vspace{-3mm}
 \begin{example}
@@ -1042,13 +1045,265 @@ Suffix Trees eignen sich insbesondere für Problemlösungen im Bereich der Strin
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
-%--Folie: ... ---------------------------------------------------------------
+%--Folie: Longest common substring-------------------------------------------
 \begin{frame}
 \frametitle{Longest common substring}
-TODO Anwendungsgebiet auswählen und vorstellen!
+Bestimme die Ähnlichkeit zwischen Strings.
+
+\begin{block}{Problem}
+\begin{itemize}
+    \item Gegeben zwei Strings $r, s \in \Sigma^*$.
+    \item Gesucht: Die Länge des längsten gemeinsamen Teilwort $lcs(r, s)$ von $r$ und $s$
+\end{itemize}
+\end{block}
+\begin{example}
+$lcs(abab, aab) = 2$
+\end{example}
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
+% \begin{frame}
+% \frametitle{Tiefster gemeinsamer Vorfahre}
+% \begin{figure}
+% \begin{tikzpicture}[
+%     font = \small,
+%     level 1/.style = {level distance = 7mm, sibling distance = 35mm},
+%     level 2/.style = {level distance = 7mm, sibling distance = 25mm},
+%     level 3/.style = {level distance = 7mm, sibling distance = 15mm},
+%     edge from parent/.style = {->, draw}
+%     ]
+%     \node[ghostbranch]{}
+%     child[child anchor = north] {
+%         node[subtree]{}
+%         edge from parent[dotted]
+%     }
+%     child {
+%         node[branch, blue]{}
+%         child {
+%             node[ghostbranch]{}
+%             child {
+%                 node[branch, green] (d1) {}
+%                 edge from parent
+%             }
+%             child[child anchor = north] {
+%                 node[subtree]{}
+%                 edge from parent[dotted]
+%             }
+%             edge from parent
+%         }
+%         child {
+%             node[branch, green] (d2) {}
+%             edge from parent
+%         }
+%         edge from parent
+%     };
+%     \node[subtree] at (d1.center) {};
+%     \node[subtree] at (d2.center) {};
+% \end{tikzpicture}
+% \end{figure}
+% \begin{definition}[Lowest common ancestor]
+% \begin{itemize}
+%     \item $\overline{w}, \overline{v}$ zwei Knoten aus einem GST $GST_D$
+%     \item $lca(\overline{w}, \overline{v}) = \overline{t}$ genau dann wenn $\overline{t}$ der tiefste Knoten im Baum ist, der sowohl Vorfahre von $\overline{w}$ und von $\overline{v}$ ist.
+% \end{itemize}
+% \end{definition}
+% \end{frame}
+
+%--Folie: Longest common substring-------------------------------------------
+\begin{frame}
+\frametitle{Longest common substring}
+\begin{theorem}
+\begin{itemize}
+    \item Gegebenen zwei Strings $s_1, s_2 \in \Sigma^*$
+    \item $lcs(s_1, s_2)$ kann in $O(\abs{s_1} + \abs{s_2})$ gefunden werden.
+\end{itemize}
+\end{theorem}
+\vspace{5mm}
+$\rightarrow$ Lösung mithilfe eines GST
+\end{frame}
+%--Folie---------------------------------------------------------------------
+
+%--Folie: Longest common substring-------------------------------------------
+\begin{frame}
+\frametitle{Longest common substring}
+\begin{block}{Schritt 1}
+\begin{itemize}
+    \item Konstruiere $GST_D$ mit $D = \{s_1, s_2\}$ und $T = \{\$, \#\}$
+    \item Aufwand $O(\abs{s_1} + \abs{s_2})$
+\end{itemize}
+\end{block}
+\begin{example}
+Sei $D = \{gaga, agga\}$
+\begin{figure}
+\begin{tikzpicture}[
+    font = \small,
+    level 1/.style = {level distance = 8mm, sibling distance = 45mm},
+    level 2/.style = {level distance = 8mm, sibling distance = 25mm},
+    level 3/.style = {level distance = 8mm, sibling distance = 15mm},
+    edge from parent/.style = {->, draw}
+    ]
+    \node[branch]{}
+    child {
+        node[branch]{}
+        child {
+            node[branch]{}
+            child {
+                edge from parent
+                node[left]{$a\$$}
+            }
+            child {
+                edge from parent
+                node[right, xshift = 1mm]{$ga\#$}
+            }
+            edge from parent
+            node[left]{$g$}
+        }
+        child {
+            edge from parent
+            node[right, xshift = 1mm]{$\$, \#$}
+        }
+        edge from parent
+        node[above]{$a$}
+    }
+    child {
+        node[branch]{}
+        child {
+            node[branch]{}
+            child {
+                edge from parent
+                node[left]{$ga\$$}
+            }
+            child {
+                edge from parent
+                node[right]{$\$, \#$}
+            }
+            edge from parent
+            node[left]{$a$}
+        }
+        child {
+            edge from parent
+            node[right, xshift = 2mm]{$ga\#$}
+        }
+        edge from parent
+        node[above]{$g$}
+    };
+\end{tikzpicture}
+\end{figure}
+\end{example}
+\end{frame}
+%--Folie---------------------------------------------------------------------
+
+%--Folie: Longest common substring-------------------------------------------
+\begin{frame}
+\frametitle{Longest common substring}
+\begin{example}
+\begin{figure}
+\begin{tikzpicture}[
+    font = \small,
+    level 1/.style = {level distance = 8mm, sibling distance = 45mm},
+    level 2/.style = {level distance = 8mm, sibling distance = 25mm},
+    level 3/.style = {level distance = 8mm, sibling distance = 15mm},
+    edge from parent/.style = {->, draw}
+    ]
+    \node[branch]{}
+    child {
+        node[branch]{}
+        child {
+            node[branch] (w1) {}
+            child {
+                edge from parent
+                node[left]{$a\$$}
+            }
+            child {
+                edge from parent
+                node[right, xshift = 1mm]{$ga\#$}
+            }
+            edge from parent
+            node[left]{$g$}
+        }
+        child {
+            edge from parent
+            node[right, xshift = 1mm]{$\$, \#$}
+        }
+        edge from parent
+        node[above]{$a$}
+    }
+    child {
+        node[branch]{}
+        child {
+            node[branch] (w2) {}
+            child {
+                edge from parent
+                node[left]{$ga\$$}
+            }
+            child {
+                edge from parent
+                node[right]{$\$, \#$}
+            }
+            edge from parent
+            node[left]{$a$}
+        }
+        child {
+            edge from parent
+            node[right, xshift = 2mm]{$ga\#$}
+        }
+        edge from parent
+        node[above]{$g$}
+    };
+    \node[yshift = 3mm, xshift = -7mm] at (w1.center) {$\overline{w}$};
+    \node[yshift = 3mm, xshift = -7mm] at (w2.center) {$\overline{w}$};
+\end{tikzpicture}
+\end{figure}
+\end{example}
+Ziel: Finde Knoten $\overline{w}$ mit maximaler Tiefe im $GST_D$ dessen Teilbäume ein Blatt von $s_1$ und $s_2$ besitzen.
+\end{frame}
+%--Folie---------------------------------------------------------------------
+
+%--Folie: Longest common substring-------------------------------------------
+\begin{frame}
+\frametitle{Longest common substring}
+TODO Besseren Namen für Funktion f finden!
+\begin{block}{Schritt 2}
+\begin{itemize}
+    \item Die Funktion $f$ ordnet jedem Knoten $\overline{w}$ im $GST_D$ einen zweidimensionalen Bitvektor $(b_1, b_2)$ zu, wobei
+    \begin{gather*}
+        b_i = \begin{cases}
+            1 &\text{falls ein Teilbaum von } \overline{w} \text{ ein Blatt von } s_i \text{ besitzt} \\
+            0 &\text{sonst}
+        \end{cases}
+    \end{gather*}
+    \item Die Oder-Verknüpfung der Bitvektoren der Kindknoten $c_1, \dots, c_l$ liefert den Bitvektor des Vaterknotens $\overline{w}$.
+    \begin{gather*}
+        f(\overline{w}) = \begin{cases}
+            (b_1, b_2)                    &\text{falls } \overline{w} \text{ ein Blatt} \\
+            f(c_1) \vee \dots \vee f(c_l) &\text{sonst}
+        \end{cases}
+    \end{gather*}
+    \item Aufwand $O(\abs{s_1} + \abs{s_2})$
+\end{itemize}
+\end{block}
+\end{frame}
+%--Folie---------------------------------------------------------------------
+
+%--Folie: Longest common substring-------------------------------------------
+\begin{frame}
+\frametitle{Longest common substring}
+\begin{block}{Schritt 3}
+\begin{itemize}
+    \item $lcs = max \{level(\overline{w}) \mid f(\overline{w}) = (1, 1) \text{ und } \overline{w} \in GST_D\}$
+    \item Durchlaufe $GST_D$
+    \item Falls $f(\overline{w}) = (1, 1)$ überprüfe, ob $level(\overline{w})$ größer als der bisher gefundene Wert.
+    \item Gesamtaufwand $O(\abs{s_1} + \abs{s_2})$ wenn $f$ im Voraus berechnet wurde.
+\end{itemize}
+\end{block}
+\begin{remark}
+    \begin{itemize}
+        \item Verallgemeinerung von zwei auf $K$ Strings $s_1, \dots, s_k$ führt zu einem Aufwand von $O(nK)$, wobei $n = \sum_{i = 1}^K \abs{s_i}$
+        \item Mit einem weiteren Vorverarbeitungsschritt des $GST$ lässt sich dieser Aufwand auf $O(n)$ reduzieren.
+    \end{itemize}
+\end{remark}
+\end{frame}
+%--Folie---------------------------------------------------------------------
 
 %////////////////////////////////////////////////////////////////////////////
 % \subsection{Geschichte}
@@ -1074,21 +1329,21 @@ TODO Anwendungsgebiet auswählen und vorstellen!
 \begin{frame}
 \frametitle{Beispiel für $agcgacgag$}
 \begin{tabularx}{\textwidth}{l X}
-    Suffixe &  $agcgacgag$, $gcgacgag$, $cgacgag$, $gacgag$, $acgag$, $cgag$, $gag$, $ag$, $g$ \\
+Suffixe &  $agcgacgag$, $gcgacgag$, $cgacgag$, $gacgag$, $acgag$, $cgag$, $gag$, $ag$, $g$ \\
 \end{tabularx}
 \begin{table}
-    \begin{tabular}{l l l}
-        \toprule
-        Gruppe 1                 & Gruppe 2               & Gruppe 3                \\
-        \midrule
-        $\boldsymbol{a}gcgacgag$ & $\boldsymbol{cga}cgag$ & $\boldsymbol{g}cgacgag$ \\
-        $\boldsymbol{a}cgag$     & $\boldsymbol{cga}g$    & $\boldsymbol{g}acgag$   \\
-        $\boldsymbol{a}g$        &                        & $\boldsymbol{g}ag$      \\
-                                 &                        & $\boldsymbol{g}$        \\
-        \midrule
-        $a$                      & $cga$                  & $g$                     \\
-        \bottomrule
-    \end{tabular}
+\begin{tabular}{l l l}
+    \toprule
+    Gruppe 1                 & Gruppe 2               & Gruppe 3                \\
+    \midrule
+    $\boldsymbol{a}gcgacgag$ & $\boldsymbol{cga}cgag$ & $\boldsymbol{g}cgacgag$ \\
+    $\boldsymbol{a}cgag$     & $\boldsymbol{cga}g$    & $\boldsymbol{g}acgag$   \\
+    $\boldsymbol{a}g$        &                        & $\boldsymbol{g}ag$      \\
+                             &                        & $\boldsymbol{g}$        \\
+    \midrule
+    $a$                      & $cga$                  & $g$                     \\
+    \bottomrule
+\end{tabular}
 \end{table}
 \end{frame}
 %--Folie---------------------------------------------------------------------
@@ -1130,16 +1385,16 @@ Erstes Level
 \end{figure}
 Die Restwörter werden abermals gruppiert.
 \begin{table}
-    \begin{tabular}{l l}
-        \toprule
-        Gruppe 1                 & Gruppe 2               \\
-        \midrule
-        $\boldsymbol{g}cgacgag$  & $\boldsymbol{cgag}$    \\
-        $\boldsymbol{g}$         &                        \\
-        \midrule
-        $gcgacgag$\footnote{Falls nur $g$ als das gemeinsame Präfix genommen wurde, dann hätte \\ man eine unnötige Kante im Baum} & $cgag$ \\
-        \bottomrule
-    \end{tabular}
+\begin{tabular}{l l}
+    \toprule
+    Gruppe 1                 & Gruppe 2               \\
+    \midrule
+    $\boldsymbol{g}cgacgag$  & $\boldsymbol{cgag}$    \\
+    $\boldsymbol{g}$         &                        \\
+    \midrule
+    $gcgacgag$\footnote{Falls nur $g$ als das gemeinsame Präfix genommen wurde, dann hätte \\ man eine unnötige Kante im Baum} & $cgag$ \\
+    \bottomrule
+\end{tabular}
 \end{table}
 \end{frame}
 %--Folie---------------------------------------------------------------------
@@ -1274,18 +1529,18 @@ Zweites und drittes Level
 %--Folie: wotd-Algorithmus: Schritte-----------------------------------------
 \begin{frame}[t]
 \frametitle{wotd-Algorithmus für cst}
-    wotd: write-only top-down\\
-    \medskip
-    Schritte:
+wotd: write-only top-down\\
+\medskip
+Schritte:
+\begin{enumerate}
+    \item Finde alle Suffixe eines gegebenen Wortes.
+    \item Gruppiere nach den Anfangsbuchstaben. Erzeuge einen Knoten.
+    \item Für jede Gruppe:
     \begin{enumerate}
-        \item Finde alle Suffixe eines gegebenen Wortes.
-        \item Gruppiere nach den Anfangsbuchstaben. Erzeuge einen Knoten.
-        \item Für jede Gruppe:
-        \begin{enumerate}
-            \item Finde das längste gemeinsame Präfix\footnote{Wenn ein Wort der Gruppe sich endet, wird das Präfix weiter gesucht}, erzeuge eine Kante mit der Beschriftung vom Präfix, entferne das Präfix von den Wörtern der Gruppe.
-            \item Falls die Gruppe leer ist, erzeuge ein Blatt. Falls es in der Gruppe noch Wörter gibt, kehre zu Schritt 2 zurück.
-        \end{enumerate}
+        \item Finde das längste gemeinsame Präfix\footnote{Wenn ein Wort der Gruppe sich endet, wird das Präfix weiter gesucht}, erzeuge eine Kante mit der Beschriftung vom Präfix, entferne das Präfix von den Wörtern der Gruppe.
+        \item Falls die Gruppe leer ist, erzeuge ein Blatt. Falls es in der Gruppe noch Wörter gibt, kehre zu Schritt 2 zurück.
     \end{enumerate}
+\end{enumerate}
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
@@ -1323,14 +1578,13 @@ sind.
     \begin{lstlisting}
     [2*x | x <- [0..10], x^2 > 5]
     -- ergibt
-    [6,8,10,12,14,16,18,20]
+    [6, 8, 10, 12, 14, 16, 18, 20]
     \end{lstlisting}
     \item Mit lokaler Definition
     \begin{lstlisting}
-    [(i,j) | i <- [1,2], let k = i*i,
-             j <- [1..k]]
+    [(i, j) | i <- [1,2], let k = i * i, j <- [1..k]]
     -- ergibt
-    [(1,1),(2,1),(2,2),(2,3),(2,4)]
+    [(1, 1), (2, 1), (2, 2), (2, 3), (2, 4)]
 \end{lstlisting}
 \end{enumerate}
 \end{examples}
@@ -1343,14 +1597,14 @@ sind.
 \begin{lstlisting}
 -- | Darstellung von Suffix Trees
 data STree alf =
-    Leaf | Branch [(Label alf,STree alf)]
+    Leaf | Branch [(Label alf, STree alf)]
     deriving Eq
 
 -- | Darstellung von Beschriftungen
 type Label alf = [alf]
 
 -- | Darstellung vom Kantenaufbau
-type EdgeFunction alf = [[alf]] -> ([alf],[[alf]])
+type EdgeFunction alf = [[alf]] -> ([alf], [[alf]])
 \end{lstlisting}
 \end{frame}
 %--Folie---------------------------------------------------------------------
@@ -1378,7 +1632,7 @@ suffixes aw@(_:w) = aw:suffixes w
 %--Folie: Haskell-code: Auswahl----------------------------------------------
 \begin{frame}[fragile]
 \frametitle{Haskell-code: Auswahl einer Gruppe}
-    Folgende Funktion liefert die Liste mit allen Wörter aus $ss$, die mit $a$ anfangen:
+Folgende Funktion liefert die Liste mit allen Wörter aus $ss$, die mit $a$ anfangen:
 \begin{lstlisting}
 select :: (Eq alf) => [[alf]] -> alf -> [[alf]]
 select ss a = [c:u | c:u <- ss, a == c]
@@ -1518,7 +1772,7 @@ TODO Motivation für Suffix Arrays ausarbeiten!
 \begin{frame}[fragile]
 \frametitle{Suffix Array}
 \begin{definition}
-    Suffixarray $SA$ von $T$ ist eine Permutation von $[0,n]$ mit $S_{SA[0]} \prec S_{SA[1]} \prec \dots \prec S_{SA[n]}$, wobei $\prec$ die lexikographische Ordnung auf Zeichenketten bezeichnet.
+Suffixarray $SA$ von $T$ ist eine Permutation von $[0,n]$ mit $S_{SA[0]} \prec S_{SA[1]} \prec \dots \prec S_{SA[n]}$, wobei $\prec$ die lexikographische Ordnung auf Zeichenketten bezeichnet.
 \end{definition}
 \begin{example}
 Suffixarray für $yabbadabbado$ ist $SA = (12, 1, 6, 4, 9, 3, 8, 2, 7, 5, 10, 11, 0)$, wobei
@@ -1560,30 +1814,30 @@ Suffixarray für $yabbadabbado$ ist $SA = (12, 1, 6, 4, 9, 3, 8, 2, 7, 5, 10, 11
 \begin{frame}[fragile]
 \frametitle{Beispiel für $yabbadabbado$}
 \begin{table}
-    \begin{tabular}{l|l l l l l l l l l l l l l l}
-        \toprule
-        i & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 \\
-        \midrule
-        T[i,n) & y & a & b & b & a & d & a & b & b & a & d & o & 0 & 0  \\
-        \bottomrule
-    \end{tabular}
+\begin{tabular}{l|l l l l l l l l l l l l l l}
+    \toprule
+    i & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 \\
+    \midrule
+    T[i,n) & y & a & b & b & a & d & a & b & b & a & d & o & 0 & 0  \\
+    \bottomrule
+\end{tabular}
 \end{table}
-$B_k = \{ i \in [0,n]\ \mid i \: mod \: 3 = k \}$, dann     \\
-$B_0 = \{0, 3, 6, 9 \}$,                                   \\
-$B_1 = \{1, 4, 7, 10 \}$,                                  \\
-$B_2 = \{2, 5, 8, 11 \}$,                                  \\
+$B_k = \{ i \in [0,n]\ \mid i \: mod \: 3 = k \}$, dann \\
+$B_0 = \{0, 3, 6, 9 \}$,                                \\
+$B_1 = \{1, 4, 7, 10 \}$,                               \\
+$B_2 = \{2, 5, 8, 11 \}$,                               \\
 \medskip
-$C   = B_1 \cup B_2 = \{1, 4, 7, 10, 2, 5, 8, 11\}$.       \\
+$C   = B_1 \cup B_2 = \{1, 4, 7, 10, 2, 5, 8, 11\}$.    \\
 \medskip
 $R_0 = [yab][bad][abb][ado]$
-$R_1 = [abb][ada][bba][do0]$                                \\
-$R_2 = [bba][dab][bad][o00]$                                \\
+$R_1 = [abb][ada][bba][do0]$                            \\
+$R_2 = [bba][dab][bad][o00]$                            \\
 \medskip
-$R   = [abb][ada][bba][do0][bba][dab][bad][o00]$            \\
+$R   = [abb][ada][bba][do0][bba][dab][bad][o00]$        \\
 \medskip
 Ziel: $R_0$ und $R$ getrennt sortieren und dann vereinigen.
 \begin{remark}
-   Suffixe von $R$ korrespondieren mit $S_c$. $R_i \prec R_j \leftrightarrow S_i \prec S_j$
+Suffixe von $R$ korrespondieren mit $S_c$. $R_i \prec R_j \leftrightarrow S_i \prec S_j$
 \end{remark}
 \end{frame}
 %--Folie---------------------------------------------------------------------
@@ -1596,13 +1850,13 @@ Ziel: $R_0$ und $R$ getrennt sortieren und dann vereinigen.
 \end{description}
 Die Elemente von $R$ werden mit Radix-Sort sortiert um den Rang bestimmen
 \begin{table}
-    \begin{tabular}{c c c c c c c c c c c}
-        \toprule
-        1 & 2 & 3 & 4 & 5 & 6 & 7                                           \\
-        \midrule
-        $[abb]$ & $[ada]$ & $[bad]$ & $[bba]$ & $[dab]$ & $[do0]$ & $[o00]$ \\
-        \bottomrule
-    \end{tabular}
+\begin{tabular}{c c c c c c c c c c c}
+    \toprule
+    1 & 2 & 3 & 4 & 5 & 6 & 7                                           \\
+    \midrule
+    $[abb]$ & $[ada]$ & $[bad]$ & $[bba]$ & $[dab]$ & $[do0]$ & $[o00]$ \\
+    \bottomrule
+\end{tabular}
 \end{table}
 Wir erhalten $R$ aus $R'$, indem die Elemente von $R$ durch ihren Rang ersetzt werden.
 \begin{gather*}
