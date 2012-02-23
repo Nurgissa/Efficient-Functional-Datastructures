@@ -1023,6 +1023,10 @@ GST für $D = \{agcg, acg\}$ und $T = \{\$, \#\}$
 \subsection{Anwendungsgebiete}
 %////////////////////////////////////////////////////////////////////////////
 
+%////////////////////////////////////////////////////////////////////////////
+\subsubsection{Überblick}
+%////////////////////////////////////////////////////////////////////////////
+
 %--Folie: Anwendungsgebiete--------------------------------------------------
 \begin{frame}
 \frametitle{Anwendungsgebiete}
@@ -1049,6 +1053,10 @@ Suffix Trees eignen sich insbesondere für Problemlösungen im Bereich der Strin
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
+%////////////////////////////////////////////////////////////////////////////
+\subsubsection{Longest common substring}
+%////////////////////////////////////////////////////////////////////////////
+
 %--Folie: Longest common substring-------------------------------------------
 \begin{frame}
 \frametitle{Longest common substring}
@@ -1056,8 +1064,8 @@ Bestimme die Ähnlichkeit zwischen Strings.
 
 \begin{block}{Problem}
 \begin{itemize}
-    \item Gegeben zwei Strings $r, s \in \Sigma^*$.
-    \item Gesucht: Die Länge des längsten gemeinsamen Teilworts $lcs(r, s)$ von $r$ und $s$
+    \item Gegeben zwei Strings $s_1, s_2 \in \Sigma^*$.
+    \item Gesucht: Die Länge des längsten gemeinsamen Teilworts $lcs(s_1, s_2)$ von $s_1$ und $s_2$
 \end{itemize}
 \end{block}
 \begin{example}
@@ -1065,53 +1073,6 @@ $lcs(abab, aab) = 2$
 \end{example}
 \end{frame}
 %--Folie---------------------------------------------------------------------
-
-% \begin{frame}
-% \frametitle{Tiefster gemeinsamer Vorfahre}
-% \begin{figure}
-% \begin{tikzpicture}[
-%     font = \small,
-%     level 1/.style = {level distance = 7mm, sibling distance = 35mm},
-%     level 2/.style = {level distance = 7mm, sibling distance = 25mm},
-%     level 3/.style = {level distance = 7mm, sibling distance = 15mm},
-%     edge from parent/.style = {->, draw}
-%     ]
-%     \node[ghostbranch]{}
-%     child[child anchor = north] {
-%         node[subtree]{}
-%         edge from parent[dotted]
-%     }
-%     child {
-%         node[branch, blue]{}
-%         child {
-%             node[ghostbranch]{}
-%             child {
-%                 node[branch, green] (d1) {}
-%                 edge from parent
-%             }
-%             child[child anchor = north] {
-%                 node[subtree]{}
-%                 edge from parent[dotted]
-%             }
-%             edge from parent
-%         }
-%         child {
-%             node[branch, green] (d2) {}
-%             edge from parent
-%         }
-%         edge from parent
-%     };
-%     \node[subtree] at (d1.center) {};
-%     \node[subtree] at (d2.center) {};
-% \end{tikzpicture}
-% \end{figure}
-% \begin{definition}[Lowest common ancestor]
-% \begin{itemize}
-%     \item $\overline{w}, \overline{v}$ zwei Knoten aus einem GST $GST_D$
-%     \item $lca(\overline{w}, \overline{v}) = \overline{t}$ genau dann wenn $\overline{t}$ der tiefste Knoten im Baum ist, der sowohl Vorfahre von $\overline{w}$ und von $\overline{v}$ ist.
-% \end{itemize}
-% \end{definition}
-% \end{frame}
 
 %--Folie: Longest common substring-------------------------------------------
 \begin{frame}
