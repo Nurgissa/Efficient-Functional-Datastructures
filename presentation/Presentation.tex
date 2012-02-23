@@ -1288,6 +1288,63 @@ TODO Besseren Namen für Funktion f finden!
 %--Folie: Longest common substring-------------------------------------------
 \begin{frame}
 \frametitle{Longest common substring}
+\begin{figure}
+\begin{tikzpicture}[
+    font = \small,
+    level 1/.style = {level distance = 8mm, sibling distance = 45mm},
+    level 2/.style = {level distance = 8mm, sibling distance = 25mm},
+    level 3/.style = {level distance = 8mm, sibling distance = 15mm},
+    edge from parent/.style = {->, draw}
+    ]
+    \node[branch]{}
+    child {
+        node[branch]{}
+        child {
+            node[branch] (w1) {}
+            child {
+                edge from parent
+                node[left]{$a\$$}
+            }
+            child {
+                edge from parent
+                node[right, xshift = 1mm]{$ga\#$}
+            }
+            edge from parent
+            node[left]{$g$}
+        }
+        child {
+            edge from parent
+            node[right, xshift = 1mm]{$\$, \#$}
+        }
+        edge from parent
+        node[above]{$a$}
+    }
+    child {
+        node[branch]{}
+        child {
+            node[branch] (w2) {}
+            child {
+                edge from parent
+                node[left]{$ga\$$}
+            }
+            child {
+                edge from parent
+                node[right]{$\$, \#$}
+            }
+            edge from parent
+            node[left]{$a$}
+        }
+        child {
+            edge from parent
+            node[right, xshift = 2mm]{$ga\#$}
+        }
+        edge from parent
+        node[above]{$g$}
+    };
+    \node[yshift = 3mm, xshift = -8mm] at (w1.center) {$(1, 1)$} edge [dotted] (w1);
+    \node[yshift = 3mm, xshift = -8mm] at (w2.center) {$(1, 1)$} edge [dotted] (w2);
+\end{tikzpicture}
+\end{figure}
 \begin{block}{Schritt 3}
 \begin{itemize}
     \item $lcs = max \{level(\overline{w}) \mid f(\overline{w}) = (1, 1) \text{ und } \overline{w} \in GST_D\}$
@@ -1296,6 +1353,12 @@ TODO Besseren Namen für Funktion f finden!
     \item Gesamtaufwand $O(\abs{s_1} + \abs{s_2})$ wenn $f$ im Voraus berechnet wurde.
 \end{itemize}
 \end{block}
+\end{frame}
+%--Folie---------------------------------------------------------------------
+
+%--Folie: Longest common substring-------------------------------------------
+\begin{frame}
+\frametitle{Longest common substring}
 \begin{remark}
     \begin{itemize}
         \item Verallgemeinerung von zwei auf $K$ Strings $s_1, \dots, s_k$ führt zu einem Aufwand von $O(nK)$, wobei $n = \sum_{i = 1}^K \abs{s_i}$
