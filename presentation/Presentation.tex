@@ -105,6 +105,11 @@
     font = \tiny
 ]
 
+%--Literaturverzeichnis------------------------------------------------------
+
+% Literaturverzeichnis Stil
+\bibliographystyle{plain}
+
 %--Benutzerdefinierte Makros-------------------------------------------------
 
 % Umgebung Bemerkung
@@ -1895,7 +1900,21 @@ search ss (Branch es) =  g ss es
 %--Folie: Motiviation--------------------------------------------------------
 \begin{frame}[fragile]
 \frametitle{Motivation}
-TODO Motivation für Suffix Arrays ausarbeiten!
+Suffix Trees haben einige Nachteile
+\begin{itemize}
+    \item Speicherplatzverbrauch: 20 Bytes für jedes Zeichen im Worst-Case $\rightarrow$ macht Suffix Trees für viele Real-Welt-Anwendungen unbrauchbar.
+    \item Schlechte Lokalität des genutzten Speichers
+        \begin{itemize}
+            \item Cache Misses
+            \item Lässt sich schlecht extern implementieren
+        \end{itemize}
+\end{itemize}
+\vspace{5mm}
+Diese Nachteile werden von Suffix Arrays größtenteils behoben
+\begin{itemize}
+    \item Speicherplatzverbrauch: 5 Bytes für jedes Zeichen
+    \item Vielversprechende Algorithmen für die effiziente Konstruktion von Suffix Arrays im externen Speicher
+\end{itemize}
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
@@ -2015,6 +2034,18 @@ Wir erhalten $R$ aus $R'$, indem die Elemente von $R$ durch ihren Rang ersetzt w
 \begin{gather*}
     R' = (1,2,4,6,4,5,3,7)
 \end{gather*}
+\end{frame}
+%--Folie---------------------------------------------------------------------
+
+%////////////////////////////////////////////////////////////////////////////
+\subsection{Literaturverzeichnis}
+%////////////////////////////////////////////////////////////////////////////
+
+%--Folie: Referenzen---------------------------------------------------------
+\begin{frame}[allowframebreaks]
+\frametitle{Literaturverzeichnis}
+\nocite{*}
+\bibliography{refs}
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
