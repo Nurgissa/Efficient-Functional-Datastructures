@@ -1741,7 +1741,7 @@ Schritte:
 %--Folie: Haskell: List comprehension----------------------------------------
 \begin{frame}[fragile]
 \frametitle{Haskell: List comprehension}
-List comprehensions ermöglichen es in Anlehnung an die mathematische Mengennotation Listen auf eine prägnante Art und Weise zu erzeugen.
+in Anlehnung an die mathematische Mengennotation
 \begin{gather*}
     \{(i,j) \mid i \in \{1, 2\},\: j \in \{1, \dots, 4\}\}
 \end{gather*}
@@ -1812,7 +1812,7 @@ suffixes aw@(_:w) = aw:suffixes w
 \begin{remark}
 \begin{description}[l]
     \item[Operator $(::)$] Typ-Spezifikations-Operator
-    \item[Operator $(:)$] Cons-Operator: Erzeugt aus einer Liste $l$ und einem Element $h$ eine neue Liste, indem das Element $h$ der Liste $l$ vorangestellt wird.
+    \item[Operator $(:)$] Cons-Operator: $h:[e1, \dots, e_n] = [h, e1, \dots, e_n]$
     \item[Operator $(@)$] Read-As-Operator: $aw@(\_:w)$ bedeutet, dass $aw$ mit $(\_:w)$ gematcht wird.
 \end{description}
 \end{remark}
