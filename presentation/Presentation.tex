@@ -918,7 +918,7 @@ Seien $T_1$ und $T_2$ $\Sigma^+$-Bäume mit $T_1 \implies T_2$. Dann enthält $T
 %--Folie: Speicherplatzbedarf, cst-------------------------------------------
 \begin{frame}
 \frametitle{Speicherplatzbedarf}
-TODO Kanten müssen mit Paaren (i, j) beschriftet werden, um O(n) im Worst-Case zu erreichen.
+TODO Kanten müssen mit Paaren (i, j) beschriftet werden, um O(n) im Worst-Case zu erreichen!
 \begin{lemma}
 cst kann als eine Datentruktur dargestellt werden, deren Speicherplatzbedarf $O(n)$ ist.
 \end{lemma}
@@ -1827,7 +1827,7 @@ Folgende Funktion liefert die Liste mit allen Wörter aus $ss$, die mit $a$ anfa
 select :: (Eq alf) => [[alf]] -> alf -> [[alf]]
 select ss a = [c:u | c:u <- ss, a == c]
 \end{lstlisting}
-\bigskip
+TODO Beispiel hinzufügen!
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
@@ -1904,12 +1904,14 @@ commonPrefix w1 w2 = g w1 w2 []
     where g (x:xs) (y:ys) cp | (x == y) = g xs ys (x:cp)
           g w1 w2 cp  = (w1, w2, reverse cp)
 \end{lstlisting}
+TODO Beispiel hinzufügen!
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
 %--Folie: Haskell-Code: Suche------------------------------------------------
 \begin{frame}[fragile]
 \frametitle{Teilwortsuche}
+TODO Algorithmus grafisch veranschaulichen!
 \begin{lstlisting}
 search :: (Eq alph) => Word alph -> STree alph -> Bool
 
