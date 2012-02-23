@@ -36,8 +36,6 @@
 % \usepackage{ctable}
 % Literaturverzeichnis
 \usepackage[numbers, square]{natbib}
-% Hack
-\newcommand{\newblock}{}
 
 %////////////////////////////////////////////////////////////////////////////
 % Konfiguration
@@ -122,6 +120,9 @@
 \newcommand{\coloneqq}{\mathrel{\mathop:}=}
 
 \newcommand{\abs}[1]{\left|#1\right|}
+
+% Hack
+\newcommand{\newblock}{}
 
 %////////////////////////////////////////////////////////////////////////////
 % Dokumenteigenschaften
@@ -2041,11 +2042,7 @@ Wir erhalten $R$ aus $R'$, indem die Elemente von $R$ durch ihren Rang ersetzt w
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
-%////////////////////////////////////////////////////////////////////////////
-\section{Literaturverzeichnis}
-%////////////////////////////////////////////////////////////////////////////
-
-%--Folie: Referenzen---------------------------------------------------------
+%--Folie: Literaturverzeichnis-----------------------------------------------
 \begin{frame}[allowframebreaks]
 \frametitle{Literaturverzeichnis}
 \nocite{*}
