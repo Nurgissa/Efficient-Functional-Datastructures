@@ -86,7 +86,11 @@
     draw,
     minimum size = 1mm,
     inner sep = 0mm,
-    outer sep = 0.5mm,
+    outer sep = 0.5mm
+]
+\tikzstyle{leaf} = [
+    inner sep = 0mm,
+    outer sep = 0mm
 ]
 \tikzstyle{subtree} = [
     isosceles triangle,
@@ -1262,7 +1266,83 @@ Ziel: Finde Knoten $\overline{w}$ mit maximaler Tiefe im $GST_D$ dessen Teilbäu
 %--Folie: Longest common substring-------------------------------------------
 \begin{frame}
 \frametitle{Longest common substring}
-TODO Besseren Namen für Funktion f finden!
+% TODO Besseren Namen für Funktion f finden!
+\begin{example}
+\vspace{-6mm}
+\begin{figure}
+\begin{tikzpicture}[
+    font = \small,
+    level 1/.style = {level distance = 8mm, sibling distance = 45mm},
+    level 2/.style = {level distance = 8mm, sibling distance = 25mm},
+    level 3/.style = {level distance = 8mm, sibling distance = 15mm},
+    edge from parent/.style = {->, draw}
+    ]
+    \node[branch] (b1) {}
+    child {
+        node[branch] (b2) {}
+        child {
+            node[branch] (b3) {}
+            child {
+                node[leaf] (l1) {}
+                edge from parent
+                node[left]{$a\$$}
+            }
+            child {
+                node[leaf] (l2) {}
+                edge from parent
+                node[right, xshift = 1mm]{$ga\#$}
+            }
+            edge from parent
+            node[left]{$g$}
+        }
+        child {
+            node[leaf] (l3) {}
+            edge from parent
+            node[right, xshift = 1mm]{$\$, \#$}
+        }
+        edge from parent
+        node[above]{$a$}
+    }
+    child {
+        node[branch] (b4) {}
+        child {
+            node[branch] (b5) {}
+            child {
+                node[leaf] (l4) {}
+                edge from parent
+                node[left]{$ga\$$}
+            }
+            child {
+                node[leaf] (l5) {}
+                edge from parent
+                node[right]{$\$, \#$}
+            }
+            edge from parent
+            node[left]{$a$}
+        }
+        child {
+            node[leaf] (l6) {}
+            edge from parent
+            node[right, xshift = 2mm]{$ga\#$}
+        }
+        edge from parent
+        node[above]{$g$}
+    };
+    \node[yshift = 6mm] at (b1) {$(1, 1)$} edge [dotted] (b1);
+    \node[yshift = 3mm, xshift = -8mm] at (b2) {$(1, 1)$} edge [dotted] (b2);
+    \node[yshift = 3mm, xshift = -8mm] at (b3) {$(1, 1)$} edge [dotted] (b3);
+    \node[yshift = 3mm, xshift = 8mm] at (b4) {$(1, 1)$} edge [dotted] (b4);
+    \node[yshift = 3mm, xshift = -8mm] at (b5) {$(1, 1)$} edge [dotted] (b5);
+    \node[yshift = -6mm] at (l1) {$(1, 0)$} edge [dotted] (l1);
+    \node[yshift = -6mm] at (l2) {$0, 1)$} edge [dotted] (l2);
+    \node[yshift = -14mm] at (l3) {$(1, 1)$} edge [dotted] (l3);
+    \node[yshift = -6mm] at (l4) {$(1, 0)$} edge [dotted] (l4);
+    \node[yshift = -6mm] at (l5) {$(1, 1)$} edge [dotted] (l5);
+    \node[yshift = -14mm] at (l6) {$(0, 1)$} edge [dotted] (l6);
+\end{tikzpicture}
+\end{figure}
+\end{example}
+\vspace{-5mm}
 \begin{block}{Schritt 2}
 \begin{itemize}
     \item Die Funktion $f$ ordnet jedem Knoten $\overline{w}$ im $GST_D$ einen zweidimensionalen Bitvektor $(b_1, b_2)$ zu, wobei
@@ -1272,6 +1352,51 @@ TODO Besseren Namen für Funktion f finden!
             0 &\text{sonst}
         \end{cases}
     \end{gather*}
+\end{itemize}
+\end{block}
+\end{frame}
+%--Folie---------------------------------------------------------------------
+
+%--Folie: Longest common substring-------------------------------------------
+\begin{frame}
+\frametitle{Longest common substring}
+\begin{example}
+\vspace{-6mm}
+\begin{figure}
+\begin{tikzpicture}[
+    font = \small,
+    level 1/.style = {level distance = 8mm, sibling distance = 20mm},
+    level 2/.style = {level distance = 8mm, sibling distance = 15mm},
+    edge from parent/.style = {->, draw}
+    ]
+    \node[branch] (b) {}
+    child[child anchor = north] {
+        node[subtree] (st1) {$c_1$}
+        edge from parent
+    }
+    child[child anchor = north] {
+        node[subtree] (st2) {$c_2$}
+        edge from parent
+    }
+    child[child anchor = north] {
+        node[leaf] (st3) {}
+        edge from parent[dotted]
+    }
+    child[child anchor = north] {
+        node[subtree] (st4) {$c_l$}
+        edge from parent
+    };
+    \node[yshift = 6mm, xshift = -6mm] at (b) {$(1, 1)$} edge [dotted] (b);
+    \node[yshift = 3mm, xshift = 3mm] at (b) {$\overline{w}$};
+    \node[yshift = -4mm] at (st1.south) {$(1, 0)$};
+    \node[yshift = -4mm] at (st2.south) {$(0, 1)$};
+    \node[yshift = -8mm] at (st3.south) {$\dots$};
+    \node[yshift = -4mm] at (st4.south) {$(1, 0)$};
+\end{tikzpicture}
+\end{figure}
+\end{example}
+\vspace{-5mm}
+\begin{itemize}
     \item Die Oder-Verknüpfung der Bitvektoren der Kindknoten $c_1, \dots, c_l$ liefert den Bitvektor des Vaterknotens $\overline{w}$.
     \begin{gather*}
         f(\overline{w}) = \begin{cases}
@@ -1281,13 +1406,13 @@ TODO Besseren Namen für Funktion f finden!
     \end{gather*}
     \item Aufwand $O(\abs{s_1} + \abs{s_2})$
 \end{itemize}
-\end{block}
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
 %--Folie: Longest common substring-------------------------------------------
 \begin{frame}
 \frametitle{Longest common substring}
+\begin{example}
 \begin{figure}
 \begin{tikzpicture}[
     font = \small,
@@ -1345,6 +1470,7 @@ TODO Besseren Namen für Funktion f finden!
     \node[yshift = 3mm, xshift = -8mm] at (w2.center) {$(1, 1)$} edge [dotted] (w2);
 \end{tikzpicture}
 \end{figure}
+\end{example}
 \begin{block}{Schritt 3}
 \begin{itemize}
     \item $lcs = max \{level(\overline{w}) \mid f(\overline{w}) = (1, 1) \text{ und } \overline{w} \in GST_D\}$
