@@ -928,16 +928,17 @@ Seien $T_1$ und $T_2$ $\Sigma^+$-Bäume mit $T_1 \implies T_2$. Dann enthält $T
 %--Folie: Speicherplatzbedarf, cst-------------------------------------------
 \begin{frame}
 \frametitle{Speicherplatzbedarf}
-TODO Kanten müssen mit Paaren (i, j) beschriftet werden, um O(n) im Worst-Case zu erreichen!
 \begin{lemma}
-cst kann als eine Datentruktur dargestellt werden, deren Speicherplatzbedarf $O(n)$ ist.
+$cst$ besitzt einen Speicherplatzbedarf von $O(n)$.
 \end{lemma}
 \begin{proof}
 \begin{itemize}
-    \item cst hat nicht mehr als $n$ Blätter.
-    \item jeder innere Knoten ist eine Verzweigung, die die Anzahl von Blätter während dem Aufbau mindestens um 1 erhöht.
+    \item cst besitzt höchstens $n$ Blätter
+    \item jeder innere Knoten ist eine Verzweigung
+    \item cst besitzt höchstens $n$ innere Knoten und somit höchstens $2n$ Kanten
+    \item Jede Kante wird mit einem Paar $(i, j) \in \mathbb{N} \times \mathbb{N}$ beschriftet $\implies O(1)$ für jede Kante
+    \item Insgesamt ergibt sich $O(n)$
 \end{itemize}
-$\rightarrow$ cst hat nicht mehr als $n$ innere Knoten und damit nicht mehr als $2n$ Kanten.
 \end{proof}
 \end{frame}
 %--Folie---------------------------------------------------------------------
@@ -947,8 +948,77 @@ $\rightarrow$ cst hat nicht mehr als $n$ innere Knoten und damit nicht mehr als 
 \frametitle{Speicherplatzbedarf}
 ast und pst benötigen mehr Speicherplatz:
 \begin{itemize}
-    \item ast hat $O(n^2)$ Knoten: für jedes Suffix $s$ wird $\abs{s}$ Knoten benötigt.
-    \item pst hat $O(n^2)$ Knoten im Worst-Case (z.B. für $a^nb^na^nb^n$), aber in der Praxis hat pst $O(n)$ Knoten.
+    \item ast hat $O(n^2)$ Knoten im Worst-Case (z.B. $a^nb^n$):
+        \vspace{2mm}
+        \begin{figure}
+        \begin{tikzpicture}[
+            font = \small,
+            level 1/.style = {level distance = 7mm, sibling distance = 20mm},
+            level 2/.style = {level distance = 7mm, sibling distance = 20mm},
+            level 3/.style = {level distance = 7mm, sibling distance = 20mm},
+            edge from parent/.style = {->, draw}
+            ]
+            \node[branch]{}
+            child {
+                node[branch]{}
+                child {
+                    node[branch]{}
+                    child {
+                        node[branch]{}
+                        child {
+                            node[branch]{}
+                            child[opacity = 0] {
+                                node[branch]{}
+                                edge from parent
+                                node[right, yshift = 1mm]{}
+                            }
+                            child {
+                                node[branch] (b5) {}
+                                edge from parent
+                                node[right, yshift = 1mm]{$b_1$}
+                            }
+                            edge from parent[solid]
+                            node[left, yshift = 1mm]{$a_n$}
+                        }
+                        child {
+                            node[branch] (b4) {}
+                            edge from parent[solid]
+                            node[right, yshift = 1mm]{$b_1$}
+                        }
+                        edge from parent[dotted]
+                        node[left]{}
+                    }
+                    child {
+                        node[branch] (b3) {}
+                        edge from parent
+                        node[right, yshift = 1mm]{$b_1$}
+                    }
+                    edge from parent
+                    node[left, yshift = 1mm]{$a_2$}
+                }
+                child {
+                    node[branch] (b2) {}
+                    edge from parent
+                    node[right, yshift = 1mm]{$b_1$}
+                }
+                edge from parent
+                node[left, yshift = 1mm]{$a_1$}
+            }
+            child {
+                node[branch] (b1) {}
+                edge from parent
+                node[right, yshift = 1mm]{$b_1$}
+            };
+            \node[subtree] at (b1.center) {$b^{n - 1}$};
+            \node[subtree] at (b2.center) {$b^{n - 1}$};
+            \node[subtree] at (b3.center) {$b^{n - 1}$};
+            \node[subtree] at (b4.center) {$b^{n - 1}$};
+            \node[subtree] at (b5.center) {$b^{n - 1}$};
+            \node at (3.5, -1) {}; % Dummy Knoten
+        \end{tikzpicture}
+        \end{figure}
+        \vspace{2mm}
+    \item pst hat $O(n^2)$ Knoten im Worst-Case (z.B. $a^nb^na^nb^n$), aber in der Praxis $O(n)$
 \end{itemize}
 \end{frame}
 %--Folie---------------------------------------------------------------------
