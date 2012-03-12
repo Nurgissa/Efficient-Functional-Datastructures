@@ -2155,18 +2155,18 @@ Divide and Conquer Ansatz
     ]
     \node (n1) {
         \begin{tabular}{c}
-            Schritt 1: divide \color{rubineRed}y\color{aquamarine}ab\color{rubineRed}b\color{aquamarine}ad\color{rubineRed}a\color{aquamarine}bb\color{rubineRed}a\color{aquamarine}do \\
+            Schritt 1: Divide \color{rubineRed}y\color{aquamarine}ab\color{rubineRed}b\color{aquamarine}ad\color{rubineRed}a\color{aquamarine}bb\color{rubineRed}a\color{aquamarine}do \\
             \midrule
-            \color{black}Schritt 4: merge \\
+            \color{black}Schritt 4: Merge \\
         \end{tabular}}
     child {
-        node {Schritt 3: sort}
+        node {Schritt 3: Sort}
         edge from parent[color = rubineRed]
         node[left, xshift = -2mm]{\color{rubineRed}i mod 3 = 0}
         node[right, xshift = 2mm]{\color{rubineRed}$\sfrac{1}{3}$}
     }
     child {
-        node {Schritt 2: sort recursive}
+        node {Schritt 2: Sort recursive}
         child {
             edge from parent[color = rubineRed, dotted]
         }
@@ -2184,8 +2184,48 @@ Divide and Conquer Ansatz
 
 %--Folie: Grundlegende Idee--------------------------------------------------
 \begin{frame}
-\frametitle{DC3: Schritt 1}
-
+\frametitle{Schritt 1: Divide}
+\begin{figure}
+\tabcolsep1mm
+\begin{tikzpicture}[
+    font = \small,
+    level 1/.style = {level distance = 20mm, sibling distance = 55mm},
+    level 2/.style = {level distance = 20mm, sibling distance = 55mm},
+    edge from parent/.style = {->, draw}
+    ]
+    \node {
+        \begin{tabular}{c c c c c c c c c c c c}
+            \color{rubineRed}0 & \color{aquamarine}1 & \color{aquamarine}2 & \color{rubineRed}3 & \color{aquamarine}4 & \color{aquamarine}5 & \color{rubineRed}6 & \color{aquamarine}7 & \color{aquamarine}8 & \color{rubineRed}9 & \color{aquamarine}10 & \color{aquamarine}11 \\
+            \color{rubineRed}y & \color{aquamarine}a & \color{aquamarine}b & \color{rubineRed}b & \color{aquamarine}a & \color{aquamarine}d & \color{rubineRed}a & \color{aquamarine}b & \color{aquamarine}b & \color{rubineRed}a & \color{aquamarine}d & \color{aquamarine}o \\
+        \end{tabular}
+    }
+    child[child anchor = north] {
+        node[align = left, anchor = north] {
+            \color{rubineRed}yabbadabbado \\
+            \color{rubineRed}badabbado    \\
+            \color{rubineRed}abbado       \\
+            \color{rubineRed}ado          \\
+        }
+        edge from parent[color = rubineRed]
+        node[left, xshift = -2mm]{\color{rubineRed}i mod 3 = 0}
+    }
+    child[child anchor = north] {
+        node[align = left, anchor = north] {
+            \color{aquamarine}abbadabbado \\
+            \color{aquamarine}bbadabbado  \\
+            \color{aquamarine}adabbado    \\
+            \color{aquamarine}dabbado     \\
+            \color{aquamarine}bbado       \\
+            \color{aquamarine}bado        \\
+            \color{aquamarine}do          \\
+            \color{aquamarine}o           \\
+        }
+        edge from parent[color = aquamarine]
+        node[right, xshift = 2mm]{\color{aquamarine}i mod 3 = 1 o. 2}
+    };
+\end{tikzpicture}
+\end{figure}
+\tabcolsep6pt
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
