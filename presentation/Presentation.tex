@@ -1926,11 +1926,14 @@ lazy_cst edge alpha t = sTr (suffixes t)
 %--Folie: Laufzeitanalyse----------------------------------------------------
 \begin{frame}[fragile]
 \frametitle{Laufzeitanalyse}
-TODO Folie Laufzeitanalyse ausarbeiten!
-% Aufwand der Schritte:
-% \begin{itemize}
-%     \item Sortiere $k$ Suffixe nach dem ersten Zeichen: $O(k), k \le n$
-% \end{itemize}
+Aufwand der Schritte:
+\begin{itemize}
+    \item Sortiere $k$ Suffixe nach dem ersten Zeichen: $O(k), k \le n$
+    \item Bestimme gemeinsamen Präfix: $O(|p| \cdot k)$, $k \in O(n)$, $|p| \le n$. 
+    Grobe Berechnung: $T(n,|p|) = wc\_isEqual(n - 1) + wc\_newList(n) + T(n-1,|p|-1) = \sum_{i = 1}^{|p|}{wc\_isEqual(n-1)} + \sum_{i = 1}^{|p|}{wc\_newList(n)} \in O(|p| \cdot n)$ 
+    \item Aufbau der Baumstruktur: $O(1)$ pro Knoten
+\end{itemize}
+\medskip
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
@@ -1949,7 +1952,9 @@ commonPrefix w1 w2 = g w1 w2 []
     where g (x:xs) (y:ys) cp | (x == y) = g xs ys (x:cp)
           g w1 w2 cp  = (w1, w2, reverse cp)
 \end{lstlisting}
-TODO Beispiel hinzufügen!
+\begin{example}
+    
+\end{example}
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
