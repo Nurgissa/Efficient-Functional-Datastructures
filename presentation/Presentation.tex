@@ -1996,13 +1996,14 @@ commonPrefix w1 w2 = g w1 w2 []
     where g (x:xs) (y:ys) cp | (x == y) = g xs ys (x:cp)
           g w1 w2 cp  = (w1, w2, reverse cp)
 \end{lstlisting}
-\begin{example}
+\begin{examples}
 \begin{itemize}
     \item w1 = abc, w2 = abcde, \\commonPrefix w1 w2 = ([ ], de, abc)
     \item w1 = abcde, w2 = abc, \\commonPrefix w1 w2 = (de, [ ], abc)
     \item w1 = abc, w2 = de, \\commonPrefix w1 w2 = (abc, de, [ ])
+    \item w1 = abcd, w2 = abde, \\commonPrefix w1 w2 = (cd, de, ab)
 \end{itemize}
-\end{example}
+\end{examples}
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
