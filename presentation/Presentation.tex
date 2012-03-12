@@ -2026,7 +2026,7 @@ search ss (Branch es) =  g ss es
 
 let alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
     word = "agcgacgag"
-in  search "cgag" (lazy_cst edge alphabet word)
+in  search "cgac" (lazy_cst edge alphabet word)
 \end{lstlisting}
 \begin{figure}
 \begin{tikzpicture}[
@@ -2047,17 +2047,15 @@ in  search "cgag" (lazy_cst edge alphabet word)
             node[branch]{}
             child {
                 edge from parent
-                node[left]{$cgag$}
+                node[left]{$\boldsymbol{c}gag$}
             }
-            child {
-                edge from parent
-                node[right]{$\boldsymbol{g}$}
+            child[child anchor = north] {
+                edge from parent[dotted]
             }
             edge from parent
             node[left]{$\boldsymbol{cga}$}
         }
         child[child anchor = north] {
-            node[subtree]{}
             edge from parent[dotted]
         };
     }
