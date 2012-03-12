@@ -1874,7 +1874,7 @@ select ss a = [c:u | c:u <- ss, a == c]
 \begin{example}
     $ss := \{ agcgacgag, gcgacgag, cgacgag, acgag, cgag, gag, ag\}$
     $a := a$ \\
-    $[c:u \mid c:u \leftarrow ss, a == c] = [agcgacgag,acgag,ag]$   
+    $[c:u \mid c:u \leftarrow ss, a == c] = [agcgacgag,acgag,ag]$
 \end{example}
 \end{frame}
 %--Folie---------------------------------------------------------------------
@@ -1932,8 +1932,8 @@ lazy_cst edge alpha t = sTr (suffixes t)
 Aufwand der Schritte:
 \begin{itemize}
     \item Sortiere $k$ Suffixe nach dem ersten Zeichen: $O(k), k \le n$
-    \item Bestimme gemeinsamen Präfix: $O(|p| \cdot k)$, $k \in O(n)$, $|p| \le n$. 
-    Grobe Berechnung: $T(n,|p|) = wc\_isEqual(n - 1) + wc\_newList(n) + T(n-1,|p|-1) = \sum_{i = 1}^{|p|}{wc\_isEqual(n-1)} + \sum_{i = 1}^{|p|}{wc\_newList(n)} \in O(|p| \cdot n)$ 
+    \item Bestimme gemeinsamen Präfix: $O(|p| \cdot k)$, $k \in O(n)$, $|p| \le n$.
+    Grobe Berechnung: $T(n,|p|) = wc\_isEqual(n - 1) + wc\_newList(n) + T(n-1,|p|-1) = \sum_{i = 1}^{|p|}{wc\_isEqual(n-1)} + \sum_{i = 1}^{|p|}{wc\_newList(n)} \in O(|p| \cdot n)$
     \item Aufbau der Baumstruktur: $O(1)$ pro Knoten
 \end{itemize}
 \medskip
@@ -1956,7 +1956,7 @@ commonPrefix w1 w2 = g w1 w2 []
           g w1 w2 cp  = (w1, w2, reverse cp)
 \end{lstlisting}
 \begin{example}
-    
+
 \end{example}
 \end{frame}
 %--Folie---------------------------------------------------------------------
@@ -2038,12 +2038,12 @@ Suffixarray für $yabbadabbado$ ist $SA = (1, 6, 4, 9, 3, 8, 2, 7, 5, 10, 11, 0)
 \begin{table}
 \begin{tabular}{l l|l l}
     \toprule
-    $S_1$       & $a b b a d a b b a d o$   & $S_2$     & $b b a d a b b a d o$     \\
-    $S_6$       & $a b b a d o$             & $S_7$     & $b b a d o$               \\
-    $S_4$       & $a d a b b a d o$         & $S_5$     & $d a b b a d o$           \\
-    $S_9$       & $a d o$                   & $S_{10}$  & $d o$                     \\
-    $S_3$       & $b a d a b b a d o$       & $S_{11}$  & $o$                       \\
-    $S_8$       & $b a d o$                 & $S_0$     & $y a b b a d a b b a d o$ \\
+    $S_1$       & $a b b a d a b b a d o$ & $S_2$    & $b b a d a b b a d o$     \\
+    $S_6$       & $a b b a d o$           & $S_7$    & $b b a d o$               \\
+    $S_4$       & $a d a b b a d o$       & $S_5$    & $d a b b a d o$           \\
+    $S_9$       & $a d o$                 & $S_{10}$ & $d o$                     \\
+    $S_3$       & $b a d a b b a d o$     & $S_{11}$ & $o$                       \\
+    $S_8$       & $b a d o$               & $S_0$    & $y a b b a d a b b a d o$ \\
     \bottomrule
 \end{tabular}
 \end{table}
@@ -2055,15 +2055,24 @@ Suffixarray für $yabbadabbado$ ist $SA = (1, 6, 4, 9, 3, 8, 2, 7, 5, 10, 11, 0)
 \subsection{DC3}
 %////////////////////////////////////////////////////////////////////////////
 
-%////////////////////////////////////////////////////////////////////////////
-\subsubsection{Beispiel}
-%////////////////////////////////////////////////////////////////////////////
+%--Folie: Grundlegende Idee--------------------------------------------------
+\begin{env}
+\begin{frame}
+\frametitle{Grundlegende Idee}
+\begin{figure}
+\begin{tikzpicture}
 
-%--Folie: DC3----------------------------------------------------------------
+\end{tikzpicture}
+\end{figure}
+\end{frame}
+\end{env}
+%--Folie---------------------------------------------------------------------
+
+%--Folie: Beispiel für $yabbadabbado$----------------------------------------
 \begin{frame}[fragile]
 \frametitle{Beispiel für $yabbadabbado$}
 \begin{table}
-\begin{tabular}{l|l l l l l l l l l l l l l l}
+\begin{tabular}{l|l l l l l l l l l l l l l level}
     \toprule
     i & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 \\
     \midrule
