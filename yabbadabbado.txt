@@ -17,10 +17,12 @@ B_1 = {1, 4, 7, 10}
 B_2 = {2, 5, 8, 11}
 C   = {1, 4, 7, 10, 2, 5, 8, 11}
 
-R_1 = abb, ada, bba, do$
-R_2 = bba, dab, bad, o$$
+R_1 = [abb][ada][bba][do$]
+R_2 = [bba][dab][bad][o$$]
 
-     1          2        	4          6	         4         5         3	         7
+R = [abb][ada][bba][do$][bba][dab][bad][o$$]
+
+     1          2          4          6           4          5          3          7
 R = abb(-> 1), ada(-> 4), bba(-> 7), do$(-> 10), bba(-> 2), dab(-> 5), bad(-> 8), o$$(-> 11),
 
 (->n) bedeutet, dass die Trigramme zu dem Platz n referenziert.
@@ -29,9 +31,9 @@ R' = 1 2 4 6 4 5 3 7 0  (0 appended)
 
 Es gibt zwei gleiche Nummer -> rekursiver Aufruf für R'
 -------------------------------------------------
-i   | 0 1 2 3 4 5 6 7 8
-t_i | 1 2 4 6 4 5 3 7 0 <- Rang aus vorherigem Aufruf
-      _     _     _
+i     | 0 1 2 3 4 5 6 7 8
+t_i   | 1 2 4 6 4 5 3 7 0 <- Rang aus vorherigem Aufruf
+mod 0 | _     _     _
 
   2    4    6
 [ada][bba][do$]
@@ -42,7 +44,7 @@ t_i | 1 2 4 6 4 5 3 7 0 <- Rang aus vorherigem Aufruf
   7
 [o$$]
 
-R_1' = 246, 453, 70$
+R_1' = [246][453][70$]
 
   4    6    4
 [bba][do$][bba]
@@ -50,9 +52,9 @@ R_1' = 246, 453, 70$
   5    3    7
 [dab][bad][o$$]
 
-R_2' = 464, 537, 0$$
+R_2' = [464][537][0$$]
 
-       2         	3         6         	4         5         1
+       2          3          6          4          5          1
 R_1 = 246(-> 1), 453(-> 4), 70$(-> 7), 464(-> 2), 537(-> 5), 0$$(-> 8)
 
 R_1' = 2 3 6 4 5 1 0

@@ -284,12 +284,15 @@ Ein Suffix Tree $S_t$ für ein gegebenes Wort $t$ ist ein $\Sigma^+$-Baum, sodas
     w \in S_t  \Longleftrightarrow w \text{ ist ein }t\text{-Wort}
 \end{gather*}
 \end{definition}
+\vspace{-4mm}
 \begin{remark}
-Jedes $t$-Wort $w$ lässt sich darstellen als $t = vs, s = wu$
-\begin{gather*}
-    t = a \dots b \underbrace{\overbrace{c \dots d}^{\text{Präfix }w} e \dots f}_{\text{Suffix }s}
-\end{gather*}
-Ein Wort $w$ ist genau dann in einem $\Sigma^+$-Baum enthalten, wenn ein Knoten $\overline{wu}$ in diesem Baum existiert.
+\begin{itemize}
+    \item Jedes $t$-Wort $w$ lässt sich darstellen als $t = vs, s = wu$
+          \begin{gather*}
+              t = a \dots b \underbrace{\overbrace{c \dots d}^{\text{Präfix }w} e \dots f}_{\text{Suffix }s}
+          \end{gather*}
+    \item Ein Wort $w$ ist genau dann in einem $\Sigma^+$-Baum ent"-hal"-ten, wenn ein Knoten $\overline{wu}$ in diesem Baum existiert.
+\end{itemize}
 \end{remark}
 \end{frame}
 %--Folie---------------------------------------------------------------------
@@ -2022,26 +2025,16 @@ Diese Nachteile werden von Suffix Arrays größtenteils behoben
 Suffixarray $SA$ von $T$ ist eine Permutation von $[0,n]$ mit $S_{SA[0]} \prec S_{SA[1]} \prec \dots \prec S_{SA[n]}$, wobei $\prec$ die lexikographische Ordnung auf Zeichenketten bezeichnet.
 \end{definition}
 \begin{example}
-Suffixarray für $yabbadabbado$ ist $SA = (12, 1, 6, 4, 9, 3, 8, 2, 7, 5, 10, 11, 0)$, wobei
-% \begin{table}
-%     \begin{tabular}{l|l}
-%         \toprule
-%         i & 13 \\
-%         \midrule
-%         T[i,n) & y\\
-%         \bottomrule
-%     \end{tabular}
-% \end{table}
+Suffixarray für $yabbadabbado$ ist $SA = (1, 6, 4, 9, 3, 8, 2, 7, 5, 10, 11, 0)$, wobei
 \begin{table}
-\begin{tabular}{l r|l r}
+\begin{tabular}{l l|l l}
     \toprule
-    $S_{12}$    & $00$                          & $S_2$     & $b b a d a b b a d o 0 0$     \\
-    $S_1$       & $a b b a d a b b a d o 0 0$   & $S_7$     & $b b a d o 0 0$               \\
-    $S_6$       & $a b b a d o 0 0$             & $S_5$     & $d a b b a d o 0 0$           \\
-    $S_4$       & $a d a b b a d o 0 0$         & $S_{10}$  & $d o 0 0$                     \\
-    $S_9$       & $a d o 0 0$                   & $S_{11}$  & $o 0 0$                       \\
-    $S_3$       & $b a d a b b a d o 0 0$       & $S_0$     & $y a b b a d a b b a d o 0 0$ \\
-    $S_8$       & $b a d o 0 0$                 &           &                               \\
+    $S_1$       & $a b b a d a b b a d o$   & $S_2$     & $b b a d a b b a d o$     \\
+    $S_6$       & $a b b a d o$             & $S_7$     & $b b a d o$               \\
+    $S_4$       & $a d a b b a d o$         & $S_5$     & $d a b b a d o$           \\
+    $S_9$       & $a d o$                   & $S_{10}$  & $d o$                     \\
+    $S_3$       & $b a d a b b a d o$       & $S_{11}$  & $o$                       \\
+    $S_8$       & $b a d o$                 & $S_0$     & $y a b b a d a b b a d o$ \\
     \bottomrule
 \end{tabular}
 \end{table}

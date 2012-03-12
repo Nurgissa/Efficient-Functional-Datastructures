@@ -15,7 +15,7 @@ inline bool leq(int a1, int a2, int a3, int b1, int b2, int b3)
 
 // stably sort a[0..n-1] to b[0..n-1] with keys in 0..K from r
 static void radixPass(int* a, int* b, int* r, int n, int K)
-{ 
+{
     // count occurrences
     int* c = new int[K + 1];
     // counter array
@@ -112,7 +112,7 @@ void suffixArray(int* T, int* SA, int n, int K) {
 int main() {
     int n = 14;
     // Convert yabbadabbado to int array
-    // Substition sigma = [a -> 1, b -> 2, d -> 3, o -> 4, y -> 5] in alphabetical order
+    // Substitution sigma = [a -> 1, b -> 2, d -> 3, o -> 4, y -> 5] in alphabetical order
     // missippi sigma = 512213122134
     int s[] = {5, 1, 2, 2, 1, 3, 1, 2, 2, 1, 3, 4}; // yabbadabbado
     int b = 5;
