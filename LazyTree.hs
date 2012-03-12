@@ -54,4 +54,4 @@ search ss (Branch es) = g ss es
 main =
     let alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
         word = "agcgacgag"
-    in  search "cgag" $ lazy_cst edge_cst alphabet word
+    in  search "cgac" $ lazy_cst edge_cst alphabet word

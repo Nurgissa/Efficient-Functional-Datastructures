@@ -1996,13 +1996,14 @@ commonPrefix w1 w2 = g w1 w2 []
     where g (x:xs) (y:ys) cp | (x == y) = g xs ys (x:cp)
           g w1 w2 cp  = (w1, w2, reverse cp)
 \end{lstlisting}
-\begin{example}
+\begin{examples}
 \begin{itemize}
     \item w1 = abc, w2 = abcde, \\commonPrefix w1 w2 = ([ ], de, abc)
     \item w1 = abcde, w2 = abc, \\commonPrefix w1 w2 = (de, [ ], abc)
     \item w1 = abc, w2 = de, \\commonPrefix w1 w2 = (abc, de, [ ])
+    \item w1 = abcd, w2 = abde, \\commonPrefix w1 w2 = (cd, de, ab)
 \end{itemize}
-\end{example}
+\end{examples}
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
@@ -2025,7 +2026,7 @@ search ss (Branch es) =  g ss es
 
 let alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
     word = "agcgacgag"
-in  search "cgag" (lazy_cst edge alphabet word)
+in  search "cgac" (lazy_cst edge alphabet word)
 \end{lstlisting}
 \begin{figure}
 \begin{tikzpicture}[
@@ -2046,17 +2047,15 @@ in  search "cgag" (lazy_cst edge alphabet word)
             node[branch]{}
             child {
                 edge from parent
-                node[left]{$cgag$}
+                node[left]{$\boldsymbol{c}gag$}
             }
-            child {
-                edge from parent
-                node[right]{$\boldsymbol{g}$}
+            child[child anchor = north] {
+                edge from parent[dotted]
             }
             edge from parent
             node[left]{$\boldsymbol{cga}$}
         }
         child[child anchor = north] {
-            node[subtree]{}
             edge from parent[dotted]
         };
     }
