@@ -2016,7 +2016,7 @@ search :: (Eq alph) => Word alph -> STree alph -> Bool
 search ss Leaf        = False
 search ss (Branch es) =  g ss es
     where
-    g ss [] = False 
+    g ss [] = False
     g ss (((l, st):es)) =
         case commonPrefix ss l of
          ([], _, _)   -> True           -ss ist leer-
@@ -2051,10 +2051,10 @@ in  search "cgag" (lazy_cst edge alphabet word)
             }
             child {
                 edge from parent
-                node[right]{$\textbf{g}$}
+                node[right]{$\boldsymbol{g}$}
             }
             edge from parent
-            node[left]{$\textbf{cga}$}
+            node[left]{$\boldsymbol{cga}$}
         }
         child[child anchor = north] {
             node[subtree]{}
