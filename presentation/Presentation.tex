@@ -1963,9 +1963,15 @@ lazy_cst edge alpha t = sTr (suffixes t)
                    let (cp,rss) = edge gs
                    ]
 \end{lstlisting}
-\begin{example}
-Worst case: $t = a^n$, $sTr$ wird ein Mal mit der Liste aller Suffixen von $t$ aufgerufen, da $|gs| = 1$ und $rss = [[\:]]$ nach der Ausführung von $edge$ ist. In dem Fall $|cp| = n$ und die Laufzeit von der edge-Funktion und somit von dem gesamten Algorithmus ist $O(n^2)$.
-\end{example}
+\begin{block}{Worst case: $t = a^n$}
+\begin{itemize}
+    \item Aufruf von $sTr$ mit $ss = [a^n,\:a^{n-1}, \dots ,\:a]$
+    \item $gs = ss$
+    \item Aufruf von $edge$: $cp = a^n$ und $rss = [[\:]]$
+    \item Aufruf von $sTr$ mit $rss = [[\:]]$
+\end{itemize}
+Da $|cp| = n$, ist die Laufzeit von $edge$ und von dem gesamten Algorithmus $O(n^2)$.
+\end{block}
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
@@ -2002,12 +2008,14 @@ search :: (Eq alph) => Word alph -> STree alph -> Bool
 
 search ss Leaf        = False
 search ss (Branch es) =  g ss es
-    where g ss (((l, st):es)) =
+    where
+    g ss [] = False 
+    g ss (((l, st):es)) =
         case commonPrefix ss l of
-         ([], _, _)   -> True
-         (_, _, [])   -> g ss es
-         (ss', [], _) -> search ss' st
-         _            -> False
+         ([], _, _)   -> True           -ss ist leer-
+         (_, _, [])   -> g ss es        -cp = []-
+         (ss', [], _) -> search ss' st  -cp = l-
+         _            -> False          -cp != []|l|ss-
 
 let alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
     word = "agcgacgag"
@@ -2024,15 +2032,7 @@ in  search "cgag" (lazy_cst edge alphabet word)
     { [yshift = 0cm]
         \node[branch]{}
         child {
-            node[branch]{}
-            child[child anchor = north] {
-                node[subtree]{}
-                edge from parent[dotted]
-            }
-            child[child anchor = north] {
-                node[subtree]{}
-                edge from parent[dotted]
-            }
+            node[branch] (a) {}
             edge from parent
             node[above]{$a$}
         }
@@ -2044,16 +2044,17 @@ in  search "cgag" (lazy_cst edge alphabet word)
             }
             child {
                 edge from parent
-                node[right]{$g$}
+                node[right]{$\textbf{g}$}
             }
             edge from parent
-            node[left]{$cga$}
+            node[left]{$\textbf{cga}$}
         }
         child[child anchor = north] {
             node[subtree]{}
             edge from parent[dotted]
         };
     }
+    \node[subtree] at (a.center) {};
 \end{tikzpicture}
 \end{figure}
 \end{frame}
