@@ -1937,12 +1937,15 @@ edge awss@((a:_):ss)
     | otherwise               = ([], awss)
     where (cp, rss) = edge ([t | _:t <- awss, length t > 0])
 \end{lstlisting}
-Grobe Schätzung:
-\begin{gather*}
-    T(n,|cp|) = wc\_isEqual(n - 1) + wc\_newList(n) + \\T(n-1,|cp|-1) =
-    \sum_{i = 1}^{|cp|}{wc\_isEqual(n-1)} + \\ \sum_{i = 1}^{|cp|}{wc\_newList(n)} \in O(|cp| \cdot n),
-\end{gather*}
+\begin{block}{Abschätzung}
+\vspace{-8mm}
+\begin{align*}
+    T(n,\abs{cp}) &= isEqual(n - 1) + newList(n) + T(n-1,\abs{cp}-1) \\
+             &= \sum_{i = 1}^{\abs{cp}}{isEqual(n-1)} + \sum_{i = 1}^{\abs{cp}}{newList(n)} \\
+             &= \abs{cp} (n - 1) + \abs{cp} n \in O(\abs{cp} \cdot n)
+\end{align*}
 wobei $|cp| \le n$.
+\end{block}
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
