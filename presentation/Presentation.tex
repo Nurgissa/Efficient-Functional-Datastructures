@@ -1798,7 +1798,11 @@ Folgende Funktion liefert die Liste mit allen Wörter aus $ss$, die mit $a$ anfa
 select :: (Eq alf) => [[alf]] -> alf -> [[alf]]
 select ss a = [c:u | c:u <- ss, a == c]
 \end{lstlisting}
-TODO Beispiel hinzufügen!
+\begin{example}
+    $ss := \{ agcgacgag, gcgacgag, cgacgag, acgag, cgag, gag, ag\}$
+    $a := a$ \\
+    $[c:u \mid c:u \leftarrow ss, a == c] = [agcgacgag,acgag,ag]$   
+\end{example}
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
