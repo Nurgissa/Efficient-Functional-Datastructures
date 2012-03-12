@@ -1928,15 +1928,41 @@ lazy_cst edge alpha t = sTr (suffixes t)
 
 %--Folie: Laufzeitanalyse----------------------------------------------------
 \begin{frame}[fragile]
-\frametitle{Laufzeitanalyse}
-Aufwand der Schritte:
-\begin{itemize}
-    \item Sortiere $k$ Suffixe nach dem ersten Zeichen: $O(k), k \le n$
-    \item Bestimme gemeinsamen Präfix: $O(|p| \cdot k)$, $k \in O(n)$, $|p| \le n$.
-    Grobe Berechnung: $T(n,|p|) = wc\_isEqual(n - 1) + wc\_newList(n) + T(n-1,|p|-1) = \sum_{i = 1}^{|p|}{wc\_isEqual(n-1)} + \sum_{i = 1}^{|p|}{wc\_newList(n)} \in O(|p| \cdot n)$
-    \item Aufbau der Baumstruktur: $O(1)$ pro Knoten
-\end{itemize}
-\medskip
+\frametitle{Laufzeitanalyse von der Funktion $edge$}
+\begin{lstlisting}
+edge :: (Eq alf) => EdgeFunction alf
+edge [s] = ([s], [[]])
+edge awss@((a:_):ss)
+    | all (\c:_ -> a == c) ss = (a:cp, rss)
+    | otherwise               = ([], awss)
+    where (cp, rss) = edge ([t | _:t <- awss, length t > 0])
+\end{lstlisting}
+Grobe Schätzung:
+\begin{gather*}
+    T(n,|cp|) = wc\_isEqual(n - 1) + wc\_newList(n) + \\T(n-1,|cp|-1) =
+    \sum_{i = 1}^{|cp|}{wc\_isEqual(n-1)} + \\ \sum_{i = 1}^{|cp|}{wc\_newList(n)} \in O(|cp| \cdot n),
+\end{gather*}
+wobei $|cp| \le n$.
+\end{frame}
+%--Folie---------------------------------------------------------------------
+
+%--Folie: Laufzeitanalyse----------------------------------------------------
+\begin{frame}[fragile]
+\frametitle{Laufzeitanalyse von der Funktion $lazy\_cst$}
+\begin{lstlisting}
+lazy_cst edge alpha t = sTr (suffixes t)
+    where
+    sTr [[]] = Leaf
+    sTr ss   = Branch[(cp,sTr rss) |
+                   a <- alpha,
+                   let gs = select ss a,
+                   length gs > 0,
+                   let (cp,rss) = edge gs
+                   ]
+\end{lstlisting}
+\begin{example}
+Worst case: $t = a^n$, $sTr$ wird ein Mal mit der Liste aller Suffixen von $t$ aufgerufen, da $|gs| = 1$ und $rss = [[\:]]$ nach der Ausführung von $edge$ ist. In dem Fall $|cp| = n$ und die Laufzeit von der edge-Funktion und somit von dem gesamten Algorithmus ist $O(n^2)$.
+\end{example}
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
@@ -1956,7 +1982,11 @@ commonPrefix w1 w2 = g w1 w2 []
           g w1 w2 cp  = (w1, w2, reverse cp)
 \end{lstlisting}
 \begin{example}
-
+\begin{itemize}
+    \item w1 = abc, w2 = abcde, \\commonPrefix w1 w2 = ([ ], de, abc)
+    \item w1 = abcde, w2 = abc, \\commonPrefix w1 w2 = (de, [ ], abc)
+    \item w1 = abc, w2 = de, \\commonPrefix w1 w2 = (abc, de, [ ])
+\end{itemize}
 \end{example}
 \end{frame}
 %--Folie---------------------------------------------------------------------
@@ -1964,7 +1994,6 @@ commonPrefix w1 w2 = g w1 w2 []
 %--Folie: Haskell-Code: Suche------------------------------------------------
 \begin{frame}[fragile]
 \frametitle{Teilwortsuche}
-TODO Algorithmus grafisch veranschaulichen!
 \begin{lstlisting}
 search :: (Eq alph) => Word alph -> STree alph -> Bool
 
@@ -1976,7 +2005,54 @@ search ss (Branch es) =  g ss es
          (_, _, [])   -> g ss es
          (ss', [], _) -> search ss' st
          _            -> False
+
+let alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
+    word = "agcgacgag"
+in  search "cgag" (lazy_cst edge alphabet word)
 \end{lstlisting}
+\begin{figure}
+\begin{tikzpicture}[
+    font = \small,
+    level 1/.style = {level distance = 7mm, sibling distance = 30mm},
+    level 2/.style = {level distance = 7mm, sibling distance = 15mm},
+    level 3/.style = {level distance = 7mm, sibling distance = 10mm},
+    edge from parent/.style = {->, draw}
+    ]
+    { [yshift = 0cm]
+        \node[branch]{}
+        child {
+            node[branch]{}
+            child[child anchor = north] {
+                node[subtree]{}
+                edge from parent[dotted]
+            }
+            child[child anchor = north] {
+                node[subtree]{}
+                edge from parent[dotted]
+            }
+            edge from parent
+            node[above]{$a$}
+        }
+        child[level distance = 16mm] {
+            node[branch]{}
+            child {
+                edge from parent
+                node[left]{$cgag$}
+            }
+            child {
+                edge from parent
+                node[right]{$g$}
+            }
+            edge from parent
+            node[left]{$cga$}
+        }
+        child[child anchor = north] {
+            node[subtree]{}
+            edge from parent[dotted]
+        };
+    }
+\end{tikzpicture}
+\end{figure}
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
