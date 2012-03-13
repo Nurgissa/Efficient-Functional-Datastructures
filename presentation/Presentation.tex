@@ -2201,7 +2201,7 @@ Divide and Conquer Ansatz
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
-%--Folie: Grundlegende Idee--------------------------------------------------
+%--Folie: Schritt 1: Divide--------------------------------------------------
 \begin{frame}
 \frametitle{Schritt 1: Divide}
 \begin{figure}
@@ -2230,14 +2230,17 @@ Divide and Conquer Ansatz
     }
     child[child anchor = north] {
         node[align = left, anchor = north] {
-            \color{aquamarine}abbadabbado \\
-            \color{aquamarine}bbadabbado  \\
-            \color{aquamarine}adabbado    \\
-            \color{aquamarine}dabbado     \\
-            \color{aquamarine}bbado       \\
-            \color{aquamarine}bado        \\
-            \color{aquamarine}do          \\
-            \color{aquamarine}o           \\
+            \begin{tabular}{l}
+                \color{aquamarine}abbadabbado \\
+                \color{aquamarine}adabbado    \\
+                \color{aquamarine}bbado       \\
+                \color{aquamarine}do          \\
+                \midrule
+                \color{aquamarine}bbadabbado  \\
+                \color{aquamarine}dabbado     \\
+                \color{aquamarine}bado        \\
+                \color{aquamarine}o           \\
+            \end{tabular}
         }
         edge from parent[color = aquamarine]
         node[right, xshift = 2mm]{\color{aquamarine}i mod 3 = 1 o. 2}
@@ -2245,6 +2248,28 @@ Divide and Conquer Ansatz
 \end{tikzpicture}
 \end{figure}
 \tabcolsep6pt
+\end{frame}
+%--Folie---------------------------------------------------------------------
+
+%--Folie: Schritt 1: Sort recursived-----------------------------------------
+\begin{frame}
+\frametitle{Schritt 2: Sort recursive}
+\begin{block}{Samples erzeugen}
+    \begin{columns}
+        \column{.5\textwidth}
+            \begin{tikzpicture}
+               \node (n1) {\color{gray}y\color{aquamarine}a\color{gray}bb\color{aquamarine}a\color{gray}da\color{aquamarine}b\color{gray}ba\color{aquamarine}d\color{gray}o};
+               \node[below = 2cm] (n2) at (n1) {\color{black}[\color{aquamarine}a\color{gray}bb\color{black}][\color{aquamarine}a\color{gray}da\color{black}\color{black}][\color{aquamarine}b\color{gray}ba\color{black}][\color{aquamarine}d\color{gray}o0\color{black}]};
+               \path[->, color = aquamarine] (n1) edge (n2);
+        \end{tikzpicture}
+        \column{.5\textwidth}
+        \begin{tikzpicture}
+               \node (n1) {\color{gray}ya\color{blue}b\color{gray}ba\color{blue}d\color{gray}ab\color{blue}b\color{gray}ad\color{blue}o};
+               \node[below = 2cm] (n2) at (n1) {[bba][dab][bad][o00]};
+               \path[->, color = blue] (n1) edge (n2);
+        \end{tikzpicture}
+    \end{columns}
+\end{block}
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
