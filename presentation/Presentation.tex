@@ -1696,8 +1696,6 @@ type EdgeFunction alf = [[alf]] -> ([alf], [[alf]])
 %--Folie: wotd-Algorithmus: Schritte-----------------------------------------
 \begin{frame}[t]
 \frametitle{wotd-Algorithmus für cst}
-wotd: write-only top-down\\
-\medskip
 Schritte:
 \begin{enumerate}
     \item Finde alle Suffixe eines gegebenen Wortes.
@@ -1716,32 +1714,12 @@ Schritte:
 %////////////////////////////////////////////////////////////////////////////
 
 %--Folie: Beispiel-----------------------------------------------------------
-\begin{frame}
+\begin{frame}[fragile]
 \frametitle{Beispiel für $agcgacgag$}
 \begin{tabularx}{\textwidth}{l X}
 Suffixe &  $agcgacgag$, $gcgacgag$, $cgacgag$, $gacgag$, $acgag$, $cgag$, $gag$, $ag$, $g$ \\
 \end{tabularx}
-\begin{table}
-\begin{tabular}{l l l}
-    \toprule
-    Gruppe 1                 & Gruppe 2               & Gruppe 3                \\
-    \midrule
-    $\boldsymbol{a}gcgacgag$ & $\boldsymbol{cga}cgag$ & $\boldsymbol{g}cgacgag$ \\
-    $\boldsymbol{a}cgag$     & $\boldsymbol{cga}g$    & $\boldsymbol{g}acgag$   \\
-    $\boldsymbol{a}g$        &                        & $\boldsymbol{g}ag$      \\
-                             &                        & $\boldsymbol{g}$        \\
-    \midrule
-    $a$                      & $cga$                  & $g$                     \\
-    \bottomrule
-\end{tabular}
-\end{table}
-\end{frame}
-%--Folie---------------------------------------------------------------------
-
-%--Folie: Haskell-code: Liste von Suffixen-----------------------------------
-\begin{frame}[fragile]
-\frametitle{Haskell-code: Liste von Suffixen}
-Folgende Funktion liefert alle Suffixe von dem gegebenen Wort $aw$:
+\medskip
 \begin{lstlisting}
 suffixes :: [alf] -> [[alf]]
 suffixes []       = []
@@ -1758,26 +1736,27 @@ suffixes aw@(_:w) = aw:suffixes w
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
-%--Folie: Haskell-code: Auswahl----------------------------------------------
+%--Folie: Beispiel-----------------------------------------------------------
 \begin{frame}[fragile]
-\frametitle{Haskell-code: Auswahl einer Gruppe}
-Folgende Funktion liefert die Liste mit allen Wörter aus $ss$, die mit $a$ anfangen:
+\frametitle{Beispiel für $agcgacgag$}
+\begin{table}
+\begin{tabular}{l l l}
+    \toprule
+    Gruppe 1                 & Gruppe 2               & Gruppe 3                \\
+    \midrule
+    $\boldsymbol{a}gcgacgag$ & $\boldsymbol{cga}cgag$ & $\boldsymbol{g}cgacgag$ \\
+    $\boldsymbol{a}cgag$     & $\boldsymbol{cga}g$    & $\boldsymbol{g}acgag$   \\
+    $\boldsymbol{a}g$        &                        & $\boldsymbol{g}ag$      \\
+                             &                        & $\boldsymbol{g}$        \\
+    \midrule
+    $a$                      & $cga$                  & $g$                     \\
+    \bottomrule
+\end{tabular}
+\end{table}
 \begin{lstlisting}
 select :: (Eq alf) => [[alf]] -> alf -> [[alf]]
 select ss a = [c:u | c:u <- ss, a == c]
 \end{lstlisting}
-\begin{example}
-    $ss := \{ agcgacgag, gcgacgag, cgacgag, acgag, cgag, gag, ag\}$
-    $a := a$ \\
-    $[c:u \mid c:u \leftarrow ss, a == c] = [agcgacgag,acgag,ag]$
-\end{example}
-\end{frame}
-%--Folie---------------------------------------------------------------------
-
-%--Folie: Haskell-code: Kantenerzeugung--------------------------------------
-\begin{frame}[fragile]
-\frametitle{Haskell-code: Kantenerzeugung}
-Folgende Funktion erzeugt die Kante mit der längster-Präfix- Beschriftung für eine gegebene Liste von Wörter:
 \begin{lstlisting}
 edge :: (Eq alf) => EdgeFunction alf
 edge [s] = ([s], [[]])
@@ -1786,16 +1765,67 @@ edge awss@((a:_):ss)
     | otherwise               = ([], awss)
     where (cp, rss) = edge ([t | _:t <- awss, length t > 0])
 \end{lstlisting}
-\bigskip
-\begin{remark}
-\begin{lstlisting}
-all :: (a -> Bool) -> [a] -> Bool
-all p [] = true
-all p x:xs = p x && all p xs
-\end{lstlisting}
-\end{remark}
 \end{frame}
 %--Folie---------------------------------------------------------------------
+
+% %--Folie: Haskell-code: Liste von Suffixen-----------------------------------
+% \begin{frame}[fragile]
+% \frametitle{Haskell-code: Liste von Suffixen}
+% Folgende Funktion liefert alle Suffixe von dem gegebenen Wort $aw$:
+% \begin{lstlisting}
+% suffixes :: [alf] -> [[alf]]
+% suffixes []       = []
+% suffixes aw@(_:w) = aw:suffixes w
+% \end{lstlisting}
+% \bigskip
+% \begin{remark}
+% \begin{description}[l]
+%     \item[Operator $(::)$] Typ-Spezifikations-Operator
+%     \item[Operator $(:)$] Cons-Operator: $h:[e_1, \dots, e_n] = [h, e_1, \dots, e_n]$
+%     \item[Operator $(@)$] Read-As-Operator: $aw@(\_:w)$ bedeutet, dass $aw$ mit $(\_:w)$ gematcht wird.
+% \end{description}
+% \end{remark}
+% \end{frame}
+% %--Folie---------------------------------------------------------------------
+
+% %--Folie: Haskell-code: Auswahl----------------------------------------------
+% \begin{frame}[fragile]
+% \frametitle{Haskell-code: Auswahl einer Gruppe}
+% Folgende Funktion liefert die Liste mit allen Wörter aus $ss$, die mit $a$ anfangen:
+% \begin{lstlisting}
+% select :: (Eq alf) => [[alf]] -> alf -> [[alf]]
+% select ss a = [c:u | c:u <- ss, a == c]
+% \end{lstlisting}
+% \begin{example}
+%     $ss := \{ agcgacgag, gcgacgag, cgacgag, acgag, cgag, gag, ag\}$
+%     $a := a$ \\
+%     $[c:u \mid c:u \leftarrow ss, a == c] = [agcgacgag,acgag,ag]$
+% \end{example}
+% \end{frame}
+% %--Folie---------------------------------------------------------------------
+
+% %--Folie: Haskell-code: Kantenerzeugung--------------------------------------
+% \begin{frame}[fragile]
+% \frametitle{Haskell-code: Kantenerzeugung}
+% Folgende Funktion erzeugt die Kante mit der längster-Präfix- Beschriftung für eine gegebene Liste von Wörter:
+% \begin{lstlisting}
+% edge :: (Eq alf) => EdgeFunction alf
+% edge [s] = ([s], [[]])
+% edge awss@((a:_):ss)
+%     | all (\c:_ -> a == c) ss = (a:cp, rss)
+%     | otherwise               = ([], awss)
+%     where (cp, rss) = edge ([t | _:t <- awss, length t > 0])
+% \end{lstlisting}
+% \bigskip
+% \begin{remark}
+% \begin{lstlisting}
+% all :: (a -> Bool) -> [a] -> Bool
+% all p [] = true
+% all p x:xs = p x && all p xs
+% \end{lstlisting}
+% \end{remark}
+% \end{frame}
+% %--Folie---------------------------------------------------------------------
 
 %--Folie: Beispiel-----------------------------------------------------------
 \begin{frame}
