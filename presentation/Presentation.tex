@@ -1690,26 +1690,6 @@ type EdgeFunction alf = [[alf]] -> ([alf], [[alf]])
 %--Folie---------------------------------------------------------------------
 
 %////////////////////////////////////////////////////////////////////////////
-\subsubsection{Vorgehensweise}
-%////////////////////////////////////////////////////////////////////////////
-
-%--Folie: wotd-Algorithmus: Schritte-----------------------------------------
-\begin{frame}[t]
-\frametitle{wotd-Algorithmus für cst}
-Schritte:
-\begin{enumerate}
-    \item Finde alle Suffixe eines gegebenen Wortes.
-    \item Gruppiere nach den Anfangsbuchstaben. Erzeuge einen Knoten.
-    \item Für jede Gruppe:
-    \begin{enumerate}
-        \item Finde das längste gemeinsame Präfix\footnote{Wenn ein Wort der Gruppe sich endet, wird das Präfix weiter gesucht}, erzeuge eine Kante mit der Beschriftung vom Präfix, entferne das Präfix von den Wörtern der Gruppe.
-        \item Falls die Gruppe leer ist, erzeuge ein Blatt. Falls es in der Gruppe noch Wörter gibt, kehre zu Schritt 2 zurück.
-    \end{enumerate}
-\end{enumerate}
-\end{frame}
-%--Folie---------------------------------------------------------------------
-
-%////////////////////////////////////////////////////////////////////////////
 \subsubsection{Beispiel}
 %////////////////////////////////////////////////////////////////////////////
 
@@ -2001,6 +1981,25 @@ Zweites und drittes Level
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
+%////////////////////////////////////////////////////////////////////////////
+\subsubsection{Vorgehensweise}
+%////////////////////////////////////////////////////////////////////////////
+
+%--Folie: wotd-Algorithmus: Schritte-----------------------------------------
+\begin{frame}[t]
+\frametitle{Zusammenfassung der Schritte}
+\begin{enumerate}
+    \item Finde alle Suffixe eines gegebenen Wortes.
+    \item Gruppiere nach den Anfangsbuchstaben. Erzeuge einen Knoten.
+    \item Für jede Gruppe:
+    \begin{enumerate}
+        \item Finde das längste gemeinsame Präfix\footnote{Wenn ein Wort der Gruppe sich endet, wird das Präfix weiter gesucht}, erzeuge eine Kante mit der Beschriftung vom Präfix, entferne das Präfix von den Wörtern der Gruppe.
+        \item Falls die Gruppe leer ist, erzeuge ein Blatt. Falls es in der Gruppe noch Wörter gibt, kehre zu Schritt 2 zurück.
+    \end{enumerate}
+\end{enumerate}
+\end{frame}
+%--Folie---------------------------------------------------------------------
+
 %--Folie: Haskell-code: Baumaufbau-------------------------------------------
 \begin{frame}[fragile]
 \frametitle{Haskell-code: Baumaufbau}
@@ -2018,6 +2017,37 @@ lazy_cst edge alpha t = sTr (suffixes t)
                    let (cp,rss) = edge gs
                    ]
 \end{lstlisting}
+\begin{figure}
+\begin{tikzpicture}[
+    font = \small,
+    level 1/.style = {level distance = 8mm, sibling distance = 30mm},
+    level 2/.style = {level distance = 8mm, sibling distance = 15mm},
+    edge from parent/.style = {->, draw}
+    ]
+    \node[branch] (b) {}
+    child[child anchor = north] {
+        node[subtree] {$sTr\:rss$}
+        edge from parent
+        node[above]{$cp$}
+    }
+    child[child anchor = north] {
+        node[subtree] {$sTr\:rss$}
+        edge from parent
+        node[left]{$cp$}
+    }
+    child[child anchor = north] {
+        node[leaf] (st) {}
+        edge from parent[dotted]
+    }
+    child[child anchor = north] {
+        node[subtree] {$sTr\:rss$}
+        edge from parent
+        node[above]{$cp$}
+    };
+    \node[yshift = 6mm] at (b.center) {$Branch$};
+    \node[yshift = -8mm] at (st.south) {$\dots$};
+\end{tikzpicture}
+\end{figure}
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
