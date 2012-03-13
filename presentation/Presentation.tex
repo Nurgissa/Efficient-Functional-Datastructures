@@ -1714,7 +1714,7 @@ suffixes aw@(_:w) = aw:suffixes w
 \begin{description}[l]
     \item[Operator $(::)$] Typ-Spezifikations-Operator
     \item[Operator $(:)$] Cons-Operator: $h:[e_1, \dots, e_n] = [h, e_1, \dots, e_n]$
-    \item[Operator $(@)$] Read-As-Operator: $aw@(\_:w)$ bedeutet, dass $aw$ mit $(\_:w)$ gematcht wird.
+    \item[Operator $(@)$] Read-As-Operator: $aw@(\_:w)$ bedeutet, dass $(\_:w)$ an $aw$ gebunden wird.
 \end{description}
 \end{remark}
 \end{frame}
@@ -1993,12 +1993,12 @@ Zweites und drittes Level
 \begin{frame}[t]
 \frametitle{Zusammenfassung der Schritte}
 \begin{enumerate}
-    \item Finde alle Suffixe eines gegebenen Wortes.
+    \item Erzeuge alle Suffixe eines gegebenen Wortes.
     \item Gruppiere nach den Anfangsbuchstaben. Erzeuge einen Knoten.
     \item Für jede Gruppe:
     \begin{enumerate}
-        \item Finde das längste gemeinsame Präfix\footnote{Wenn ein Wort der Gruppe sich endet, wird das Präfix weiter gesucht}, erzeuge eine Kante mit der Beschriftung vom Präfix, entferne das Präfix von den Wörtern der Gruppe.
-        \item Falls die Gruppe leer ist, erzeuge ein Blatt. Falls es in der Gruppe noch Wörter gibt, kehre zu Schritt 2 zurück.
+        \item Berechne das längste gemeinsame Präfix, erzeuge eine Kante mit der Beschriftung vom Präfix, entferne das Präfix von den Wörtern der Gruppe.
+        \item Falls die Gruppe von Reswörter leer ist, erzeuge ein Blatt. Falls es in der Gruppe noch Wörter gibt, kehre zu Schritt 2 zurück.
     \end{enumerate}
 \end{enumerate}
 \end{frame}
