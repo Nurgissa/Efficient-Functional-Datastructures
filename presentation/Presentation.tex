@@ -172,6 +172,10 @@ TODO Einführung ausarbeiten!
 \section{Suffix Tree}
 %////////////////////////////////////////////////////////////////////////////
 
+%--Folie: Sectionslide-------------------------------------------------------
+\frame{\sectionpage}
+%--Folie---------------------------------------------------------------------
+
 %////////////////////////////////////////////////////////////////////////////
 \subsection{Terminologie}
 %////////////////////////////////////////////////////////////////////////////
@@ -1934,7 +1938,7 @@ lazy_cst edge alpha t = sTr (suffixes t)
 
 %--Folie: Laufzeitanalyse----------------------------------------------------
 \begin{frame}[fragile]
-\frametitle{Laufzeitanalyse von der Funktion $edge$}
+\frametitle{Laufzeitanalyse $edge$}
 \begin{lstlisting}
 edge :: (Eq alf) => EdgeFunction alf
 edge [s] = ([s], [[]])
@@ -1957,7 +1961,7 @@ wobei $|cp| \le n$.
 
 %--Folie: Laufzeitanalyse----------------------------------------------------
 \begin{frame}[fragile]
-\frametitle{Laufzeitanalyse von der Funktion $lazy\_cst$}
+\frametitle{Laufzeitanalyse $lazy\_cst$}
 \begin{lstlisting}
 lazy_cst edge alpha t = sTr (suffixes t)
     where
@@ -2019,10 +2023,10 @@ search ss (Branch es) =  g ss es
     g ss [] = False
     g ss (((l, st):es)) =
         case commonPrefix ss l of
-         ([], _, _)   -> True           -ss ist leer-
-         (_, _, [])   -> g ss es        -cp = []-
-         (ss', [], _) -> search ss' st  -cp = l-
-         _            -> False          -cp != []|l|ss-
+         ([], _, _)   -> True          -- ss ist leer
+         (_, _, [])   -> g ss es       -- cp = []
+         (ss', [], _) -> search ss' st -- cp = l
+         _            -> False         -- cp != []|l|ss
 
 let alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
     word = "agcgacgag"
@@ -2068,6 +2072,10 @@ in  search "cgac" (lazy_cst edge alphabet word)
 %////////////////////////////////////////////////////////////////////////////
 \section{Suffix Array}
 %////////////////////////////////////////////////////////////////////////////
+
+%--Folie: Sectionslide-------------------------------------------------------
+\frame{\sectionpage}
+%--Folie---------------------------------------------------------------------
 
 %////////////////////////////////////////////////////////////////////////////
 \subsection{Motivation}
