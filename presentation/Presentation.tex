@@ -2001,12 +2001,19 @@ commonPrefix w1 w2 = g w1 w2 []
           g w1 w2 cp  = (w1, w2, reverse cp)
 \end{lstlisting}
 \begin{examples}
-\begin{itemize}
-    \item w1 = abc, w2 = abcde, \\commonPrefix w1 w2 = ([ ], de, abc)
-    \item w1 = abcde, w2 = abc, \\commonPrefix w1 w2 = (de, [ ], abc)
-    \item w1 = abc, w2 = de, \\commonPrefix w1 w2 = (abc, de, [ ])
-    \item w1 = abcd, w2 = abde, \\commonPrefix w1 w2 = (cd, de, ab)
-\end{itemize}
+\begin{lstlisting}
+-- Erstes Teilwort von Zweitem
+commonPrefix "abc" "abcde" = ([ ], de, abc)
+
+-- Zweites Teilwort von Erstem
+commonPrefix "abcde" "abc" = (de, [ ], abc)
+
+-- Disjunkt
+commonPrefix "abc" "de" = (abc, de, [ ])
+
+-- Gemeinsames Praefix "ab"
+commonPrefix "abcd" "abde" = (cd, de, ab)
+\end{lstlisting}
 \end{examples}
 \end{frame}
 %--Folie---------------------------------------------------------------------
