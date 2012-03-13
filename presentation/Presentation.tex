@@ -1566,6 +1566,152 @@ Ziel: Finde Knoten $\overline{w}$ mit maximaler Tiefe im $GST_D$ dessen Teilbäu
 %////////////////////////////////////////////////////////////////////////////
 
 %////////////////////////////////////////////////////////////////////////////
+\subsubsection{Haskell: benötige Grundlagen}
+%////////////////////////////////////////////////////////////////////////////
+
+%--Folie: Haskell: List comprehension----------------------------------------
+\begin{frame}[fragile]
+\frametitle{Haskell: List comprehension}
+in Anlehnung an die mathematische Mengennotation
+\begin{gather*}
+    \{(i,j) \mid i \in \{1, 2\},\: j \in \{1, \dots, 4\}\}
+\end{gather*}
+ist äquivalent zu
+\begin{gather*}
+    [(i, j) \mid i \leftarrow [1,2],\: j \leftarrow [1..4]]
+\end{gather*}
+Syntax: $[e \mid q_1, \dots, q_n], n \geq 1$ , wobei die $q_i$ entweder
+\begin{itemize}
+    \item Generatoren, z. B. $i \leftarrow \left[1..4\right]$
+    \item lokale Definitionen, z. B. $let\:i = x * x$
+    \item Prädikate, z. B. $x > 2$
+\end{itemize}
+sind.
+\end{frame}
+%--Folie---------------------------------------------------------------------
+
+%--Folie: Haskell: List comprehension----------------------------------------
+\begin{frame}[t, fragile]
+\frametitle{Haskell: List comprehension}
+\begin{examples}
+\begin{enumerate}
+    \item Mit Prädikat
+    \begin{lstlisting}
+    [2*x | x <- [0..10], x^2 > 5]
+    -- ergibt
+    [6, 8, 10, 12, 14, 16, 18, 20]
+    \end{lstlisting}
+    \item Mit lokaler Definition
+    \begin{lstlisting}
+    [(i, j) | i <- [1,2], let k = i * i, j <- [1..k]]
+    -- ergibt
+    [(1, 1), (2, 1), (2, 2), (2, 3), (2, 4)]
+\end{lstlisting}
+\end{enumerate}
+\end{examples}
+\end{frame}
+%--Folie---------------------------------------------------------------------
+
+%////////////////////////////////////////////////////////////////////////////
+\subsubsection{Eigenschaften}
+%////////////////////////////////////////////////////////////////////////////
+
+%--Folie: Beispiel-----------------------------------------------------------
+\begin{frame}
+\frametitle{WOTD: \\ Write only top down Suffixbaumkonstruktion}
+\begin{itemize}
+    \item WOTD eignet sich für lazy Suffixbäume
+    \item Rekursive top-down Konstruktion, beginnend an der Wurzel mit allen Suffixen
+    \item Jeder Unterbaum kann getrennt von den anderen konstruiert werden
+    \item Knoten im Baum werden nur konstruiert, danach nicht mehr gelesen
+\end{itemize}
+\end{frame}
+%--Folie---------------------------------------------------------------------
+
+%////////////////////////////////////////////////////////////////////////////
+\subsubsection{Typdefinitionen}
+%////////////////////////////////////////////////////////////////////////////
+
+%--Folie: Typdefinitionen----------------------------------------------------
+\begin{frame}[fragile]
+\frametitle{Typdefinitionen}
+\begin{lstlisting}
+-- | Darstellung von Suffix Trees
+data STree alf =
+    Leaf | Branch [(Label alf, STree alf)]
+    deriving Eq
+
+-- | Darstellung von Beschriftungen
+type Label alf = [alf]
+
+-- | Darstellung vom Kantenaufbau
+type EdgeFunction alf = [[alf]] -> ([alf], [[alf]])
+\end{lstlisting}
+\begin{figure}
+\begin{tikzpicture}[
+    font = \small,
+    level 1/.style = {level distance = 7mm, sibling distance = 40mm},
+    level 2/.style = {level distance = 10mm, sibling distance = 15mm},
+    level 3/.style = {level distance = 10mm, sibling distance = 15mm},
+    level 4/.style = {level distance = 10mm, sibling distance = 15mm},
+    edge from parent/.style = {->, draw}
+    ]
+    { [yshift = 0cm]
+        \node[branch]{}
+        child[child anchor = north] {
+            node[subtree] {$STree\:alf$}
+            edge from parent
+            node[above]{$Label\:alf$}
+        }
+        child[level distance = 16mm] {
+            node[branch]{}
+            child {
+                edge from parent
+                node[left] (l1) {$Label\:alf$}
+            }
+            child {
+                edge from parent
+                node[right](l2){$Label\:alf$}
+            }
+            edge from parent
+            node[left]{$Label\:alf$}
+        }
+        child[child anchor = north] {
+            node[subtree] {$STree\:alf$}
+            edge from parent
+            node[above]{$Label\:alf$}
+        };
+    }
+    \node[yshift = -4mm] at (l1.south) {$Leaf$};
+    \node[yshift = -4mm] at (l2.south) {$Leaf$};
+\end{tikzpicture}
+\end{figure}
+\end{frame}
+%--Folie---------------------------------------------------------------------
+
+%////////////////////////////////////////////////////////////////////////////
+\subsubsection{Vorgehensweise}
+%////////////////////////////////////////////////////////////////////////////
+
+%--Folie: wotd-Algorithmus: Schritte-----------------------------------------
+\begin{frame}[t]
+\frametitle{wotd-Algorithmus für cst}
+wotd: write-only top-down\\
+\medskip
+Schritte:
+\begin{enumerate}
+    \item Finde alle Suffixe eines gegebenen Wortes.
+    \item Gruppiere nach den Anfangsbuchstaben. Erzeuge einen Knoten.
+    \item Für jede Gruppe:
+    \begin{enumerate}
+        \item Finde das längste gemeinsame Präfix\footnote{Wenn ein Wort der Gruppe sich endet, wird das Präfix weiter gesucht}, erzeuge eine Kante mit der Beschriftung vom Präfix, entferne das Präfix von den Wörtern der Gruppe.
+        \item Falls die Gruppe leer ist, erzeuge ein Blatt. Falls es in der Gruppe noch Wörter gibt, kehre zu Schritt 2 zurück.
+    \end{enumerate}
+\end{enumerate}
+\end{frame}
+%--Folie---------------------------------------------------------------------
+
+%////////////////////////////////////////////////////////////////////////////
 \subsubsection{Beispiel}
 %////////////////////////////////////////////////////////////////////////////
 
@@ -1589,6 +1735,65 @@ Suffixe &  $agcgacgag$, $gcgacgag$, $cgacgag$, $gacgag$, $acgag$, $cgag$, $gag$,
     \bottomrule
 \end{tabular}
 \end{table}
+\end{frame}
+%--Folie---------------------------------------------------------------------
+
+%--Folie: Haskell-code: Liste von Suffixen-----------------------------------
+\begin{frame}[fragile]
+\frametitle{Haskell-code: Liste von Suffixen}
+Folgende Funktion liefert alle Suffixe von dem gegebenen Wort $aw$:
+\begin{lstlisting}
+suffixes :: [alf] -> [[alf]]
+suffixes []       = []
+suffixes aw@(_:w) = aw:suffixes w
+\end{lstlisting}
+\bigskip
+\begin{remark}
+\begin{description}[l]
+    \item[Operator $(::)$] Typ-Spezifikations-Operator
+    \item[Operator $(:)$] Cons-Operator: $h:[e_1, \dots, e_n] = [h, e_1, \dots, e_n]$
+    \item[Operator $(@)$] Read-As-Operator: $aw@(\_:w)$ bedeutet, dass $aw$ mit $(\_:w)$ gematcht wird.
+\end{description}
+\end{remark}
+\end{frame}
+%--Folie---------------------------------------------------------------------
+
+%--Folie: Haskell-code: Auswahl----------------------------------------------
+\begin{frame}[fragile]
+\frametitle{Haskell-code: Auswahl einer Gruppe}
+Folgende Funktion liefert die Liste mit allen Wörter aus $ss$, die mit $a$ anfangen:
+\begin{lstlisting}
+select :: (Eq alf) => [[alf]] -> alf -> [[alf]]
+select ss a = [c:u | c:u <- ss, a == c]
+\end{lstlisting}
+\begin{example}
+    $ss := \{ agcgacgag, gcgacgag, cgacgag, acgag, cgag, gag, ag\}$
+    $a := a$ \\
+    $[c:u \mid c:u \leftarrow ss, a == c] = [agcgacgag,acgag,ag]$
+\end{example}
+\end{frame}
+%--Folie---------------------------------------------------------------------
+
+%--Folie: Haskell-code: Kantenerzeugung--------------------------------------
+\begin{frame}[fragile]
+\frametitle{Haskell-code: Kantenerzeugung}
+Folgende Funktion erzeugt die Kante mit der längster-Präfix- Beschriftung für eine gegebene Liste von Wörter:
+\begin{lstlisting}
+edge :: (Eq alf) => EdgeFunction alf
+edge [s] = ([s], [[]])
+edge awss@((a:_):ss)
+    | all (\c:_ -> a == c) ss = (a:cp, rss)
+    | otherwise               = ([], awss)
+    where (cp, rss) = edge ([t | _:t <- awss, length t > 0])
+\end{lstlisting}
+\bigskip
+\begin{remark}
+\begin{lstlisting}
+all :: (a -> Bool) -> [a] -> Bool
+all p [] = true
+all p x:xs = p x && all p xs
+\end{lstlisting}
+\end{remark}
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
@@ -1763,152 +1968,6 @@ Zweites und drittes Level
     }
 \end{tikzpicture}
 \end{figure}
-\end{frame}
-%--Folie---------------------------------------------------------------------
-
-%////////////////////////////////////////////////////////////////////////////
-\subsubsection{Vorgehensweise}
-%////////////////////////////////////////////////////////////////////////////
-
-%--Folie: wotd-Algorithmus: Schritte-----------------------------------------
-\begin{frame}[t]
-\frametitle{wotd-Algorithmus für cst}
-wotd: write-only top-down\\
-\medskip
-Schritte:
-\begin{enumerate}
-    \item Finde alle Suffixe eines gegebenen Wortes.
-    \item Gruppiere nach den Anfangsbuchstaben. Erzeuge einen Knoten.
-    \item Für jede Gruppe:
-    \begin{enumerate}
-        \item Finde das längste gemeinsame Präfix\footnote{Wenn ein Wort der Gruppe sich endet, wird das Präfix weiter gesucht}, erzeuge eine Kante mit der Beschriftung vom Präfix, entferne das Präfix von den Wörtern der Gruppe.
-        \item Falls die Gruppe leer ist, erzeuge ein Blatt. Falls es in der Gruppe noch Wörter gibt, kehre zu Schritt 2 zurück.
-    \end{enumerate}
-\end{enumerate}
-\end{frame}
-%--Folie---------------------------------------------------------------------
-
-%////////////////////////////////////////////////////////////////////////////
-\subsubsection{Haskell-code}
-%////////////////////////////////////////////////////////////////////////////
-
-%--Folie: Haskell: List comprehension----------------------------------------
-\begin{frame}[fragile]
-\frametitle{Haskell: List comprehension}
-in Anlehnung an die mathematische Mengennotation
-\begin{gather*}
-    \{(i,j) \mid i \in \{1, 2\},\: j \in \{1, \dots, 4\}\}
-\end{gather*}
-ist äquivalent zu
-\begin{gather*}
-    [(i, j) \mid i \leftarrow [1,2],\: j \leftarrow [1..4]]
-\end{gather*}
-Syntax: $[e \mid q_1, \dots, q_n], n \geq 1$ , wobei die $q_i$ entweder
-\begin{itemize}
-    \item Generatoren, z. B. $i \leftarrow \left[1..4\right]$
-    \item lokale Definitionen, z. B. $let\:i = x * x$
-    \item Prädikate, z. B. $x > 2$
-\end{itemize}
-sind.
-\end{frame}
-%--Folie---------------------------------------------------------------------
-
-%--Folie: Haskell: List comprehension----------------------------------------
-\begin{frame}[t, fragile]
-\frametitle{Haskell: List comprehension}
-\begin{examples}
-\begin{enumerate}
-    \item Mit Prädikat
-    \begin{lstlisting}
-    [2*x | x <- [0..10], x^2 > 5]
-    -- ergibt
-    [6, 8, 10, 12, 14, 16, 18, 20]
-    \end{lstlisting}
-    \item Mit lokaler Definition
-    \begin{lstlisting}
-    [(i, j) | i <- [1,2], let k = i * i, j <- [1..k]]
-    -- ergibt
-    [(1, 1), (2, 1), (2, 2), (2, 3), (2, 4)]
-\end{lstlisting}
-\end{enumerate}
-\end{examples}
-\end{frame}
-%--Folie---------------------------------------------------------------------
-
-%--Folie: Haskell-code: Typdefinitionen--------------------------------------
-\begin{frame}[fragile]
-\frametitle{Haskell-code: Typdefinitionen}
-\begin{lstlisting}
--- | Darstellung von Suffix Trees
-data STree alf =
-    Leaf | Branch [(Label alf, STree alf)]
-    deriving Eq
-
--- | Darstellung von Beschriftungen
-type Label alf = [alf]
-
--- | Darstellung vom Kantenaufbau
-type EdgeFunction alf = [[alf]] -> ([alf], [[alf]])
-\end{lstlisting}
-\end{frame}
-%--Folie---------------------------------------------------------------------
-
-%--Folie: Haskell-code: Liste von Suffixen-----------------------------------
-\begin{frame}[fragile]
-\frametitle{Haskell-code: Liste von Suffixen}
-Folgende Funktion liefert alle Suffixe von dem gegebenen Wort $aw$:
-\begin{lstlisting}
-suffixes :: [alf] -> [[alf]]
-suffixes []       = []
-suffixes aw@(_:w) = aw:suffixes w
-\end{lstlisting}
-\bigskip
-\begin{remark}
-\begin{description}[l]
-    \item[Operator $(::)$] Typ-Spezifikations-Operator
-    \item[Operator $(:)$] Cons-Operator: $h:[e_1, \dots, e_n] = [h, e_1, \dots, e_n]$
-    \item[Operator $(@)$] Read-As-Operator: $aw@(\_:w)$ bedeutet, dass $aw$ mit $(\_:w)$ gematcht wird.
-\end{description}
-\end{remark}
-\end{frame}
-%--Folie---------------------------------------------------------------------
-
-%--Folie: Haskell-code: Auswahl----------------------------------------------
-\begin{frame}[fragile]
-\frametitle{Haskell-code: Auswahl einer Gruppe}
-Folgende Funktion liefert die Liste mit allen Wörter aus $ss$, die mit $a$ anfangen:
-\begin{lstlisting}
-select :: (Eq alf) => [[alf]] -> alf -> [[alf]]
-select ss a = [c:u | c:u <- ss, a == c]
-\end{lstlisting}
-\begin{example}
-    $ss := \{ agcgacgag, gcgacgag, cgacgag, acgag, cgag, gag, ag\}$
-    $a := a$ \\
-    $[c:u \mid c:u \leftarrow ss, a == c] = [agcgacgag,acgag,ag]$
-\end{example}
-\end{frame}
-%--Folie---------------------------------------------------------------------
-
-%--Folie: Haskell-code: Kantenerzeugung--------------------------------------
-\begin{frame}[fragile]
-\frametitle{Haskell-code: Kantenerzeugung}
-Folgende Funktion erzeugt die Kante mit der längster-Präfix- Beschriftung für eine gegebene Liste von Wörter:
-\begin{lstlisting}
-edge :: (Eq alf) => EdgeFunction alf
-edge [s] = ([s], [[]])
-edge awss@((a:_):ss)
-    | all (\c:_ -> a == c) ss = (a:cp, rss)
-    | otherwise               = ([], awss)
-    where (cp, rss) = edge ([t | _:t <- awss, length t > 0])
-\end{lstlisting}
-\bigskip
-\begin{remark}
-\begin{lstlisting}
-all :: (a -> Bool) -> [a] -> Bool
-all p [] = true
-all p x:xs = p x && all p xs
-\end{lstlisting}
-\end{remark}
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
