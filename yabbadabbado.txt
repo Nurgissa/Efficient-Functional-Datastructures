@@ -86,15 +86,15 @@ SA(R') = 8 0 1 6 4 2 5 3 7
 -> 0 1 2 3 4([4] -> 2) 4([2] -> 7) 5 6 7
    0 1 2 3       4           5     6 7 8 <- neue Ordnung
 -------------------------------------------------
-i           | 0 1 2 3 4 5 6 7 8 9 10 11 12
-t_i         | y a b b a d a b b a d  o  $
-rank(S_i)   | _ 1 4 _ 2 6 _ 5 3 _ 7  8  _    <- Nummern der Trigrammen bei Plätzen, zu denen sie eine Referenz haben.
+i           | 0 1 2 3 4 5 6 7 8 9 10 11
+t_i         | y a b b a d a b b a d  o
+rank(S_i)   | _ 1 4 _ 2 6 _ 5 3 _ 7  8    <- Nummern der Trigrammen bei Plätzen, zu denen sie eine Referenz haben.
 
 S_0 = y a b b a d a b b a d o = yS_1 = (y,1)
 S_3 = b a d a b b a d o = bS_4 = (b,2)
 S_6 = a b b a d o = aS_7 = (a,5)
 S_9 = a d o = aS_10 = (a,7)
-S_12 = 0S_13 = (0,0)
+
 
 => S_12 < S_6 < S_9 < S_3 < S_0
 
@@ -104,7 +104,6 @@ S_0  -> (y,1) -> (y,a,4)
 S_3  -> (b,2) -> (b,a,6)
 S_6  -> (a,5) -> (a,b,3)
 S_9  -> (a,7) -> (a,d,8)
-S_12 -> ($,0) -> ($,$,0)
 
 S_1  -> (a,4)
 S_4  -> (a,6)
@@ -116,4 +115,4 @@ S_5  -> (d,a,5)
 S_8  -> (b,a,7)
 S_11 -> (o,$,0)
 
-SA = 12, 1, 6, 4, 9, 3, 8, 2, 7, 5, 10, 11, 0
+SA = 1, 6, 4, 9, 3, 8, 2, 7, 5, 10, 11, 0

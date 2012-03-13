@@ -2498,6 +2498,55 @@ Ist der Rang der Samples eindeutig?
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
+%--Folie: Schritt 4: Merge---------------------------------------------------
+\begin{frame}
+\frametitle{Schritt 4: Merge}
+\begin{table}
+\begin{tabular}{l|l l l l l l l l l l l l}
+    \toprule
+    i & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 \\
+    \midrule
+    S[i,n) & y & a & b & b & a & d & a & b & b & a & d & o  \\
+    \midrule
+    rank & ? & 1 & 4 & ? & 2 & 6 & ? & 5 & 3 & ? & 7 & 8 \\
+    \bottomrule
+\end{tabular}
+\end{table}
+\begin{itemize}
+    \item $[yab]\:?\:[abb]: a < y \rightarrow [abb] < [yab]$ 
+    \item $[abb]_1\:?\:[abb]_6$ (Index 1 und Index 6): \\ Benutzung von dem existierten Rang: $[abb]_1 \rightarrow (a,4)$ und $[abb]_6 \rightarrow (a,5)$, $(a,4) < (a,5) \rightarrow [abb]_1 < [abb]_6$ 
+    \item $[bad]_3\:?\:[bad]_8$: \\ $[bad]_3 \rightarrow (b,a,6)$ und $[bad]_8 \rightarrow (b,a,7)$, $(b,a,6) < (b,a,7) \rightarrow [bad]_3 < [bad]_8$ 
+\end{itemize}
+\end{frame}
+%--Folie---------------------------------------------------------------------
+
+%--Folie: Ergebnis-----------------------------------------------------------
+\begin{frame}
+\frametitle{Ergebnis}
+\begin{table}
+\begin{tabular}{l|l l l l l l l l l l l l}
+    \toprule
+    S[i,n) & y & a & b & b & a & d & a & b & b & a & d & o  \\
+    \midrule
+    rank & 12 & 1 & 7 & 5 & 3 & 9 & 2 & 8 & 6 & 4 & 10 & 11 \\
+    \bottomrule
+\end{tabular}
+\end{table}
+    $abbadabbado$ \\
+    $abbado$ \\
+    $adabbado$ \\
+    $ado$ \\
+    $badabbado$ \\
+    $bado$ \\
+    $bbadabdado$ \\
+    $bbado$ \\
+    $dabbado$ \\
+    $do$ \\
+    $o$ \\
+    $yabbadabbado$ \\
+\end{frame}
+%--Folie---------------------------------------------------------------------
+
 %--Folie: Beispiel für $yabbadabbado$----------------------------------------
 \begin{frame}[fragile]
 \frametitle{Beispiel für $yabbadabbado$}
