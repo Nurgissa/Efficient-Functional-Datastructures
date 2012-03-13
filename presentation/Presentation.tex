@@ -2442,58 +2442,78 @@ Informationen aus Sortierschritt werden in die Samples kodiert
 \begin{frame}
 \frametitle{Schritt 2: Sort recursive}
 \begin{gather*}
-    R =  [1][2][4][6][4][5][3][7]
+    R = [1][2][4][6][4][5][3][7]
 \end{gather*}
 Ist der Rang der Samples eindeutig?
 \begin{itemize}
     \item Wenn, ja: Rang der Samples entspricht Suffixarray für $i \text{ mod } 3 = 1 \text{ oder } 2$ Suffixes.
-    \item Sonst: Sortiere $R$ mit DC3
-    \begin{figure}
-    \begin{tikzpicture} [
-        matrix of nodes/.style = {
-        execute at begin cell = \node\bgroup,
-        execute at end cell = \egroup;%
-    }]
-        \matrix[ampersand replacement = \&, column sep = -2mm, matrix of nodes] (m) {
-            \color{black}[ \& \color{aquamarine}a\color{gray}bb\color{black} \& ] \&
-            \color{black}[ \& \color{aquamarine}a\color{gray}da\color{black}\color{black} \& ] \&
-            \color{black}[ \& \color{aquamarine}b\color{gray}ba\color{black} \& ] \&
-            \color{black}[ \& \color{aquamarine}d\color{gray}o0\color{black} \& ] \&
-            \color{black}[ \& \color{blue}b\color{gray}ba\color{black} \& ] \&
-            \color{black}[ \& \color{blue}d\color{gray}ab\color{black} \& ] \&
-            \color{black}[ \& \color{blue}b\color{gray}ad\color{black} \& ] \&
-            \color{black}[ \& \color{blue}o\color{gray}00\color{black} \& ] \& \\
-            \color{black}[ \& 1 \& ] \&
-            \color{black}[ \& 2 \& ] \&
-            \color{black}[ \& 4 \& ] \&
-            \color{black}[ \& 6 \& ] \&
-            \color{black}[ \& 4 \& ] \&
-            \color{black}[ \& 5 \& ] \&
-            \color{black}[ \& 3 \& ] \&
-            \color{black}[ \& 7 \& ] \& \\
-                           \&   \&   \&
-                           \&   \&   \&
-            \color{black}[ \& 4 \&   \&
-                           \& 6 \&   \&
-                           \& 4 \& ] \&
-                           \&   \&   \&
-                           \&   \&   \&
-                           \&   \&   \& \\
-                           \&   \&   \&
-                           \&   \&   \&
-                           \&   \&   \&
-                           \&   \&   \&
-            \color{black}[ \& 4 \&   \&
-                           \& 5 \&   \&
-                           \& 3 \& ] \&
-                           \&   \&   \& \\
-        };
-        \node[left = 2cm, above = 2cm] (n1) at (m) {\color{gray}y\color{aquamarine}a\color{gray}bb\color{aquamarine}a\color{gray}da\color{aquamarine}b\color{gray}ba\color{aquamarine}d\color{gray}o};
-        \node[right = 2cm, above = 2cm] (n2) at (m) {\color{gray}ya\color{blue}b\color{gray}ba\color{blue}d\color{gray}ab\color{blue}b\color{gray}ad\color{blue}o};
-        \fill[aquamarine!30] (-1.8, 2.1) -- (-0.75, 2.1) -- (0, 1.25) -- (-1.8, 1.25) -- cycle;
-        \fill[blue!30] (1.25, 2.1) -- (3.15, 2.1) -- (3.9, 1.25) -- (0.15, 1.25) -- cycle;
-    \end{tikzpicture}
-    \end{figure}
+    \item Sonst: Sortiere $R$ mit DC3 rekursiv
+
+\end{itemize}
+\end{frame}
+%--Folie---------------------------------------------------------------------
+
+%--Folie: Schritt 2: Sort recursive------------------------------------------
+\begin{frame}
+\frametitle{Schritt 2: Sort recursive}
+\begin{itemize}
+    \item Rekursiver Aufruf von DC3 mit [1][2][4][6][4][5][3][7]
+        \begin{figure}
+            \begin{tikzpicture} [
+                matrix of nodes/.style = {
+                execute at begin cell = \node\bgroup,
+                execute at end cell = \egroup;%
+            }]
+            \matrix[ampersand replacement = \&, column sep = -2mm, matrix of nodes] (m) {
+                \color{black}[ \& \color{aquamarine}a\color{gray}bb\color{black} \& ] \&
+                \color{black}[ \& \color{aquamarine}a\color{gray}da\color{black}\color{black} \& ] \&
+                \color{black}[ \& \color{aquamarine}b\color{gray}ba\color{black} \& ] \&
+                \color{black}[ \& \color{aquamarine}d\color{gray}o0\color{black} \& ] \&
+                \color{black}[ \& \color{blue}b\color{gray}ba\color{black} \& ] \&
+                \color{black}[ \& \color{blue}d\color{gray}ab\color{black} \& ] \&
+                \color{black}[ \& \color{blue}b\color{gray}ad\color{black} \& ] \&
+                \color{black}[ \& \color{blue}o\color{gray}00\color{black} \& ] \& \\
+                \color{black}[ \& 1 \& ] \&
+                \color{black}[ \& 2 \& ] \&
+                \color{black}[ \& 4 \& ] \&
+                \color{black}[ \& 6 \& ] \&
+                \color{black}[ \& 4 \& ] \&
+                \color{black}[ \& 5 \& ] \&
+                \color{black}[ \& 3 \& ] \&
+                \color{black}[ \& 7 \& ] \& \\
+                               \&   \&   \&
+                               \&   \&   \&
+                \color{black}[ \& 4 \&   \&
+                               \& 6 \&   \&
+                               \& 4 \& ] \&
+                               \&   \&   \&
+                               \&   \&   \&
+                               \&   \&   \& \\
+                               \&   \&   \&
+                               \&   \&   \&
+                               \&   \&   \&
+                               \&   \&   \&
+                \color{black}[ \& 4 \&   \&
+                               \& 5 \&   \&
+                               \& 3 \& ] \&
+                               \&   \&   \& \\
+            };
+            \node[left = 2cm, above = 2cm] (n1) at (m) {\color{gray}y\color{aquamarine}a\color{gray}bb\color{aquamarine}a\color{gray}da\color{aquamarine}b\color{gray}ba\color{aquamarine}d\color{gray}o};
+            \node[right = 2cm, above = 2cm] (n2) at (m) {\color{gray}ya\color{blue}b\color{gray}ba\color{blue}d\color{gray}ab\color{blue}b\color{gray}ad\color{blue}o};
+            \fill[aquamarine!30] (-1.8, 2.1) -- (-0.75, 2.1) -- (0, 1.25) -- (-1.8, 1.25) -- cycle;
+            \fill[blue!30] (1.25, 2.1) -- (3.15, 2.1) -- (3.9, 1.25) -- (0.15, 1.25) -- cycle;
+        \end{tikzpicture}
+        \end{figure}
+    \item Ergebnis des rekursiven Aufrufs
+        \begin{table}
+            \begin{tabular}{l|c c c c c c c c}
+                \toprule
+                $R$  & 1 & 2 & 4 & 6 & 4 & 5 & 3 & 7 \\
+                \midrule
+                Rang & 0 & 1 & 6 & 4 & 2 & 5 & 3 & 7 \\
+                \bottomrule
+            \end{tabular}
+        \end{table}
 \end{itemize}
 \end{frame}
 %--Folie---------------------------------------------------------------------
@@ -2513,9 +2533,9 @@ Ist der Rang der Samples eindeutig?
 \end{tabular}
 \end{table}
 \begin{itemize}
-    \item $[yab]\:?\:[abb]: a < y \rightarrow [abb] < [yab]$ 
-    \item $[abb]_1\:?\:[abb]_6$ (Index 1 und Index 6): \\ Benutzung von dem existierten Rang: $[abb]_1 \rightarrow (a,4)$ und $[abb]_6 \rightarrow (a,5)$, $(a,4) < (a,5) \rightarrow [abb]_1 < [abb]_6$ 
-    \item $[bad]_3\:?\:[bad]_8$: \\ $[bad]_3 \rightarrow (b,a,6)$ und $[bad]_8 \rightarrow (b,a,7)$, $(b,a,6) < (b,a,7) \rightarrow [bad]_3 < [bad]_8$ 
+    \item $[yab]\:?\:[abb]: a < y \rightarrow [abb] < [yab]$
+    \item $[abb]_1\:?\:[abb]_6$ (Index 1 und Index 6): \\ Benutzung von dem existierten Rang: $[abb]_1 \rightarrow (a,4)$ und $[abb]_6 \rightarrow (a,5)$, $(a,4) < (a,5) \rightarrow [abb]_1 < [abb]_6$
+    \item $[bad]_3\:?\:[bad]_8$: \\ $[bad]_3 \rightarrow (b,a,6)$ und $[bad]_8 \rightarrow (b,a,7)$, $(b,a,6) < (b,a,7) \rightarrow [bad]_3 < [bad]_8$
 \end{itemize}
 \end{frame}
 %--Folie---------------------------------------------------------------------
