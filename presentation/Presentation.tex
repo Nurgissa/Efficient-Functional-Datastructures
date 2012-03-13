@@ -2024,8 +2024,8 @@ search ss (Branch es) =  g ss es
     g ss (((l, st):es)) =
         case commonPrefix ss l of
          ([], _, _)   -> True          -- ss ist leer
-         (_, _, [])   -> g ss es       -- cp = []
-         (ss', [], _) -> search ss' st -- cp = l
+         (_, _, [])   -> g ss es       -- falsche Kante
+         (ss', [], _) -> search ss' st -- richtige Kante
          _            -> False         -- cp != []|l|ss
 
 let alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
