@@ -2343,22 +2343,67 @@ Divide and Conquer Ansatz
 %--Folie: Schritt 1: Sort recursived-----------------------------------------
 \begin{frame}
 \frametitle{Schritt 2: Sort recursive}
-\begin{block}{Samples erzeugen}
-    \begin{columns}
-        \column{.5\textwidth}
-            \begin{tikzpicture}
-               \node (n1) {\color{gray}y\color{aquamarine}a\color{gray}bb\color{aquamarine}a\color{gray}da\color{aquamarine}b\color{gray}ba\color{aquamarine}d\color{gray}o};
-               \node[below = 2cm] (n2) at (n1) {\color{black}[\color{aquamarine}a\color{gray}bb\color{black}][\color{aquamarine}a\color{gray}da\color{black}\color{black}][\color{aquamarine}b\color{gray}ba\color{black}][\color{aquamarine}d\color{gray}o0\color{black}]};
-               \path[->, color = aquamarine] (n1) edge (n2);
-        \end{tikzpicture}
-        \column{.5\textwidth}
-        \begin{tikzpicture}
-               \node (n1) {\color{gray}ya\color{blue}b\color{gray}ba\color{blue}d\color{gray}ab\color{blue}b\color{gray}ad\color{blue}o};
-               \node[below = 2cm] (n2) at (n1) {\color{black}[\color{blue}b\color{gray}ba\color{black}][\color{blue}d\color{gray}ab\color{black}][\color{blue}b\color{gray}ad\color{black}][\color{blue}o\color{gray}00\color{black}]};
-               \path[->, color = blue] (n1) edge (n2);
-        \end{tikzpicture}
-    \end{columns}
-\end{block}
+Samples erzeugen und konkatenieren
+\begin{figure}
+\begin{tikzpicture}
+    { [xshift = -2cm]
+        \node (n1) {\color{gray}y\color{aquamarine}a\color{gray}bb\color{aquamarine}a\color{gray}da\color{aquamarine}b\color{gray}ba\color{aquamarine}d\color{gray}o};
+        \node[below = 2cm] (n2) at (n1) {\color{black}[\color{aquamarine}a\color{gray}bb\color{black}][\color{aquamarine}a\color{gray}da\color{black}\color{black}][\color{aquamarine}b\color{gray}ba\color{black}][\color{aquamarine}d\color{gray}o0\color{black}]};
+        \path[->, color = aquamarine] (n1) edge (n2);
+    }
+    { [xshift = 2cm]
+        \node (n3) {\color{gray}ya\color{blue}b\color{gray}ba\color{blue}d\color{gray}ab\color{blue}b\color{gray}ad\color{blue}o};
+        \node[below = 2cm] (n4) at (n3) {\color{black}[\color{blue}b\color{gray}ba\color{black}][\color{blue}d\color{gray}ab\color{black}][\color{blue}b\color{gray}ad\color{black}][\color{blue}o\color{gray}00\color{black}]};
+        \path[->, color = blue] (n3) edge (n4);
+    }
+    { [yshift = -4cm]
+        \node (n5) {\color{black}[\color{aquamarine}a\color{gray}bb\color{black}][\color{aquamarine}a\color{gray}da\color{black}\color{black}][\color{aquamarine}b\color{gray}ba\color{black}][\color{aquamarine}d\color{gray}o0\color{black}][\color{blue}b\color{gray}ba\color{black}][\color{blue}d\color{gray}ab\color{black}][\color{blue}b\color{gray}ad\color{black}][\color{blue}o\color{gray}00\color{black}]};
+        \path[->, color = aquamarine] (n2) edge (n5);
+        \path[->, color = blue] (n4) edge (n5);
+    }
+\end{tikzpicture}
+\end{figure}
+Jedes Sample repräsentiert ein Suffix
+\end{frame}
+%--Folie---------------------------------------------------------------------
+
+%--Folie: Schritt 2: Sort recursived-----------------------------------------
+\begin{frame}
+\frametitle{Schritt 2: Sort recursived}
+Samples lexikographisch sortieren
+\begin{figure}
+\begin{tikzpicture} [
+        matrix of nodes/.style = {
+        execute at begin cell = \node\bgroup,
+        execute at end cell = \egroup;%
+    }]
+    \matrix[ampersand replacement = \&, matrix of nodes]
+    {
+        1 \&
+        2 \&
+        3 \&
+        4 \&
+        5 \&
+        6 \&
+        7 \\
+        \color{black}[\color{aquamarine}a\color{gray}bb\color{black}] \&
+        \color{black}[\color{aquamarine}a\color{gray}da\color{black}\color{black}] \&
+        \color{black}[\color{blue}b\color{gray}ad\color{black}] \&
+        \color{black}[\color{aquamarine}b\color{gray}ba\color{black}] \&
+        \color{black}[\color{blue}d\color{gray}ab\color{black}] \&
+        \color{black}[\color{aquamarine}d\color{gray}o0\color{black}] \&
+        \color{black}[\color{blue}o\color{gray}00\color{black}] \\
+    };
+\end{tikzpicture}
+\end{figure}
+Samples durch Rang ersetzen
+\begin{figure}
+\begin{tikzpicture}
+    \node (n1) {\color{black}[\color{aquamarine}a\color{gray}bb\color{black}][\color{aquamarine}a\color{gray}da\color{black}\color{black}][\color{aquamarine}b\color{gray}ba\color{black}][\color{aquamarine}d\color{gray}o0\color{black}][\color{blue}b\color{gray}ba\color{black}][\color{blue}d\color{gray}ab\color{black}][\color{blue}b\color{gray}ad\color{black}][\color{blue}o\color{gray}00\color{black}]};
+    \node[below = 1cm] (n2) at (n1) {[1][2][4][6][4][5][3][7]};
+    \path[->] (n1) edge (n2);
+\end{tikzpicture}
+\end{figure}
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
