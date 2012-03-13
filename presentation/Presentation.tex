@@ -2278,6 +2278,10 @@ Suffixarray für $yabbadabbado$ ist $SA = (1, 6, 4, 9, 3, 8, 2, 7, 5, 10, 11, 0)
 \subsection{DC3-Algorithmus}
 %////////////////////////////////////////////////////////////////////////////
 
+%--Folie: Subsectionslide----------------------------------------------------
+\frame{\subsectionpage}
+%--Folie---------------------------------------------------------------------
+
 %--Folie: Grundlegende Idee--------------------------------------------------
 \begin{frame}
 \frametitle{DC3: Grundlegende Idee}
@@ -2400,41 +2404,43 @@ Jedes Sample repräsentiert ein Suffix
 %--Folie: Schritt 2: Sort recursiv-d-----------------------------------------
 \begin{frame}
 \frametitle{Schritt 2: Sort recursive}
-Samples lexikographisch sortieren
-\begin{figure}
-\begin{tikzpicture} [
-        matrix of nodes/.style = {
-        execute at begin cell = \node\bgroup,
-        execute at end cell = \egroup;%
-    }]
-    \matrix[ampersand replacement = \&, column sep = -2mm, matrix of nodes]
-    {
-        1 \&
-        2 \&
-        3 \&
-        4 \&
-        5 \&
-        6 \&
-        7 \\
-        \color{black}[\color{aquamarine}a\color{gray}bb\color{black}] \&
-        \color{black}[\color{aquamarine}a\color{gray}da\color{black}\color{black}] \&
-        \color{black}[\color{blue}b\color{gray}ad\color{black}] \&
-        \color{black}[\color{aquamarine}b\color{gray}ba\color{black}] \&
-        \color{black}[\color{blue}d\color{gray}ab\color{black}] \&
-        \color{black}[\color{aquamarine}d\color{gray}o0\color{black}] \&
-        \color{black}[\color{blue}o\color{gray}00\color{black}] \\
-    };
-\end{tikzpicture}
-\end{figure}
-Samples durch Rang ersetzen
-\begin{figure}
-\begin{tikzpicture}
-    \node (n1) {\color{black}[\color{aquamarine}a\color{gray}bb\color{black}][\color{aquamarine}a\color{gray}da\color{black}\color{black}][\color{aquamarine}b\color{gray}ba\color{black}][\color{aquamarine}d\color{gray}o0\color{black}][\color{blue}b\color{gray}ba\color{black}][\color{blue}d\color{gray}ab\color{black}][\color{blue}b\color{gray}ad\color{black}][\color{blue}o\color{gray}00\color{black}]};
-    \node[below = 1cm] (n2) at (n1) {[1][2][4][6][4][5][3][7]};
-    \path[->] (n1) edge (n2);
-\end{tikzpicture}
-\end{figure}
-Informationen aus Sortierschritt werden in die Samples kodiert
+\begin{itemize}
+    \item Samples mit Radixsort lexikographisch sortieren
+        \begin{figure}
+        \begin{tikzpicture} [
+                matrix of nodes/.style = {
+                execute at begin cell = \node\bgroup,
+                execute at end cell = \egroup;%
+            }]
+            \matrix[ampersand replacement = \&, column sep = -2mm, matrix of nodes]
+            {
+                1 \&
+                2 \&
+                3 \&
+                4 \&
+                5 \&
+                6 \&
+                7 \\
+                \color{black}[\color{aquamarine}a\color{gray}bb\color{black}] \&
+                \color{black}[\color{aquamarine}a\color{gray}da\color{black}\color{black}] \&
+                \color{black}[\color{blue}b\color{gray}ad\color{black}] \&
+                \color{black}[\color{aquamarine}b\color{gray}ba\color{black}] \&
+                \color{black}[\color{blue}d\color{gray}ab\color{black}] \&
+                \color{black}[\color{aquamarine}d\color{gray}o0\color{black}] \&
+                \color{black}[\color{blue}o\color{gray}00\color{black}] \\
+            };
+        \end{tikzpicture}
+        \end{figure}
+    \item Samples durch Rang ersetzen
+        \begin{figure}
+        \begin{tikzpicture}
+            \node (n1) {\color{black}[\color{aquamarine}a\color{gray}bb\color{black}][\color{aquamarine}a\color{gray}da\color{black}\color{black}][\color{aquamarine}b\color{gray}ba\color{black}][\color{aquamarine}d\color{gray}o0\color{black}][\color{blue}b\color{gray}ba\color{black}][\color{blue}d\color{gray}ab\color{black}][\color{blue}b\color{gray}ad\color{black}][\color{blue}o\color{gray}00\color{black}]};
+            \node[below = 1cm] (n2) at (n1) {[1][2][4][6][4][5][3][7]};
+            \path[->] (n1) edge (n2);
+        \end{tikzpicture}
+        \end{figure}
+        Informationen aus Sortierschritt werden in die Samples kodiert
+\end{itemize}
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
@@ -2506,13 +2512,13 @@ Ist der Rang der Samples eindeutig?
         \end{figure}
     \item Ergebnis des rekursiven Aufrufs
         \begin{table}
-            \begin{tabular}{l|c c c c c c c c}
-                \toprule
-                $R$  & 1 & 2 & 4 & 6 & 4 & 5 & 3 & 7 \\
-                \midrule
-                Rang & 0 & 1 & 6 & 4 & 2 & 5 & 3 & 7 \\
-                \bottomrule
-            \end{tabular}
+        \begin{tabular}{l|c c c c c c c c}
+            \toprule
+            $R$  & 1 & 2 & 4 & 6 & 4 & 5 & 3 & 7 \\
+            \midrule
+            Rang & 0 & 1 & 6 & 4 & 2 & 5 & 3 & 7 \\
+            \bottomrule
+        \end{tabular}
         \end{table}
 \end{itemize}
 \end{frame}
@@ -2522,16 +2528,17 @@ Ist der Rang der Samples eindeutig?
 \begin{frame}
 \frametitle{Schritt 4: Merge}
 \begin{table}
-\begin{tabular}{l|l l l l l l l l l l l l}
+\begin{tabular}{l|c c c c c c c c c c c c}
     \toprule
-    i & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 \\
+    i      & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 \\
     \midrule
-    S[i,n) & y & a & b & b & a & d & a & b & b & a & d & o  \\
+    S[i,n) & y & a & b & b & a & d & a & b & b & a & d  & o  \\
     \midrule
-    rank & ? & 1 & 4 & ? & 2 & 6 & ? & 5 & 3 & ? & 7 & 8 \\
+    Rang   & ? & 1 & 4 & ? & 2 & 6 & ? & 5 & 3 & ? & 7  & 8 \\
     \bottomrule
 \end{tabular}
 \end{table}
+\vspace{2mm}
 \begin{itemize}
     \item $[yab]\:?\:[abb]: a < y \rightarrow [abb] < [yab]$
     \item $[abb]_1\:?\:[abb]_6$ (Index 1 und Index 6): \\ Benutzung von dem existierten Rang: $[abb]_1 \rightarrow (a,4)$ und $[abb]_6 \rightarrow (a,5)$, $(a,4) < (a,5) \rightarrow [abb]_1 < [abb]_6$
@@ -2543,27 +2550,32 @@ Ist der Rang der Samples eindeutig?
 %--Folie: Ergebnis-----------------------------------------------------------
 \begin{frame}
 \frametitle{Ergebnis}
-\begin{table}
-\begin{tabular}{l|l l l l l l l l l l l l}
-    \toprule
-    S[i,n) & y & a & b & b & a & d & a & b & b & a & d & o  \\
-    \midrule
-    rank & 12 & 1 & 7 & 5 & 3 & 9 & 2 & 8 & 6 & 4 & 10 & 11 \\
-    \bottomrule
-\end{tabular}
-\end{table}
-    $abbadabbado$ \\
-    $abbado$ \\
-    $adabbado$ \\
-    $ado$ \\
-    $badabbado$ \\
-    $bado$ \\
-    $bbadabdado$ \\
-    $bbado$ \\
-    $dabbado$ \\
-    $do$ \\
-    $o$ \\
-    $yabbadabbado$ \\
+\begin{figure}
+\begin{tikzpicture}
+    \node (n1) {
+        \begin{tabular}{l|c c c c c c c c c c c c}
+            \toprule
+            S[i,n) & y  & a & b & b & a & d & a & b & b & a & d & o  \\
+            \midrule
+            Rang   & 11 & 0 & 6 & 4 & 2 & 8 & 1 & 7 & 5 & 3 & 9 & 10 \\
+            \bottomrule
+        \end{tabular}
+    };
+    \node[below = 2cm] (n2) {
+        \begin{tabular}{l l|l l}
+            \toprule
+            $S_1$       & $a b b a d a b b a d o$ & $S_2$    & $b b a d a b b a d o$     \\
+            $S_6$       & $a b b a d o$           & $S_7$    & $b b a d o$               \\
+            $S_4$       & $a d a b b a d o$       & $S_5$    & $d a b b a d o$           \\
+            $S_9$       & $a d o$                 & $S_{10}$ & $d o$                     \\
+            $S_3$       & $b a d a b b a d o$     & $S_{11}$ & $o$                       \\
+            $S_8$       & $b a d o$               & $S_0$    & $y a b b a d a b b a d o$ \\
+            \bottomrule
+        \end{tabular}
+    };
+    \path[->] (n1) edge (n2);
+\end{tikzpicture}
+\end{figure}
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
