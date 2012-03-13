@@ -308,7 +308,7 @@ Ein Suffix Tree $S_t$ für ein gegebenes Wort $t$ ist ein $\Sigma^+$-Baum, sodas
 %--Folie---------------------------------------------------------------------
 
 %////////////////////////////////////////////////////////////////////////////
-\subsection{Suffix Tree Klassen}
+\subsubsection{Suffix Tree Klassen}
 %////////////////////////////////////////////////////////////////////////////
 
 %--Folie: Suffix Tree Klassen------------------------------------------------
@@ -1037,7 +1037,7 @@ ast und pst benötigen mehr Speicherplatz:
 %--Folie---------------------------------------------------------------------
 
 %////////////////////////////////////////////////////////////////////////////
-\subsection{Generalized Suffix Tree}
+\subsubsection{Generalized Suffix Tree}
 %////////////////////////////////////////////////////////////////////////////
 
 \begin{frame}
@@ -1566,7 +1566,23 @@ Ziel: Finde Knoten $\overline{w}$ mit maximaler Tiefe im $GST_D$ dessen Teilbäu
 %////////////////////////////////////////////////////////////////////////////
 
 %////////////////////////////////////////////////////////////////////////////
-\subsubsection{Haskell: benötige Grundlagen}
+% \subsubsection{Eigenschaften}
+%////////////////////////////////////////////////////////////////////////////
+
+%--Folie: Beispiel-----------------------------------------------------------
+\begin{frame}
+\frametitle{WOTD: \\ Write only top down Suffixbaumkonstruktion}
+\begin{itemize}
+    \item WOTD eignet sich für lazy Suffixbäume
+    \item Rekursive top-down Konstruktion, beginnend an der Wurzel mit allen Suffixen
+    \item Jeder Unterbaum kann getrennt von den anderen konstruiert werden
+    \item Knoten im Baum werden nur konstruiert, danach nicht mehr gelesen
+\end{itemize}
+\end{frame}
+%--Folie---------------------------------------------------------------------
+
+%////////////////////////////////////////////////////////////////////////////
+% \subsubsection{Haskell: benötige Grundlagen}
 %////////////////////////////////////////////////////////////////////////////
 
 %--Folie: Haskell: List comprehension----------------------------------------
@@ -1613,23 +1629,7 @@ sind.
 %--Folie---------------------------------------------------------------------
 
 %////////////////////////////////////////////////////////////////////////////
-\subsubsection{Eigenschaften}
-%////////////////////////////////////////////////////////////////////////////
-
-%--Folie: Beispiel-----------------------------------------------------------
-\begin{frame}
-\frametitle{WOTD: \\ Write only top down Suffixbaumkonstruktion}
-\begin{itemize}
-    \item WOTD eignet sich für lazy Suffixbäume
-    \item Rekursive top-down Konstruktion, beginnend an der Wurzel mit allen Suffixen
-    \item Jeder Unterbaum kann getrennt von den anderen konstruiert werden
-    \item Knoten im Baum werden nur konstruiert, danach nicht mehr gelesen
-\end{itemize}
-\end{frame}
-%--Folie---------------------------------------------------------------------
-
-%////////////////////////////////////////////////////////////////////////////
-\subsubsection{Typdefinitionen}
+% \subsubsection{Typdefinitionen}
 %////////////////////////////////////////////////////////////////////////////
 
 %--Folie: Typdefinitionen----------------------------------------------------
@@ -1690,7 +1690,11 @@ type EdgeFunction alf = [[alf]] -> ([alf], [[alf]])
 %--Folie---------------------------------------------------------------------
 
 %////////////////////////////////////////////////////////////////////////////
-\subsubsection{Beispiel}
+% \subsubsection{Beispiel}
+%////////////////////////////////////////////////////////////////////////////
+
+%////////////////////////////////////////////////////////////////////////////
+\subsubsection{Vorgehensweise}
 %////////////////////////////////////////////////////////////////////////////
 
 %--Folie: Beispiel-----------------------------------------------------------
@@ -1982,7 +1986,7 @@ Zweites und drittes Level
 %--Folie---------------------------------------------------------------------
 
 %////////////////////////////////////////////////////////////////////////////
-\subsubsection{Vorgehensweise}
+% \subsubsection{Vorgehensweise}
 %////////////////////////////////////////////////////////////////////////////
 
 %--Folie: wotd-Algorithmus: Schritte-----------------------------------------
@@ -2448,13 +2452,12 @@ Jedes Sample repräsentiert ein Suffix
 \begin{frame}
 \frametitle{Schritt 2: Sort recursive}
 \begin{gather*}
-    R = [1][2][4][6][4][5][3][7]
+    R = 12464537
 \end{gather*}
 Ist der Rang der Samples eindeutig?
 \begin{itemize}
     \item Wenn, ja: Rang der Samples entspricht Suffixarray für $i \text{ mod } 3 = 1 \text{ oder } 2$ Suffixes.
     \item Sonst: Sortiere $R$ mit DC3 rekursiv
-
 \end{itemize}
 \end{frame}
 %--Folie---------------------------------------------------------------------
@@ -2463,9 +2466,9 @@ Ist der Rang der Samples eindeutig?
 \begin{frame}
 \frametitle{Schritt 2: Sort recursive}
 \begin{itemize}
-    \item Rekursiver Aufruf von DC3 mit [1][2][4][6][4][5][3][7]
+    \item Rekursiver Aufruf von DC3 mit $R = 12464537$
         \begin{figure}
-            \begin{tikzpicture} [
+        \begin{tikzpicture} [
                 matrix of nodes/.style = {
                 execute at begin cell = \node\bgroup,
                 execute at end cell = \egroup;%
@@ -2580,58 +2583,58 @@ Ist der Rang der Samples eindeutig?
 %--Folie---------------------------------------------------------------------
 
 %--Folie: Beispiel für $yabbadabbado$----------------------------------------
-\begin{frame}[fragile]
-\frametitle{Beispiel für $yabbadabbado$}
-\begin{table}
-\begin{tabular}{l|l l l l l l l l l l l l l l}
-    \toprule
-    i & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 \\
-    \midrule
-    T[i,n) & y & a & b & b & a & d & a & b & b & a & d & o & 0 & 0  \\
-    \bottomrule
-\end{tabular}
-\end{table}
-$B_k = \{ i \in [0,n]\ \mid i \: mod \: 3 = k \}$, dann \\
-$B_0 = \{0, 3, 6, 9 \}$,                                \\
-$B_1 = \{1, 4, 7, 10 \}$,                               \\
-$B_2 = \{2, 5, 8, 11 \}$,                               \\
-\medskip
-$C   = B_1 \cup B_2 = \{1, 4, 7, 10, 2, 5, 8, 11\}$.    \\
-\medskip
-$R_0 = [yab][bad][abb][ado]$
-$R_1 = [abb][ada][bba][do0]$                            \\
-$R_2 = [bba][dab][bad][o00]$                            \\
-\medskip
-$R   = [abb][ada][bba][do0][bba][dab][bad][o00]$        \\
-\medskip
-Ziel: $R_0$ und $R$ getrennt sortieren und dann vereinigen.
-\begin{remark}
-Suffixe von $R$ korrespondieren mit $S_c$. $R_i \prec R_j \leftrightarrow S_i \prec S_j$
-\end{remark}
-\end{frame}
+% \begin{frame}[fragile]
+% \frametitle{Beispiel für $yabbadabbado$}
+% \begin{table}
+% \begin{tabular}{l|l l l l l l l l l l l l l l}
+%     \toprule
+%     i & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 \\
+%     \midrule
+%     T[i,n) & y & a & b & b & a & d & a & b & b & a & d & o & 0 & 0  \\
+%     \bottomrule
+% \end{tabular}
+% \end{table}
+% $B_k = \{ i \in [0,n]\ \mid i \: mod \: 3 = k \}$, dann \\
+% $B_0 = \{0, 3, 6, 9 \}$,                                \\
+% $B_1 = \{1, 4, 7, 10 \}$,                               \\
+% $B_2 = \{2, 5, 8, 11 \}$,                               \\
+% \medskip
+% $C   = B_1 \cup B_2 = \{1, 4, 7, 10, 2, 5, 8, 11\}$.    \\
+% \medskip
+% $R_0 = [yab][bad][abb][ado]$
+% $R_1 = [abb][ada][bba][do0]$                            \\
+% $R_2 = [bba][dab][bad][o00]$                            \\
+% \medskip
+% $R   = [abb][ada][bba][do0][bba][dab][bad][o00]$        \\
+% \medskip
+% Ziel: $R_0$ und $R$ getrennt sortieren und dann vereinigen.
+% \begin{remark}
+% Suffixe von $R$ korrespondieren mit $S_c$. $R_i \prec R_j \leftrightarrow S_i \prec S_j$
+% \end{remark}
+% \end{frame}
 %--Folie---------------------------------------------------------------------
 
 %--Folie: DC3----------------------------------------------------------------
-\begin{frame}[fragile]
-\frametitle{Beispiel für $yabbadabbado$}
-\begin{description}[l]
-    \item[Schritt 1:] Sortieren von $R$.
-\end{description}
-Die Elemente von $R$ werden mit Radix-Sort sortiert um den Rang bestimmen
-\begin{table}
-\begin{tabular}{c c c c c c c c c c c}
-    \toprule
-    1 & 2 & 3 & 4 & 5 & 6 & 7                                           \\
-    \midrule
-    $[abb]$ & $[ada]$ & $[bad]$ & $[bba]$ & $[dab]$ & $[do0]$ & $[o00]$ \\
-    \bottomrule
-\end{tabular}
-\end{table}
-Wir erhalten $R$ aus $R'$, indem die Elemente von $R$ durch ihren Rang ersetzt werden.
-\begin{gather*}
-    R' = (1,2,4,6,4,5,3,7)
-\end{gather*}
-\end{frame}
+% \begin{frame}[fragile]
+% \frametitle{Beispiel für $yabbadabbado$}
+% \begin{description}[l]
+%     \item[Schritt 1:] Sortieren von $R$.
+% \end{description}
+% Die Elemente von $R$ werden mit Radix-Sort sortiert um den Rang bestimmen
+% \begin{table}
+% \begin{tabular}{c c c c c c c c c c c}
+%     \toprule
+%     1 & 2 & 3 & 4 & 5 & 6 & 7                                           \\
+%     \midrule
+%     $[abb]$ & $[ada]$ & $[bad]$ & $[bba]$ & $[dab]$ & $[do0]$ & $[o00]$ \\
+%     \bottomrule
+% \end{tabular}
+% \end{table}
+% Wir erhalten $R$ aus $R'$, indem die Elemente von $R$ durch ihren Rang ersetzt werden.
+% \begin{gather*}
+%     R' = (1,2,4,6,4,5,3,7)
+% \end{gather*}
+% \end{frame}
 %--Folie---------------------------------------------------------------------
 
 %--Folie: Literaturverzeichnis-----------------------------------------------
