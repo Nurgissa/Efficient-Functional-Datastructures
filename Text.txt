@@ -1,24 +1,33 @@
 -----------------------------
 WOTD: Suffixbaumkonstruktion
 -----------------------------
-Es wird einen Algorithmus vorgestellt, der einen Suffixbaum konstruiert und sich gut für laziness von Haskell eignet.
+Es wird einen Algorithmus vorgestellt, der einen KOMPAKTER Suffixbaum konstruiert und sich gut für laziness von Haskell eignet.
+
 Der Algorithmus heißt "write only top down", wobei
+
 - "write-only" steht für die Eigenschaft, dass Knoten im Baum nur konstruiert werden und dann nicht mehr gelesen
+
 - "top down" steht für den Art vom Baumaufbau: Das ist einen funktionalen Algorithmus, der rekursiv vom Wurzel bis zu Blättern den Suffixbaum erzeugt.
+
+- Jeder Unterbaum kann getrennt von den anderen konstruiert werden.
 
 -----------------------------
 Haskell: List comprehension 1
 -----------------------------
 Zuerst möchte ich einpaar Sätze über List comprehension von Haskell sagen.
+
 Das ist ein Konstruktor, der an einer matematische Art und Weise Liste erzeugt.
 
-Zum Beispiel, folgende Mengedefinition kann in Haskell äquivalent geschrieben werden. Man bekommt aber keine Menge, sondern eine Liste.
+ZUM BEISPIEL, folgende Mengedefinition: Alle Paare (i,j), so dass...
+kann in Haskell äquivalent zu dem Ausdruck geschrieben werden. Man bekommt aber keine Menge, sondern eine Liste.
 
-Allgemeine Syntax sieht so aus:
-- Vor der vertikalen Strich hat man einen Elementausdrück, der im Kontext der Variablen, die in q_1 bis q_n gebunden werden können, ausgewertet.
-- q_i entweder 
-	- Generatoren: z.B. hier i aus [1..4]. D.h. e wird mit jedem i aus der Liste [1..4] ausgewertet. 
-	- oder l. D. von Variablen, die in Generatoren benutzt werden können
+Allgemeine SYNTAX sieht so aus:
+
+- Vor der vertikalen Strich hat man einen Elementausdrück, der im Kontext der Variablen ausgewertet wird, die in q_1 bis q_n gebunden werden können.
+
+- Q_i sind entweder 
+	- Generatoren: z.B. hier i aus [1..4]. D.h. e wird mit jedem i aus der Liste 1 bis 2 und jedem j aus der Liste 1 bis 4 ausgewertet. 
+	- oder lokale Definition von Variablen, die in Generatoren benutzt werden können
 	- oder Prädikate, die Listenelemente filtern.
 
 -----------------------------
@@ -31,11 +40,17 @@ Hier sind weitere Beispiele:
 -----------------------------
 Typedefinitionen
 -----------------------------
-Wir möchten komplett den Kode vom Algorithmus zeigen und anhand eines Beispiels erklären. Zuerst benötige Typedefinitionen von Datenstrukturen:
-- Ein Baum ist entweder ein Blatt oder eine Verzweigung. Eine Verzweigung ist eine Liste Tupeln, wobei erstes Element vom Tupel eine Kante (also, eine Kantenbeschriftung) ist, und zweites Element ist der Unterbaum, der von der Kante ausgeht.
-- alf ist Typparameter vom Alphabet. Wir arbeiten bei der Erklärung mit char.
-- Label alf ist ein Liste von Elementen des Alphabets, bei uns ist string, weil in Haskell eine charliste string ist.
-- Typ der EdgeFunktion bedeutet, dass man eine Liste von Wörter nimmt und auf ein Tupel abbildet, wobei erstes Element vom Tupel das längste gemeinsame Präfix der Wörter ist und zweites Element eine Liste von Wörter, von denen das längste gemeinsame Präfix entfernt wurde. 
+Wir möchten komplett den Kode vom Algorithmus zeigen und anhand eines Beispiels erklären. 
+
+Zuerst benötige Typedefinitionen von Datenstrukturen:
+
+- Ein BAUM ist entweder ein Blatt oder eine Verzweigung. Eine Verzweigung ist eine Liste Tupeln, wobei erstes Element vom Tupel eine Kante (also, eine Kantenbeschriftung) ist, und zweites Element ist der zugeordete Unterbaum, der von der Kante ausgeht.
+
+- ALF ist Typparameter vom Alphabet. Wir arbeiten in unserem Beispiel mit char.
+
+- LABEL alf ist ein Liste von Elementen des Alphabets, bei uns ist string, weil in Haskell eine charliste string ist.
+
+- Typ der EDGEFUNKTION bedeutet, dass man eine Liste von Wörter nimmt und auf ein Tupel abbildet, wobei erstes Element vom Tupel das längste gemeinsame Präfix der Wörter ist und zweites Element eine Liste von Wörter, von denen das längste gemeinsame Präfix entfernt wurde. 
 
 -----------------------------
 Beispiel: Suffixliste
