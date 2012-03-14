@@ -122,10 +122,14 @@
 
 % Umgebung Bemerkung
 \newtheorem{remark}{Bemerkung}
+\newtheorem{exampleg}{Beispiel}
+\newtheorem{examplesg}{Beispiele}
 
 \newcommand{\coloneqq}{\mathrel{\mathop:}=}
 
 \newcommand{\abs}[1]{\left|#1\right|}
+
+%--Übersetzung---------------------------------------------------------------
 
 % Hack
 \newcommand{\newblock}{}
@@ -149,12 +153,17 @@
 
 \begin{document}
 
+\selectlanguage{ngerman}
+
 %--Folie: Titelfolie---------------------------------------------------------
 \frame{\titlepage}
 %--Folie---------------------------------------------------------------------
 
 %--Folie: Inhaltsverzeichnis-------------------------------------------------
-\frame{\frametitle{Inhaltsverzeichnis}\tableofcontents}
+\frame{
+    \frametitle{Inhaltsverzeichnis}
+    \tableofcontents
+}
 %--Folie---------------------------------------------------------------------
 
 %////////////////////////////////////////////////////////////////////////////
@@ -164,7 +173,12 @@
 %--Folie: Einführung---------------------------------------------------------
 \begin{frame}
 \frametitle{Einführung}
-TODO Einführung ausarbeiten!
+\begin{itemize}
+    \item Effiziente Lösung einer Vielzahl von Stringverarbeitungsproblemen
+    \item Weit verbreitet in der Bioinformatik: Mustersuche in Genomen
+    \item Konstruktion in $O(n)$ möglich \cite{Ukkonen1995}
+    \item Suche eines Teilworts in $O(m)$, wobei $m$ Länge des Teilworts
+\end{itemize}
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
@@ -210,7 +224,7 @@ TODO Einführung ausarbeiten!
     \item Für alle $a \in \Sigma$ und alle Knoten $k$ existiert höchstens ein Knoten $k'$, sodass $k \xrightarrow{aw} k'$.
     \end{itemize}
 \end{definition}
-\begin{example}
+\begin{exampleg}
 Sei $\Sigma = \left\{a, \dots, z\right\}$
 \begin{figure}
 \begin{tikzpicture}[
@@ -263,7 +277,7 @@ Sei $\Sigma = \left\{a, \dots, z\right\}$
     };
 \end{tikzpicture}
 \end{figure}
-\end{example}
+\end{exampleg}
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
@@ -276,34 +290,175 @@ Die Funktion $path(k)$ bezeichnet die Konkatenation der Kantenbeschriftungen von
 $\overline{w}$ bezeichnet genau dann den Knoten $k$, wenn $path(k) = w$.
 \end{remark}
 \end{definition}
-\begin{definition}[Verschachteltes Suffix]
-Ein Suffix von $t$ heißt verschachtelt, wenn es mehrmals in $t$ vorkommt, d.h. $t = uvwv$.
-\end{definition}
-\begin{example}
-$\boldsymbol{ag}$ ist ein verschachteltes Suffix von $\boldsymbol{ag}cgacg\boldsymbol{ag}$.
-\end{example}
+\begin{exampleg}
+$w = vu$
+\vspace{-8mm}
+\begin{figure}
+\begin{tikzpicture}[
+    font = \small,
+    level 1/.style = {level distance = 8mm, sibling distance = 25mm},
+    level 2/.style = {level distance = 8mm, sibling distance = 20mm},
+    level 3/.style = {level distance = 8mm, sibling distance = 20mm},
+    edge from parent/.style = {->, draw}
+    ]
+    \node[branch] {}
+    child[child anchor = north] {
+        node[subtree] {}
+        edge from parent[dotted]
+    }
+    child {
+        node[branch] {}
+        child {
+            node (n) [branch] {}
+            child[child anchor = north] {
+                node[subtree] {}
+                edge from parent[dotted]
+            }
+            child[child anchor = north] {
+                node[subtree] {}
+                edge from parent[dotted]
+            }
+            edge from parent
+            node[right] {$u$}
+        }
+        edge from parent
+        node[left] {$v$}
+    }
+    child[child anchor = north] {
+        node[subtree] {}
+        edge from parent[dotted]
+    };
+    \node[left = 2mm] at (n) {$\overline{vu}$};
+\end{tikzpicture}
+\end{figure}
+\end{exampleg}
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
 %--Folie: Grundlagen---------------------------------------------------------
 \begin{frame}
 \frametitle{Grundlagen}
-\begin{definition}[Suffix Tree]
-Ein Suffix Tree $S_t$ für ein gegebenes Wort $t$ ist ein $\Sigma^+$-Baum, sodass gilt:
-\begin{gather*}
-    w \in S_t  \Longleftrightarrow w \text{ ist ein }t\text{-Wort}
-\end{gather*}
-\end{definition}
-\vspace{-4mm}
-\begin{remark}
 \begin{itemize}
     \item Jedes $t$-Wort $w$ lässt sich darstellen als $t = vs, s = wu$
           \begin{gather*}
               t = a \dots b \underbrace{\overbrace{c \dots d}^{\text{Präfix }w} e \dots f}_{\text{Suffix }s}
           \end{gather*}
+    \item Suche im Suffix Tree: Präfixsuche auf Suffixen
     \item Ein Wort $w$ ist genau dann in einem $\Sigma^+$-Baum ent"-hal"-ten, wenn ein Knoten $\overline{wu}$ in diesem Baum existiert.
+    \begin{figure}
+    \begin{tikzpicture}[
+        font = \small,
+        level 1/.style = {level distance = 10mm, sibling distance = 25mm},
+        level 2/.style = {level distance = 10mm, sibling distance = 15mm},
+        level 3/.style = {level distance = 10mm, sibling distance = 10mm},
+        edge from parent/.style = {->, draw}
+        ]
+        \node[branch] {}
+        child[child anchor = north] {
+            node[subtree] {}
+            edge from parent[dotted]
+        }
+        child {
+            node[branch] {}
+            child[child anchor = north] {
+                node[subtree] {}
+                edge from parent[dotted]
+            }
+            child[child anchor = north] {
+                node[subtree] {}
+                edge from parent[dotted]
+            }
+            edge from parent
+            node[left] {\textbf{w}u}
+        }
+        child[child anchor = north] {
+            node[subtree] {}
+            edge from parent[dotted]
+        };
+    \end{tikzpicture}
+    \end{figure}
 \end{itemize}
-\end{remark}
+\end{frame}
+%--Folie---------------------------------------------------------------------
+
+%--Folie: Suffix Tree---------------------------------------------------------
+\begin{frame}
+\frametitle{Suffix Tree}
+\begin{exampleg}
+$cst$ für die Zeichenkette $agcgacgag$.
+\begin{figure}
+\begin{tikzpicture}[
+    font = \small,
+    level 1/.style = {level distance = 7mm, sibling distance = 30mm},
+    level 2/.style = {level distance = 7mm, sibling distance = 15mm},
+    level 3/.style = {level distance = 7mm, sibling distance = 10mm},
+    edge from parent/.style = {->, draw}
+    ]
+    \node[branch]{}
+    child {
+        node[branch]{}
+        child {
+            edge from parent
+            node[left]{$cgag$}
+        }
+        child {
+            node[leaf] {}
+            edge from parent
+            node[right]{$gcgacgag$}
+        }
+        edge from parent
+        node[above]{$a$}
+    }
+    child[level distance = 16mm] {
+        node[branch]{}
+        child {
+            node[leaf] {}
+            edge from parent
+            node[left]{$cgag$}
+        }
+        child {
+            node[leaf] {}
+            edge from parent
+            node[right]{$g$}
+        }
+        edge from parent
+        node[left]{$cga$}
+    }
+    child {
+        node[branch]{}
+        child {
+            node[branch]{}
+            child {
+                node[leaf] {}
+                edge from parent
+                node[left]{$cgag$}
+            }
+            child {
+                node[leaf] {}
+                edge from parent
+                node[right]{$g$}
+            }
+            edge from parent
+            node[left]{$a$}
+        }
+        child {
+            node[leaf] {}
+            edge from parent
+            node[right]{$cgacgag$}
+        }
+        edge from parent
+        node[above]{$g$}
+    };
+\end{tikzpicture}
+\end{figure}
+\end{exampleg}
+\begin{definition}[Suffix Tree]
+Ein Suffix Tree $S_t$ für ein gegebenes Wort $t$ ist ein $\Sigma^+$-Baum, sodass gilt:
+\begin{gather*}
+    w \in S_t \Longleftrightarrow w \text{ ist ein }t\text{-Wort}
+\end{gather*}
+\end{definition}
+\vspace{-4mm}
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
@@ -526,7 +681,7 @@ Kantenverschmelzung ist eine Relation auf $\Sigma^+$-Bäumen, die durch ihre Kan
 \end{gather*}
 wenn $\overline{w} \xrightarrow{u'} \overline{v}$ ist die einzige ausgehende Kante von $\overline{w}$.
 \end{definition}
-\begin{example}
+\begin{exampleg}
 \begin{figure}
 \vspace{-6mm}
 \begin{tikzpicture}[
@@ -594,7 +749,7 @@ wenn $\overline{w} \xrightarrow{u'} \overline{v}$ ist die einzige ausgehende Kan
     \node[right] at (v2.center) {$\overline{v}$};
 \end{tikzpicture}
 \end{figure}
-\end{example}
+\end{exampleg}
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
@@ -857,7 +1012,6 @@ $pst$ für die Zeichenkette $agcgacgag$.
     };
 \end{tikzpicture}
 \end{figure}
-
 $cst$ für die Zeichenkette $agcgacgag$.
 \begin{figure}
 \begin{tikzpicture}[
@@ -875,6 +1029,7 @@ $cst$ für die Zeichenkette $agcgacgag$.
             node[left]{$cgag$}
         }
         child {
+            node[leaf] {}
             edge from parent
             node[right]{$gcgacgag$}
         }
@@ -884,10 +1039,12 @@ $cst$ für die Zeichenkette $agcgacgag$.
     child[level distance = 16mm] {
         node[branch]{}
         child {
+            node[leaf] {}
             edge from parent
             node[left]{$cgag$}
         }
         child {
+            node[leaf] {}
             edge from parent
             node[right]{$g$}
         }
@@ -899,10 +1056,12 @@ $cst$ für die Zeichenkette $agcgacgag$.
         child {
             node[branch]{}
             child {
+                node[leaf] {}
                 edge from parent
                 node[left]{$cgag$}
             }
             child {
+                node[leaf] {}
                 edge from parent
                 node[right]{$g$}
             }
@@ -910,6 +1069,7 @@ $cst$ für die Zeichenkette $agcgacgag$.
             node[left]{$a$}
         }
         child {
+            node[leaf] {}
             edge from parent
             node[right]{$cgacgag$}
         }
@@ -922,19 +1082,16 @@ $cst$ für die Zeichenkette $agcgacgag$.
 %--Folie---------------------------------------------------------------------
 
 %--Folie: Suffix Tree Klassen------------------------------------------------
-\begin{frame}[t]
+\begin{frame}
 \frametitle{Suffix Tree Klassen}
 \begin{definition}
-Sei $S_t$ ein Suffix Tree für ein Wort $t$, repräsentiert durch seine Kantenmenge $E$ und $n = \abs{t}$. $S_t$ wird bezeichnet als:
+Sei $S_t$ ein Suffix Tree für ein Wort $t$, repräsentiert durch seine Kantenmenge $E$. $S_t$ wird bezeichnet als:
 \begin{itemize}
     \item Atomic Suffix Tree, wenn $\abs{E}$ maximal ist.
     \item Position Suffix Tree, wenn die Länge aller inneren Kantenbeschriftungen $1$ beträgt.
     \item Compact Suffix Tree, wenn $\abs{E}$ minimal ist.
 \end{itemize}
 \end{definition}
-\begin{lemma}
-Seien $T_1$ und $T_2$ $\Sigma^+$-Bäume mit $T_1 \implies T_2$. Dann enthält $T_1$ genau dann das Wort $w$, wenn $T_2$ das Wort $w$ enthält.
-\end{lemma}
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
@@ -1053,7 +1210,7 @@ ast und pst benötigen mehr Speicherplatz:
 \end{itemize}
 \end{definition}
 \vspace{-3mm}
-\begin{example}
+\begin{exampleg}
 GST für $D = \{agcg, acg\}$ und $T = \{\$, \#\}$
 \begin{figure}
 \begin{tikzpicture}[
@@ -1109,7 +1266,7 @@ GST für $D = \{agcg, acg\}$ und $T = \{\$, \#\}$
     };
 \end{tikzpicture}
 \end{figure}
-\end{example}
+\end{exampleg}
 \end{frame}
 
 %////////////////////////////////////////////////////////////////////////////
@@ -1161,9 +1318,9 @@ Bestimme die Ähnlichkeit zwischen Strings.
     \item Gesucht: Die Länge des längsten gemeinsamen Teilworts $lcs(s_1, s_2)$ von $s_1$ und $s_2$
 \end{itemize}
 \end{block}
-\begin{example}
+\begin{exampleg}
 $lcs(abab, aab) = 2$
-\end{example}
+\end{exampleg}
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
@@ -1190,7 +1347,7 @@ $\rightarrow$ Lösung mithilfe eines GST
     \item Aufwand $O(\abs{s_1} + \abs{s_2})$
 \end{itemize}
 \end{block}
-\begin{example}
+\begin{exampleg}
 Sei $D = \{gaga, agga\}$
 \begin{figure}
 \begin{tikzpicture}[
@@ -1247,14 +1404,14 @@ Sei $D = \{gaga, agga\}$
     };
 \end{tikzpicture}
 \end{figure}
-\end{example}
+\end{exampleg}
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
 %--Folie: Longest common substring-------------------------------------------
 \begin{frame}
 \frametitle{$LCS$-Algorithmus}
-\begin{example}
+\begin{exampleg}
 \begin{figure}
 \begin{tikzpicture}[
     font = \small,
@@ -1312,7 +1469,7 @@ Sei $D = \{gaga, agga\}$
     \node[yshift = 3mm, xshift = -7mm] at (w2.center) {$\overline{w}$} edge [dotted] (w2);
 \end{tikzpicture}
 \end{figure}
-\end{example}
+\end{exampleg}
 Ziel: Finde Knoten $\overline{w}$ mit maximaler Tiefe im $GST_D$ dessen Teilbäume ein Blatt von $s_1$ und $s_2$ besitzen.
 \end{frame}
 %--Folie---------------------------------------------------------------------
@@ -1321,7 +1478,7 @@ Ziel: Finde Knoten $\overline{w}$ mit maximaler Tiefe im $GST_D$ dessen Teilbäu
 \begin{frame}
 \frametitle{$LCS$-Algorithmus}
 % TODO Besseren Namen für Funktion f finden!
-\begin{example}
+\begin{exampleg}
 \vspace{-6mm}
 \begin{figure}
 \begin{tikzpicture}[
@@ -1395,7 +1552,7 @@ Ziel: Finde Knoten $\overline{w}$ mit maximaler Tiefe im $GST_D$ dessen Teilbäu
     \node[yshift = -14mm] at (l6) {$(0, 1)$} edge [dotted] (l6);
 \end{tikzpicture}
 \end{figure}
-\end{example}
+\end{exampleg}
 \vspace{-5mm}
 \begin{block}{Schritt 2}
 \begin{itemize}
@@ -1414,7 +1571,7 @@ Ziel: Finde Knoten $\overline{w}$ mit maximaler Tiefe im $GST_D$ dessen Teilbäu
 %--Folie: Longest common substring-------------------------------------------
 \begin{frame}
 \frametitle{$LCS$-Algorithmus}
-\begin{example}
+\begin{exampleg}
 \vspace{-6mm}
 \begin{figure}
 \begin{tikzpicture}[
@@ -1448,7 +1605,7 @@ Ziel: Finde Knoten $\overline{w}$ mit maximaler Tiefe im $GST_D$ dessen Teilbäu
     \node[yshift = -4mm] at (st4.south) {$(1, 0)$};
 \end{tikzpicture}
 \end{figure}
-\end{example}
+\end{exampleg}
 \vspace{-5mm}
 \begin{itemize}
     \item Die Oder-Verknüpfung der Bitvektoren der Kindknoten $c_1, \dots, c_l$ liefert den Bitvektor des Vaterknotens $\overline{w}$.
@@ -1466,7 +1623,7 @@ Ziel: Finde Knoten $\overline{w}$ mit maximaler Tiefe im $GST_D$ dessen Teilbäu
 %--Folie: Longest common substring-------------------------------------------
 \begin{frame}
 \frametitle{$LCS$-Algorithmus}
-\begin{example}
+\begin{exampleg}
 \vspace{-5mm}
 \begin{figure}
 \begin{tikzpicture}[
@@ -1525,7 +1682,7 @@ Ziel: Finde Knoten $\overline{w}$ mit maximaler Tiefe im $GST_D$ dessen Teilbäu
     \node[yshift = 3mm, xshift = -8mm] at (w2.center) {$(1, 1)$} edge [dotted] (w2);
 \end{tikzpicture}
 \end{figure}
-\end{example}
+\end{exampleg}
 \begin{block}{Schritt 3}
 \begin{itemize}
     \item $lcs = max \{level(\overline{w}) \mid f(\overline{w}) = (1, 1) \text{ und } \overline{w} \in GST_D\}$
@@ -1594,7 +1751,7 @@ sind.
 %--Folie: Haskell: List comprehension----------------------------------------
 \begin{frame}[t, fragile]
 \frametitle{Haskell: List comprehension}
-\begin{examples}
+\begin{examplesg}
 \begin{enumerate}
     \item Mit Prädikat
     \begin{lstlisting}
@@ -1609,7 +1766,7 @@ sind.
     [(1, 1), (2, 1), (2, 2), (2, 3), (2, 4)]
 \end{lstlisting}
 \end{enumerate}
-\end{examples}
+\end{examplesg}
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
@@ -2058,7 +2215,7 @@ commonPrefix w1 w2 = g w1 w2 []
     where g (x:xs) (y:ys) cp | (x == y) = g xs ys (x:cp)
           g w1 w2 cp  = (w1, w2, reverse cp)
 \end{lstlisting}
-\begin{examples}
+\begin{examplesg}
 \begin{lstlisting}
 -- Erstes Teilwort von Zweitem
 commonPrefix "abc" "abcde" = ([ ], de, abc)
@@ -2072,7 +2229,7 @@ commonPrefix "abc" "de" = (abc, de, [ ])
 -- Gemeinsames Praefix "ab"
 commonPrefix "abcd" "abde" = (cd, de, ab)
 \end{lstlisting}
-\end{examples}
+\end{examplesg}
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
@@ -2159,7 +2316,7 @@ Suffix Trees haben einige Nachteile
 Diese Nachteile werden von Suffix Arrays größtenteils behoben
 \begin{itemize}
     \item Speicherplatzverbrauch: 5 Bytes für jedes Zeichen
-    \item Vielversprechende Algorithmen für die effiziente Konstruktion von Suffix Arrays im externen Speicher
+    \item Vielversprechende Algorithmen für die effiziente Konstruktion von Suffix Arrays im externen Speicher \cite{Dementiev2008}
 \end{itemize}
 \end{frame}
 %--Folie---------------------------------------------------------------------
@@ -2170,7 +2327,7 @@ Diese Nachteile werden von Suffix Arrays größtenteils behoben
 \begin{definition}
 Suffixarray $SA$ von $T$ ist eine Permutation von $[0,n]$ mit $S_{SA[0]} \prec S_{SA[1]} \prec \dots \prec S_{SA[n]}$, wobei $\prec$ die lexikographische Ordnung auf Zeichenketten bezeichnet.
 \end{definition}
-\begin{example}
+\begin{exampleg}
 Suffixarray für $yabbadabbado$ ist $SA = (1, 6, 4, 9, 3, 8, 2, 7, 5, 10, 11, 0)$, wobei
 \begin{table}
 \begin{tabular}{l l|l l}
@@ -2184,7 +2341,7 @@ Suffixarray für $yabbadabbado$ ist $SA = (1, 6, 4, 9, 3, 8, 2, 7, 5, 10, 11, 0)
     \bottomrule
 \end{tabular}
 \end{table}
-\end{example}
+\end{exampleg}
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
@@ -2285,6 +2442,46 @@ Divide and Conquer Ansatz
 \end{tikzpicture}
 \end{figure}
 \tabcolsep6pt
+\end{frame}
+%--Folie---------------------------------------------------------------------
+
+%--Folie: Übersicht----------------------------------------------------------
+\begin{frame}
+\frametitle{Übersicht}
+\begin{figure}
+\begin{tikzpicture}[
+    font = \small,
+    level 1/.style = {level distance = 20mm, sibling distance = 45mm},
+    level 2/.style = {level distance = 20mm, sibling distance = 45mm},
+    level 3/.style = {level distance = 20mm, sibling distance = 45mm},
+    edge from parent/.style = {->, draw}
+    ]
+    \node (n1) {
+        \begin{tabular}{c}
+            \color{gray}Schritt 1: Divide \color{rubineRed}y\color{aquamarine}ab\color{rubineRed}b\color{aquamarine}ad\color{rubineRed}a\color{aquamarine}bb\color{rubineRed}a\color{aquamarine}do \\
+            \midrule
+            \color{gray}Schritt 4: Merge \\
+        \end{tabular}}
+    child {
+        node {\color{gray}Schritt 3: Sort}
+        edge from parent[color = rubineRed]
+        node[left, xshift = -2mm]{\color{rubineRed}i mod 3 = 0}
+        node[right, xshift = 2mm]{\color{rubineRed}$\sfrac{1}{3}$}
+    }
+    child {
+        node {Schritt 2: Sort recursive}
+        child {
+            edge from parent[color = rubineRed, dotted]
+        }
+        child {
+            edge from parent[color = aquamarine, dotted]
+        }
+        edge from parent[color = aquamarine]
+        node[right, xshift = 2mm]{\color{aquamarine}i mod 3 = 1 o. 2}
+        node[left, xshift = -2mm]{\color{aquamarine}$\sfrac{2}{3}$}
+    };
+\end{tikzpicture}
+\end{figure}
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
@@ -2440,6 +2637,46 @@ Ist der Rang der Samples eindeutig?
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
+%--Folie: Übersicht----------------------------------------------------------
+\begin{frame}
+\frametitle{Übersicht}
+\begin{figure}
+\begin{tikzpicture}[
+    font = \small,
+    level 1/.style = {level distance = 20mm, sibling distance = 45mm},
+    level 2/.style = {level distance = 20mm, sibling distance = 45mm},
+    level 3/.style = {level distance = 20mm, sibling distance = 45mm},
+    edge from parent/.style = {->, draw}
+    ]
+    \node (n1) {
+        \begin{tabular}{c}
+            \color{gray}Schritt 1: Divide \color{rubineRed}y\color{aquamarine}ab\color{rubineRed}b\color{aquamarine}ad\color{rubineRed}a\color{aquamarine}bb\color{rubineRed}a\color{aquamarine}do \\
+            \midrule
+            \color{gray}Schritt 4: Merge \\
+        \end{tabular}}
+    child {
+        node {Schritt 3: Sort}
+        edge from parent[color = rubineRed]
+        node[left, xshift = -2mm]{\color{rubineRed}i mod 3 = 0}
+        node[right, xshift = 2mm]{\color{rubineRed}$\sfrac{1}{3}$}
+    }
+    child {
+        node {\color{gray}Schritt 2: Sort recursive}
+        child {
+            edge from parent[color = rubineRed, dotted]
+        }
+        child {
+            edge from parent[color = aquamarine, dotted]
+        }
+        edge from parent[color = aquamarine]
+        node[right, xshift = 2mm]{\color{aquamarine}i mod 3 = 1 o. 2}
+        node[left, xshift = -2mm]{\color{aquamarine}$\sfrac{2}{3}$}
+    };
+\end{tikzpicture}
+\end{figure}
+\end{frame}
+%--Folie---------------------------------------------------------------------
+
 %--Folie: Schritt 3: Sort----------------------------------------------------
 \begin{frame}
 \frametitle{Schritt 3: Sort}
@@ -2464,17 +2701,57 @@ Ist der Rang der Samples eindeutig?
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
+%--Folie: Übersicht----------------------------------------------------------
+\begin{frame}
+\frametitle{Übersicht}
+\begin{figure}
+\begin{tikzpicture}[
+    font = \small,
+    level 1/.style = {level distance = 20mm, sibling distance = 45mm},
+    level 2/.style = {level distance = 20mm, sibling distance = 45mm},
+    level 3/.style = {level distance = 20mm, sibling distance = 45mm},
+    edge from parent/.style = {->, draw}
+    ]
+    \node (n1) {
+        \begin{tabular}{c}
+            \color{gray}Schritt 1: Divide \color{rubineRed}y\color{aquamarine}ab\color{rubineRed}b\color{aquamarine}ad\color{rubineRed}a\color{aquamarine}bb\color{rubineRed}a\color{aquamarine}do \\
+            \midrule
+            Schritt 4: Merge \\
+        \end{tabular}}
+    child {
+        node {\color{gray}Schritt 3: Sort}
+        edge from parent[color = rubineRed]
+        node[left, xshift = -2mm]{\color{rubineRed}i mod 3 = 0}
+        node[right, xshift = 2mm]{\color{rubineRed}$\sfrac{1}{3}$}
+    }
+    child {
+        node {\color{gray}Schritt 2: Sort recursive}
+        child {
+            edge from parent[color = rubineRed, dotted]
+        }
+        child {
+            edge from parent[color = aquamarine, dotted]
+        }
+        edge from parent[color = aquamarine]
+        node[right, xshift = 2mm]{\color{aquamarine}i mod 3 = 1 o. 2}
+        node[left, xshift = -2mm]{\color{aquamarine}$\sfrac{2}{3}$}
+    };
+\end{tikzpicture}
+\end{figure}
+\end{frame}
+%--Folie---------------------------------------------------------------------
+
 %--Folie: Schritt 4: Merge---------------------------------------------------
 \begin{frame}
 \frametitle{Schritt 4: Merge}
 \begin{table}
 \begin{tabular}{l|c c c c c c c c c c c c}
     \toprule
-    i      & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 \\
+    i    & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 \\
     \midrule
-    S[i,n) & y & a & b & b & a & d & a & b & b & a & d  & o  \\
+    Wort & y & a & b & b & a & d & a & b & b & a & d  & o  \\
     \midrule
-    Rang   & ? & 1 & 4 & ? & 2 & 6 & ? & 5 & 3 & ? & 7  & 8 \\
+    Rang & ? & 1 & 4 & ? & 2 & 6 & ? & 5 & 3 & ? & 7  & 8 \\
     \bottomrule
 \end{tabular}
 \end{table}
@@ -2495,9 +2772,9 @@ Ist der Rang der Samples eindeutig?
     \node (n1) {
         \begin{tabular}{l|c c c c c c c c c c c c}
             \toprule
-            S[i,n) & y  & a & b & b & a & d & a & b & b & a & d & o  \\
+            Wort & y  & a & b & b & a & d & a & b & b & a & d & o  \\
             \midrule
-            Rang   & 11 & 0 & 6 & 4 & 2 & 8 & 1 & 7 & 5 & 3 & 9 & 10 \\
+            Rang & 11 & 0 & 6 & 4 & 2 & 8 & 1 & 7 & 5 & 3 & 9 & 10 \\
             \bottomrule
         \end{tabular}
     };
@@ -2516,6 +2793,17 @@ Ist der Rang der Samples eindeutig?
     \path[->] (n1) edge (n2);
 \end{tikzpicture}
 \end{figure}
+\end{frame}
+%--Folie---------------------------------------------------------------------
+
+%--Folie: Eigenschaften------------------------------------------------------
+\begin{frame}
+\frametitle{Eigenschaften von DC3}
+\begin{itemize}
+    \item Laufzeitkomplexität im Worst case $O(n)$
+    \item schnellster Algorithmus mit Worst case $O(n)$
+    \item Schnellere Algorithmen, wie z.B. qsufsort \cite{Larsson2007} in der Praxis mit schlechterem Worst case $O(n \log n)$
+\end{itemize}
 \end{frame}
 %--Folie---------------------------------------------------------------------
 

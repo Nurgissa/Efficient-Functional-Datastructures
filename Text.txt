@@ -1,169 +1,248 @@
------------------------------
-WOTD: Suffixbaumkonstruktion
------------------------------
-Es wird einen Algorithmus vorgestellt, der einen Suffixbaum konstruiert und sich gut für laziness von Haskell eignet.
-Der Algorithmus heißt "write only top down", wobei
-- "write-only" steht für die Eigenschaft, dass Knoten im Baum nur konstruiert werden und dann nicht mehr gelesen
-- "top down" steht für den Art vom Baumaufbau: Das ist einen funktionalen Algorithmus, der rekursiv vom Wurzel bis zu Blättern den Suffixbaum erzeugt.
+--------------------------------------------------------
+ WOTD: Suffixbaumkonstruktion
+--------------------------------------------------------
 
------------------------------
-Haskell: List comprehension 1
------------------------------
+Es wird einen Algorithmus vorgestellt, der einen Suffixbaum konstruiert und sich gut für laziness von Haskell eignet.
+
+Der Algorithmus heißt "write only top down", wobei
+
+	- "write-only" steht für die Eigenschaft, dass Knoten im Baum nur konstruiert werden und dann nicht mehr gelesen
+
+	- "top down" steht für den Art vom Baumaufbau: Das ist einen funktionalen Algorithmus, der rekursiv vom Wurzel bis zu Blättern den Suffixbaum erzeugt.
+
+--------------------------------------------------------
+ Haskell: List comprehension 1
+--------------------------------------------------------
+
 Zuerst möchte ich einpaar Sätze über List comprehension von Haskell sagen.
+
 Das ist ein Konstruktor, der an einer matematische Art und Weise Liste erzeugt.
 
-Zum Beispiel, folgende Mengedefinition kann in Haskell äquivalent geschrieben werden. Man bekommt aber keine Menge, sondern eine Liste.
+Als Beispiel, folgende Mengendefinition kann in Haskell äquivalent geschrieben werden. Man bekommt aber keine Menge, sondern eine Liste.
 
 Allgemeine Syntax sieht so aus:
-- Vor der vertikalen Strich hat man einen Elementausdrück, der im Kontext der Variablen, die in q_1 bis q_n gebunden werden können, ausgewertet.
-- q_i entweder 
-	- Generatoren: z.B. hier i aus [1..4]. D.h. e wird mit jedem i aus der Liste [1..4] ausgewertet. 
-	- oder l. D. von Variablen, die in Generatoren benutzt werden können
-	- oder Prädikate, die Listenelemente filtern.
 
------------------------------
-Haskell: List comprehension 2
------------------------------
-Hier sind weitere Beispiele: 
-- erstes mit einem Generator und einem Prädikat. So einen Ausdruck ergibt folgende Menge.
-- zweites mit zwei Generatoren und einer lokaler Definition
+	- Vor der vertikalen Strich hat man einen Elementausdrück, der im Kontext der Variablen, die in q_1 bis q_n gebunden werden können, ausgewertet.
 
------------------------------
-Typedefinitionen
------------------------------
+	- q_i entweder
+
+		- Generatoren: z.B. hier i aus [1..4]. D.h. e wird mit jedem i aus der Liste [1..4] ausgewertet.
+
+		- oder l. D. von Variablen, die in Generatoren benutzt werden können
+
+		- oder Prädikate, die Listenelemente filtern.
+
+--------------------------------------------------------
+ Haskell: List comprehension 2
+--------------------------------------------------------
+
+Hier sind weitere Beispiele:
+
+	- erstes mit einem Generator und einem Prädikat. So einen Ausdruck ergibt folgende Menge.
+
+	- zweites mit zwei Generatoren und einer lokaler Definition
+
+--------------------------------------------------------
+ Typedefinitionen
+--------------------------------------------------------
+
 Wir möchten komplett den Kode vom Algorithmus zeigen und anhand eines Beispiels erklären. Zuerst benötige Typedefinitionen von Datenstrukturen:
-- Ein Baum ist entweder ein Blatt oder eine Verzweigung. Eine Verzweigung ist eine Liste Tupeln, wobei erstes Element vom Tupel eine Kante (also, eine Kantenbeschriftung) ist, und zweites Element ist der Unterbaum, der von der Kante ausgeht.
-- alf ist Typparameter vom Alphabet. Wir arbeiten bei der Erklärung mit char.
-- Label alf ist ein Liste von Elementen des Alphabets, bei uns ist string, weil in Haskell eine charliste string ist.
-- Typ der EdgeFunktion bedeutet, dass man eine Liste von Wörter nimmt und auf ein Tupel abbildet, wobei erstes Element vom Tupel das längste gemeinsame Präfix der Wörter ist und zweites Element eine Liste von Wörter, von denen das längste gemeinsame Präfix entfernt wurde. 
 
------------------------------
-Beispiel: Suffixliste
------------------------------
+	- Ein Baum ist entweder ein Blatt oder eine Verzweigung. Eine Verzweigung ist eine Liste Tupeln, wobei erstes Element vom Tupel eine Kante (also, eine Kantenbeschriftung) ist, und zweites Element ist der Unterbaum, der von der Kante ausgeht.
+
+	- alf ist Typparameter vom Alphabet. Wir arbeiten bei der Erklärung mit char.
+
+	- Label alf ist ein Liste von Elementen des Alphabets, bei uns ist string, weil in Haskell eine charliste string ist.
+
+	- Typ der EdgeFunktion bedeutet, dass man eine Liste von Wörter nimmt und auf ein Tupel abbildet, wobei erstes Element vom Tupel das längste gemeinsame Präfix der Wörter ist und zweites Element eine Liste von Wörter, von denen das längste gemeinsame Präfix entfernt wurde.
+
+--------------------------------------------------------
+ Beispiel: Suffixliste
+--------------------------------------------------------
+
 Hier ist ein Beispiel für das Wort "..."
 
-Esrtes Schritt vom Algorithmus ist die Liste von allen Suffixen des gegebenen Wort zu erzeugen. Das macht die Fkt "suffixes". 
+Esrtes Schritt vom Algorithmus ist die Liste von allen Suffixen des gegebenen Wort zu erzeugen. Das macht die Fkt "suffixes".
 
-Für Typdefinition benutzt man den Operator ::
-Operator : hangt ein Element vorne an der Liste.
-Operator @ bindet die Liste head:tail an aw gebunden wird. 
+- Operator ::	Für Typdefinition benutzt man den Operator ::
 
------------------------------
-Beispiel: Gruppen und Kanten
------------------------------
+- Operator :  	hangt ein Element vorne an der Liste.
+
+- Operator @  	bindet die Liste head:tail an aw gebunden wird.
+
+--------------------------------------------------------
+ Beispiel: Gruppen und Kanten
+--------------------------------------------------------
+
 Zweites Schritt ist die Suffixe anhand der ersten Buchstabe zu gruppieren. Dafür wird die Fkt "select" benutzt:
-- Eingabe: Liste von Wörter, eine Buchstabe
-- Ausgabe: gefilterte Liste von Wörter, die mit Eingabebuchstabe anfangen.
+
+	- Eingabe: Liste von Wörter, eine Buchstabe
+
+	- Ausgabe: gefilterte Liste von Wörter, die mit Eingabebuchstabe anfangen.
 
 In unserem Beispiel entstehen durch Anwendung von select 3 Gruppen, wobei:
-- esrte mit dem Buchstaben "a" anfängt
-- zweit mit ...
-- fritte mit ...
+
+	- erste mit dem Buchstaben "a" anfängt
+
+	- zweit mit ...
+
+	- dritte mit ...
 
 Ab diesem Punkt arbeitet der Algorithmus Gruppenweise: zuerst wird komplett erste Gruppe bearbeitet, dann zweite und so weiter.
 
-Drittes Schritt: für eine Gruppe das längste gemeinsame Präfix zu bestimmen:
-- Die Gruppe wird als Eingabeliste für die Fkt "edge" übergeben.
-- Zuerst wird geprüft, ob alle Wörter mit der gleichen Buchstabe anfangen. 
-- Falls es der Fall ist, dann wird die Buchstabe an "cp" angehängt und es wird neue Liste erzeugt von den gleichen Wörter, aber ohne die erste Buchstabe.
-- So wird es weiter gemacht. Falls ein Wort sich endet, dann wird es weggelassen.
-- Die Fkt terminiert falls es nur ein Wort in der Gruppe bleibt oder wenn nicht alle Restwörter in der Gruppe mit der gleichen Buchstabe anfangen. 
-- Wie gesagt, die Fkt gibt ein Tupel zurück, wobei erstes Element vom Tupel das längste gemeinsame Präfix der Wörter ist und zweites Element eine Liste von restlichen Wörter, von denen das längste gemeinsame Präfix entfernt wurde.
+Dritter Schritt: für eine Gruppe das längste gemeinsame Präfix zu bestimmen:
+
+	- Die Gruppe wird als Eingabeliste für die Fkt "edge" übergeben.
+
+	- Zuerst wird geprüft, ob alle Wörter mit der gleichen Buchstabe anfangen.
+
+	- Falls es der Fall ist, dann wird die Buchstabe an "cp" angehängt und es wird neue Liste erzeugt von den gleichen Wörter, aber ohne die erste Buchstabe.
+
+	- So wird es weiter gemacht. Falls ein Wort sich endet, dann wird es weggelassen.
+
+	- Die Fkt terminiert falls es nur ein Wort in der Gruppe bleibt oder wenn nicht alle Restwörter in der Gruppe mit der gleichen Buchstabe anfangen.
+
+	- Wie gesagt, die Fkt gibt ein Tupel zurück, wobei erstes Element vom Tupel das längste gemeinsame Präfix der Wörter ist und zweites Element eine Liste von restlichen Wörter, von denen das längste gemeinsame Präfix entfernt wurde.
 
 ERKLÄRE ANHAND DES BEISPIELS für Gruppe, di mit "c" anfängt.
 
------------------------------
-Beispiel: Erstes Level
------------------------------
+--------------------------------------------------------
+ Beispiel: Erstes Level
+--------------------------------------------------------
+
 Erstes Level vom Baum sieht so aus:
-- Für jede Gruppe wird eine Kante erzeugt und jede Kante wird mit cp der jeweiligen Gruppe beschriftet. 
-- Die Reswörter der jeweiligen Gruppe haben wir zur Veranschaulichung an entsprechenden Kanten angehängt. 
-- Für diese Restwörter wird der Algorithmus rekursiv aufgerufen.
+
+	- Für jede Gruppe wird eine Kante erzeugt und jede Kante wird mit cp der jeweiligen Gruppe beschriftet.
+
+	- Die Reswörter der jeweiligen Gruppe haben wir zur Veranschaulichung an entsprechenden Kanten angehängt.
+
+	- Für diese Restwörter wird der Algorithmus rekursiv aufgerufen.
 
 Z.B. für die Restwörter der Kante "a" bekommen wir zwei neue Gruppen:
-- mit "g"
-- mit "c"
 
------------------------------
-Beispiel: Weitere Levels
------------------------------
+	- mit "g"
+
+	- mit "c"
+
+--------------------------------------------------------
+ Beispiel: Weitere Levels
+--------------------------------------------------------
+
 Dann bekommt man zweites und drittes Level des Suffixbaums. Der KOMPAKTER Suffixbaum ist fertig, jetzt kann man jedes Suffix und sogar jedes Teilwort vom Wurzel aus ablesen, das zeige ich aber später. Zuerst Zusammenfassung der Schritte.
 
------------------------------
-Zusammenfassung der Schritte
------------------------------
+--------------------------------------------------------
+ Zusammenfassung der Schritte
+--------------------------------------------------------
+
 <von der Folie ablesen>
 
------------------------------
-lazy_cst
------------------------------
+--------------------------------------------------------
+ lazy_cst
+--------------------------------------------------------
+
 Hier ist die Funktion, die oben besprochene Funktionen zusammensetzt und den kompletten Baum erzeugt. Als Eingabe haben wir:
-- die edge-Funktion, die wir vorher gesehen haben
-- einen Alphabet des gegebenen Wort in der Form einer Liste von Buchstaben
-- ein Wort t, für das Siffixbaum aufgebaut werden soll.
+
+	- die edge-Funktion, die wir vorher gesehen haben
+
+	- einen Alphabet des gegebenen Wort in der Form einer Liste von Buchstaben
+
+	- ein Wort t, für das Siffixbaum aufgebaut werden soll.
 
 Die Suffixliste von t wird an eine Hilfsfunktion "sTr" geliefert, die den Baum rekursiv aufbaut:
-- Wenn die Suffixliste leer ist, dann wird ein Blatt erstellt
-- Wenn die Suffixliste nicht leer ist, dann eine Verzweigung 
-- Verzweigung besteht aus Tupeln, das in der esten Komponente das längste gemeinsame Präfix von jeder Gruppe als Kantenbeschriftung enthält und einen entsprechenden Unterbaum in der zweiten Komponente. Der entsprechende Unterbaum wird rekursiv erzeugt.
+
+	- Wenn die Suffixliste leer ist, dann wird ein Blatt erstellt
+
+	- Wenn die Suffixliste nicht leer ist, dann eine Verzweigung
+
+	- Verzweigung besteht aus Tupeln, das in der esten Komponente das längste gemeinsame Präfix von jeder Gruppe als Kantenbeschriftung enthält und einen entsprechenden Unterbaum in der zweiten Komponente. Der entsprechende Unterbaum wird rekursiv erzeugt.
+
 Die Kantenliste wird aufgebaut, in dem:
-- jede Buchstabe des Alphabets an der Variable "a" gebunden wird.
-- die entsprechende Liste durch den Aufruf der Funktion select an die Variable "gs" gebunden wird.
-- und falls die Gruppe nicht leer ist, wird durch den Aufruf von "edge" das gemeinsame Präfix und die Liste von Restwörter berechnet.  
+
+	- jede Buchstabe des Alphabets an der Variable "a" gebunden wird.
+
+	- die entsprechende Liste durch den Aufruf der Funktion select an die Variable "gs" gebunden wird.
+
+	- und falls die Gruppe nicht leer ist, wird durch den Aufruf von "edge" das gemeinsame Präfix und die Liste von Restwörter berechnet.
 
 Hier ist kleine Veranschaulichung...
 
------------------------------
-Laufzeitanalyse edge
------------------------------
+--------------------------------------------------------
+ Laufzeitanalyse edge
+--------------------------------------------------------
 Jetzt wird noch über die Laufzeit gesprochen.
-Um Laufzeit von dem gesamten Algorithmus zu betrachten, braucht man die Kostenabschätzung von der Funktion edge, da diese die höchste Laufzeitkomplexität besitzt:
-- Die Kostenfunktion für edge ist von zwei Parameter abhängig: die Länge der Wörterliste und die Länge des gemeinsamen Präfix dieser Wörter. 
-- Die Fkt wird so oft rekursiv aufgerufen wie die Länge des gemeinsamen Präfix von der gegebenen Wörterliste ist.
-- In jedem Aufruf von edge werden zwei andere Funkrionen aufgerufen, deren Laufzeit von der Länge der Eingabeliste linear abhängig ist.
-- Eine der Funktionen ist lambda-Ausdruck, wir haben zur Vereinfachung sie als "isEqual" bei der Laufzeitanalyse bezeichnet.
-- Zweite Fkt ist List-comprehension, die als "newList" bezeichnet wird. 
-- Die Kosten der Fkt edge setzen sich zusammen aus den Kosten der Fkt "isEqual" für "n-1", den Kosten der Fkt "newList" für "n" und den Kosten des rekursiven Aufrufs von edge für "n-1" und "|cp|-1".
-- Da die Fkt edge |cp|-Mal rekursiv aufgerufen wird, bekommt man die Summen. 
-- Das lässt sich weiter vereinfachen zu dem Ausdruck
-- Man stellt dann fest, dass die Laufzeit von edge-Fkt in O(|cp|*n) liegt.
 
------------------------------
-Laufzeitanalyse lazy_cst
------------------------------
+Um Laufzeit von dem gesamten Algorithmus zu betrachten, braucht man die Kostenabschätzung von der Funktion edge, da diese die höchste Laufzeitkomplexität besitzt:
+
+	- Die Kostenfunktion für edge ist von zwei Parameter abhängig: die Länge der Wörterliste und die Länge des gemeinsamen Präfix dieser Wörter.
+
+	- Die Fkt wird so oft rekursiv aufgerufen wie die Länge des gemeinsamen Präfix von der gegebenen Wörterliste ist.
+
+	- In jedem Aufruf von edge werden zwei andere Funkrionen aufgerufen, deren Laufzeit von der Länge der Eingabeliste linear abhängig ist.
+
+	- Eine der Funktionen ist lambda-Ausdruck, wir haben zur Vereinfachung sie als "isEqual" bei der Laufzeitanalyse bezeichnet.
+
+	- Zweite Fkt ist List-comprehension, die als "newList" bezeichnet wird.
+
+	- Die Kosten der Fkt edge setzen sich zusammen aus den Kosten der Fkt "isEqual" für "n-1", den Kosten der Fkt "newList" für "n" und den Kosten des rekursiven Aufrufs von edge für "n-1" und "|cp|-1".
+
+	- Da die Fkt edge |cp|-Mal rekursiv aufgerufen wird, bekommt man die Summen.
+
+	- Das lässt sich weiter vereinfachen zu dem Ausdruck
+
+	- Man stellt dann fest, dass die Laufzeit von edge-Fkt in O(|cp|*n) liegt.
+
+--------------------------------------------------------
+ Laufzeitanalyse lazy_cst
+--------------------------------------------------------
+
 Worst-case des gesamten Algorithmus is O(n^2), das bekommt man zum Beispiel mit dem Wort a^n.
 
 Weiter <von der Folie ablesen>.
 
------------------------------
-Teilwortsuche 1
------------------------------
+--------------------------------------------------------
+ Teilwortsuche 1
+--------------------------------------------------------
+
 Am Schluss des Abschnitts möchten wir zeigen, dass mit dem erzeugten Suffixbaum kann man nicht nur Suffixe effezient suchen, sonder auch Teilwörter vom gegebenen Wort. Dafür definieren wir eine Hilfsfunkktion, die ähnlich wie die "edge"-Fkt arbeitet.
-- Eingabe sind 2 Wörter
-- Ausgabe ist ein Tripel. 
+
+	- Eingabe sind 2 Wörter
+
+	- Ausgabe ist ein Tripel.
 
 Der Sinn vom Tripel  erkläre ich an Beispielen:
 
 ...
 
------------------------------
-Teilwortsuche 2
------------------------------
+--------------------------------------------------------
+ Teilwortsuche 2
+--------------------------------------------------------
+
 Die tatsächliche Teilwortsuche haben wir mit der Fkt "search" gelöst:
 
-- Eingabe ist ein Teilwort und ein Baum, wo das Teilwort gesucht werden muss.
-- Falls der Baum leer ist, dann ist die Suche nicht möglich.
-- Falls der Baum eine Verzweigung ist, dann:
-	- es wird eine Hilfsfkt g aufgerufen mit dem gesuchten Wort und der Liste von Kanten.
-	- Wenn die Liste von Kanten leer ist, dann ist das Wort im Baum nicht enthalten.
-	- Im anderen Fall suchen wir die passende Kante in dem wir das gemeinsame Präfix des gesuchten Wortes und jeweilige Kante berechnen. Das wird mit der Fkt "commonPrefix" gemacht. 
-	- wenn das gesuchte Wort und jeweilige Kante kein gemeinsames Präfix haben, dann gehen wir zu der nächste Kante -> falsche Kante. Wenn es keine Kanten mehr gibt, dann ist gesuchte Teilwort nicht im Baum enthalten. -> g ss []
-	- wenn aber das gesuchte Teilwort und die Kante das gemeinsame Präfix haben, dann müssen drei Fälle betrachtet werden:
-		- Die Kante ist ein Teil von dem gesuchten Teilwort -> "richtige Kante" 
-		- Das gesuchte Teilwort ist ein Teil von der Kantenbeschriftung -> "ss ist leer"
-		- Das gemeinsame Präfix ist nicht leer, aber enthält weder komplette Kantenbeschriftung, noch das komplette gesuchte Wort -> cp != []|l|ss 
+	- Eingabe ist ein Teilwort und ein Baum, wo das Teilwort gesucht werden muss.
 
------------------------------
-DC3. Schritt 4: Merge
------------------------------
-Sample- und Non-sample-Suffixe sind untereinander geordnet und müssen miteinander vergliechen werden. Es wird durch Benutzung vom Rang gemacht, der vom rekursiven Schritt bekommen wurde. 
+	- Falls der Baum leer ist, dann ist die Suche nicht möglich.
+
+	- Falls der Baum eine Verzweigung ist, dann:
+
+		- es wird eine Hilfsfkt g aufgerufen mit dem gesuchten Wort und der Liste von Kanten.
+
+		- Wenn die Liste von Kanten leer ist, dann ist das Wort im Baum nicht enthalten.
+
+		- Im anderen Fall suchen wir die passende Kante in dem wir das gemeinsame Präfix des gesuchten Wortes und jeweilige Kante berechnen. Das wird mit der Fkt "commonPrefix" gemacht.
+
+		- wenn das gesuchte Wort und jeweilige Kante kein gemeinsames Präfix haben, dann gehen wir zu der nächste Kante -> falsche Kante. Wenn es keine Kanten mehr gibt, dann ist gesuchte Teilwort nicht im Baum enthalten. -> g ss []
+
+		- wenn aber das gesuchte Teilwort und die Kante das gemeinsame Präfix haben, dann müssen drei Fälle betrachtet werden:
+
+			- Die Kante ist ein Teil von dem gesuchten Teilwort -> "richtige Kante"
+
+			- Das gesuchte Teilwort ist ein Teil von der Kantenbeschriftung -> "ss ist leer"
+
+			- Das gemeinsame Präfix ist nicht leer, aber enthält weder komplette Kantenbeschriftung, noch das komplette gesuchte Wort -> cp != []|l|ss
+
+--------------------------------------------------------
+ DC3. Schritt 4: Merge
+--------------------------------------------------------
+
+Sample- und Non-sample-Suffixe sind untereinander geordnet und müssen miteinander vergliechen werden. Es wird durch Benutzung vom Rang gemacht, der vom rekursiven Schritt bekommen wurde.

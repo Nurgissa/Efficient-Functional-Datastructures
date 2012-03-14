@@ -28,4 +28,14 @@ Juha K\"arkk\"ainen, Peter Sanders, and Stefan Burkhardt.
 \newblock Linear work suffix array construction.
 \newblock {\em J. ACM}, 53:918--936, November 2006.
 
+\bibitem[LS07]{Larsson2007}
+N.~Jesper Larsson and Kunihiko Sadakane.
+\newblock Faster suffix sorting.
+\newblock {\em Theor. Comput. Sci.}, 387(3):258--272, November 2007.
+
+\bibitem[Ukk95]{Ukkonen1995}
+Esko Ukkonen.
+\newblock On-line construction of suffix trees.
+\newblock 1995.
+
 \end{thebibliography}
