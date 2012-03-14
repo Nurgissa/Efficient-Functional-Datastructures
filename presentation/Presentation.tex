@@ -1550,28 +1550,17 @@ Ziel: Finde Knoten $\overline{w}$ mit maximaler Tiefe im $GST_D$ dessen Teilbäu
 %--Folie---------------------------------------------------------------------
 
 %////////////////////////////////////////////////////////////////////////////
-% \subsection{Geschichte}
+\subsection{Suffix Tree Konstruktion}
 %////////////////////////////////////////////////////////////////////////////
 
-% TODO Geschichte im Vortrag?
-
-% TODO Morrison (1968)
-% TODO Weiner (1973)
-% TODO McCreight (1976)
-% TODO Ukkonen (1995)
-% TODO Giegerich & Kurtz (1999)
-
-%////////////////////////////////////////////////////////////////////////////
-\subsection{wotd-Algorithmus}
-%////////////////////////////////////////////////////////////////////////////
-
-%////////////////////////////////////////////////////////////////////////////
-% \subsubsection{Eigenschaften}
-%////////////////////////////////////////////////////////////////////////////
+%--Folie: Subsectionslide-------------------------------------------------------
+\frame{\subsectionpage}
+%--Folie---------------------------------------------------------------------
 
 %--Folie: Beispiel-----------------------------------------------------------
 \begin{frame}
-\frametitle{WOTD: \\ Write only top down Suffixbaumkonstruktion}
+\frametitle{wotd-Algorithmus}
+Write only top down Suffixbaumkonstruktion
 \begin{itemize}
     \item WOTD eignet sich für lazy Suffixbäume
     \item Rekursive top-down Konstruktion, beginnend an der Wurzel mit allen Suffixen
@@ -1580,10 +1569,6 @@ Ziel: Finde Knoten $\overline{w}$ mit maximaler Tiefe im $GST_D$ dessen Teilbäu
 \end{itemize}
 \end{frame}
 %--Folie---------------------------------------------------------------------
-
-%////////////////////////////////////////////////////////////////////////////
-% \subsubsection{Haskell: benötige Grundlagen}
-%////////////////////////////////////////////////////////////////////////////
 
 %--Folie: Haskell: List comprehension----------------------------------------
 \begin{frame}[fragile]
@@ -1627,10 +1612,6 @@ sind.
 \end{examples}
 \end{frame}
 %--Folie---------------------------------------------------------------------
-
-%////////////////////////////////////////////////////////////////////////////
-% \subsubsection{Typdefinitionen}
-%////////////////////////////////////////////////////////////////////////////
 
 %--Folie: Typdefinitionen----------------------------------------------------
 \begin{frame}[fragile]
@@ -1688,10 +1669,6 @@ type EdgeFunction alf = [[alf]] -> ([alf], [[alf]])
 \end{figure}
 \end{frame}
 %--Folie---------------------------------------------------------------------
-
-%////////////////////////////////////////////////////////////////////////////
-% \subsubsection{Beispiel}
-%////////////////////////////////////////////////////////////////////////////
 
 %////////////////////////////////////////////////////////////////////////////
 \subsubsection{Vorgehensweise}
@@ -1752,64 +1729,25 @@ edge awss@((a:_):ss)
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
-% %--Folie: Haskell-code: Liste von Suffixen-----------------------------------
-% \begin{frame}[fragile]
-% \frametitle{Haskell-code: Liste von Suffixen}
-% Folgende Funktion liefert alle Suffixe von dem gegebenen Wort $aw$:
-% \begin{lstlisting}
-% suffixes :: [alf] -> [[alf]]
-% suffixes []       = []
-% suffixes aw@(_:w) = aw:suffixes w
-% \end{lstlisting}
-% \bigskip
-% \begin{remark}
-% \begin{description}[l]
-%     \item[Operator $(::)$] Typ-Spezifikations-Operator
-%     \item[Operator $(:)$] Cons-Operator: $h:[e_1, \dots, e_n] = [h, e_1, \dots, e_n]$
-%     \item[Operator $(@)$] Read-As-Operator: $aw@(\_:w)$ bedeutet, dass $aw$ mit $(\_:w)$ gematcht wird.
-% \end{description}
-% \end{remark}
-% \end{frame}
-% %--Folie---------------------------------------------------------------------
-
-% %--Folie: Haskell-code: Auswahl----------------------------------------------
-% \begin{frame}[fragile]
-% \frametitle{Haskell-code: Auswahl einer Gruppe}
-% Folgende Funktion liefert die Liste mit allen Wörter aus $ss$, die mit $a$ anfangen:
-% \begin{lstlisting}
-% select :: (Eq alf) => [[alf]] -> alf -> [[alf]]
-% select ss a = [c:u | c:u <- ss, a == c]
-% \end{lstlisting}
-% \begin{example}
-%     $ss := \{ agcgacgag, gcgacgag, cgacgag, acgag, cgag, gag, ag\}$
-%     $a := a$ \\
-%     $[c:u \mid c:u \leftarrow ss, a == c] = [agcgacgag,acgag,ag]$
-% \end{example}
-% \end{frame}
-% %--Folie---------------------------------------------------------------------
-
-% %--Folie: Haskell-code: Kantenerzeugung--------------------------------------
-% \begin{frame}[fragile]
-% \frametitle{Haskell-code: Kantenerzeugung}
-% Folgende Funktion erzeugt die Kante mit der längster-Präfix- Beschriftung für eine gegebene Liste von Wörter:
-% \begin{lstlisting}
-% edge :: (Eq alf) => EdgeFunction alf
-% edge [s] = ([s], [[]])
-% edge awss@((a:_):ss)
-%     | all (\c:_ -> a == c) ss = (a:cp, rss)
-%     | otherwise               = ([], awss)
-%     where (cp, rss) = edge ([t | _:t <- awss, length t > 0])
-% \end{lstlisting}
-% \bigskip
-% \begin{remark}
-% \begin{lstlisting}
-% all :: (a -> Bool) -> [a] -> Bool
-% all p [] = true
-% all p x:xs = p x && all p xs
-% \end{lstlisting}
-% \end{remark}
-% \end{frame}
-% %--Folie---------------------------------------------------------------------
+%--Folie: Haskell-code: Liste von Suffixen-----------------------------------
+\begin{frame}[fragile]
+\frametitle{Haskell-code: Liste von Suffixen}
+Folgende Funktion liefert alle Suffixe von dem gegebenen Wort $aw$:
+\begin{lstlisting}
+suffixes :: [alf] -> [[alf]]
+suffixes []       = []
+suffixes aw@(_:w) = aw:suffixes w
+\end{lstlisting}
+\bigskip
+\begin{remark}
+\begin{description}[l]
+    \item[Operator $(::)$] Typ-Spezifikations-Operator
+    \item[Operator $(:)$] Cons-Operator: $h:[e_1, \dots, e_n] = [h, e_1, \dots, e_n]$
+    \item[Operator $(@)$] Read-As-Operator: $aw@(\_:w)$ bedeutet, dass $aw$ mit $(\_:w)$ gematcht wird.
+\end{description}
+\end{remark}
+\end{frame}
+%--Folie---------------------------------------------------------------------
 
 %--Folie: Beispiel-----------------------------------------------------------
 \begin{frame}
@@ -1985,10 +1923,6 @@ Zweites und drittes Level
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
-%////////////////////////////////////////////////////////////////////////////
-% \subsubsection{Vorgehensweise}
-%////////////////////////////////////////////////////////////////////////////
-
 %--Folie: wotd-Algorithmus: Schritte-----------------------------------------
 \begin{frame}[t]
 \frametitle{Zusammenfassung der Schritte}
@@ -2021,11 +1955,12 @@ lazy_cst edge alpha t = sTr (suffixes t)
                    let (cp,rss) = edge gs
                    ]
 \end{lstlisting}
+\vspace{-3mm}
 \begin{figure}
 \begin{tikzpicture}[
     font = \small,
-    level 1/.style = {level distance = 8mm, sibling distance = 30mm},
-    level 2/.style = {level distance = 8mm, sibling distance = 15mm},
+    level 1/.style = {level distance = 10mm, sibling distance = 25mm},
+    level 2/.style = {level distance = 10mm, sibling distance = 15mm},
     edge from parent/.style = {->, draw}
     ]
     \node[branch] (b) {}
@@ -2048,7 +1983,7 @@ lazy_cst edge alpha t = sTr (suffixes t)
         edge from parent
         node[above]{$cp$}
     };
-    \node[yshift = 6mm] at (b.center) {$Branch$};
+    \node[yshift = 4mm] at (b.center) {$Branch$};
     \node[yshift = -8mm] at (st.south) {$\dots$};
 \end{tikzpicture}
 \end{figure}
@@ -2162,6 +2097,7 @@ let alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
     word = "agcgacgag"
 in  search "cgac" (lazy_cst edge alphabet word)
 \end{lstlisting}
+\vspace{-3mm}
 \begin{figure}
 \begin{tikzpicture}[
     font = \small,
@@ -2217,11 +2153,7 @@ in  search "cgac" (lazy_cst edge alphabet word)
 Suffix Trees haben einige Nachteile
 \begin{itemize}
     \item Speicherplatzverbrauch: 20 Bytes für jedes Zeichen im Worst-Case $\rightarrow$ macht Suffix Trees für viele Real-Welt-Anwendungen unbrauchbar.
-    \item Schlechte Lokalität des genutzten Speichers
-        \begin{itemize}
-            \item Cache Misses
-            \item Lässt sich schlecht extern implementieren
-        \end{itemize}
+    \item Lässt sich schlecht extern implementieren
 \end{itemize}
 \vspace{5mm}
 Diese Nachteile werden von Suffix Arrays größtenteils behoben
@@ -2232,29 +2164,7 @@ Diese Nachteile werden von Suffix Arrays größtenteils behoben
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
-%////////////////////////////////////////////////////////////////////////////
-\subsection{Notation}
-%////////////////////////////////////////////////////////////////////////////
-
-%--Folie: DC3, Notation------------------------------------------------------
-\begin{frame}[fragile]
-\frametitle{Notation}
-\begin{itemize}
-    \item String $T = T[0,n) = t_0t_1 \dots t_{n-1}$
-    \item Suffix $S_i = T[i,n) = t_it_{i+1} \dots t_{n-1}$
-    \item Suffixmenge $S_c = \{ S_i \mid i \in C\}$, wobei $C \subseteq [0,n]$
-\end{itemize}
-\begin{example}
-\begin{itemize}
-    \item $T = T[0,12) = yabbadabbado$, $t_0 = y$, $t_{11} = o$
-    \item $S_5 = T[5,12) = dabbado$
-    \item $C = \{2,10\}$, dann $S_c = \{ S_2, S_{10}\} = \{bbadabbado, do\}$
-\end{itemize}
-\end{example}
-\end{frame}
-%--Folie---------------------------------------------------------------------
-
-%--Folie: DC3, Notation------------------------------------------------------
+%--Folie: Suffix Array-------------------------------------------------------
 \begin{frame}[fragile]
 \frametitle{Suffix Array}
 \begin{definition}
@@ -2347,10 +2257,10 @@ Divide and Conquer Ansatz
     }
     child[child anchor = north] {
         node[align = left, anchor = north] {
-            \color{rubineRed}yabbadabbado \\
-            \color{rubineRed}badabbado    \\
-            \color{rubineRed}abbado       \\
-            \color{rubineRed}ado          \\
+            \color{rubineRed}y\color{gray}abbadabbado \\
+            \color{rubineRed}b\color{gray}adabbado    \\
+            \color{rubineRed}a\color{gray}bbado       \\
+            \color{rubineRed}a\color{gray}do          \\
         }
         edge from parent[color = rubineRed]
         node[left, xshift = -2mm]{\color{rubineRed}i mod 3 = 0}
@@ -2358,15 +2268,15 @@ Divide and Conquer Ansatz
     child[child anchor = north] {
         node[align = left, anchor = north] {
             \begin{tabular}{l}
-                \color{aquamarine}abbadabbado \\
-                \color{aquamarine}adabbado    \\
-                \color{aquamarine}bbado       \\
-                \color{aquamarine}do          \\
+                \color{aquamarine}a\color{gray}bbadabbado \\
+                \color{aquamarine}a\color{gray}dabbado    \\
+                \color{aquamarine}b\color{gray}bado       \\
+                \color{aquamarine}d\color{gray}o          \\
                 \midrule
-                \color{aquamarine}bbadabbado  \\
-                \color{aquamarine}dabbado     \\
-                \color{aquamarine}bado        \\
-                \color{aquamarine}o           \\
+                \color{aquamarine}b\color{gray}badabbado  \\
+                \color{aquamarine}d\color{gray}abbado     \\
+                \color{aquamarine}b\color{gray}ado        \\
+                \color{aquamarine}o                       \\
             \end{tabular}
         }
         edge from parent[color = aquamarine]
@@ -2411,7 +2321,8 @@ Jedes Sample repräsentiert ein Suffix
 \begin{itemize}
     \item Samples mit Radixsort lexikographisch sortieren
         \begin{figure}
-        \begin{tikzpicture} [
+        \begin{tikzpicture}
+            [
                 matrix of nodes/.style = {
                 execute at begin cell = \node\bgroup,
                 execute at end cell = \egroup;%
@@ -2468,11 +2379,13 @@ Ist der Rang der Samples eindeutig?
 \begin{itemize}
     \item Rekursiver Aufruf von DC3 mit $R = 12464537$
         \begin{figure}
-        \begin{tikzpicture} [
+        \begin{tikzpicture}
+            [
                 matrix of nodes/.style = {
                 execute at begin cell = \node\bgroup,
                 execute at end cell = \egroup;%
-            }]
+                }
+            ]
             \matrix[ampersand replacement = \&, column sep = -2mm, matrix of nodes] (m) {
                 \color{black}[ \& \color{aquamarine}a\color{gray}bb\color{black} \& ] \&
                 \color{black}[ \& \color{aquamarine}a\color{gray}da\color{black}\color{black} \& ] \&
@@ -2523,6 +2436,30 @@ Ist der Rang der Samples eindeutig?
             \bottomrule
         \end{tabular}
         \end{table}
+\end{itemize}
+\end{frame}
+%--Folie---------------------------------------------------------------------
+
+%--Folie: Schritt 3: Sort----------------------------------------------------
+\begin{frame}
+\frametitle{Schritt 3: Sort}
+\begin{itemize}
+    \item  Sortiere $i \text{ mod } 3 = 0$ Suffixes nach ihrem ersten Buchstaben mit Radixsort
+        \vspace{4mm}
+        \begin{figure}
+        \begin{tikzpicture}
+            \node (n1) {
+                \color{magenta}y\color{gray}ab\color{magenta}b\color{gray}ad\color{magenta}a\color{gray}bb\color{magenta}a\color{gray}do
+            };
+            \node[align = left, below = 2cm] (n2) at (n1) {
+                \color{rubineRed}a\color{gray}bbado       \\
+                \color{rubineRed}a\color{gray}do          \\
+                \color{rubineRed}b\color{gray}adabbado    \\
+                \color{rubineRed}y\color{gray}abbadabbado \\
+            };
+            \path[->, color = magenta] (n1) edge (n2);
+        \end{tikzpicture}
+        \end{figure}
 \end{itemize}
 \end{frame}
 %--Folie---------------------------------------------------------------------
@@ -2580,61 +2517,6 @@ Ist der Rang der Samples eindeutig?
 \end{tikzpicture}
 \end{figure}
 \end{frame}
-%--Folie---------------------------------------------------------------------
-
-%--Folie: Beispiel für $yabbadabbado$----------------------------------------
-% \begin{frame}[fragile]
-% \frametitle{Beispiel für $yabbadabbado$}
-% \begin{table}
-% \begin{tabular}{l|l l l l l l l l l l l l l l}
-%     \toprule
-%     i & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 \\
-%     \midrule
-%     T[i,n) & y & a & b & b & a & d & a & b & b & a & d & o & 0 & 0  \\
-%     \bottomrule
-% \end{tabular}
-% \end{table}
-% $B_k = \{ i \in [0,n]\ \mid i \: mod \: 3 = k \}$, dann \\
-% $B_0 = \{0, 3, 6, 9 \}$,                                \\
-% $B_1 = \{1, 4, 7, 10 \}$,                               \\
-% $B_2 = \{2, 5, 8, 11 \}$,                               \\
-% \medskip
-% $C   = B_1 \cup B_2 = \{1, 4, 7, 10, 2, 5, 8, 11\}$.    \\
-% \medskip
-% $R_0 = [yab][bad][abb][ado]$
-% $R_1 = [abb][ada][bba][do0]$                            \\
-% $R_2 = [bba][dab][bad][o00]$                            \\
-% \medskip
-% $R   = [abb][ada][bba][do0][bba][dab][bad][o00]$        \\
-% \medskip
-% Ziel: $R_0$ und $R$ getrennt sortieren und dann vereinigen.
-% \begin{remark}
-% Suffixe von $R$ korrespondieren mit $S_c$. $R_i \prec R_j \leftrightarrow S_i \prec S_j$
-% \end{remark}
-% \end{frame}
-%--Folie---------------------------------------------------------------------
-
-%--Folie: DC3----------------------------------------------------------------
-% \begin{frame}[fragile]
-% \frametitle{Beispiel für $yabbadabbado$}
-% \begin{description}[l]
-%     \item[Schritt 1:] Sortieren von $R$.
-% \end{description}
-% Die Elemente von $R$ werden mit Radix-Sort sortiert um den Rang bestimmen
-% \begin{table}
-% \begin{tabular}{c c c c c c c c c c c}
-%     \toprule
-%     1 & 2 & 3 & 4 & 5 & 6 & 7                                           \\
-%     \midrule
-%     $[abb]$ & $[ada]$ & $[bad]$ & $[bba]$ & $[dab]$ & $[do0]$ & $[o00]$ \\
-%     \bottomrule
-% \end{tabular}
-% \end{table}
-% Wir erhalten $R$ aus $R'$, indem die Elemente von $R$ durch ihren Rang ersetzt werden.
-% \begin{gather*}
-%     R' = (1,2,4,6,4,5,3,7)
-% \end{gather*}
-% \end{frame}
 %--Folie---------------------------------------------------------------------
 
 %--Folie: Literaturverzeichnis-----------------------------------------------
