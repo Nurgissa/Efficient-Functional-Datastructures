@@ -176,6 +176,7 @@
 \begin{itemize}
     \item Effiziente Lösung einer Vielzahl von Stringverarbeitungsproblemen
     \item Weit verbreitet in der Bioinformatik: Mustersuche in Genomen
+    \item Lange Zeit theoretische Datenstruktur
     \item Konstruktion in $O(n)$ möglich \cite{Ukkonen1995}
     \item Suche eines Teilworts in $O(m)$, wobei $m$ Länge des Teilworts
 \end{itemize}
@@ -285,7 +286,7 @@ Sei $\Sigma = \left\{a, \dots, z\right\}$
 \begin{frame}
 \frametitle{Grundlagen}
 \begin{definition}[Pfad]
-Die Funktion $path(k)$ bezeichnet die Konkatenation der Kantenbeschriftungen von der Wurzel eines $\Sigma^+$-Baumes bis zum Knoten $k$.
+Die Funktion $path(k)$ bezeichnet die Konkatenation der Kantenbeschriftungen von der Wurzel bis zum Knoten $k$.
 \begin{remark}
 $\overline{w}$ bezeichnet genau dann den Knoten $k$, wenn $path(k) = w$.
 \end{remark}
@@ -340,10 +341,10 @@ $w = vu$
 \frametitle{Grundlagen}
 \begin{itemize}
     \item Jedes $t$-Wort $w$ lässt sich darstellen als $t = vs, s = wu$
-          \begin{gather*}
-              t = a \dots b \underbrace{\overbrace{c \dots d}^{\text{Präfix }w} e \dots f}_{\text{Suffix }s}
-          \end{gather*}
-    \item Suche im Suffix Tree: Präfixsuche auf Suffixen
+        \begin{gather*}
+            t = a \dots b \underbrace{\overbrace{c \dots d}^{\text{Präfix }w} e \dots f}_{\text{Suffix }s}
+        \end{gather*}
+    \item Teilwortsuche im Suffix Tree: Präfixsuche auf Suffixen
     \item Ein Wort $w$ ist genau dann in einem $\Sigma^+$-Baum ent"-hal"-ten, wenn ein Knoten $\overline{wu}$ in diesem Baum existiert.
     \begin{figure}
     \begin{tikzpicture}[
@@ -385,7 +386,7 @@ $w = vu$
 \begin{frame}
 \frametitle{Suffix Tree}
 \begin{exampleg}
-$cst$ für die Zeichenkette $agcgacgag$.
+Suffixtree für die Zeichenkette $agcgacgag$.
 \begin{figure}
 \begin{tikzpicture}[
     font = \small,
@@ -1085,7 +1086,7 @@ $cst$ für die Zeichenkette $agcgacgag$.
 \begin{frame}
 \frametitle{Suffix Tree Klassen}
 \begin{definition}
-Sei $S_t$ ein Suffix Tree für ein Wort $t$, repräsentiert durch seine Kantenmenge $E$. $S_t$ wird bezeichnet als:
+Sei $S_t$ ein Suffix Tree für ein Wort $t$, repräsentiert durch seine Kantenmenge $E$
 \begin{itemize}
     \item Atomic Suffix Tree, wenn $\abs{E}$ maximal ist.
     \item Position Suffix Tree, wenn die Länge aller inneren Kantenbeschriftungen $1$ beträgt.
@@ -1104,7 +1105,7 @@ $cst$ besitzt einen Speicherplatzbedarf von $O(n)$.
 \begin{proof}
 \begin{itemize}
     \item cst besitzt höchstens $n$ Blätter
-    \item jeder innere Knoten ist eine Verzweigung
+    \item jeder innere Knoten ist eine Verzweigung im $\boldsymbol{cst}$
     \item cst besitzt höchstens $n$ innere Knoten und somit höchstens $2n$ Kanten
     \item Jede Kante wird mit einem Paar $(i, j) \in \mathbb{N} \times \mathbb{N}$ beschriftet $\implies O(1)$ für jede Kante
     \item Insgesamt ergibt sich $O(n)$
@@ -1199,19 +1200,16 @@ ast und pst benötigen mehr Speicherplatz:
 
 \begin{frame}
 \frametitle{Generalized Suffix Tree}
-\begin{definition}
 \begin{itemize}
     \item $D = \{s_1, \dots, s_n\}$ eine Menge von Strings über $\Sigma$
     \item $T = \{t_1, \dots, t_n\}$ eine Menge von Terminalsymbolen mit $T \cap \Sigma = \emptyset$
-    \item Ein $GST_D$ ist ein $\Sigma^+$-Baum, sodass für alle $i \leq n$ gilt:
-    \begin{gather*}
-    w \in GST_D \Longleftrightarrow w \text{ ist ein } s_it_i\text{-Wort}
-\end{gather*}
+    % \item Ein $GST_D$ ist ein $\Sigma^+$-Baum, sodass für alle $i \leq n$ gilt:
+    %     \begin{gather*}
+    %         w \in GST_D \Longleftrightarrow w \text{ ist ein } s_it_i\text{-Wort}
+    %     \end{gather*}
 \end{itemize}
-\end{definition}
-\vspace{-3mm}
 \begin{exampleg}
-GST für $D = \{agcg, acg\}$ und $T = \{\$, \#\}$
+GST für $D = \{agcg, acg\}$ und $T = \{\$, \#\}$. Suffix Tree für $agcg\$$ und $acg\#$
 \begin{figure}
 \begin{tikzpicture}[
     font = \small,
@@ -1285,7 +1283,6 @@ Suffix Trees eignen sich insbesondere für Problemlösungen im Bereich der Strin
 \begin{tabular}{l}
     \toprule
     All-pairs suffix-prefix matching      \\
-    Common substrings of multiple strings \\
     Construction of DAWGs                 \\
     Exact set matching                    \\
     Exact string matching                 \\
@@ -1886,26 +1883,6 @@ edge awss@((a:_):ss)
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
-%--Folie: Haskell-code: Liste von Suffixen-----------------------------------
-\begin{frame}[fragile]
-\frametitle{Haskell-code: Liste von Suffixen}
-Folgende Funktion liefert alle Suffixe von dem gegebenen Wort $aw$:
-\begin{lstlisting}
-suffixes :: [alf] -> [[alf]]
-suffixes []       = []
-suffixes aw@(_:w) = aw:suffixes w
-\end{lstlisting}
-\bigskip
-\begin{remark}
-\begin{description}[l]
-    \item[Operator $(::)$] Typ-Spezifikations-Operator
-    \item[Operator $(:)$] Cons-Operator: $h:[e_1, \dots, e_n] = [h, e_1, \dots, e_n]$
-    \item[Operator $(@)$] Read-As-Operator: $aw@(\_:w)$ bedeutet, dass $aw$ mit $(\_:w)$ gematcht wird.
-\end{description}
-\end{remark}
-\end{frame}
-%--Folie---------------------------------------------------------------------
-
 %--Folie: Beispiel-----------------------------------------------------------
 \begin{frame}
 \frametitle{Beispiel für $agcgacgag$}
@@ -2317,6 +2294,7 @@ Diese Nachteile werden von Suffix Arrays größtenteils behoben
 \begin{itemize}
     \item Speicherplatzverbrauch: 5 Bytes für jedes Zeichen
     \item Vielversprechende Algorithmen für die effiziente Konstruktion von Suffix Arrays im externen Speicher \cite{Dementiev2008}
+    \item Suche eines Teilworts in $O(m + \log n)$ mit zusätzlicher Datenstruktur
 \end{itemize}
 \end{frame}
 %--Folie---------------------------------------------------------------------
@@ -2324,9 +2302,6 @@ Diese Nachteile werden von Suffix Arrays größtenteils behoben
 %--Folie: Suffix Array-------------------------------------------------------
 \begin{frame}[fragile]
 \frametitle{Suffix Array}
-\begin{definition}
-Suffixarray $SA$ von $T$ ist eine Permutation von $[0,n]$ mit $S_{SA[0]} \prec S_{SA[1]} \prec \dots \prec S_{SA[n]}$, wobei $\prec$ die lexikographische Ordnung auf Zeichenketten bezeichnet.
-\end{definition}
 \begin{exampleg}
 Suffixarray für $yabbadabbado$ ist $SA = (1, 6, 4, 9, 3, 8, 2, 7, 5, 10, 11, 0)$, wobei
 \begin{table}
@@ -2342,6 +2317,9 @@ Suffixarray für $yabbadabbado$ ist $SA = (1, 6, 4, 9, 3, 8, 2, 7, 5, 10, 11, 0)
 \end{tabular}
 \end{table}
 \end{exampleg}
+\begin{definition}
+Suffixarray $SA$ von $t$ ist eine Permutation von $[0,n]$ mit $S_{SA[0]} \prec S_{SA[1]} \prec \dots \prec S_{SA[n]}$, wobei $\prec$ die lexikographische Ordnung auf Zeichenketten bezeichnet.
+\end{definition}
 \end{frame}
 %--Folie---------------------------------------------------------------------
 
@@ -2629,7 +2607,7 @@ Ist der Rang der Samples eindeutig?
             \toprule
             $R$  & 1 & 2 & 4 & 6 & 4 & 5 & 3 & 7 \\
             \midrule
-            Rang & 0 & 1 & 6 & 4 & 2 & 5 & 3 & 7 \\
+            Rang & 1 & 2 & 7 & 5 & 3 & 6 & 4 & 8 \\
             \bottomrule
         \end{tabular}
         \end{table}
@@ -2772,9 +2750,9 @@ Ist der Rang der Samples eindeutig?
     \node (n1) {
         \begin{tabular}{l|c c c c c c c c c c c c}
             \toprule
-            Wort & y  & a & b & b & a & d & a & b & b & a & d & o  \\
+            Wort & y  & a & b & b & a & d & a & b & b & a & d  & o  \\
             \midrule
-            Rang & 11 & 0 & 6 & 4 & 2 & 8 & 1 & 7 & 5 & 3 & 9 & 10 \\
+            Rang & 12 & 1 & 7 & 5 & 3 & 9 & 2 & 8 & 6 & 4 & 10 & 11 \\
             \bottomrule
         \end{tabular}
     };
