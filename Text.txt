@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 --------------------------------------------------------
  WOTD: Suffixbaumkonstruktion
 --------------------------------------------------------
@@ -19,7 +18,6 @@ Zuerst möchte ich einpaar Sätze über List comprehension von Haskell sagen.
 
 Das ist ein Konstruktor, der an einer matematische Art und Weise Liste erzeugt.
 
-<<<<<<< HEAD
 Als Beispiel, folgende Mengendefinition kann in Haskell äquivalent geschrieben werden. Man bekommt aber keine Menge, sondern eine Liste.
 
 Allgemeine Syntax sieht so aus:
