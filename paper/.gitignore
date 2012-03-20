@@ -1,0 +1,11 @@
+# Latex #
+
+*.aux
+*.gz
+*.log
+*.nav
+*.out
+*.snm
+*.toc
+*.pdf
+*.vrb
