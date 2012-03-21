@@ -31,6 +31,7 @@
 \usepackage{listings, xcolor}
 % Bäume zeichnen
 \usepackage{tikz}
+\usepackage{caption}
 % Tabellen
 \usepackage{booktabs}
 \usepackage{tabularx}
@@ -212,15 +213,320 @@
 \label{Suffix Tree Konstruktion}
 %////////////////////////////////////////////////////////////////////////////
 
-%////////////////////////////////////////////////////////////////////////////
-\subsubsection{WOTD-Algorithmus}
-\label{WOTD-Algorithmus}
-%////////////////////////////////////////////////////////////////////////////
+In diesem Abschnitt wird ein Algorithmus dargestellt, der einen kompakten Suffixbaum für ein Wort $t$ aufbaut. Es gibt zwei prinzipiell unterschiedlichen Ansätze dafür. 
+
+Erster Ansatz ist imperativ: sukzessive Einfügung der Suffixe von $t$ in einen Baum, der als leer initialisiert wird. Die Konstruktion wird erfolgen mittels Iterationen über das Wort $t$, indem Suffixe von links nach rechts (oder auch umgekehrt) jedes Mal abgelesen werden.
+
+Zweiter Ansatz ist funktional: Der Baum wird rekursiv aufgebaut, indem zuerst Kanten vom Wurzel aufgebaut werden und dann für jeden Unterbaum das Verfahren wiederholt wird. Wichtig, dass bei diesem Verfahren keine Updates vom Baum benötigt sind. 
+
+ToDo: ein Satz mit ''hier werden wir wotd anschauen'' 
+
 
 %////////////////////////////////////////////////////////////////////////////
-\subsubsection{Laufzeitanalyse}
-\label{Laufzeitanalyse}
+\subsubsection{WOTD-Algorithmus: Vorgehensweise}
+\label{WOTD-Algorithmus: Vorgehensweise}
 %////////////////////////////////////////////////////////////////////////////
+
+Schritte des Algorithmus:
+
+\begin{enumerate}
+    \item Erzeuge alle Suffixe eines gegebenen Wortes.
+    \item Gruppiere nach den Anfangsbuchstaben. Erzeuge einen Knoten.
+    \item Für jede Gruppe:
+    \begin{enumerate}
+        \item Berechne das längste gemeinsame Präfix, erzeuge eine Kante mit der Beschriftung vom Präfix, entferne das Präfix von den Wörtern der Gruppe.
+        \item Falls die Gruppe von Reswörter leer ist, erzeuge ein Blatt. Falls es in der Gruppe noch Wörter gibt, kehre zu Schritt 2 zurück.
+    \end{enumerate}
+\end{enumerate}
+
+Schauen wir uns die Schritte am Beispiel für das Wort $t$ = $agcgacgag$:
+\begin{enumerate}
+    \item Suffixliste: $agcgacgag$, $gcgacgag$, $cgacgag$, $gacgag$, $acgag$, $cgag$, $gag$, $ag$, $g$
+    \item Gruppierungsschritt: \\
+    \begin{center}
+    \begin{tabular}{l l l}
+        \toprule
+        Gruppe 1                 & Gruppe 2               & Gruppe 3                \\
+        \midrule
+        $\boldsymbol{a}gcgacgag$ & $\boldsymbol{c}gacgag$ & $\boldsymbol{g}cgacgag$ \\
+        $\boldsymbol{a}cgag$     & $\boldsymbol{c}gag$    & $\boldsymbol{g}acgag$   \\
+        $\boldsymbol{a}g$        &                        & $\boldsymbol{g}ag$      \\
+        \bottomrule
+    \end{tabular}
+    \end{center} 
+
+    \item Bestimmung des längsten gemiensamen Präfixes für jede Gruppe:
+    \begin{center}
+    \begin{tabular}{l l l}
+        \toprule
+        Gruppe 1                 & Gruppe 2               & Gruppe 3                \\
+        \midrule
+        $\boldsymbol{a}gcgacgag$ & $\boldsymbol{cga}cgag$ & $\boldsymbol{g}cgacgag$ \\
+        $\boldsymbol{a}cgag$     & $\boldsymbol{cga}g$    & $\boldsymbol{g}acgag$   \\
+        $\boldsymbol{a}g$        &                        & $\boldsymbol{g}ag$      \\
+                                 &                        & $\boldsymbol{g}$        \\
+        \midrule
+        $a$                      & $cga$                  & $g$                     \\
+        \bottomrule
+    \end{tabular}
+    \end{center} 
+
+    \item Rekursiv für jede Gruppe von Restwörter.
+\end{enumerate}
+
+Veranschaulichung der Phasen: Abbildung 1.
+
+% [h]: here, [t]: top, [b]: bottom
+\begin{figure}[h]
+\hline
+\medskip
+\caption{cst-Konstruktion für $t$ = $agcgacgag$}
+\hline
+\medskip
+\begin{tikzpicture}[
+font = \small,
+level 1/.style = {level distance = 7mm, sibling distance = 30mm},
+level 2/.style = {level distance = 7mm, sibling distance = 15mm},
+level 3/.style = {level distance = 7mm, sibling distance = 10mm},
+edge from parent/.style = {->, draw}
+]
+{ [yshift = 0cm]
+    \node[branch]{}
+    child {
+        node[ghostbranch] (u) {}
+        edge from parent
+        node[above]{$a$}
+    }
+    child[level distance = 8mm] {
+        node[ghostbranch] (v) {}
+        edge from parent
+        node[left]{$cga$}
+    }
+    child {
+        node[ghostbranch] (w) {}
+        edge from parent
+        node[above]{$g$}
+    };
+    \node[align = left, anchor = north, yshift = {-1mm}] at (u.center) {$gcgacgag$ \\ $cgag$ \\ $g$};
+    \node[align = left, anchor = north, yshift = {-1mm}] at (v.center) {$cgag$ \\ $g$};
+    \node[align = left, anchor = north, yshift = {-1mm}] at (w.center) {$cgacgag$ \\ $acgag$ \\ $ag$};
+}
+\end{tikzpicture}
+\begin{tikzpicture}[
+    font = \small,
+    level 1/.style = {level distance = 7mm, sibling distance = 30mm},
+    level 2/.style = {level distance = 7mm, sibling distance = 15mm},
+    level 3/.style = {level distance = 7mm, sibling distance = 10mm},
+    edge from parent/.style = {->, draw}
+    ]
+    { [yshift = 0cm]
+        \node[branch]{}
+        child {
+            node[branch]{}
+            child {
+                edge from parent
+                node[left]{$cgag$}
+            }
+            child {
+                edge from parent
+                node[right]{$gcgacgag$}
+            }
+            edge from parent
+            node[above]{$a$}
+        }
+        child[level distance = 16mm] {
+            node[branch]{}
+            child {
+                edge from parent
+                node[left]{$cgag$}
+            }
+            child {
+                edge from parent
+                node[right]{$g$}
+            }
+            edge from parent
+            node[left]{$cga$}
+        }
+        child {
+            node[branch]{}
+            child {
+                node[branch]{}
+                child {
+                    edge from parent
+                    node[left]{$cgag$}
+                }
+                child {
+                    edge from parent
+                    node[right]{$g$}
+                }
+                edge from parent
+                node[left]{$a$}
+            }
+            child {
+                edge from parent
+                node[right]{$cgacgag$}
+            }
+            edge from parent
+            node[above]{$g$}
+        };
+    }
+    \end{tikzpicture}
+    
+    \centering
+    \begin{tikzpicture}[
+    font = \small,
+    level 1/.style = {level distance = 7mm, sibling distance = 30mm},
+    level 2/.style = {level distance = 7mm, sibling distance = 15mm},
+    level 3/.style = {level distance = 7mm, sibling distance = 10mm},
+    edge from parent/.style = {->, draw}
+    ]
+    { [yshift = 0cm]
+        \node[branch]{}
+        child {
+            node[branch]{}
+            child {
+                edge from parent
+                node[left]{$cgag$}
+            }
+            child {
+                edge from parent
+                node[right]{$gcgacgag$}
+            }
+            edge from parent
+            node[above]{$a$}
+        }
+        child[level distance = 16mm] {
+            node[branch]{}
+            child {
+                edge from parent
+                node[left]{$cgag$}
+            }
+            child {
+                edge from parent
+                node[right]{$g$}
+            }
+            edge from parent
+            node[left]{$cga$}
+        }
+        child {
+            node[branch]{}
+            child {
+                node[branch]{}
+                child {
+                    edge from parent
+                    node[left]{$cgag$}
+                }
+                child {
+                    edge from parent
+                    node[right]{$g$}
+                }
+                edge from parent
+                node[left]{$a$}
+            }
+            child {
+                edge from parent
+                node[right]{$cgacgag$}
+            }
+            edge from parent
+            node[above]{$g$}
+        };
+    }
+    \end{tikzpicture}
+    \smallskip
+    \hline
+\end{figure}
+
+
+%////////////////////////////////////////////////////////////////////////////
+\subsubsection{WOTD-Algorithmus: Implementierung in Haskell}
+\label{WOTD-Algorithmus: Implementierung in Haskell}
+%////////////////////////////////////////////////////////////////////////////
+Zuerst werden benötige Datentypen beschrieben. Ein Baum ist entweder ein Blatt oder eine Verzweigung. Eine Verzweigung ist eine Liste von Tupeln, wobei erstes Element vom Tupel eine Kante (also, eine Kantenbeschriftung) ist, und zweites Element ist der Unterbaum, der von der Kante ausgeht. $alf$ ist Typparameter vom Alphabet, $Label\:alf$ ist ein Liste von Elementen des Alphabets.
+Typ der EdgeFunktion bedeutet, dass man eine Liste von Wörter nimmt und auf ein Tupel abbildet, wobei erstes Element vom Tupel das längste gemeinsame Präfix der Wörter ist und zweites Element eine Liste von Wörter, von denen das längste gemeinsame Präfix entfernt wurde. Implementierung:
+
+\begin{lstlisting}
+-- | Darstellung von Suffix Trees
+data STree alf = Leaf | Branch [(Label alf, STree alf)] deriving Eq
+
+-- | Darstellung von Beschriftungen
+type Label alf = [alf]
+
+-- | Darstellung vom Kantenaufbau
+type EdgeFunction alf = [[alf]] -> ([alf], [[alf]])
+\end{lstlisting}
+
+Erzeugung der Suffixliste:
+\begin{lstlisting}
+suffixes :: [alf] -> [[alf]]
+suffixes []       = []
+suffixes aw@(_:w) = aw:suffixes w
+\end{lstlisting}
+
+Auswahl einer Gruppe, die mit einer Buchstabe anfängt, die im Parameter $a$ gebunden ist:
+\begin{lstlisting}
+select :: (Eq alf) => [[alf]] -> alf -> [[alf]]
+select ss a = [c:u | c:u <- ss, a == c]
+\end{lstlisting}
+
+Die folgende Funktion bestimmt das längste gemeinsame Präfix für eine Gruppe der Wörter. Die Gruppe wird als Eingabeliste übergeben. Zuerst wird geprüft, ob alle Wörter mit der gleichen Buchstabe anfangen. Falls es der Fall ist, dann wird die Buchstabe an $cp$ angehängt und eine neue Liste ohne das erste Buchstabe erzeugt. Falls ein Wort sich endet, dann wird es weggelassen. Die Fkt terminiert falls es nur ein Wort in der Gruppe bleibt oder wenn nicht alle Restwörter in der Gruppe mit der gleichen Buchstabe anfangen. Die Funktion gibt ein Tupel zurück, wobei erstes Element vom Tupel das längste gemeinsame Präfix der Wörter in der Eingabeliste ist und zweites Element eine Liste von restlichen Wörter, von denen das längste gemeinsame Präfix entfernt wurde. Implementierung:
+\begin{lstlisting}
+edge :: (Eq alf) => EdgeFunction alf
+edge [s] = ([s], [[]])
+edge awss@((a:_):ss) | all (\c:_ -> a == c) ss = (a:cp, rss)
+                     | otherwise               = ([], awss)
+                     where (cp, rss) = edge ([t | _:t <- awss, length t > 0])
+\end{lstlisting}
+
+Nächste Funktion setzt die oben besprochene Funktionen zusammen und erzeugt den kompletten Baum. Als Eingabe wird die Funktion $edge$, einen Alphabet des gegebenen Wort in der Form einer Liste von Buchstaben und ein Wort t, für das Siffixbaum aufgebaut werden soll, gegeben. Die Suffixliste von $t$ wird an einer Hilfsfunktion $sTr$ geliefert, die den Baum wie folgt rekursiv aufbaut:
+
+    - Wenn die Suffixliste leer ist, dann wird ein Blatt erstellt.
+
+    - Wenn die Suffixliste nicht leer ist, dann eine Verzweigung. 
+
+Verzweigung besteht aus Tupeln, die in der esten Komponente das längste gemeinsame Präfix von jeder Gruppe als Kantenbeschriftung und einen entsprechenden Unterbaum in der zweiten Komponente enthalten. Der entsprechende Unterbaum wird rekursiv erzeugt.
+
+Die Kantenliste wird aufgebaut, indem:
+
+    - jede Buchstabe des Alphabets an der Variable $a$ gebunden wird.
+
+    - die entsprechende Liste durch den Aufruf der Funktion select an die Variable $gs$ gebunden wird.
+
+    - und falls die Gruppe nicht leer ist, wird durch den Aufruf von $edge$ das gemeinsame Präfix und die Liste von Restwörter berechnet.
+
+Implementierung:
+\begin{lstlisting}
+lazy_cst ::(Eq alf) => (EdgeFunction alf) -> [alf] -> [alf] -> STree alf
+
+lazy_cst edge alpha t = sTr (suffixes t)
+    where
+    sTr [[]] = Leaf
+    sTr ss   = Branch[(cp,sTr rss) | a <- alpha,
+                                     let gs = select ss a,
+                                     length gs > 0,
+                                     let (cp,rss) = edge gs]
+\end{lstlisting}
+
+%////////////////////////////////////////////////////////////////////////////
+\subsubsection{Laufzeitanalyse von WOTD}
+\label{Laufzeitanalyse von WOTD}
+%////////////////////////////////////////////////////////////////////////////
+
+Um die Laufzeit von dem gesamten Algorithmus zu betrachten, wird zuerst die Kostenabschätzung von der Funktion $edge$ bestimmt, weil diese Funktion die höchste Laufzeitkomplexität besitzt.
+
+Die Kostenfunktion für $edge$ ist von zwei Parameter abhängig: die Länge der Wörterliste und die Länge des gemeinsamen Präfix dieser Wörter. Die Funktion wird so oft rekursiv aufgerufen wie die Länge des gemeinsamen Präfix von der gegebenen Wörterliste ist. In jedem Aufruf von $edge$ werden zwei andere Funkrionen aufgerufen, deren Laufzeit von der Länge der Eingabeliste linear abhängig ist. Eine der Funktionen ist lambda-Ausdruck, wir haben zur Vereinfachung sie als $isEqual$ bei der Laufzeitanalyse bezeichnet. Zweite Funktion ist als List-comprehension gegeben, sie wird als $newList$ bezeichnet.
+
+Die Kosten der Funktion $edge$ setzen sich zusammen aus den Kosten der Fkt $isEqual$ für $n-1$, den Kosten der Funktion $newList$ für $n$ und den Kosten des rekursiven Aufrufs von $edge$ für $n-1$ und $|cp|-1$.
+
+Insgesamt:
+
+\begin{align*}
+    T(n,\abs{cp}) &= isEqual(n - 1) + newList(n) + T(n-1,\abs{cp}-1) \\
+                  &= \sum_{i = 1}^{\abs{cp}}{isEqual(n-1)} + \sum_{i = 1}^{\abs{cp}}{newList(n)}
+                   = \abs{cp} (n - 1) + \abs{cp} n \in O(\abs{cp} \cdot n)
+\end{align*}
+
+Weiter wird das worst-case vom WOTD-Algoritmus bestimmt. Dieses produziert z.B. das Wort $a^n$, indem es als der Parameter $t$ an der Funktion $lazy\_cst$ gegeben wird. Zuerst wird $sTr$ mit $ss = [a^n,\:a^{n-1}, \dots ,\:a]$ aufgerufen, dann wird dem Parameter $gs$ komplette Liste $ss$ zugewiesen und die Funktion $edge$ mit dem Parameter $gs$ aufgerufen. Die Funktion $edge$ liefert das Ergebnis $(cp,rss) = (a^n, [[\:]])$. Weiter wird $sTr$ mit mit dem Parameter $rss = [[\:]]$ aufgerufen und damit terminiert die Funktion $lazy\_cst$. Weil $|cp| = n$, ist die Laufzeit von $edge$ und von dem gesamten Algorithmus $O(n^2)$.
+
 
 %////////////////////////////////////////////////////////////////////////////
 \subsection{Teilwortsuche}
