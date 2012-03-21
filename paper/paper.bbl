@@ -1,0 +1,41 @@
+\begin{thebibliography}{DKMS08}
+
+\bibitem[DKMS08]{Dementiev2008}
+Roman Dementiev, Juha K\"arkk\"ainen, Jens Mehnert, and Peter Sanders.
+\newblock Better external memory suffix array construction.
+\newblock {\em J. Exp. Algorithmics}, 12:3.4:1--3.4:24, August 2008.
+
+\bibitem[GK95]{Giegerich1995}
+Robert Giegerich and Stefan Kurtz.
+\newblock A comparison of imperative and purely functional suffix tree
+  constructions.
+\newblock In {\em Selected papers of ESOP '94, the 5th European symposium on
+  Programming}, pages 187--218. Elsevier Science Publishers B. V., 1995.
+
+\bibitem[GKS99]{Giegerich1999}
+Robert Giegerich, Stefan Kurtz, and Jens Stoye.
+\newblock Efficient implementation of lazy suffix trees.
+\newblock In {\em Proceedings of the 3rd International Workshop on Algorithm
+  Engineering}, WAE '99, pages 30--42, London, UK, 1999. Springer-Verlag.
+
+\bibitem[KSB03]{Karkkainen2003}
+Juha K\"arkk\"ainen, Peter Sanders, and Stefan Burkhardt.
+\newblock Simple linear work suffix array construction.
+\newblock pages 943--955. Springer, 2003.
+
+\bibitem[KSB06]{Karkkainen2006}
+Juha K\"arkk\"ainen, Peter Sanders, and Stefan Burkhardt.
+\newblock Linear work suffix array construction.
+\newblock {\em J. ACM}, 53:918--936, November 2006.
+
+\bibitem[LS07]{Larsson2007}
+N.~Jesper Larsson and Kunihiko Sadakane.
+\newblock Faster suffix sorting.
+\newblock {\em Theor. Comput. Sci.}, 387(3):258--272, November 2007.
+
+\bibitem[Ukk95]{Ukkonen1995}
+Esko Ukkonen.
+\newblock On-line construction of suffix trees.
+\newblock 1995.
+
+\end{thebibliography}
