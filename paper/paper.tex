@@ -465,13 +465,11 @@ Nächste Funktion setzt die oben besprochene Funktionen zusammen und erzeugt den
 Verzweigung besteht aus Tupeln, die in der esten Komponente das längste gemeinsame Präfix von jeder Gruppe als Kantenbeschriftung und einen entsprechenden Unterbaum in der zweiten Komponente enthalten. Der entsprechende Unterbaum wird rekursiv erzeugt.
 
 Die Kantenliste wird aufgebaut, indem:
-
-    - jede Buchstabe des Alphabets an der Variable $a$ gebunden wird.
-
-    - die entsprechende Liste durch den Aufruf der Funktion select an die Variable $gs$ gebunden wird.
-
-    - und falls die Gruppe nicht leer ist, wird durch den Aufruf von $edge$ das gemeinsame Präfix und die Liste von Restwörter berechnet.
-
+\begin{enumerate}
+    \item Jede Buchstabe des Alphabets an der Variable $a$ gebunden wird.
+    \item Die entsprechende Liste durch den Aufruf der Funktion select an die Variable $gs$ gebunden wird.
+    \item Falls die Gruppe nicht leer ist, wird durch den Aufruf von $edge$ das gemeinsame Präfix und die Liste von Restwörter berechnet.
+\end{enumerate}
 Implementierung:
 \begin{lstlisting}
 lazy_cst ::(Eq alf) => (EdgeFunction alf) -> [alf] -> [alf] -> STree alf
@@ -511,6 +509,54 @@ Weiter wird das worst-case vom WOTD-Algoritmus bestimmt. Dieses produziert z.B. 
 \section{Teilwortsuche}
 \label{sec:Teilwortsuche}
 %////////////////////////////////////////////////////////////////////////////
+
+Im Abschluss des Kapitels möchten wir zeigen, dass mit dem erzeugten Suffixbaum kann man nicht nur Suffixe effezient suchen, sondern auch Teilwörter vom gegebenen Wort. Dafür definieren wir eine Hilfsfunkktion, die ähnlich wie die $edge$-Funktion arbeitet:
+
+\begin{lstlisting}
+commonPrefix :: (Eq alph) => Word alph -> Word alph -> (Word alph, Word alph, Word alph)
+
+commonPrefix w1 w2 = g w1 w2 []
+    where g (x:xs) (y:ys) cp | (x == y) = g xs ys (x:cp)
+          g w1 w2 cp  = (w1, w2, reverse cp)
+\end{lstlisting}
+
+Die Funktion bestimmt das längste gemeinsame Präfix von zwei Wörter und liefert zurück ein Tripel $(w1',\: w2',\: cp)$, wobei $cp$ das längste gemeinsame Präfix ist, $w1'$ und $w2'$ sind Ergebnisse der Entfernung $cp$ von $w1$ bzw. $w2$.
+
+Die tatsächliche Teilwortsuche haben wir mit der Funktion $search$ gelöst:
+
+\begin{lstlisting}
+search :: (Eq alph) => Word alph -> STree alph -> Bool
+
+search ss Leaf        = False
+search ss (Branch es) =  g ss es
+    where
+    g ss [] = False
+    g ss (((l, st):es)) =
+        case commonPrefix ss l of
+         ([], _, _)   -> True          -- ss ist leer
+         (_, _, [])   -> g ss es       -- falsche Kante
+         (ss', [], _) -> search ss' st -- richtige Kante
+         _            -> False         -- cp != []|l|ss
+\end{lstlisting}
+
+Die Eingabe ist ein Teilwort und ein Baum, wo das Teilwort gesucht werden muss. Die Funktion erledigt die Suche wie folgt:
+
+    - Falls der Baum leer ist, dann ist die Suche nicht möglich.
+
+    - Falls der Baum eine Verzweigung ist, dann wird eine Hilfsfunktion $g$ mit dem gesuchten Wort und der Liste von Kanten aufgerufen. 
+
+Fallunterscheidung der Funktion $g$:
+\begin{enumerate}
+    \item Wenn die Liste von Kanten leer ist, dann ist das Wort im Baum nicht enthalten.
+    \item Im anderen Fall suchen wir die passende Kante indem wir das gemeinsame Präfix des gesuchten Wortes und jeweilige Kante berechnen. Das wird mit der Fkt $commonPrefix$ gemacht. Wenn das gesuchte Wort und jeweilige Kante kein gemeinsames Präfix haben, dann gehen wir zu der nächste Kante $\rightarrow$ der Fall $falsche$ $Kante$. 
+    \item Wenn es keine Kanten mehr gibt, dann ist das gesuchte Teilwort nicht im Baum enthalten $\rightarrow$ der Fall $g$ $ss$ $[\:]$ $=$ $False$.
+    \item Wenn das gesuchte Teilwort und die Kante das gemeinsame Präfix haben, dann müssen drei Fälle betrachtet werden:
+    \begin{enumerate}
+        \item Die Kante ist ein Teil von dem gesuchten Teilwort $\rightarrow$ der Fall $richtige$ $Kante$.
+        \item Das gesuchte Teilwort ist ein Teil von der Kantenbeschriftung $\rightarrow$ der Fall $ss$ $ist$ $leer$.
+        \item Das gemeinsame Präfix ist nicht leer, aber enthält weder komplette Kantenbeschriftung, noch das komplette gesuchte Wort $\rightarrow$ der Fall $cp\:!=\:[\:]\mid l \mid ss$.
+    \end{enumerate}
+\end{enumerate}
 
 %////////////////////////////////////////////////////////////////////////////
 \chapter{Suffix Array}
