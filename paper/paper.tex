@@ -68,7 +68,7 @@
 %--Farben--------------------------------------------------------------------
 
 \definecolor{verylightgray}{RGB}{230, 230, 230}
-\definecolor{rubineRed}{RGB}{243, 0, 125}
+\definecolor{rubinered}{RGB}{243, 0, 125}
 \definecolor{aquamarine}{RGB}{0, 193, 223}
 
 %--listings-Konfiguration----------------------------------------------------
@@ -420,6 +420,7 @@ Veranschaulichung der Phasen in Abb. \ref{fig:cstKonstruktion}
 \subsection{Implementierung in Haskell}
 \label{sec:ImplementierungInHaskell}
 %////////////////////////////////////////////////////////////////////////////
+
 Zuerst werden benötige Datentypen beschrieben. Ein Baum ist entweder ein Blatt oder eine Verzweigung. Eine Verzweigung ist eine Liste von Tupeln, wobei erstes Element vom Tupel eine Kante (also, eine Kantenbeschriftung) ist, und zweites Element ist der Unterbaum, der von der Kante ausgeht. $alf$ ist Typparameter vom Alphabet, $Label\:alf$ ist ein Liste von Elementen des Alphabets.
 Typ der EdgeFunktion bedeutet, dass man eine Liste von Wörter nimmt und auf ein Tupel abbildet, wobei erstes Element vom Tupel das längste gemeinsame Präfix der Wörter ist und zweites Element eine Liste von Wörter, von denen das längste gemeinsame Präfix entfernt wurde. Implementierung:
 
@@ -494,10 +495,9 @@ Um die Laufzeit von dem gesamten Algorithmus zu betrachten, wird zuerst die Kost
 
 Die Kostenfunktion für $edge$ ist von zwei Parameter abhängig: die Länge der Wörterliste und die Länge des gemeinsamen Präfix dieser Wörter. Die Funktion wird so oft rekursiv aufgerufen wie die Länge des gemeinsamen Präfix von der gegebenen Wörterliste ist. In jedem Aufruf von $edge$ werden zwei andere Funkrionen aufgerufen, deren Laufzeit von der Länge der Eingabeliste linear abhängig ist. Eine der Funktionen ist lambda-Ausdruck, wir haben zur Vereinfachung sie als $isEqual$ bei der Laufzeitanalyse bezeichnet. Zweite Funktion ist als List-comprehension gegeben, sie wird als $newList$ bezeichnet.
 
-Die Kosten der Funktion $edge$ setzen sich zusammen aus den Kosten der Fkt $isEqual$ für $n-1$, den Kosten der Funktion $newList$ für $n$ und den Kosten des rekursiven Aufrufs von $edge$ für $n-1$ und $|cp|-1$.
+Die Kosten der Funktion $edge$ setzen sich zusammen aus den Kosten der Fkt $isEqual$ für $n - 1$, den Kosten der Funktion $newList$ für $n$ und den Kosten des rekursiven Aufrufs von $edge$ für $n - 1$ und $\abs{cp} - 1$.
 
 Insgesamt:
-
 \begin{align*}
     T(n,\abs{cp}) &= isEqual(n - 1) + newList(n) + T(n-1,\abs{cp}-1) \\
                   &= \sum_{i = 1}^{\abs{cp}}{isEqual(n-1)} + \sum_{i = 1}^{\abs{cp}}{newList(n)}\\
@@ -505,7 +505,6 @@ Insgesamt:
 \end{align*}
 
 Weiter wird das worst-case vom WOTD-Algoritmus bestimmt. Dieses produziert z.B. das Wort $a^n$, indem es als der Parameter $t$ an der Funktion $lazy\_cst$ gegeben wird. Zuerst wird $sTr$ mit $ss = [a^n,\:a^{n-1}, \dots ,\:a]$ aufgerufen, dann wird dem Parameter $gs$ komplette Liste $ss$ zugewiesen und die Funktion $edge$ mit dem Parameter $gs$ aufgerufen. Die Funktion $edge$ liefert das Ergebnis $(cp,rss) = (a^n, [[\:]])$. Weiter wird $sTr$ mit mit dem Parameter $rss = [[\:]]$ aufgerufen und damit terminiert die Funktion $lazy\_cst$. Weil $|cp| = n$, ist die Laufzeit von $edge$ und von dem gesamten Algorithmus $O(n^2)$.
-
 
 %////////////////////////////////////////////////////////////////////////////
 \section{Teilwortsuche}
@@ -526,7 +525,6 @@ Weiter wird das worst-case vom WOTD-Algoritmus bestimmt. Dieses produziert z.B. 
 \section{DC3-Algorithmus}
 \label{sec:DC3Algorithmus}
 %////////////////////////////////////////////////////////////////////////////
-
 
 %////////////////////////////////////////////////////////////////////////////
 % Literaturverzeichnis
