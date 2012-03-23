@@ -141,6 +141,7 @@
 
 % Umgebung Bemerkung
 \newtheorem{remark}{Bemerkung}
+\newtheorem{definition}{Definition}
 
 \newcommand{\coloneqq}{\mathrel{\mathop:}=}
 
@@ -184,6 +185,81 @@ TODO: Einleitung
 \section{Terminologie}
 \label{sec:terminologie}
 %////////////////////////////////////////////////////////////////////////////
+
+Zunächst möchten wir auf die grundlegende Notation eingehen, die in dieser Abhandlung Verwendung findet.
+
+Sei $\Sigma$ ein endliches Alphabet. Das leere Wort bezeichnen wir mit $\epsilon$. Wie gewohnt bezeichnet $\Sigma^*$ die Kleen'sche Hülle von $\Sigma$ und $\Sigma^+ \coloneqq \Sigma^* \setminus \{\epsilon\}$. Zur besseren Übersichtlichkeit verwenden wir im Folgenden $a - g$ auschließlich für Buchstaben aus $\Sigma$ und $t - z$ für Wörter über $\Sigma^*$. Mit $uv$ bezeichnen wir die Konkatenation der Wörter $u$ und $v$.
+
+\begin{definition}[Präfix, Suffix, $t$-Wort]
+Sei $t = uvw$ mit $u, v, w \in \Sigma^*$. Dann ist $u$ ein Präfix und $w$ ein Suffix von $t$. $v$ wird als $t$-Wort bezeichnet.
+\end{definition}
+
+\begin{definition}[$\Sigma^+$-Baum]
+\label{def:sigmaPlusBaum}
+Ein $\Sigma^+$-Baum ist ein Baum, dessen Kanten mit Wörtern aus $\Sigma^+$ beschriftet sind. Die Kanten eines $\Sigma^+$-Baums erfüllen folgendes Eindeutigkeitskriterium: Für alle Kanten $k \xrightarrow{aw} k'$ und $k \xrightarrow{bv} k''$ folgt $a = b$.
+\end{definition}
+
+Abb. \ref{fig:sigmaPlusTree} zeigt einen $\Sigma^+$-Baum für $\Sigma = \{a, \dots, g \}$
+
+\begin{figure}
+\centering
+\begin{tikzpicture}[
+    level 1/.style = {level distance = 10mm, sibling distance = 35mm},
+    level 2/.style = {level distance = 10mm, sibling distance = 25mm},
+    level 3/.style = {level distance = 10mm, sibling distance = 20mm},
+    edge from parent/.style = {->, draw}
+    ]
+    \node[branch]{}
+    child {
+        node[branch]{}
+        child[child anchor = north] {
+            node[subtree]{}
+            edge from parent
+            node[left, yshift = 0.5mm]{$ad$}
+        }
+        child[child anchor = north] {
+            node[subtree]{}
+            edge from parent
+            node[right, yshift = 0.5mm]{$gd$}
+        }
+        edge from parent
+        node[above]{$ad$}
+    }
+    child {
+        node[branch]{}
+        child[child anchor = north] {
+            node[subtree]{}
+            edge from parent
+            node[left, yshift = 0.5mm]{$a$}
+        }
+        edge from parent
+        node[left]{$cg$}
+    }
+    child {
+        node[branch]{}
+        child[child anchor = north] {
+            node[subtree]{}
+            edge from parent
+            node[left, yshift = 0.5mm]{$ga$}
+        }
+        child[child anchor = north] {
+            node[subtree]{}
+            edge from parent
+            node[right, yshift = 0.5mm]{$ad$}
+        }
+        edge from parent
+        node[above]{$gac$}
+    };
+\end{tikzpicture}
+\medskip
+\caption{$\Sigma^+$-Baum für $\Sigma = \{a, \dots, g\}$}
+\label{fig:sigmaPlusTree}
+\end{figure}
+
+\begin{definition}[Pfad]
+\label{def:pfad}
+Die Funktion $path(k)$ bezeichnet die Konkatenation der Kantenbeschriftungen von der Wurzel bis zum Knoten $k$.
+\end{definition}
 
 %////////////////////////////////////////////////////////////////////////////
 \subsection{Suffix Tree Klassen}
@@ -280,7 +356,6 @@ Veranschaulichung der Phasen in Abb. \ref{fig:cstKonstruktion}
 \begin{figure}[h]
 \centering
 \begin{tikzpicture}[
-    font = \small,
     level 1/.style = {level distance = 7mm, sibling distance = 30mm},
     level 2/.style = {level distance = 7mm, sibling distance = 15mm},
     level 3/.style = {level distance = 7mm, sibling distance = 10mm},
@@ -542,12 +617,12 @@ Die Eingabe ist ein Teilwort und ein Baum, wo das Teilwort gesucht werden muss. 
 
     - Falls der Baum leer ist, dann ist die Suche nicht möglich.
 
-    - Falls der Baum eine Verzweigung ist, dann wird eine Hilfsfunktion $g$ mit dem gesuchten Wort und der Liste von Kanten aufgerufen. 
+    - Falls der Baum eine Verzweigung ist, dann wird eine Hilfsfunktion $g$ mit dem gesuchten Wort und der Liste von Kanten aufgerufen.
 
 Fallunterscheidung der Funktion $g$:
 \begin{enumerate}
     \item Wenn die Liste von Kanten leer ist, dann ist das Wort im Baum nicht enthalten.
-    \item Im anderen Fall suchen wir die passende Kante indem wir das gemeinsame Präfix des gesuchten Wortes und jeweilige Kante berechnen. Das wird mit der Fkt $commonPrefix$ gemacht. Wenn das gesuchte Wort und jeweilige Kante kein gemeinsames Präfix haben, dann gehen wir zu der nächste Kante $\rightarrow$ der Fall $falsche$ $Kante$. 
+    \item Im anderen Fall suchen wir die passende Kante indem wir das gemeinsame Präfix des gesuchten Wortes und jeweilige Kante berechnen. Das wird mit der Fkt $commonPrefix$ gemacht. Wenn das gesuchte Wort und jeweilige Kante kein gemeinsames Präfix haben, dann gehen wir zu der nächste Kante $\rightarrow$ der Fall $falsche$ $Kante$.
     \item Wenn es keine Kanten mehr gibt, dann ist das gesuchte Teilwort nicht im Baum enthalten $\rightarrow$ der Fall $g$ $ss$ $[\:]$ $=$ $False$.
     \item Wenn das gesuchte Teilwort und die Kante das gemeinsame Präfix haben, dann müssen drei Fälle betrachtet werden:
     \begin{enumerate}
