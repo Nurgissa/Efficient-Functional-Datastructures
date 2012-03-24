@@ -299,27 +299,25 @@ Mithilfe der obigen Definition \ref{def:Pfad}, lässt sich eine elegante Notatio
     };
     \node[left = 2mm] at (n) {$\overline{vu}$};
 \end{tikzpicture}
+\medskip
 \caption{Notation zur Knotenbezeichnung}
 \label{fig:NotationZurKnotenbezeichnung}
 \end{figure}
 
-Ein Wort $w$ ist genau dann in einem $\Sigma^+$-Baum $T$ enthalten, wenn ein Knoten $\overline{wu}$ in diesem Baum existiert, d.h. $w$ ist Präfix eines Wortes, dass durch die Konkatenation der Kantenbeschriftungen eines Pfades in $T$ gebildet werden kann.
+Einen Knoten $\overline{w}$ nennen wir Verzweigung, wenn von ihm mehr als eine Kante ausgeht. Alle Kanten, die nicht zu einem Blattknoten führen, bezeichnen wir als innere Kanten eines Baumes. Ein Wort $w$ ist genau dann in einem $\Sigma^+$-Baum $T$ enthalten, wenn ein Knoten $\overline{wu}$ in diesem Baum existiert, d.h. $w$ ist Präfix eines Wortes, dass durch die Konkatenation der Kantenbeschriftungen eines Pfades in $T$ gebildet werden kann.
 
-TODO Überleitung zu Suffix Trees
+%////////////////////////////////////////////////////////////////////////////
+\subsection{Suffix Tree Klassen}
+\label{sec:suffixTreeKlassen}
+%////////////////////////////////////////////////////////////////////////////
 
-\begin{definition}[Suffix Tree]
-\label{def:SuffixTree}
-Ein Suffix Tree $S_t$ für ein gegebenes Wort $t$ ist ein $\Sigma^+$-Baum, sodass gilt:
-\begin{gather*}
-    w \in S_t \Longleftrightarrow w \text{ ist ein }t\text{-Wort}
-\end{gather*}
-\end{definition}
+Zu Beginn dieses Abschnitts geben wir eine allgemeine Definition für Suffix Trees, die später durch den Begriff der Suffix Tree Klassen\footnote{Diese Art der Klassifizierung von Suffix Trees stammt aus \cite{Giegerich1995}.} weiter differenziert wird.
 
-Analog zu anderen Suchbäumen ist auch der Aufbau des Suffix Tree durch die Anforderungen an die Suchoperation motiviert. Suffix Trees wurden primär für das Problem der exakten Teilwortsuche entwickelt. Man nutzt hier die Tatsache, dass sich jedes Teilwort $w$ eines Wortes $t$ als Präfix eines Suffix darstellen lässt:
+Suffix Trees bilden eine Teilmenge der $\Sigma^+$-Bäume. Analog zu anderen Suchbäumen ist auch der Aufbau des Suffix Tree durch die Anforderungen an die Suchoperation motiviert. Suffix Trees wurden primär für das Problem der exakten Teilwortsuche entwickelt, welches in Kapitel \ref{sec:Teilwortsuche} detailliert behandelt wird. Man nutzt hier die Tatsache, dass sich jedes Teilwort $w$ eines Wortes $t$ als Präfix eines Suffix darstellen lässt:
 \begin{gather*}
     t = a \dots b \underbrace{\overbrace{c \dots d}^{\text{Präfix }w} e \dots f}_{\text{Suffix }s}
 \end{gather*}
-Somit kann das Problem der exakten Teilwortsuche auf eine Präfixsuche auf den Suffixen eines Wortes zurückgeführt werden. Die Suche in Suffix Trees wird im Kapitel \ref{sec:Teilwortsuche} detailliert behandelt. Diese Beobachtung führt zur zentralen Charakteristik von Suffix Trees, die in Abb. \ref{fig:suffixTreeAgcgacgag} leicht zu erkennen ist. Jeder Pfad von der Wurzel bis zu einem Blatt des Baumes korrespondiert mit einem Suffix des Wortes, für das der Suffix Tree aufgebaut wurde.
+Somit kann das Problem der exakten Teilwortsuche auf eine Präfixsuche auf den Suffixen eines Wortes zurückgeführt werden. Diese Beobachtung führt zur zentralen Charakteristik von Suffix Trees, die in Abb. \ref{fig:suffixTreeAgcgacgag} leicht zu erkennen ist. Jeder Pfad von der Wurzel bis zu einem Blatt des Baumes korrespondiert mit einem Suffix des Wortes, für das der Suffix Tree aufgebaut wurde. Diese Überlegungen führen zu folgender formalen Definition für Suffix Trees.
 
 \begin{figure}[htb]
 \centering
@@ -385,18 +383,417 @@ Somit kann das Problem der exakten Teilwortsuche auf eine Präfixsuche auf den S
         node[above]{$g$}
     };
 \end{tikzpicture}
+\medskip
 \caption{Suffix Tree für die Zeichenkette $agcgacgag$}
 \label{fig:suffixTreeAgcgacgag}
 \end{figure}
 
-%////////////////////////////////////////////////////////////////////////////
-\subsection{Suffix Tree Klassen}
-\label{sec:suffixTreeKlassen}
-%////////////////////////////////////////////////////////////////////////////
+\begin{definition}[Suffix Tree\footnote{Auf diese Art und Weise werden Suffix Trees in \cite{Giegerich1995} definiert.}]
+\label{def:SuffixTree}
+Ein Suffix Tree $S_t$ für ein gegebenes Wort $t$ ist ein $\Sigma^+$-Baum, sodass gilt:
+\begin{gather*}
+    w \in S_t \Longleftrightarrow w \text{ ist ein }t\text{-Wort}
+\end{gather*}
+\end{definition}
+
+Ausgehend von dieser allgemeinen Definition, werden Suffix Trees abhängig von der Anzahl ihrer Kanten nochmals in drei verschiedene Klassen unterteilt. Zur Unterscheidung dieser Klassen betrachten wir die Kantenmengen der Suffix Trees. Ein Suffix Tree $S_t$ für ein Wort $t$, repräsentiert durch seine Kantenmenge $E$ heißt
+\begin{enumerate}
+    \item Atomic Suffix Tree $ast$, wenn $\abs{E}$ maximal ist.
+    \item Position Suffix Tree $pst$, wenn die Länge aller inneren Kantenbeschriftungen $1$ beträgt.
+    \item Compact Suffix Tree $cst$, wenn $\abs{E}$ minimal ist
+\end{enumerate}
+Die drei Suffix Tree Formen stehen in Relation bezüglich Kantenverschmelzung.
+
+\begin{definition}[Kantenverschmelzung]
+Kantenverschmelzung ist eine Relation auf $\Sigma^+$-Bäumen, die durch ihre Kantenmengen repräsentiert werden.
+\begin{gather*}
+    \left(E \uplus \{\overline{s}\:\xrightarrow{u}\:\overline{w},\overline{w}\:\xrightarrow{u'}\:\overline{v}\}\right) \overset{\overline{w}}{\implies} \left(E \uplus \{\overline{s}\:\xrightarrow{uu'}\:\overline{v}\}\right)
+\end{gather*}
+wenn $\overline{w} \xrightarrow{u'} \overline{v}$ ist die einzige ausgehende Kante von $\overline{w}$. Die Umkehrrelation bezeichnen wir als Kantenteilung.
+\end{definition}
+Abb. \ref{fig:Kantenverschmelzung} zeigt, wie der Knoten $w$ mittels Kantenverschmelzung aus dem Baum entfernt wird. Es ist darauf zu achten, dass der Knoten $w$ keine Verzweigung ist.
+
+Während $ast$ eine Normalform bezüglich Kantenteilung und $cst$ eine Normalform bezüglich Kantenverschmelzung darstellen, repräsentiert der $pst$ ein Hybridstadium zwischen $ast$ und $pst$. Abb. \ref{fig:SuffixTreeKlassen} zeigt alle drei Suffix Tree Klassen für diesselbe Zeichenkette $agcgacgag$.
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[
+    level 1/.style = {level distance = 10mm, sibling distance = 40mm},
+    level 2/.style = {level distance = 10mm, sibling distance = 30mm},
+    level 3/.style = {level distance = 10mm, sibling distance = 20mm},
+    edge from parent/.style = {->, draw}
+    ]
+    { [xshift = 0cm, yshift = 0cm]
+        \node {}
+        child {
+            node[branch] (s1) {}
+            child[child anchor = north] {
+                node[subtree]{}
+                edge from parent[dotted]
+            }
+            child {
+                node[branch] (w1) {}
+                child {
+                    node[branch] (v1) {}
+                    edge from parent
+                    node[left]{$u'$}
+                }
+                edge from parent[solid]
+                node[left]{$u$}
+            }
+            child[child anchor = north] {
+                node[subtree]{}
+                edge from parent[dotted]
+            }
+            edge from parent[dotted]
+        };
+    }
+    \node[subtree] at (v1.center) {};
+    \node[yshift = 2mm, xshift = 3mm] at (s1.center) {$\overline{s}$};
+    \node[right] at (w1.east) {$\overline{w}$};
+    \node[right] at (v1.center) {$\overline{v}$};
+    { [xshift = 4cm, yshift = {-1cm}]
+        \node{$\overset{\overline{w}}{\implies}$};
+    }
+    { [xshift = 8cm, yshift = 0cm]
+        \node{}
+        child {
+            node[branch] (s2) {}
+            child[child anchor = north] {
+                node[subtree]{}
+                edge from parent[dotted]
+            }
+            child[level distance = 12mm] {
+                node[branch] (v2) {}
+                edge from parent[solid]
+                node[left]{$uu'$}
+            }
+            child[child anchor = north] {
+                node[subtree]{}
+                edge from parent[dotted]
+            }
+            edge from parent[dotted]
+        };
+    }
+    \node[subtree] at (v2.center) {};
+    \node[yshift = 2mm, xshift = 3mm] at (s2.center) {$\overline{s}$};
+    \node[right] at (v2.center) {$\overline{v}$};
+\end{tikzpicture}
+\medskip
+\caption{Kantenverschmelzung}
+\label{fig:Kantenverschmelzung}
+\end{figure}
+
+\begin{figure}
+\centering
+\begin{tikzpicture}[
+    font = \small,
+    level 1/.style = {level distance = 7mm, sibling distance = 25mm},
+    level 2/.style = {level distance = 7mm, sibling distance = 15mm},
+    level 3/.style = {level distance = 7mm, sibling distance = 10mm},
+    edge from parent/.style = {->, draw}
+    ]
+    { [xshift = 0cm, yshift = 0cm]
+        \node[branch] (root) {}
+            child {
+                node[branch]{}
+                child {
+                    node[branch]{}
+                    child {
+                        node[branch]{}
+                        child {
+                            node[branch]{}
+                            child {
+                                edge from parent
+                                node[left]{$g$}
+                            }
+                            edge from parent
+                            node[left]{$a$}
+                        }
+                        edge from parent
+                        node[left]{$g$}
+                    }
+                    edge from parent
+                    node[left]{$c$}
+                }
+            child {
+                node[branch]{}
+                child {
+                    node[branch]{}
+                    child {
+                        node[branch]{}
+                        child {
+                            node[branch]{}
+                            child {
+                                node[branch]{}
+                                child {
+                                    node[branch]{}
+                                        child {
+                                            node[branch]{}
+                                            child {
+                                                edge from parent
+                                                node[left]{$g$}
+                                            }
+                                            edge from parent
+                                            node[left]{$a$}
+                                        }
+                                    edge from parent
+                                    node[left]{$g$}
+                                }
+                                edge from parent
+                                node[left]{$c$}
+                            }
+                            edge from parent
+                            node[left]{$a$}
+                        }
+                        edge from parent
+                        node[left]{$g$}
+                    }
+                    edge from parent
+                    node[left]{$c$}
+                }
+                edge from parent
+                node[right]{$g$}
+            }
+            edge from parent
+            node[above]{$a$}
+        }
+        child {
+            node[branch]{}
+            child {
+                node[branch]{}
+                child {
+                    node[branch]{}
+                    child {
+                        node[branch]{}
+                        child {
+                            node[branch]{}
+                            child {
+                                node[branch]{}
+                                child {
+                                    edge from parent
+                                    node[left]{$g$}
+                                }
+                                edge from parent
+                                node[left]{$a$}
+                            }
+                            edge from parent
+                            node[left]{$g$}
+                        }
+                        edge from parent
+                        node[left]{$c$}
+                    }
+                    child {
+                        edge from parent
+                        node[right]{$g$}
+                    }
+                    edge from parent
+                    node[left]{$a$}
+                }
+                edge from parent
+                node[left]{$g$}
+            }
+            edge from parent
+            node[left]{$c$}
+        }
+        child {
+            node[branch]{}
+            child {
+                node[branch]{}
+                child {
+                    node[branch]{}
+                    child {
+                        node[branch]{}
+                        child {
+                            node[branch]{}
+                            child {
+                                edge from parent
+                                node[left]{$g$}
+                            }
+                            edge from parent
+                            node[left]{$a$}
+                        }
+                        edge from parent
+                        node[left]{$g$}
+                    }
+                    edge from parent
+                    node[left]{$c$}
+                }
+                child {
+                    edge from parent
+                    node[right]{$g$}
+                }
+                edge from parent
+                node[left]{$a$}
+            }
+            child {
+                node[branch]{}
+                child {
+                    node[branch]{}
+                    child {
+                        node[branch]{}
+                        child {
+                            node[branch]{}
+                            child {
+                                node[branch]{}
+                                child {
+                                    node[branch]{}
+                                    child {
+                                        edge from parent
+                                        node[left]{$g$}
+                                    }
+                                    edge from parent
+                                    node[left]{$a$}
+                                }
+                                edge from parent
+                                node[left]{$g$}
+                            }
+                            edge from parent
+                            node[left]{$c$}
+                        }
+                        edge from parent
+                        node[left]{$a$}
+                    }
+                    edge from parent
+                    node[left]{$g$}
+                }
+                edge from parent
+                node[right]{$c$}
+            }
+            edge from parent
+            node[above]{$g$}
+        };
+        \node[left = 2cm, yshift = 2mm] at (root) {$\boldsymbol{ast}$};
+    }
+    { [xshift = 8cm, yshift = 0cm]
+        \node[branch] (root) {}
+        child {
+            node[branch]{}
+            child {
+                edge from parent
+                node[left]{$cgag$}
+            }
+            child {
+                edge from parent
+                node[right]{$gcgacgag$}
+            }
+            edge from parent
+            node[above]{$a$}
+        }
+        child {
+            node[branch]{}
+            child {
+                node[branch]{}
+                child {
+                    node[branch]{}
+                    child {
+                        edge from parent
+                        node[left]{$cgag$}
+                    }
+                    child {
+                        edge from parent
+                        node[right]{$g$}
+                    }
+                    edge from parent
+                    node[left]{$a$}
+                }
+                edge from parent
+                node[left]{$g$}
+            }
+            edge from parent
+            node[left]{$c$}
+        }
+        child {
+            node[branch]{}
+            child {
+                node[branch]{}
+                child {
+                    edge from parent
+                    node[left]{$cgag$}
+                }
+                child {
+                    edge from parent
+                    node[right]{$g$}
+                }
+                edge from parent
+                node[left]{$a$}
+            }
+            child {
+                edge from parent
+                node[right]{$cgacgag$}
+            }
+            edge from parent
+            node[above]{$g$}
+        };
+        \node[left = 2cm, yshift = 2mm] at (root) {$\boldsymbol{pst}$};
+    }
+    { [xshift = 8cm, yshift = -3.5cm]
+        \node[branch] (root) {}
+        child {
+            node[branch]{}
+            child {
+                edge from parent
+                node[left]{$cgag$}
+            }
+            child {
+                node[leaf] {}
+                edge from parent
+                node[right]{$gcgacgag$}
+            }
+            edge from parent
+            node[above]{$a$}
+        }
+        child[level distance = 22mm] {
+            node[branch]{}
+            child {
+                node[leaf] {}
+                edge from parent
+                node[left]{$cgag$}
+            }
+            child {
+                node[leaf] {}
+                edge from parent
+                node[right]{$g$}
+            }
+            edge from parent
+            node[left, yshift = -5mm]{$cga$}
+        }
+        child {
+            node[branch]{}
+            child {
+                node[branch]{}
+                child {
+                    node[leaf] {}
+                    edge from parent
+                    node[left]{$cgag$}
+                }
+                child {
+                    node[leaf] {}
+                    edge from parent
+                    node[right]{$g$}
+                }
+                edge from parent
+                node[left]{$a$}
+            }
+            child {
+                node[leaf] {}
+                edge from parent
+                node[right]{$cgacgag$}
+            }
+            edge from parent
+            node[above]{$g$}
+        };
+        \node[left = 2cm, yshift = 2mm] at (root) {$\boldsymbol{cst}$};
+    }
+\end{tikzpicture}
+\medskip
+\caption{Suffix Tree Klassen: $ast$, $pst$ und $cst$ für die Zeichenkette $agcgacgag$}
+\label{fig:SuffixTreeKlassen}
+\end{figure}
 
 %////////////////////////////////////////////////////////////////////////////
 \subsection{Generalized Suffix Tree}
-\label{sec:generalizedSuffixTree}
+\label{sec:GeneralizedSuffixTree}
 %////////////////////////////////////////////////////////////////////////////
 
 %////////////////////////////////////////////////////////////////////////////
