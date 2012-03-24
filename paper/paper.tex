@@ -78,7 +78,6 @@
     basicstyle = \ttfamily\fontsize{11}{11}\selectfont,
     keywordstyle = \color{blue},
     commentstyle = \color{darkgray},
-    framerule = 0.4pt,
     framesep = 2mm,
     rulecolor = \color{black},
     frame = lines,
@@ -173,12 +172,17 @@ TODO: Einleitung
 
 %////////////////////////////////////////////////////////////////////////////
 \chapter{Suffix Tree}
-\label{chap:suffixTree}
+\label{chap:SuffixTree}
 %////////////////////////////////////////////////////////////////////////////
 
 %////////////////////////////////////////////////////////////////////////////
 \section{Terminologie}
-\label{sec:terminologie}
+\label{sec:Terminologie}
+%////////////////////////////////////////////////////////////////////////////
+
+%////////////////////////////////////////////////////////////////////////////
+\subsection{Grundlagen}
+\label{sec:Grundlagen}
 %////////////////////////////////////////////////////////////////////////////
 
 Zunächst möchten wir auf die grundlegende Notation eingehen, die in dieser Abhandlung Verwendung findet.
@@ -190,13 +194,13 @@ Sei $t = uvw$ mit $u, v, w \in \Sigma^*$. Dann ist $u$ ein Präfix und $w$ ein S
 \end{definition}
 
 \begin{definition}[$\Sigma^+$-Baum]
-\label{def:sigmaPlusBaum}
+\label{def:SigmaPlusBaum}
 Ein $\Sigma^+$-Baum ist ein Baum, dessen Kanten mit Wörtern aus $\Sigma^+$ beschriftet sind. Die Kanten eines $\Sigma^+$-Baums erfüllen folgendes Eindeutigkeitskriterium: Für alle Kanten $k \xrightarrow{aw} k'$ und $k \xrightarrow{bv} k''$ folgt $a = b$.
 \end{definition}
 
-Abb. \ref{fig:sigmaPlusTree} zeigt einen $\Sigma^+$-Baum für $\Sigma = \{a, \dots, g \}$
+Abb. \ref{fig:SigmaPlusTree} zeigt einen $\Sigma^+$-Baum für das Alphabet $\Sigma = \{a, \dots, g \}$. Um im weiteren Verlauf besser über diese Art von Bäumen und ihre Bestandteile sprechen zu können, benötigen wir noch eine Reihe von nützlichen Definitionen.
 
-\begin{figure}
+\begin{figure}[htb]
 \centering
 \begin{tikzpicture}[
     level 1/.style = {level distance = 10mm, sibling distance = 35mm},
@@ -248,13 +252,142 @@ Abb. \ref{fig:sigmaPlusTree} zeigt einen $\Sigma^+$-Baum für $\Sigma = \{a, \do
 \end{tikzpicture}
 \medskip
 \caption{$\Sigma^+$-Baum für $\Sigma = \{a, \dots, g\}$}
-\label{fig:sigmaPlusTree}
+\label{fig:SigmaPlusTree}
 \end{figure}
 
 \begin{definition}[Pfad]
-\label{def:pfad}
+\label{def:Pfad}
 Die Funktion $path(k)$ bezeichnet die Konkatenation der Kantenbeschriftungen von der Wurzel bis zum Knoten $k$.
 \end{definition}
+
+Mithilfe der obigen Definition \ref{def:Pfad}, lässt sich eine elegante Notation für die Bezeichnung von Knoten eines $\Sigma^+$-Baumes einführen\footnote{Diese Notation wird in \cite{Ukkonen1995} eingeführt.}. Mit $\overline{w}$ bezeichnen wir genau dann einen Knoten $k$, wenn $path(k) = w$. Dieser Zusammenhang wird in Abb. \ref{fig:NotationZurKnotenbezeichnung} veranschaulicht.
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[
+    level 1/.style = {level distance = 10mm, sibling distance = 35mm},
+    level 2/.style = {level distance = 10mm, sibling distance = 25mm},
+    level 3/.style = {level distance = 10mm, sibling distance = 20mm},
+    edge from parent/.style = {->, draw}
+    ]
+    \node[branch] {}
+    child[child anchor = north] {
+        node[subtree] {}
+        edge from parent[dotted]
+    }
+    child {
+        node[branch] {}
+        child {
+            node (n) [branch] {}
+            child[child anchor = north] {
+                node[subtree] {}
+                edge from parent[dotted]
+            }
+            child[child anchor = north] {
+                node[subtree] {}
+                edge from parent[dotted]
+            }
+            edge from parent
+            node[right] {$u$}
+        }
+        edge from parent
+        node[left] {$v$}
+    }
+    child[child anchor = north] {
+        node[subtree] {}
+        edge from parent[dotted]
+    };
+    \node[left = 2mm] at (n) {$\overline{vu}$};
+\end{tikzpicture}
+\caption{Notation zur Knotenbezeichnung}
+\label{fig:NotationZurKnotenbezeichnung}
+\end{figure}
+
+Ein Wort $w$ ist genau dann in einem $\Sigma^+$-Baum $T$ enthalten, wenn ein Knoten $\overline{wu}$ in diesem Baum existiert, d.h. $w$ ist Präfix eines Wortes, dass durch die Konkatenation der Kantenbeschriftungen eines Pfades in $T$ gebildet werden kann.
+
+TODO Überleitung zu Suffix Trees
+
+\begin{definition}[Suffix Tree]
+\label{def:SuffixTree}
+Ein Suffix Tree $S_t$ für ein gegebenes Wort $t$ ist ein $\Sigma^+$-Baum, sodass gilt:
+\begin{gather*}
+    w \in S_t \Longleftrightarrow w \text{ ist ein }t\text{-Wort}
+\end{gather*}
+\end{definition}
+
+Analog zu anderen Suchbäumen ist auch der Aufbau des Suffix Tree durch die Anforderungen an die Suchoperation motiviert. Suffix Trees wurden primär für das Problem der exakten Teilwortsuche entwickelt. Man nutzt hier die Tatsache, dass sich jedes Teilwort $w$ eines Wortes $t$ als Präfix eines Suffix darstellen lässt:
+\begin{gather*}
+    t = a \dots b \underbrace{\overbrace{c \dots d}^{\text{Präfix }w} e \dots f}_{\text{Suffix }s}
+\end{gather*}
+Somit kann das Problem der exakten Teilwortsuche auf eine Präfixsuche auf den Suffixen eines Wortes zurückgeführt werden. Die Suche in Suffix Trees wird im Kapitel \ref{sec:Teilwortsuche} detailliert behandelt. Diese Beobachtung führt zur zentralen Charakteristik von Suffix Trees, die in Abb. \ref{fig:suffixTreeAgcgacgag} leicht zu erkennen ist. Jeder Pfad von der Wurzel bis zu einem Blatt des Baumes korrespondiert mit einem Suffix des Wortes, für das der Suffix Tree aufgebaut wurde.
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[
+    level 1/.style = {level distance = 10mm, sibling distance = 45mm},
+    level 2/.style = {level distance = 10mm, sibling distance = 25mm},
+    level 3/.style = {level distance = 10mm, sibling distance = 15mm},
+    edge from parent/.style = {->, draw}
+    ]
+    \node[branch]{}
+    child {
+        node[branch]{}
+        child {
+            edge from parent
+            node[left]{$cgag$}
+        }
+        child {
+            node[leaf] {}
+            edge from parent
+            node[right]{$gcgacgag$}
+        }
+        edge from parent
+        node[above]{$a$}
+    }
+    child[level distance = 16mm] {
+        node[branch]{}
+        child {
+            node[leaf] {}
+            edge from parent
+            node[left]{$cgag$}
+        }
+        child {
+            node[leaf] {}
+            edge from parent
+            node[right]{$g$}
+        }
+        edge from parent
+        node[left]{$cga$}
+    }
+    child {
+        node[branch]{}
+        child {
+            node[branch]{}
+            child {
+                node[leaf] {}
+                edge from parent
+                node[left]{$cgag$}
+            }
+            child {
+                node[leaf] {}
+                edge from parent
+                node[right]{$g$}
+            }
+            edge from parent
+            node[left]{$a$}
+        }
+        child {
+            node[leaf] {}
+            edge from parent
+            node[right]{$cgacgag$}
+        }
+        edge from parent
+        node[above]{$g$}
+    };
+\end{tikzpicture}
+\caption{Suffix Tree für die Zeichenkette $agcgacgag$}
+\label{fig:suffixTreeAgcgacgag}
+\end{figure}
 
 %////////////////////////////////////////////////////////////////////////////
 \subsection{Suffix Tree Klassen}
@@ -533,7 +666,7 @@ Implementierung:
     caption = Algorithmus zur Suffix Tree Konstruktion,
     label = lst:AlgorithmusZurSuffixTreeKonstruktion,
     captionpos = b,
-    float = hb
+    float = htb
     ]
 -- | Liefert eine Liste aller Suffixe eines gegebenen Wortes
 suffixes :: [alf] -> [[alf]]
@@ -587,7 +720,7 @@ Weiter wird das worst-case vom WOTD-Algoritmus bestimmt. Dieses produziert z.B. 
 \label{sec:Teilwortsuche}
 %////////////////////////////////////////////////////////////////////////////
 
-Im Abschluss des Kapitels möchten wir zeigen, dass mit dem erzeugten Suffixbaum kann man nicht nur Suffixe effezient suchen, sondern auch Teilwörter vom gegebenen Wort. Dafür definieren wir eine Hilfsfunkktion, die ähnlich wie die $edge$-Funktion arbeitet:
+Zum Abschluss des Kapitels möchten wir zeigen, dass mit dem erzeugten Suffixbaum kann man nicht nur Suffixe effezient suchen, sondern auch Teilwörter vom gegebenen Wort. Dafür definieren wir eine Hilfsfunkktion, die ähnlich wie die $edge$-Funktion arbeitet:
 
 Die Funktion bestimmt das längste gemeinsame Präfix von zwei Wörter und liefert zurück ein Tripel $(w1',\: w2',\: cp)$, wobei $cp$ das längste gemeinsame Präfix ist, $w1'$ und $w2'$ sind Ergebnisse der Entfernung $cp$ von $w1$ bzw. $w2$.
 
@@ -644,6 +777,11 @@ Fallunterscheidung der Funktion $g$:
 %////////////////////////////////////////////////////////////////////////////
 \section{Motivation}
 \label{sec:Motivation}
+%////////////////////////////////////////////////////////////////////////////
+
+%////////////////////////////////////////////////////////////////////////////
+\section{Terminologie}
+\label{sec:Terminologie}
 %////////////////////////////////////////////////////////////////////////////
 
 %////////////////////////////////////////////////////////////////////////////
