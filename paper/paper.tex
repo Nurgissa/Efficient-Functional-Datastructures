@@ -60,11 +60,6 @@
 
 \pagestyle{fancy}
 
-%--Caption Stil--------------------------------------------------------------
-
-\DeclareCaptionFormat{hline}{#1#2#3\hrulefill}
-\captionsetup[figure]{format = hline}
-
 %--Farben--------------------------------------------------------------------
 
 \definecolor{verylightgray}{RGB}{230, 230, 230}
@@ -80,9 +75,12 @@
     tabsize = 4,
     showstringspaces = false,
     breaklines = true,
-    basicstyle = \ttfamily\fontsize{8}{8}\selectfont,
+    basicstyle = \ttfamily\fontsize{11}{11}\selectfont,
     keywordstyle = \color{blue},
     commentstyle = \color{darkgray},
+    framerule = 0.4pt,
+    framesep = 2mm,
+    rulecolor = \color{black},
     frame = lines,
     extendedchars = true,
     framextopmargin = 5pt,
@@ -90,9 +88,6 @@
     framexleftmargin = 5pt,
     framexrightmargin = 5pt,
     framexbottommargin = 5pt,
-    framerule = 0.5pt,
-    rulecolor = \color{gray},
-    backgroundcolor = \color{verylightgray}
 }
 
 %--TikZ Konfiguration--------------------------------------------------------
@@ -499,7 +494,12 @@ Veranschaulichung der Phasen in Abb. \ref{fig:cstKonstruktion}
 Zuerst werden benötige Datentypen beschrieben. Ein Baum ist entweder ein Blatt oder eine Verzweigung. Eine Verzweigung ist eine Liste von Tupeln, wobei erstes Element vom Tupel eine Kante (also, eine Kantenbeschriftung) ist, und zweites Element ist der Unterbaum, der von der Kante ausgeht. $alf$ ist Typparameter vom Alphabet, $Label\:alf$ ist ein Liste von Elementen des Alphabets.
 Typ der EdgeFunktion bedeutet, dass man eine Liste von Wörter nimmt und auf ein Tupel abbildet, wobei erstes Element vom Tupel das längste gemeinsame Präfix der Wörter ist und zweites Element eine Liste von Wörter, von denen das längste gemeinsame Präfix entfernt wurde. Implementierung:
 
-\begin{lstlisting}
+\begin{lstlisting}[
+    caption = Typdefinitionen,
+    label = lst:typdefinitionen,
+    captionpos = b,
+    float = hb
+    ]
 -- | Darstellung von Suffix Trees
 data STree alf = Leaf | Branch [(Label alf, STree alf)] deriving Eq
 
@@ -510,27 +510,9 @@ type Label alf = [alf]
 type EdgeFunction alf = [[alf]] -> ([alf], [[alf]])
 \end{lstlisting}
 
-Erzeugung der Suffixliste:
-\begin{lstlisting}
-suffixes :: [alf] -> [[alf]]
-suffixes []       = []
-suffixes aw@(_:w) = aw:suffixes w
-\end{lstlisting}
-
 Auswahl einer Gruppe, die mit einer Buchstabe anfängt, die im Parameter $a$ gebunden ist:
-\begin{lstlisting}
-select :: (Eq alf) => [[alf]] -> alf -> [[alf]]
-select ss a = [c:u | c:u <- ss, a == c]
-\end{lstlisting}
 
 Die folgende Funktion bestimmt das längste gemeinsame Präfix für eine Gruppe der Wörter. Die Gruppe wird als Eingabeliste übergeben. Zuerst wird geprüft, ob alle Wörter mit der gleichen Buchstabe anfangen. Falls es der Fall ist, dann wird die Buchstabe an $cp$ angehängt und eine neue Liste ohne das erste Buchstabe erzeugt. Falls ein Wort sich endet, dann wird es weggelassen. Die Fkt terminiert falls es nur ein Wort in der Gruppe bleibt oder wenn nicht alle Restwörter in der Gruppe mit der gleichen Buchstabe anfangen. Die Funktion gibt ein Tupel zurück, wobei erstes Element vom Tupel das längste gemeinsame Präfix der Wörter in der Eingabeliste ist und zweites Element eine Liste von restlichen Wörter, von denen das längste gemeinsame Präfix entfernt wurde. Implementierung:
-\begin{lstlisting}
-edge :: (Eq alf) => EdgeFunction alf
-edge [s] = ([s], [[]])
-edge awss@((a:_):ss) | all (\c:_ -> a == c) ss = (a:cp, rss)
-                     | otherwise               = ([], awss)
-                     where (cp, rss) = edge ([t | _:t <- awss, length t > 0])
-\end{lstlisting}
 
 Nächste Funktion setzt die oben besprochene Funktionen zusammen und erzeugt den kompletten Baum. Als Eingabe wird die Funktion $edge$, einen Alphabet des gegebenen Wort in der Form einer Liste von Buchstaben und ein Wort t, für das Siffixbaum aufgebaut werden soll, gegeben. Die Suffixliste von $t$ wird an einer Hilfsfunktion $sTr$ geliefert, die den Baum wie folgt rekursiv aufbaut:
 
@@ -547,9 +529,30 @@ Die Kantenliste wird aufgebaut, indem:
     \item Falls die Gruppe nicht leer ist, wird durch den Aufruf von $edge$ das gemeinsame Präfix und die Liste von Restwörter berechnet.
 \end{enumerate}
 Implementierung:
-\begin{lstlisting}
-lazy_cst ::(Eq alf) => (EdgeFunction alf) -> [alf] -> [alf] -> STree alf
+\begin{lstlisting}[
+    caption = Algorithmus zur Suffix Tree Konstruktion,
+    label = lst:AlgorithmusZurSuffixTreeKonstruktion,
+    captionpos = b,
+    float = hb
+    ]
+-- | Liefert eine Liste aller Suffixe eines gegebenen Wortes
+suffixes :: [alf] -> [[alf]]
+suffixes []       = []
+suffixes aw@(_:w) = aw:suffixes w
 
+-- | Liefert alle Woerter mit Anfangsbuchstaben a
+select :: (Eq alf) => [[alf]] -> alf -> [[alf]]
+select ss a = [c:u | c:u <- ss, a == c]
+
+-- | Funktion zur Kantenerzeugung
+edge :: (Eq alf) => EdgeFunction alf
+edge [s] = ([s], [[]])
+edge awss@((a:_):ss) | all (\c:_ -> a == c) ss = (a:cp, rss)
+                     | otherwise               = ([], awss)
+                     where (cp, rss) = edge ([t | _:t <- awss, length t > 0])
+
+-- | Konstruktion des Suffix Trees
+lazy_cst ::(Eq alf) => (EdgeFunction alf) -> [alf] -> [alf] -> STree alf
 lazy_cst edge alpha t = sTr (suffixes t)
     where
     sTr [[]] = Leaf
@@ -586,21 +589,22 @@ Weiter wird das worst-case vom WOTD-Algoritmus bestimmt. Dieses produziert z.B. 
 
 Im Abschluss des Kapitels möchten wir zeigen, dass mit dem erzeugten Suffixbaum kann man nicht nur Suffixe effezient suchen, sondern auch Teilwörter vom gegebenen Wort. Dafür definieren wir eine Hilfsfunkktion, die ähnlich wie die $edge$-Funktion arbeitet:
 
-\begin{lstlisting}
-commonPrefix :: (Eq alph) => Word alph -> Word alph -> (Word alph, Word alph, Word alph)
-
-commonPrefix w1 w2 = g w1 w2 []
-    where g (x:xs) (y:ys) cp | (x == y) = g xs ys (x:cp)
-          g w1 w2 cp  = (w1, w2, reverse cp)
-\end{lstlisting}
-
 Die Funktion bestimmt das längste gemeinsame Präfix von zwei Wörter und liefert zurück ein Tripel $(w1',\: w2',\: cp)$, wobei $cp$ das längste gemeinsame Präfix ist, $w1'$ und $w2'$ sind Ergebnisse der Entfernung $cp$ von $w1$ bzw. $w2$.
 
 Die tatsächliche Teilwortsuche haben wir mit der Funktion $search$ gelöst:
 
-\begin{lstlisting}
-search :: (Eq alph) => Word alph -> STree alph -> Bool
+\begin{lstlisting}[
+    caption = Suche im Suffix Tree,
+    label = lst:SucheImSuffixTree,
+    captionpos = b,
+    float = hb
+    ]
+commonPrefix :: (Eq alph) => Word alph -> Word alph -> (Word alph, Word alph, Word alph)
+commonPrefix w1 w2 = g w1 w2 []
+    where g (x:xs) (y:ys) cp | (x == y) = g xs ys (x:cp)
+          g w1 w2 cp  = (w1, w2, reverse cp)
 
+search :: (Eq alph) => Word alph -> STree alph -> Bool
 search ss Leaf        = False
 search ss (Branch es) =  g ss es
     where
