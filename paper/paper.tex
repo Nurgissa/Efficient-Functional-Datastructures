@@ -1548,7 +1548,9 @@ Für ein $i \in [0,n]$ wird ein Suffix $S_i = T[i,n) = t_i t_{i+1} \dots t_n$ de
 
 Für eine Menge $C \subseteq [0,n]$ wird eine Suffixmenge $S_C = \{ S_i \mid i \in C\}$ eingeführt.
 
-Suffixarray $SA[0,n)$ eines Wortes $T[0,n)$ ist eine Permutation von $[0,n)$ mit der Eigenschaft $S_{SA[0]} \prec S_{SA[1]} \prec \dots \prec S_{SA[n-1]}$, wobei die $\prec$--Relation die lexikographische Ordnung auf Wörter bezeichnet.
+\begin{definition}[Suffix Array]
+Ein Suffix Array $SA[0,n)$ für ein gegebenes Wort $T[0,n)$ ist eine Permutation von $[0,n)$ mit $S_{SA[0]} \prec S_{SA[1]} \prec \dots \prec S_{SA[n-1]}$, wobei $\prec$ die lexikographische Ordnung auf Zeichenketten bezeichnet.
+\end{definition}
 
 %////////////////////////////////////////////////////////////////////////////
 \section{DC3-Algorithmus}
@@ -1754,7 +1756,7 @@ $$
 
 \textbf{Eigenschaften von DC3}
 
-Laufzeit des Algorithmus ist $O(n)$ im Worst case, das ist der schnellste Algorithmus in der Klasse $O(n)$ für den Aufbau des Suffixarrays. Die schnellere Algorithmen, wie z.B. qsufsort \cite{Larsson2007}, haben einen schlechteren Worst case $O(n \log n)$. 
+Laufzeit des Algorithmus ist $O(n)$ im Worst case, das ist der schnellste Algorithmus in der Klasse $O(n)$ für den Aufbau des Suffixarrays. Die schnellere Algorithmen, wie z.B. qsufsort \cite{Larsson2007}, haben einen schlechteren Worst case $O(n \log n)$.
 
 %////////////////////////////////////////////////////////////////////////////
 % Literaturverzeichnis
