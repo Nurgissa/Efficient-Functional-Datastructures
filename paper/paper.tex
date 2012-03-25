@@ -874,9 +874,10 @@ Die Beweisidee für den $ast$ ist in Abb. \ref{fig:SpeicherplatzbedarfAst} skizz
 \label{fig:SpeicherplatzbedarfAst}
 \end{figure}
 
-Der Beweis für die Speicherplatzkomplexität des $pst$ erfolgt analog für das Wort $a^nb^na^nb^n$. Obwohl der Speicherplatzbedarf eines $pst$ im Worst Case in $O(n^2)$ liegt, wird in der Praxis meistens nur $O(n)$ benötigt.
+Der Beweis für die Speicherplatzkomplexität des $pst$ erfolgt analog für das Wort $a^nb^na^nb^n$.
 \end{proof}
 
+Obwohl der Speicherplatzbedarf eines $pst$ im Worst Case in $O(n^2)$ liegt, wird in der Praxis meistens nur $O(n)$ benötigt.
 Aufgrund der optimalen Speicherplatzcharakteristik des $cst$ konzentrieren wir uns im Folgenden auf diese Suffix Tree Klasse.
 
 %////////////////////////////////////////////////////////////////////////////
@@ -939,7 +940,6 @@ Sei $D = \{s_1, \dots, s_n\}$ eine Menge von Strings über $\Sigma$, $T = \{t_1,
             node[left]{$\$$}
         }
         child {
-            node[branch]{}
             edge from parent
             node[right]{$\#$}
         }
@@ -951,6 +951,9 @@ Sei $D = \{s_1, \dots, s_n\}$ eine Menge von Strings über $\Sigma$, $T = \{t_1,
 \caption{$GST$ für $D = \{agcg, acg\}$ und $T = \{\$, \#\}$}
 \label{fig:GSTAgcgAcg}
 \end{figure}
+
+Da die Menge der Terminalsymbole $T$ und das Alphabet $\Sigma$ disjunkt sind, kann jedes Blatt eines $GST_D$ genau einem String aus $D$ zugeordnet werden. Diese Eigenschaft spielt eine wichtige Rolle für viele Anwendungsgebiete von Generalized Suffix Trees, wie z.B. dem in Abschnitt \ref{sec:LongestCommonSubstring}.
+
 %////////////////////////////////////////////////////////////////////////////
 \section{Anwendungsgebiete}
 \label{sec:Anwendungsgebiete}
@@ -961,9 +964,33 @@ Sei $D = \{s_1, \dots, s_n\}$ eine Menge von Strings über $\Sigma$, $T = \{t_1,
 \label{sec:Ueberblick}
 %////////////////////////////////////////////////////////////////////////////
 
+Suffix Trees eignen sich insbesondere für Problemlösungen im Bereich der Stringverarbeitung.
+
+\begin{table}
+\centering
+\begin{tabular}{l}
+    \toprule
+    All-pairs suffix-prefix matching      \\
+    Construction of DAWGs                 \\
+    Exact set matching                    \\
+    Exact string matching                 \\
+    k-mismatch                            \\
+    \textbf{Longest common substring}     \\
+    Matching statistics                   \\
+    Maximal repeated pairs                \\
+    Maximal repeats                       \\
+    Supermaximal repeats                  \\
+    Ziv–Lempel decomposition              \\
+    ...                                   \\
+    \bottomrule
+\end{tabular}
+\caption{Anwendungsgebiete für Suffix Trees}
+\label{tab:AnwendungsgebieteFuerSuffixTrees}
+\end{table}
+
 %////////////////////////////////////////////////////////////////////////////
 \subsection{Longest common substring}
-\label{sec:longestCommonSubstring}
+\label{sec:LongestCommonSubstring}
 %////////////////////////////////////////////////////////////////////////////
 
 %////////////////////////////////////////////////////////////////////////////
@@ -1379,17 +1406,17 @@ Sei ein Teilwort $cgac$ im Wort $agcgacgag$ gesucht. Wir definieren ein passende
 \section{Terminologie}
 \label{sec:Terminologie}
 %////////////////////////////////////////////////////////////////////////////
-Im Folgenden benutzen wir die Notation, die in \cite{Karkkainen2006} eingeführt worden ist. 
+Im Folgenden benutzen wir die Notation, die in \cite{Karkkainen2006} eingeführt worden ist.
 
 Intervalle werden mit $[i,j] = \{ i, \dots, j\}$ und $[i,j) = [i,j-1]$ bezeichnet.
 
 Ein Wort über ein Alphabet wird als $T = T[0,n) = t_0 t_1 \dots t_{n-1}$ dargestellt. Es wird die Konvention verwendet, dass $t_j = 0$ für $j \ge n$ ist.
 
-Für ein $i \in [0,n]$ wird ein Suffix $S_i = T[i,n) = t_i t_{i+1} \dots t_n$ definiert.  
+Für ein $i \in [0,n]$ wird ein Suffix $S_i = T[i,n) = t_i t_{i+1} \dots t_n$ definiert.
 
 Für eine Menge $C \subseteq [0,n]$ wird eine Suffixmenge $S_C = \{ S_i \mid i \in C\}$ eingeführt.
 
-Suffixarray $SA[0,n)$ eines Wortes $T[0,n)$ ist eine Permutation von $[0,n)$ mit der Eigenschaft $S_{SA[0]} \prec S_{SA[1]} \prec \dots \prec S_{SA[n-1]}$, wobei die $\prec$--Relation die lexikographische Ordnung auf Wörter bezeichnet.  
+Suffixarray $SA[0,n)$ eines Wortes $T[0,n)$ ist eine Permutation von $[0,n)$ mit der Eigenschaft $S_{SA[0]} \prec S_{SA[1]} \prec \dots \prec S_{SA[n-1]}$, wobei die $\prec$--Relation die lexikographische Ordnung auf Wörter bezeichnet.
 
 %////////////////////////////////////////////////////////////////////////////
 \section{DC3-Algorithmus}
@@ -1430,13 +1457,11 @@ $$
 
 Für k = 1,2 werden folgende Zeichenketten konstruiert:
 $$
-R_k = [t_k t_{k+1} t_{k+2}][t_{k+3} t_{k+4} t_{k+5}] \dots [t_{max\:B_k}} t_{max\:B_k + 1} t_{max\:B_k + 2}]
+R_k = [t_k t_{k+1} t_{k+2}][t_{k+3} t_{k+4} t_{k+5}] \dots [t_{max\:B_k} t_{max\:B_k + 1} t_{max\:B_k + 2}]
 $$
 wobei jedes Tripel der Form $[t_i t_{i+1} t_{i+2}]$ ein Sample ist. Sei $R = R_1 \odot R_2$ die Konkatenation von $R_1$ und $R_2$. Die Samples von $R$ korrespondieren mit der Menge $S_C$ von Sample-Suffixen, so dass $[t_i t_{i+1} t_{i+2}] \dots$ korrespondiert mit $S_i$. In unserem Beispiel:
 $$
-\begin{tikzpicture}
-    \node (n1) {\color{black}R = [abb][ada]][bba][do0][bba][dab][bad][o00]};
-\end{tikzpicture}
+R = [abb][ada]][bba][do0][bba][dab][bad][o00]
 $$
 
 Die Samples von $R$ werden mit Radixsort sortiert und es wird jedem Sample sein Rang zugewiesen:
@@ -1465,7 +1490,7 @@ $$
         \color{black}[do0] \&
         \color{black}[o00] \\
     };
-\end{tikzpicture}  
+\end{tikzpicture}
 $$
 Dann wird eine neue Zeichenkette $R'$ erzeugt, indem jedes Sample in $R$ durch sein Rang ersetzt wird:
 $$
