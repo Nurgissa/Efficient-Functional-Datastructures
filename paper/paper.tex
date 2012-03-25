@@ -1414,7 +1414,7 @@ $$
 SA = (1,6,4,9,3,8,2,7,5,10,11,0)
 $$
 
-\textbf{Schritt 0: Die Konstruktion der Samples}
+\textbf{Schritt 0: Die Konstruktion der Sample-Suffixe}
 
 Für $k = 0,1,2$ werden Mengen wie folgt definiert:
 $$
@@ -1426,7 +1426,7 @@ $$
 B_1 = \{1,4,7,10\},\;B_2 = \{2,5,8,11\},\;C = \{1,4,7,10,2,5,8,11\}
 $$
 
-\textbf{Schritt 1: Das Sortieren der Samples}
+\textbf{Schritt 1: Das Sortieren der Sample-Suffixe}
 
 Für k = 1,2 werden folgende Zeichenketten konstruiert:
 $$
@@ -1545,6 +1545,18 @@ $$
 \caption{Sort recursive}
 \label{fig:sortRecursive}
 \end{figure}
+
+\textbf{Schritt 2: Das Sortieren der Nicht-Sample-Suffixe}
+
+Das sind die Suffixe aus der Menge $S_{B_0} = \{S_i \mid i \in B_0\}$. Jedes Suffix $S_i \in S_{B_0}$ wird mit dem Tupel $(t_i,rank(S_{i+1}))$ repräsentiert. Die Tupel werden mit Radixsort sortiert, indem:
+$$
+S_i \le S_j \; \leftrightarrow \; (t_i,rank(S_{i+1})) \le (t_j,rank(S_{j+1}))
+$$
+Im Beispiel:
+$$
+S_6 < S_9 < S_3 < S_0 \mbox{, weil }(a,5) < (a,7) < (b,2) < (y,1)
+$$
+
 %////////////////////////////////////////////////////////////////////////////
 % Literaturverzeichnis
 %////////////////////////////////////////////////////////////////////////////
