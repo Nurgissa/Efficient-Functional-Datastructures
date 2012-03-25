@@ -804,9 +804,6 @@ Ein Wort $t$ der Länge $n$ besitzt $n$ Suffixe. Jedes Blatt in einem Suffixbaum
 
 Die Beweisidee für den $ast$ ist in Abb. \ref{fig:SpeicherplatzbedarfAst} skizziert. Der Worst Case tritt für diesen Baumtypen beispielsweise für das Wort $a^nb^n$ ein. In diesem Fall enthält der $ast$ $n + 1$ Knoten, die durch $a$-Kanten miteinander verbunden sind. Von jedem dieser Knoten zweigt ein Teilbaum mit einem Speicherplatzbedarf von $O(n)$ ab, wodurch wir insgesamt eine Speicherplatzkomplexität von $O(n^2)$ für den gesamten $ast$ erhalten.
 
-Der Beweis für die Speicherplatzkomplexität des $pst$ erfolgt analog für das Wort $a^nb^na^nb^n$. Obwohl der Speicherplatzbedarf eines $pst$ im Worst Case in $O(n^2)$ liegt, wird in der Praxis meistens nur $O(n)$ benötigt.
-\end{proof}
-
 \begin{figure}
 \centering
 \begin{tikzpicture}[
@@ -877,11 +874,83 @@ Der Beweis für die Speicherplatzkomplexität des $pst$ erfolgt analog für das 
 \label{fig:SpeicherplatzbedarfAst}
 \end{figure}
 
+Der Beweis für die Speicherplatzkomplexität des $pst$ erfolgt analog für das Wort $a^nb^na^nb^n$. Obwohl der Speicherplatzbedarf eines $pst$ im Worst Case in $O(n^2)$ liegt, wird in der Praxis meistens nur $O(n)$ benötigt.
+\end{proof}
+
+Aufgrund der optimalen Speicherplatzcharakteristik des $cst$ konzentrieren wir uns im Folgenden auf diese Suffix Tree Klasse.
+
 %////////////////////////////////////////////////////////////////////////////
 \subsection{Generalized Suffix Tree}
 \label{sec:GeneralizedSuffixTree}
 %////////////////////////////////////////////////////////////////////////////
 
+Bisher haben wir uns auf Suffix Trees für eine gegebene Zeichenkette beschränkt. Viele Anwendungsgebiete erfordern jedoch eine Verallgemeinerung dieses Konzepts um Suffix Trees für eine Menge von Zeichenketten konstruieren zu können. Diese Art von Suffix Trees werden meistens als Generalized Suffix Trees $GST$ bezeichnet.
+
+\begin{definition}[Generalized Suffix Tree]
+Sei $D = \{s_1, \dots, s_n\}$ eine Menge von Strings über $\Sigma$, $T = \{t_1, \dots, t_n\}$ eine Menge von Terminalsymbolen mit $T \cap \Sigma = \emptyset$. Ein $GST_D$ ist ein $\Sigma^+$-Baum, sodass für alle $i \leq n$ gilt:
+\begin{gather*}
+    w \in GST_D \Longleftrightarrow w \text{ ist ein } s_it_i\text{-Wort}
+\end{gather*}
+\label{def:GeneralizedSuffixTree}
+\end{definition}
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[
+    level 1/.style = {level distance = 12mm, sibling distance = 45mm},
+    level 2/.style = {level distance = 12mm, sibling distance = 25mm},
+    edge from parent/.style = {->, draw}
+    ]
+    \node[branch]{}
+    child {
+        node[branch]{}
+        child {
+            edge from parent
+            node[left]{$gcg\$$}
+        }
+        child {
+            edge from parent
+            node[right]{$cg\#$}
+        }
+        edge from parent
+        node[above]{$a$}
+    }
+    child {
+        node[branch]{}
+        child {
+            edge from parent
+            node[left]{$\$$}
+        }
+        child {
+            edge from parent
+            node[right]{$\#$}
+        }
+        edge from parent
+        node[left]{$cg$}
+    }
+    child {
+        node[branch]{}
+        child {
+            edge from parent
+            node[left]{$cg\$$}
+        }
+        child {
+            edge from parent
+            node[left]{$\$$}
+        }
+        child {
+            node[branch]{}
+            edge from parent
+            node[right]{$\#$}
+        }
+        edge from parent
+        node[above]{$g$}
+    };
+\end{tikzpicture}
+\medskip
+\caption{$GST$ für $D = \{agcg, acg\}$ und $T = \{\$, \#\}$}
+\label{fig:GSTAgcgAcg}
+\end{figure}
 %////////////////////////////////////////////////////////////////////////////
 \section{Anwendungsgebiete}
 \label{sec:Anwendungsgebiete}
