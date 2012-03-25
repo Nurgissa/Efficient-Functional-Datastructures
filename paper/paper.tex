@@ -1173,9 +1173,47 @@ let alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
 in  search "cgac" (lazy_cst edge alphabet word)
 \end{lstlisting}
 
-Dank der laziness-Eigenschaft, werden nur die Kanten vom Suffixbaum während der Suche konstruiert, die für die Suche relevant sind. Der Rest vom Suffixbaum wird gar nicht angeschaut. Diese Eigenschaft zeigen wir an einem Beispiel.
+Dank der laziness-Eigenschaft, werden nur die Kanten vom Suffixbaum während der Suche konstruiert, die für die Suche relevant sind, und der Rest vom Suffixbaum wird gar nicht angeschaut. Diese Eigenschaft zeigen wir an einem Beispiel.
 
-Sei ein Teilwort $cgac$ im Wort $agcgacgag$ gesucht.
+Sei ein Teilwort $cgac$ im Wort $agcgacgag$ gesucht. Wir definieren ein passendes Alphabet und übergeben es mit dem Teilwort und dem Wort an der Funktion $search$ (siehe Listing \ref{lst:SucheImSuffixTree}). Die Abb. \ref{fig:teilwortuche} zeigt das Teil des Suffixbaums, das während der Suche konstruiert wird.
+
+\begin{figure}[b]
+\centering
+\begin{tikzpicture}[
+    font = \small,
+    level 1/.style = {level distance = 7mm, sibling distance = 30mm},
+    level 2/.style = {level distance = 7mm, sibling distance = 15mm},
+    level 3/.style = {level distance = 7mm, sibling distance = 10mm},
+    edge from parent/.style = {->, draw}
+    ]
+    { [yshift = 0cm]
+        \node[branch]{}
+        child {
+            node[branch] (a) {}
+            edge from parent
+            node[above]{$a$}
+        }
+        child[level distance = 16mm] {
+            node[branch]{}
+            child {
+                edge from parent
+                node[left]{$\boldsymbol{c}gag$}
+            }
+            child[child anchor = north] {
+                edge from parent[dotted]
+            }
+            edge from parent
+            node[left]{$\boldsymbol{cga}$}
+        }
+        child[child anchor = north] {
+            edge from parent[dotted]
+        };
+    }
+    \node[subtree] at (a.center) {};
+\end{tikzpicture}
+\caption{Beispiel für die Teilwortsuche}
+\label{fig:teilwortuche}
+\end{figure}
 
 %////////////////////////////////////////////////////////////////////////////
 \chapter{Suffix Array}
