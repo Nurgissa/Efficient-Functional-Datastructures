@@ -136,6 +136,7 @@
 % Umgebung Bemerkung
 \newtheorem{remark}{Bemerkung}
 \newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
 
 \newcommand{\coloneqq}{\mathrel{\mathop:}=}
 
@@ -194,8 +195,8 @@ Sei $t = uvw$ mit $u, v, w \in \Sigma^*$. Dann ist $u$ ein Präfix und $w$ ein S
 \end{definition}
 
 \begin{definition}[$\Sigma^+$-Baum]
-\label{def:SigmaPlusBaum}
 Ein $\Sigma^+$-Baum ist ein Baum, dessen Kanten mit Wörtern aus $\Sigma^+$ beschriftet sind. Die Kanten eines $\Sigma^+$-Baums erfüllen folgendes Eindeutigkeitskriterium: Für alle Kanten $k \xrightarrow{aw} k'$ und $k \xrightarrow{bv} k''$ folgt $a = b$.
+\label{def:SigmaPlusBaum}
 \end{definition}
 
 Abb. \ref{fig:SigmaPlusTree} zeigt einen $\Sigma^+$-Baum für das Alphabet $\Sigma = \{a, \dots, g \}$. Um im weiteren Verlauf besser über diese Art von Bäumen und ihre Bestandteile sprechen zu können, benötigen wir noch eine Reihe von nützlichen Definitionen.
@@ -256,8 +257,8 @@ Abb. \ref{fig:SigmaPlusTree} zeigt einen $\Sigma^+$-Baum für das Alphabet $\Sig
 \end{figure}
 
 \begin{definition}[Pfad]
-\label{def:Pfad}
 Die Funktion $path(k)$ bezeichnet die Konkatenation der Kantenbeschriftungen von der Wurzel bis zum Knoten $k$.
+\label{def:Pfad}
 \end{definition}
 
 Mithilfe der obigen Definition \ref{def:Pfad}, lässt sich eine elegante Notation für die Bezeichnung von Knoten eines $\Sigma^+$-Baumes einführen\footnote{Diese Notation wird in \cite{Ukkonen1995} eingeführt.}. Mit $\overline{w}$ bezeichnen wir genau dann einen Knoten $k$, wenn $path(k) = w$. Dieser Zusammenhang wird in Abb. \ref{fig:NotationZurKnotenbezeichnung} veranschaulicht.
@@ -389,11 +390,11 @@ Somit kann das Problem der exakten Teilwortsuche auf eine Präfixsuche auf den S
 \end{figure}
 
 \begin{definition}[Suffix Tree\footnote{Auf diese Art und Weise werden Suffix Trees in \cite{Giegerich1995} definiert.}]
-\label{def:SuffixTree}
 Ein Suffix Tree $S_t$ für ein gegebenes Wort $t$ ist ein $\Sigma^+$-Baum, sodass gilt:
 \begin{gather*}
     w \in S_t \Longleftrightarrow w \text{ ist ein }t\text{-Wort}
 \end{gather*}
+\label{def:SuffixTree}
 \end{definition}
 
 Ausgehend von dieser allgemeinen Definition, werden Suffix Trees abhängig von der Anzahl ihrer Kanten nochmals in drei verschiedene Klassen unterteilt. Zur Unterscheidung dieser Klassen betrachten wir die Kantenmengen der Suffix Trees. Ein Suffix Tree $S_t$ für ein Wort $t$, repräsentiert durch seine Kantenmenge $E$ heißt
@@ -412,8 +413,6 @@ Kantenverschmelzung ist eine Relation auf $\Sigma^+$-Bäumen, die durch ihre Kan
 wenn $\overline{w} \xrightarrow{u'} \overline{v}$ ist die einzige ausgehende Kante von $\overline{w}$. Die Umkehrrelation bezeichnen wir als Kantenteilung.
 \end{definition}
 Abb. \ref{fig:Kantenverschmelzung} zeigt, wie der Knoten $w$ mittels Kantenverschmelzung aus dem Baum entfernt wird. Es ist darauf zu achten, dass der Knoten $w$ keine Verzweigung ist.
-
-Während $ast$ eine Normalform bezüglich Kantenteilung und $cst$ eine Normalform bezüglich Kantenverschmelzung darstellen, repräsentiert der $pst$ ein Hybridstadium zwischen $ast$ und $pst$. Abb. \ref{fig:SuffixTreeKlassen} zeigt alle drei Suffix Tree Klassen für diesselbe Zeichenkette $agcgacgag$.
 
 \begin{figure}[htb]
 \centering
@@ -484,7 +483,9 @@ Während $ast$ eine Normalform bezüglich Kantenteilung und $cst$ eine Normalfor
 \label{fig:Kantenverschmelzung}
 \end{figure}
 
-\begin{figure}
+Während $ast$ eine Normalform bezüglich Kantenteilung und $cst$ eine Normalform bezüglich Kantenverschmelzung darstellen, repräsentiert der $pst$ ein Hybridstadium zwischen $ast$ und $pst$. Abb. \ref{fig:SuffixTreeKlassen} zeigt alle drei Suffix Tree Klassen für diesselbe Zeichenkette $agcgacgag$.
+
+\begin{figure}[htb]
 \centering
 \begin{tikzpicture}[
     font = \small,
@@ -791,6 +792,16 @@ Während $ast$ eine Normalform bezüglich Kantenteilung und $cst$ eine Normalfor
 \label{fig:SuffixTreeKlassen}
 \end{figure}
 
+Zum Abschluss dieses Abschnitts möchten wir auf die Speicherplatzkomplexität der Suffix Tree Klassen eingehen.
+
+\begin{lemma}[Speicherplatzkomplexität $cst$]
+$cst$ besitzt einen Speicherplatzkomplexität von $O(n)$.
+\label{lem:SpeicherplatzkomplexitaetCst}
+\end{lemma}
+
+\begin{proof}[Beweis des Lemma \ref{lem:SpeicherplatzkomplexitaetCst}]
+Ein Wort $t$ der Länge $n$ besitzt $n$ Suffixe. Aus dem Aufbau von Suffix Trees folgt, dass ein $cst$ höchstens $n$ Blätter besitzt.
+\end{proof}
 %////////////////////////////////////////////////////////////////////////////
 \subsection{Generalized Suffix Tree}
 \label{sec:GeneralizedSuffixTree}
