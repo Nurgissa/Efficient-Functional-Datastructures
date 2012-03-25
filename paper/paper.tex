@@ -1383,7 +1383,7 @@ Im Folgenden benutzen wir die Notation, die in \cite{Karkkainen2006} eingeführt
 
 Intervalle werden mit $[i,j] = \{ i, \dots, j\}$ und $[i,j) = [i,j-1]$ bezeichnet.
 
-Ein Wort über ein Alphabet wird als $T = T[0,n) = t_0 t_1 \dots t_{n-1}$ dargestellt. Es wird die Konvention verwendet, dass $t_j = 0$ für $j \ge n$ ist.
+Ein Wort über ein Alphabet wird als $T = T[0,n) = t_0 t_1 \dots t_{n-1}$ dargestellt, wobei $t_i$ Buchstaben des Alphabets sind. Es wird die Konvention verwendet, dass $t_j = 0$ für $j \ge n$ ist.
 
 Für ein $i \in [0,n]$ wird ein Suffix $S_i = T[i,n) = t_i t_{i+1} \dots t_n$ definiert.  
 
@@ -1555,6 +1555,13 @@ $$
 Im Beispiel:
 $$
 S_6 < S_9 < S_3 < S_0 \mbox{, weil }(a,5) < (a,7) < (b,2) < (y,1)
+$$
+
+\textbf{Schritt 3: Merge}
+
+Zu diesem Schritt haben wir zwei sortierte Mengen, die jetzt vereinigt werden müssen. Um die Sample-Suffixe mit Nicht-Sample-Suffixe zu vergleichen, wird folgende Ordnung benutzt:
+$$
+i \in B_1
 $$
 
 %////////////////////////////////////////////////////////////////////////////
