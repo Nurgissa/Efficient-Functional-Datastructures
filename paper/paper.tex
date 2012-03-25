@@ -56,6 +56,10 @@
 %\renewcommand{\baselinestretch}{1.5} 	% Uncomment for 1.5 spacing between lines
 \parindent 0pt		  	 % sets leading space for paragraphs
 
+%--Figure-Konfiguartion------------------------------------------------------
+
+\setlength{\abovecaptionskip}{5mm}
+
 %--Fancyheadings-Konfiguration-----------------------------------------------
 
 \pagestyle{fancy}
@@ -251,7 +255,6 @@ Abb. \ref{fig:SigmaPlusTree} zeigt einen $\Sigma^+$-Baum für das Alphabet $\Sig
         node[above]{$gac$}
     };
 \end{tikzpicture}
-\medskip
 \caption{$\Sigma^+$-Baum für $\Sigma = \{a, \dots, g\}$}
 \label{fig:SigmaPlusTree}
 \end{figure}
@@ -300,7 +303,6 @@ Mithilfe der obigen Definition \ref{def:Pfad}, lässt sich eine elegante Notatio
     };
     \node[left = 2mm] at (n) {$\overline{vu}$};
 \end{tikzpicture}
-\medskip
 \caption{Notation zur Knotenbezeichnung}
 \label{fig:NotationZurKnotenbezeichnung}
 \end{figure}
@@ -384,7 +386,6 @@ Somit kann das Problem der exakten Teilwortsuche auf eine Präfixsuche auf den S
         node[above]{$g$}
     };
 \end{tikzpicture}
-\medskip
 \caption{Suffix Tree für die Zeichenkette $agcgacgag$}
 \label{fig:suffixTreeAgcgacgag}
 \end{figure}
@@ -478,7 +479,6 @@ Abb. \ref{fig:Kantenverschmelzung} zeigt, wie der Knoten $w$ mittels Kantenversc
     \node[yshift = 2mm, xshift = 3mm] at (s2.center) {$\overline{s}$};
     \node[right] at (v2.center) {$\overline{v}$};
 \end{tikzpicture}
-\medskip
 \caption{Kantenverschmelzung}
 \label{fig:Kantenverschmelzung}
 \end{figure}
@@ -787,7 +787,6 @@ Während $ast$ eine Normalform bezüglich Kantenteilung und $cst$ eine Normalfor
         \node[left = 2cm, yshift = 2mm] at (root) {$\boldsymbol{cst}$};
     }
 \end{tikzpicture}
-\medskip
 \caption{Suffix Tree Klassen: $ast$, $pst$ und $cst$ für die Zeichenkette $agcgacgag$}
 \label{fig:SuffixTreeKlassen}
 \end{figure}
@@ -947,7 +946,6 @@ Sei $D = \{s_1, \dots, s_n\}$ eine Menge von Strings über $\Sigma$, $T = \{t_1,
         node[above]{$g$}
     };
 \end{tikzpicture}
-\medskip
 \caption{$GST$ für $D = \{agcg, acg\}$ und $T = \{\$, \#\}$}
 \label{fig:GSTAgcgAcg}
 \end{figure}
@@ -975,7 +973,7 @@ Suffix Trees eignen sich insbesondere für Problemlösungen im Bereich der Strin
     Exact set matching                    \\
     Exact string matching                 \\
     k-mismatch                            \\
-    \textbf{Longest common substring}     \\
+    Longest common substring              \\
     Matching statistics                   \\
     Maximal repeated pairs                \\
     Maximal repeats                       \\
@@ -992,6 +990,141 @@ Suffix Trees eignen sich insbesondere für Problemlösungen im Bereich der Strin
 \subsection{Longest common substring}
 \label{sec:LongestCommonSubstring}
 %////////////////////////////////////////////////////////////////////////////
+
+\begin{figure}
+\centering
+\begin{tikzpicture}[
+    level 1/.style = {level distance = 10mm, sibling distance = 60mm},
+    level 2/.style = {level distance = 10mm, sibling distance = 30mm},
+    level 3/.style = {level distance = 10mm, sibling distance = 20mm},
+    edge from parent/.style = {->, draw}
+    ]
+    \node[branch]{}
+    child {
+        node[branch]{}
+        child {
+            node[branch] (w1) {}
+            child {
+                edge from parent
+                node[left]{$a\$$}
+            }
+            child {
+                edge from parent
+                node[right, xshift = 1mm]{$ga\#$}
+            }
+            edge from parent
+            node[left]{$g$}
+        }
+        child {
+            edge from parent
+            node[right, xshift = 1mm]{$\$, \#$}
+        }
+        edge from parent
+        node[above]{$a$}
+    }
+    child {
+        node[branch]{}
+        child {
+            node[branch] (w2) {}
+            child {
+                edge from parent
+                node[left]{$ga\$$}
+            }
+            child {
+                edge from parent
+                node[right]{$\$, \#$}
+            }
+            edge from parent
+            node[left]{$a$}
+        }
+        child {
+            edge from parent
+            node[right, xshift = 2mm]{$ga\#$}
+        }
+        edge from parent
+        node[above]{$g$}
+    };
+    \node[yshift = 3mm, xshift = -7mm] at (w1.center) {$\overline{w}$} edge [dotted] (w1);
+    \node[yshift = 3mm, xshift = -7mm] at (w2.center) {$\overline{w}$} edge [dotted] (w2);
+\end{tikzpicture}
+\caption{Längstes gemeinsames Teilwort $w$}
+\label{fig:LaengstesGemeinsamesTeilwortW}
+\end{figure}
+
+\begin{figure}
+\centering
+\begin{tikzpicture}[
+    level 1/.style = {level distance = 10mm, sibling distance = 60mm},
+    level 2/.style = {level distance = 10mm, sibling distance = 30mm},
+    level 3/.style = {level distance = 10mm, sibling distance = 20mm},
+    edge from parent/.style = {->, draw}
+    ]
+    \node[branch] (b1) {}
+    child {
+        node[branch] (b2) {}
+        child {
+            node[branch] (b3) {}
+            child {
+                node[leaf] (l1) {}
+                edge from parent
+                node[left]{$a\$$}
+            }
+            child {
+                node[leaf] (l2) {}
+                edge from parent
+                node[right, xshift = 1mm]{$ga\#$}
+            }
+            edge from parent
+            node[left]{$g$}
+        }
+        child {
+            node[leaf] (l3) {}
+            edge from parent
+            node[right, xshift = 1mm]{$\$, \#$}
+        }
+        edge from parent
+        node[above]{$a$}
+    }
+    child {
+        node[branch] (b4) {}
+        child {
+            node[branch] (b5) {}
+            child {
+                node[leaf] (l4) {}
+                edge from parent
+                node[left]{$ga\$$}
+            }
+            child {
+                node[leaf] (l5) {}
+                edge from parent
+                node[right]{$\$, \#$}
+            }
+            edge from parent
+            node[left]{$a$}
+        }
+        child {
+            node[leaf] (l6) {}
+            edge from parent
+            node[right, xshift = 2mm]{$ga\#$}
+        }
+        edge from parent
+        node[above]{$g$}
+    };
+    \node[yshift = 8mm] at (b1) {$(1, 1)$} edge [dotted] (b1);
+    \node[yshift = 3mm, xshift = -10mm] at (b2) {$(1, 1)$} edge [dotted] (b2);
+    \node[yshift = 3mm, xshift = -10mm] at (b3) {$(1, 1)$} edge [dotted] (b3);
+    \node[yshift = 3mm, xshift = 10mm] at (b4) {$(1, 1)$} edge [dotted] (b4);
+    \node[yshift = 3mm, xshift = -10mm] at (b5) {$(1, 1)$} edge [dotted] (b5);
+    \node[yshift = -8mm] at (l1) {$(1, 0)$} edge [dotted] (l1);
+    \node[yshift = -8mm] at (l2) {$0, 1)$} edge [dotted] (l2);
+    \node[yshift = -18mm] at (l3) {$(1, 1)$} edge [dotted] (l3);
+    \node[yshift = -8mm] at (l4) {$(1, 0)$} edge [dotted] (l4);
+    \node[yshift = -8mm] at (l5) {$(1, 1)$} edge [dotted] (l5);
+    \node[yshift = -18mm] at (l6) {$(0, 1)$} edge [dotted] (l6);
+\end{tikzpicture}
+\caption{Zuordnung der Bitvektoren}
+\label{ZuordnungDerBitvektoren}
+\end{figure}
 
 %////////////////////////////////////////////////////////////////////////////
 \section{Suffix Tree Konstruktion}
@@ -1190,7 +1323,6 @@ Weiter schauen wir uns ein Beispiel an, das zeigt wie der Algorithmus einen komp
         };
     }
 \end{tikzpicture}
-\medskip
 \caption{cst-Konstruktion für $t$ = $agcgacgag$}
 \label{fig:cstKonstruktion}
 \end{figure}
