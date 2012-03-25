@@ -975,17 +975,14 @@ In diesem Abschnitt wird ein Algorithmus dargestellt, der einen kompakten Suffix
 
 Erster Ansatz ist sukzessive Einfügung der Suffixe von $t$ in einen Baum, der als leer initialisiert wird. Die Konstruktion wird erfolgen mittels Iterationen über das Wort $t$, indem Suffixe von links nach rechts (oder auch umgekehrt) jedes Mal abgelesen werden.
 
-In dem zweiten Ansatz wird der Baum rekursiv aufgebaut, indem zuerst Kanten vom Wurzel aufgebaut werden und dann für jeden Unterbaum das Verfahren wiederholt wird. Wichtig, dass bei diesem Verfahren keine Updates vom Baum benötigt sind.
-
-Der Algorithmus, der wir uns in dieser Arbeit anschauen, verwendet den zweiten Ansatz. Dieser Algorithmus wurde als ''Write only top down suffix tree construction''\footnote{der Algorithmus wurde von R. Giegerich und S. Kurtz entwickelt. Siehe \cite{Giegerich1995}}, kurz geschrieben WOTD-Algorithmus, genannt. Er eignet sich für die funktionale Implementierung und insbesondere für die Benutzung von der laziness-Eigenschaft. Aus diesen Gründen wird für die Implementierung des Algorithmus Haskell benutzt\footnote{wir haben die Implementierung von \cite{Giegerich1995} genommen und leciht bearbeitet}.
-
-
-
+In dem zweiten Ansatz wird der Baum rekursiv aufgebaut, indem zuerst Kanten vom Wurzel aufgebaut werden und dann für jeden Unterbaum das Verfahren wiederholt wird.
 
 %////////////////////////////////////////////////////////////////////////////
 \subsection{WOTD-Algorithmus}
 \label{sec:WOTDAlgorithmus}
 %////////////////////////////////////////////////////////////////////////////
+
+Der Algorithmus, der wir uns in dieser Arbeit anschauen, verwendet den zweiten Ansatz. Dieser Algorithmus wurde als ''Write only top down suffix tree construction''\footnote{Der Algorithmus wurde von R. Giegerich und S. Kurtz entwickelt. Siehe \cite{Giegerich1995}.}, kurz geschrieben WOTD-Algorithmus, genannt. ''Write only'' steht für die Eigenschaft, dass die Knoten im Baum nur konstruiert werden und danach nicht mehr gelesen. ''Top down'' steht für den Art des Aufbaus: rekursive Konstruktion, beginnend an der Wurzel mit allen Suffixen. Der Algorithmus eignet sich für die funktionale Implementierung und insbesondere für die Benutzung von der laziness-Eigenschaft. Aus diesen Gründen wird für die Implementierung des Algorithmus Haskell benutzt\footnote{wir haben die Implementierung von \cite{Giegerich1995} genommen und leciht bearbeitet.}.
 
 Die Schritte des Algoritmus kann man wie folgt zusammenfassen:
 
@@ -1029,7 +1026,7 @@ Weiter schauen wir uns ein Beispiel an, das zeigt wie der Algorithmus einen komp
             \bottomrule
         \end{tabular}
         \end{center}
-        Nach dem Schritt ist das esrte Level vom Suffixbaum konstruiert. Sihe Abb. \ref{fig:cstKonstruktion}
+        Wie in der Abb. \ref{fig:cstKonstruktion} gezeigt ist, wird nach dem Schritt das esrte Level des Suffixbaums konstruiert.
     \item Weiter wird der Algorithmus ab Schritt 2 für die restlichen Gruppen rekursiv verwendet bis keine restliche Wörtet unter allen Kantnet mehr gibt. Die Ergebnisse von rekursiven Schritten und den aufgebauten kompakten Suffixbaum zeigt die Abb. \ref{fig:cstKonstruktion}
 \end{enumerate}
 
@@ -1176,7 +1173,7 @@ Weiter schauen wir uns ein Beispiel an, das zeigt wie der Algorithmus einen komp
 \label{sec:ImplementierungInHaskell}
 %////////////////////////////////////////////////////////////////////////////
 
-Zuerst werden benötige Datentypen beschrieben. Ein Baum ist entweder ein Blatt oder eine Verzweigung. Eine Verzweigung ist eine Liste von Tupeln, wobei erstes Element vom Tupel eine Kante (also, eine Kantenbeschriftung) ist, und zweites Element ist der Unterbaum, der von der Kante ausgeht. $alf$ ist Typparameter vom Alphabet, $Label\:alf$ ist ein Liste von Elementen des Alphabets.
+Zuerst werden benötige Datentypen im Listing \ref{lst:typdefinitionen} beschrieben. Ein Baum ist entweder ein Blatt oder eine Verzweigung. Eine Verzweigung ist eine Liste von Tupeln, wobei erstes Element vom Tupel eine Kante (also, eine Kantenbeschriftung) ist, und zweites Element ist der Unterbaum, der von der Kante ausgeht. $alf$ ist Typparameter vom Alphabet, $Label\:alf$ ist ein Liste von Elementen des Alphabets.
 Typ der EdgeFunktion bedeutet, dass man eine Liste von Wörter nimmt und auf ein Tupel abbildet, wobei erstes Element vom Tupel das längste gemeinsame Präfix der Wörter ist und zweites Element eine Liste von Wörter, von denen das längste gemeinsame Präfix entfernt wurde. Implementierung:
 
 \begin{lstlisting}[
@@ -1382,11 +1379,183 @@ Sei ein Teilwort $cgac$ im Wort $agcgacgag$ gesucht. Wir definieren ein passende
 \section{Terminologie}
 \label{sec:Terminologie}
 %////////////////////////////////////////////////////////////////////////////
+Im Folgenden benutzen wir die Notation, die in \cite{Karkkainen2006} eingeführt worden ist. 
+
+Intervalle werden mit $[i,j] = \{ i, \dots, j\}$ und $[i,j) = [i,j-1]$ bezeichnet.
+
+Ein Wort über ein Alphabet wird als $T = T[0,n) = t_0 t_1 \dots t_{n-1}$ dargestellt. Es wird die Konvention verwendet, dass $t_j = 0$ für $j \ge n$ ist.
+
+Für ein $i \in [0,n]$ wird ein Suffix $S_i = T[i,n) = t_i t_{i+1} \dots t_n$ definiert.  
+
+Für eine Menge $C \subseteq [0,n]$ wird eine Suffixmenge $S_C = \{ S_i \mid i \in C\}$ eingeführt.
+
+Suffixarray $SA[0,n)$ eines Wortes $T[0,n)$ ist eine Permutation von $[0,n)$ mit der Eigenschaft $S_{SA[0]} \prec S_{SA[1]} \prec \dots \prec S_{SA[n-1]}$, wobei die $\prec$--Relation die lexikographische Ordnung auf Wörter bezeichnet.  
 
 %////////////////////////////////////////////////////////////////////////////
 \section{DC3-Algorithmus}
 \label{sec:DC3Algorithmus}
 %////////////////////////////////////////////////////////////////////////////
+
+Der Algorithmus, den wir uns zu der Konstruktion des Suffixarrays anschauen, ist DC3\footnote{Der Algorithmus ist in \cite{Karkkainen2006} vorgestellt worden ist.} (steht für Difference Cover modulo 3) genannt worden. Die Schritte des Algorithmus werden mit einem Beispiel veranschaulicht. Als Eingabe haben wir das Wort
+
+$$
+\begin{tabular}{l|c c c c c c c c c c c c}
+    \toprule
+    i    & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 \\
+    \midrule
+    T[0,n) & y & a & b & b & a & d & a & b & b & a & d  & o  \\
+    \bottomrule
+\end{tabular}
+$$
+
+Der Algorithmus gibt das folgende Suffixarray für das Wort aus:
+
+$$
+SA = (1,6,4,9,3,8,2,7,5,10,11,0)
+$$
+
+\textbf{Schritt 0: Die Konstruktion der Sample-Suffixe}
+
+Für $k = 0,1,2$ werden Mengen wie folgt definiert:
+$$
+B_k = \{ i \in [0,n] \mid i \bmod{3} = k\}
+$$
+
+Sei $C = B_1 \cup B_2$ die Menge der Sample-Positionen und $S_C$ ist die Menge der Sample-Suffixe. In unserem Beispiel:
+$$
+B_1 = \{1,4,7,10\},\;B_2 = \{2,5,8,11\},\;C = \{1,4,7,10,2,5,8,11\}
+$$
+
+\textbf{Schritt 1: Das Sortieren der Sample-Suffixe}
+
+Für k = 1,2 werden folgende Zeichenketten konstruiert:
+$$
+R_k = [t_k t_{k+1} t_{k+2}][t_{k+3} t_{k+4} t_{k+5}] \dots [t_{max\:B_k}} t_{max\:B_k + 1} t_{max\:B_k + 2}]
+$$
+wobei jedes Tripel der Form $[t_i t_{i+1} t_{i+2}]$ ein Sample ist. Sei $R = R_1 \odot R_2$ die Konkatenation von $R_1$ und $R_2$. Die Samples von $R$ korrespondieren mit der Menge $S_C$ von Sample-Suffixen, so dass $[t_i t_{i+1} t_{i+2}] \dots$ korrespondiert mit $S_i$. In unserem Beispiel:
+$$
+\begin{tikzpicture}
+    \node (n1) {\color{black}R = [abb][ada]][bba][do0][bba][dab][bad][o00]};
+\end{tikzpicture}
+$$
+
+Die Samples von $R$ werden mit Radixsort sortiert und es wird jedem Sample sein Rang zugewiesen:
+$$
+\centering
+\begin{tikzpicture}
+    [
+        matrix of nodes/.style = {
+        execute at begin cell = \node\bgroup,
+        execute at end cell = \egroup;%
+    }]
+    \matrix[ampersand replacement = \&, column sep = -2mm, matrix of nodes]
+    {
+        1 \&
+        2 \&
+        3 \&
+        4 \&
+        5 \&
+        6 \&
+        7 \\
+        \color{black}[abb] \&
+        \color{black}[ada] \&
+        \color{black}[bad] \&
+        \color{black}[bba] \&
+        \color{black}[dab] \&
+        \color{black}[do0] \&
+        \color{black}[o00] \\
+    };
+\end{tikzpicture}  
+$$
+Dann wird eine neue Zeichenkette $R'$ erzeugt, indem jedes Sample in $R$ durch sein Rang ersetzt wird:
+$$
+\begin{tikzpicture}
+    \node (n1) {\color{black}R = [abb][ada]][bba][do0][bba][dab][bad][o00]};
+    \node[below = 1cm] (n2) at (n1) {R' = 12464537};
+    \path[->] (n1) edge (n2);
+\end{tikzpicture}
+$$
+Wenn jedes Zeichen in $R'$ eindeutig ist, dann sind die Sample-Suffixe sortiert und $R'$ ist das Suffixarray für $S_C$. Anderfalls wird der Algorithmus rekursiv für die Zeichenkette $R'$ verwendet. In unserem Beispiel findet es ein rekursiver Aufruf von DC3 mit $R = 12464537$ statt, der in Abb. \ref{fig:sortRecursive} veranschaulicht wird.
+
+Der rekursive Aufruf liefert das Suffixarray für $R'$. In unserem Beispiel ist
+$$
+SA_{R'} = (0,1,6,4,2,5,3,7)
+$$
+Wenn die Sample-Suffixe sortiert sind, es wird jedem Sample-Suffix sein Rang zugewiesen. Für $i \in C$ bezeichnet $rank(S_i)$ den Rang von $S_i$ in der Menge $S_C$. Für $i \in B_0$ ist $rank(S_i)$ noch undefiniert. In unserem Beispiel:
+$$
+\begin{tabular}{l|c c c c c c c c c c c c}
+    \toprule
+    i    & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 \\
+    \midrule
+    T[0,n) & y & a & b & b & a & d & a & b & b & a & d  & o  \\
+    \midrule
+    rank(S_i) & ? & 1 & 4 & ? & 2 & 6 & ? & 5 & 3 & ? & 7  & 8 \\
+    \bottomrule
+\end{tabular}
+$$
+
+\begin{figure}
+\centering
+\begin{tikzpicture}
+    [
+        matrix of nodes/.style = {
+        execute at begin cell = \node\bgroup,
+        execute at end cell = \egroup;%
+        }
+    ]
+    \matrix[ampersand replacement = \&, column sep = -2mm, matrix of nodes] (m) {
+        \color{black}[ \& \color{aquamarine}a\color{gray}bb\color{black} \& ] \&
+        \color{black}[ \& \color{aquamarine}a\color{gray}da\color{black}\color{black} \& ] \&
+        \color{black}[ \& \color{aquamarine}b\color{gray}ba\color{black} \& ] \&
+        \color{black}[ \& \color{aquamarine}d\color{gray}o0\color{black} \& ] \&
+        \color{black}[ \& \color{blue}b\color{gray}ba\color{black} \& ] \&
+        \color{black}[ \& \color{blue}d\color{gray}ab\color{black} \& ] \&
+        \color{black}[ \& \color{blue}b\color{gray}ad\color{black} \& ] \&
+        \color{black}[ \& \color{blue}o\color{gray}00\color{black} \& ] \& \\
+        \color{black}[ \& 1 \& ] \&
+        \color{black}[ \& 2 \& ] \&
+        \color{black}[ \& 4 \& ] \&
+        \color{black}[ \& 6 \& ] \&
+        \color{black}[ \& 4 \& ] \&
+        \color{black}[ \& 5 \& ] \&
+        \color{black}[ \& 3 \& ] \&
+        \color{black}[ \& 7 \& ] \& \\
+                       \&   \&   \&
+                       \&   \&   \&
+        \color{black}[ \& 4 \&   \&
+                       \& 6 \&   \&
+                       \& 4 \& ] \&
+                       \&   \&   \&
+                       \&   \&   \&
+                       \&   \&   \& \\
+                       \&   \&   \&
+                       \&   \&   \&
+                       \&   \&   \&
+                       \&   \&   \&
+        \color{black}[ \& 4 \&   \&
+                       \& 5 \&   \&
+                       \& 3 \& ] \&
+                       \&   \&   \& \\
+    };
+    \node[left = 2cm, above = 2cm] (n1) at (m) {\color{gray}y\color{aquamarine}a\color{gray}bb\color{aquamarine}a\color{gray}da\color{aquamarine}b\color{gray}ba\color{aquamarine}d\color{gray}o};
+    \node[right = 2cm, above = 2cm] (n2) at (m) {\color{gray}ya\color{blue}b\color{gray}ba\color{blue}d\color{gray}ab\color{blue}b\color{gray}ad\color{blue}o};
+    \fill[aquamarine!30] (-1.8, 2.1) -- (-0.75, 2.1) -- (0, 1.25) -- (-1.8, 1.25) -- cycle;
+    \fill[blue!30] (1.25, 2.1) -- (3.15, 2.1) -- (3.9, 1.25) -- (0.15, 1.25) -- cycle;
+\end{tikzpicture}
+\caption{Sort recursive}
+\label{fig:sortRecursive}
+\end{figure}
+
+\textbf{Schritt 2: Das Sortieren der Nicht-Sample-Suffixe}
+
+Das sind die Suffixe aus der Menge $S_{B_0} = \{S_i \mid i \in B_0\}$. Jedes Suffix $S_i \in S_{B_0}$ wird mit dem Tupel $(t_i,rank(S_{i+1}))$ repräsentiert. Die Tupel werden mit Radixsort sortiert, indem:
+$$
+S_i \le S_j \; \leftrightarrow \; (t_i,rank(S_{i+1})) \le (t_j,rank(S_{j+1}))
+$$
+Im Beispiel:
+$$
+S_6 < S_9 < S_3 < S_0 \mbox{, weil }(a,5) < (a,7) < (b,2) < (y,1)
+$$
 
 %////////////////////////////////////////////////////////////////////////////
 % Literaturverzeichnis
