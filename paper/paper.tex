@@ -794,14 +794,89 @@ Während $ast$ eine Normalform bezüglich Kantenteilung und $cst$ eine Normalfor
 
 Zum Abschluss dieses Abschnitts möchten wir auf die Speicherplatzkomplexität der Suffix Tree Klassen eingehen.
 
-\begin{lemma}[Speicherplatzkomplexität $cst$]
-$cst$ besitzt einen Speicherplatzkomplexität von $O(n)$.
+\begin{lemma}[Speicherplatzkomplexität]
+$cst$ besitzt eine Speicherplatzkomplexität von $O(n)$, $ast$ und $pst$ liegen in $O(n^2)$.
 \label{lem:SpeicherplatzkomplexitaetCst}
 \end{lemma}
 
 \begin{proof}[Beweis des Lemma \ref{lem:SpeicherplatzkomplexitaetCst}]
-Ein Wort $t$ der Länge $n$ besitzt $n$ Suffixe. Aus dem Aufbau von Suffix Trees folgt, dass ein $cst$ höchstens $n$ Blätter besitzt.
+Ein Wort $t$ der Länge $n$ besitzt $n$ Suffixe. Jedes Blatt in einem Suffixbaum repräsentiert genau ein Suffix von $t$. Somit besitzt ein $cst$ für $t$ höchstens $n$ Blätter. Alle inneren Knoten eines $cst$ sind Verzweigungen. Aus dieser Beobachtung folgt, dass nicht mehr als $n$ innere Knoten im Baum existieren. Die Zahl der Kanten kann damit auf $2n$ abgeschätzt werden. Um im Worst Case tatsächlich die geforderte Speicherplatzkomplexität zu erreichen, werden die Kantenbeschriftungen durch Paare $(i, j) \in \mathbb{N} \times \mathbb{N}$ dargestellt, wobei $i$ den Anfang und $j$ das Ende der Kantenbeschriftung im Wort $t$ festlegen. Der Speicherplatzbedarf einer Kante kann dadurch auf $O(1)$ gesenkt werden. Insgesamt erhalten wir damit die gewünschte Speicherplatzkomplexität von $O(n)$.
+
+Die Beweisidee für den $ast$ ist in Abb. \ref{fig:SpeicherplatzbedarfAst} skizziert. Der Worst Case tritt für diesen Baumtypen beispielsweise für das Wort $a^nb^n$ ein. In diesem Fall enthält der $ast$ $n + 1$ Knoten, die durch $a$-Kanten miteinander verbunden sind. Von jedem dieser Knoten zweigt ein Teilbaum mit einem Speicherplatzbedarf von $O(n)$ ab, wodurch wir insgesamt eine Speicherplatzkomplexität von $O(n^2)$ für den gesamten $ast$ erhalten.
+
+Der Beweis für die Speicherplatzkomplexität des $pst$ erfolgt analog für das Wort $a^nb^na^nb^n$. Obwohl der Speicherplatzbedarf eines $pst$ im Worst Case in $O(n^2)$ liegt, wird in der Praxis meistens nur $O(n)$ benötigt.
 \end{proof}
+
+\begin{figure}
+\centering
+\begin{tikzpicture}[
+    level 1/.style = {level distance = 10mm, sibling distance = 30mm},
+    level 2/.style = {level distance = 10mm, sibling distance = 30mm},
+    level 3/.style = {level distance = 10mm, sibling distance = 30mm},
+    edge from parent/.style = {->, draw}
+    ]
+    \node[branch]{}
+    child {
+        node[branch]{}
+        child {
+            node[branch]{}
+            child {
+                node[branch]{}
+                child {
+                    node[branch]{}
+                    child[opacity = 0] {
+                        node[branch]{}
+                        edge from parent
+                        node[right, yshift = 1mm]{}
+                    }
+                    child {
+                        node[branch] (b5) {}
+                        edge from parent
+                        node[right, yshift = 1mm]{$b_1$}
+                    }
+                    edge from parent[solid]
+                    node[left, yshift = 1mm]{$a_n$}
+                }
+                child {
+                    node[branch] (b4) {}
+                    edge from parent[solid]
+                    node[right, yshift = 1mm]{$b_1$}
+                }
+                edge from parent[dotted]
+                node[left]{}
+            }
+            child {
+                node[branch] (b3) {}
+                edge from parent
+                node[right, yshift = 1mm]{$b_1$}
+            }
+            edge from parent
+            node[left, yshift = 1mm]{$a_2$}
+        }
+        child {
+            node[branch] (b2) {}
+            edge from parent
+            node[right, yshift = 1mm]{$b_1$}
+        }
+        edge from parent
+        node[left, yshift = 1mm]{$a_1$}
+    }
+    child {
+        node[branch] (b1) {}
+        edge from parent
+        node[right, yshift = 1mm]{$b_1$}
+    };
+    \node[subtree] at (b1.center) {$b^{n - 1}$};
+    \node[subtree] at (b2.center) {$b^{n - 1}$};
+    \node[subtree] at (b3.center) {$b^{n - 1}$};
+    \node[subtree] at (b4.center) {$b^{n - 1}$};
+    \node[subtree] at (b5.center) {$b^{n - 1}$};
+    \node at (3.5, -1) {}; % Dummy Knoten
+\end{tikzpicture}
+\caption{Speicherplatzbedarf eines $ast$ für die Zeichenkette $a^nb^n$}
+\label{fig:SpeicherplatzbedarfAst}
+\end{figure}
+
 %////////////////////////////////////////////////////////////////////////////
 \subsection{Generalized Suffix Tree}
 \label{sec:GeneralizedSuffixTree}
