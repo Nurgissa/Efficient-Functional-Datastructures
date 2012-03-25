@@ -1716,10 +1716,45 @@ $$
 
 \textbf{Schritt 3: Merge}
 
-Zu diesem Schritt haben wir zwei sortierte Mengen, die jetzt vereinigt werden müssen. Um die Sample-Suffixe mit Nicht-Sample-Suffixe zu vergleichen, wird folgende Ordnung benutzt:
+Zu diesem Schritt haben wir zwei sortierte Mengen, die jetzt vereinigt werden müssen. Um die Sample-Suffixe $S_i \in S_C$ mit Nicht-Sample-Suffixe $S_j \in S_{B_0}$ zu vergleichen, wird folgende Ordnung benutzt:
+
+    - Falls $i \in B_1$, dann $S_i \le S_j \leftrightarrow (t_i,rank(S_{i+1})) \le (t_j,rank(S_{j+1}))$. Z.B. $S_1 = abbadabbado$ und $S_6 = abbado$: $S_1 \rightarrow (a,4)$ und $S_6 \rightarrow (a,5)$, $(a,4) < (a,5) \rightarrow S_1 < S_6$
+
+    - Falls $i \in B_2$, dann $S_i \le S_j \leftrightarrow (t_i,t_{i+1},rank(S_{i+2})) \le (t_j,t_{j+1},rank(S_{j+2}))$. Z.B. $S_3 = badabbado$ und $S_8 = bado$: $S_3 \rightarrow (b,a,6)$ und $S_8 \rightarrow (b,a,7)$, $(b,a,6) < (b,a,7) \rightarrow S_3 < S_8$
+
+Nach dem die komplette Ordnung bestimmt ist und die zwei Mengen vereinigt worden sind, kann man das gesuchte Suffixarray ablesen:
 $$
-i \in B_1
+\begin{tikzpicture}
+    \node (n1) {
+        \begin{tabular}{l|c c c c c c c c c c c c}
+            \toprule
+            $i$    & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 \\
+            \midrule
+            $T[0,n)$ & y  & a & b & b & a & d & a & b & b & a & d  & o  \\
+            \midrule
+            $rank(S_i)$ & 12 & 1 & 7 & 5 & 3 & 9 & 2 & 8 & 6 & 4 & 10 & 11 \\
+            \bottomrule
+        \end{tabular}
+    };
+    \node[below = 2cm] (n2) {
+        \begin{tabular}{l l|l l}
+            \toprule
+            $S_1$       & $a b b a d a b b a d o$ & $S_2$    & $b b a d a b b a d o$     \\
+            $S_6$       & $a b b a d o$           & $S_7$    & $b b a d o$               \\
+            $S_4$       & $a d a b b a d o$       & $S_5$    & $d a b b a d o$           \\
+            $S_9$       & $a d o$                 & $S_{10}$ & $d o$                     \\
+            $S_3$       & $b a d a b b a d o$     & $S_{11}$ & $o$                       \\
+            $S_8$       & $b a d o$               & $S_0$    & $y a b b a d a b b a d o$ \\
+            \bottomrule
+        \end{tabular}
+    };
+    \path[->] (n1) edge (n2);
+\end{tikzpicture}
 $$
+
+\textbf{Eigenschaften von DC3}
+
+Laufzeit des Algorithmus ist $O(n)$ im Worst case, das ist der schnellste Algorithmus in der Klasse $O(n)$ für den Aufbau des Suffixarrays. Die schnellere Algorithmen, wie z.B. qsufsort \cite{Larsson2007}, haben einen schlechteren Worst case $O(n \log n)$. 
 
 %////////////////////////////////////////////////////////////////////////////
 % Literaturverzeichnis
