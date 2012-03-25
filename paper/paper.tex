@@ -870,7 +870,7 @@ Weiter schauen wir uns ein Beispiel an, das zeigt wie der Algorithmus einen komp
             \bottomrule
         \end{tabular}
         \end{center}
-    \item Füe jede Gruppe wird das längste gemeinsame Präfix berechnet und eine Kante mit der Beschriftung von dem Päfix erzeugt: 
+    \item Füe jede Gruppe wird das längste gemeinsame Präfix berechnet und eine Kante mit der Beschriftung von dem Päfix erzeugt:
         \begin{center}
         \begin{tabular}{l l l}
             \toprule
@@ -1054,27 +1054,6 @@ type EdgeFunction alf = [[alf]] -> ([alf], [[alf]])
 
 Im Folgenden besprechen wir Funktionen, die einzelne Schritte des Algorithmus erledigen. Die Implementierung der Funktionen wird in Listing \ref{lst:AlgorithmusZurSuffixTreeKonstruktion} gezeigt.
 
-Esrte Funktion ist $suffixes$, die eine Suffixliste von einem gegebenen Wort zurückliefert. 
-
-Auswahl einer Gruppe, die mit einer Buchstabe anfängt, wird mit der Funktion $select$ gemacht. Die Buchstabe wird an dem Parameter $a$ gebunden.
-
-Die nächste Funktion $edge$ bestimmt das längste gemeinsame Präfix für eine Gruppe der Wörter. Die Gruppe wird als Eingabeliste übergeben. Zuerst wird geprüft, ob alle Wörter mit der gleichen Buchstabe anfangen. Falls es der Fall ist, dann wird die Buchstabe an $cp$ angehängt und eine neue Liste ohne das erste Buchstabe erzeugt. Falls ein Wort sich endet, dann wird es weggelassen. Die Funktion terminiert falls es nur ein Wort in der Gruppe bleibt oder wenn nicht alle Restwörter in der Gruppe mit der gleichen Buchstabe anfangen. Die Funktion gibt ein Tupel zurück, wobei erstes Element vom Tupel das längste gemeinsame Präfix der Wörter in der Eingabeliste ist und zweites Element eine Liste von restlichen Wörter, von denen das längste gemeinsame Präfix entfernt wurde. 
-
-Die letzte Funktion $lazy\_cst$ setzt die oben besprochene Funktionen zusammen und erzeugt den kompletten Baum. Als Eingabe wird die Funktion $edge$, einen Alphabet des gegebenen Wort in der Form einer Liste von Buchstaben und ein Wort t, für das Siffixbaum aufgebaut werden soll, gegeben. Die Suffixliste von $t$ wird an einer Hilfsfunktion $sTr$ geliefert, die den Baum wie folgt rekursiv aufbaut:
-
-    - Wenn die Suffixliste leer ist, dann wird ein Blatt erstellt.
-
-    - Wenn die Suffixliste nicht leer ist, dann eine Verzweigung.
-
-Verzweigung besteht aus Tupeln, die in der esten Komponente das längste gemeinsame Präfix von jeder Gruppe als Kantenbeschriftung und einen entsprechenden Unterbaum in der zweiten Komponente enthalten. Der entsprechende Unterbaum wird rekursiv erzeugt.
-
-Die Kantenliste wird aufgebaut, indem:
-\begin{enumerate}
-    \item Jede Buchstabe des Alphabets an der Variable $a$ gebunden wird.
-    \item Die entsprechende Liste durch den Aufruf der Funktion select an die Variable $gs$ gebunden wird.
-    \item Falls die Gruppe nicht leer ist, wird durch den Aufruf von $edge$ das gemeinsame Präfix und die Liste von Restwörter berechnet.
-\end{enumerate}
-
 \begin{lstlisting}[
     caption = Algorithmus zur Suffix Tree Konstruktion,
     label = lst:AlgorithmusZurSuffixTreeKonstruktion,
@@ -1107,7 +1086,27 @@ lazy_cst edge alpha t = sTr (suffixes t)
                                      length gs > 0,
                                      let (cp,rss) = edge gs]
 \end{lstlisting}
-\label{lst:cstImplementierung}
+
+Erste Funktion ist $suffixes$, die eine Suffixliste von einem gegebenen Wort zurückliefert.
+
+Auswahl einer Gruppe, die mit einer Buchstabe anfängt, wird mit der Funktion $select$ gemacht. Die Buchstabe wird an dem Parameter $a$ gebunden.
+
+Die nächste Funktion $edge$ bestimmt das längste gemeinsame Präfix für eine Gruppe der Wörter. Die Gruppe wird als Eingabeliste übergeben. Zuerst wird geprüft, ob alle Wörter mit der gleichen Buchstabe anfangen. Falls es der Fall ist, dann wird die Buchstabe an $cp$ angehängt und eine neue Liste ohne das erste Buchstabe erzeugt. Falls ein Wort sich endet, dann wird es weggelassen. Die Funktion terminiert falls es nur ein Wort in der Gruppe bleibt oder wenn nicht alle Restwörter in der Gruppe mit der gleichen Buchstabe anfangen. Die Funktion gibt ein Tupel zurück, wobei erstes Element vom Tupel das längste gemeinsame Präfix der Wörter in der Eingabeliste ist und zweites Element eine Liste von restlichen Wörter, von denen das längste gemeinsame Präfix entfernt wurde.
+
+Die letzte Funktion $lazy\_cst$ setzt die oben besprochene Funktionen zusammen und erzeugt den kompletten Baum. Als Eingabe wird die Funktion $edge$, einen Alphabet des gegebenen Wort in der Form einer Liste von Buchstaben und ein Wort t, für das Siffixbaum aufgebaut werden soll, gegeben. Die Suffixliste von $t$ wird an einer Hilfsfunktion $sTr$ geliefert, die den Baum wie folgt rekursiv aufbaut:
+
+    - Wenn die Suffixliste leer ist, dann wird ein Blatt erstellt.
+
+    - Wenn die Suffixliste nicht leer ist, dann eine Verzweigung.
+
+Verzweigung besteht aus Tupeln, die in der esten Komponente das längste gemeinsame Präfix von jeder Gruppe als Kantenbeschriftung und einen entsprechenden Unterbaum in der zweiten Komponente enthalten. Der entsprechende Unterbaum wird rekursiv erzeugt.
+
+Die Kantenliste wird aufgebaut, indem:
+\begin{enumerate}
+    \item Jede Buchstabe des Alphabets an der Variable $a$ gebunden wird.
+    \item Die entsprechende Liste durch den Aufruf der Funktion select an die Variable $gs$ gebunden wird.
+    \item Falls die Gruppe nicht leer ist, wird durch den Aufruf von $edge$ das gemeinsame Präfix und die Liste von Restwörter berechnet.
+\end{enumerate}
 
 %////////////////////////////////////////////////////////////////////////////
 \subsection{Laufzeitanalyse}
