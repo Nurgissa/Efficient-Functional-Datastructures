@@ -177,7 +177,7 @@ TODO: Einleitung
 
 %////////////////////////////////////////////////////////////////////////////
 \section{Terminologie}
-\label{sec:SuffixTreeTerminologie}
+\label{sec:Terminologie}
 %////////////////////////////////////////////////////////////////////////////
 
 %////////////////////////////////////////////////////////////////////////////
@@ -818,11 +818,13 @@ Während $ast$ eine Normalform bezüglich Kantenteilung und $cst$ eine Normalfor
 
 In diesem Abschnitt wird ein Algorithmus dargestellt, der einen kompakten Suffixbaum für ein Wort $t$ aufbaut. Es gibt zwei prinzipiell unterschiedlichen Ansätze dafür.
 
-Erster Ansatz ist imperativ: sukzessive Einfügung der Suffixe von $t$ in einen Baum, der als leer initialisiert wird. Die Konstruktion wird erfolgen mittels Iterationen über das Wort $t$, indem Suffixe von links nach rechts (oder auch umgekehrt) jedes Mal abgelesen werden.
+Erster Ansatz ist sukzessive Einfügung der Suffixe von $t$ in einen Baum, der als leer initialisiert wird. Die Konstruktion wird erfolgen mittels Iterationen über das Wort $t$, indem Suffixe von links nach rechts (oder auch umgekehrt) jedes Mal abgelesen werden.
 
-Zweiter Ansatz ist funktional: Der Baum wird rekursiv aufgebaut, indem zuerst Kanten vom Wurzel aufgebaut werden und dann für jeden Unterbaum das Verfahren wiederholt wird. Wichtig, dass bei diesem Verfahren keine Updates vom Baum benötigt sind.
+In dem zweiten Ansatz wird der Baum rekursiv aufgebaut, indem zuerst Kanten vom Wurzel aufgebaut werden und dann für jeden Unterbaum das Verfahren wiederholt wird. Wichtig, dass bei diesem Verfahren keine Updates vom Baum benötigt sind.
 
-TODO: ein Satz mit ''hier werden wir wotd anschauen''
+Der Algorithmus, der wir uns in dieser Arbeit anschauen, verwendet den zweiten Ansatz. Dieser Algorithmus wurde als ''Write only top down suffix tree construction''\footnote{der Algorithmus wurde von R. Giegerich und S. Kurtz entwickelt. Siehe \cite{Giegerich1995}}, kurz geschrieben WOTD-Algorithmus, genannt. Er eignet sich für die funktionale Implementierung und insbesondere für die Benutzung von der laziness-Eigenschaft. Aus diesen Gründen wird für die Implementierung des Algorithmus Haskell benutzt\footnote{wir haben die Implementierung von \cite{Giegerich1995} genommen und leciht bearbeitet}.
+
+
 
 
 %////////////////////////////////////////////////////////////////////////////
@@ -830,7 +832,7 @@ TODO: ein Satz mit ''hier werden wir wotd anschauen''
 \label{sec:WOTDAlgorithmus}
 %////////////////////////////////////////////////////////////////////////////
 
-Schritte des Algorithmus:
+Die Schritte des Algoritmus kann man wie folgt zusammenfassen:
 
 \begin{enumerate}
     \item Erzeuge alle Suffixe eines gegebenen Wortes.
@@ -842,10 +844,10 @@ Schritte des Algorithmus:
     \end{enumerate}
 \end{enumerate}
 
-Beispiel für das Wort $t$ = $agcgacgag$:
+Weiter schauen wir uns ein Beispiel an, das zeigt wie der Algorithmus einen kompakten Suffixbaum für das Wort $t$ = $agcgacgag$ konstruiert:
 \begin{enumerate}
-    \item Suffixliste: $agcgacgag$, $gcgacgag$, $cgacgag$, $gacgag$, $acgag$, $cgag$, $gag$, $ag$, $g$
-    \item Gruppierungsschritt:
+    \item Die Suffixliste von gegebenen Wort ist $[agcgacgag$, $gcgacgag$, $cgacgag$, $gacgag$, $acgag$, $cgag$, $gag$, $ag$, $g]$
+    \item Die Suffixliste wird anhand ersten Buchstaben wie folgt gruppiert:
         \begin{center}
         \begin{tabular}{l l l}
             \toprule
@@ -857,7 +859,7 @@ Beispiel für das Wort $t$ = $agcgacgag$:
             \bottomrule
         \end{tabular}
         \end{center}
-    \item Bestimmung des längsten gemiensamen Präfixes für jede Gruppe:
+    \item Füe jede Gruppe wird das längste gemeinsame Präfix berechnet und eine Kante mit der Beschriftung von dem Päfix erzeugt: 
         \begin{center}
         \begin{tabular}{l l l}
             \toprule
@@ -872,10 +874,9 @@ Beispiel für das Wort $t$ = $agcgacgag$:
             \bottomrule
         \end{tabular}
         \end{center}
-    \item Rekursiv für jede Gruppe von Restwörter.
+        Nach dem Schritt ist das esrte Level vom Suffixbaum konstruiert. Sihe Abb. \ref{fig:cstKonstruktion}
+    \item Weiter wird der Algorithmus ab Schritt 2 für die restlichen Gruppen rekursiv verwendet bis keine restliche Wörtet unter allen Kantnet mehr gibt. Die Ergebnisse von rekursiven Schritten und den aufgebauten kompakten Suffixbaum zeigt die Abb. \ref{fig:cstKonstruktion}
 \end{enumerate}
-
-Veranschaulichung der Phasen in Abb. \ref{fig:cstKonstruktion}
 
 % [h]: here, [t]: top, [b]: bottom
 \begin{figure}[h]
@@ -1040,12 +1041,15 @@ type Label alf = [alf]
 type EdgeFunction alf = [[alf]] -> ([alf], [[alf]])
 \end{lstlisting}
 
-Zuerst besprechen wir benötige Hilfsfunktionen. Esrte Funktion ist $suffixes$, die eine Suffixliste von einem gegebenen Wort zurückliefert. Die Implementierung der Funktion wird in Listing \ref{lst:cstImplementierung} gezeigt.
-Auswahl einer Gruppe, die mit einer Buchstabe anfängt, die im Parameter $a$ gebunden ist, wird mit der Funktion 
+Im Folgenden besprechen wir Funktionen, die einzelne Schritte des Algorithmus erledigen. Die Implementierung der Funktionen wird in Listing \ref{lst:AlgorithmusZurSuffixTreeKonstruktion} gezeigt.
 
-Die folgende Funktion bestimmt das längste gemeinsame Präfix für eine Gruppe der Wörter. Die Gruppe wird als Eingabeliste übergeben. Zuerst wird geprüft, ob alle Wörter mit der gleichen Buchstabe anfangen. Falls es der Fall ist, dann wird die Buchstabe an $cp$ angehängt und eine neue Liste ohne das erste Buchstabe erzeugt. Falls ein Wort sich endet, dann wird es weggelassen. Die Funktion terminiert falls es nur ein Wort in der Gruppe bleibt oder wenn nicht alle Restwörter in der Gruppe mit der gleichen Buchstabe anfangen. Die Funktion gibt ein Tupel zurück, wobei erstes Element vom Tupel das längste gemeinsame Präfix der Wörter in der Eingabeliste ist und zweites Element eine Liste von restlichen Wörter, von denen das längste gemeinsame Präfix entfernt wurde. Implementierung:
+Esrte Funktion ist $suffixes$, die eine Suffixliste von einem gegebenen Wort zurückliefert. 
 
-Nächste Funktion setzt die oben besprochene Funktionen zusammen und erzeugt den kompletten Baum. Als Eingabe wird die Funktion $edge$, einen Alphabet des gegebenen Wort in der Form einer Liste von Buchstaben und ein Wort t, für das Siffixbaum aufgebaut werden soll, gegeben. Die Suffixliste von $t$ wird an einer Hilfsfunktion $sTr$ geliefert, die den Baum wie folgt rekursiv aufbaut:
+Auswahl einer Gruppe, die mit einer Buchstabe anfängt, wird mit der Funktion $select$ gemacht. Die Buchstabe wird an dem Parameter $a$ gebunden.
+
+Die nächste Funktion $edge$ bestimmt das längste gemeinsame Präfix für eine Gruppe der Wörter. Die Gruppe wird als Eingabeliste übergeben. Zuerst wird geprüft, ob alle Wörter mit der gleichen Buchstabe anfangen. Falls es der Fall ist, dann wird die Buchstabe an $cp$ angehängt und eine neue Liste ohne das erste Buchstabe erzeugt. Falls ein Wort sich endet, dann wird es weggelassen. Die Funktion terminiert falls es nur ein Wort in der Gruppe bleibt oder wenn nicht alle Restwörter in der Gruppe mit der gleichen Buchstabe anfangen. Die Funktion gibt ein Tupel zurück, wobei erstes Element vom Tupel das längste gemeinsame Präfix der Wörter in der Eingabeliste ist und zweites Element eine Liste von restlichen Wörter, von denen das längste gemeinsame Präfix entfernt wurde. 
+
+Die letzte Funktion $lazy\_cst$ setzt die oben besprochene Funktionen zusammen und erzeugt den kompletten Baum. Als Eingabe wird die Funktion $edge$, einen Alphabet des gegebenen Wort in der Form einer Liste von Buchstaben und ein Wort t, für das Siffixbaum aufgebaut werden soll, gegeben. Die Suffixliste von $t$ wird an einer Hilfsfunktion $sTr$ geliefert, die den Baum wie folgt rekursiv aufbaut:
 
     - Wenn die Suffixliste leer ist, dann wird ein Blatt erstellt.
 
@@ -1059,7 +1063,7 @@ Die Kantenliste wird aufgebaut, indem:
     \item Die entsprechende Liste durch den Aufruf der Funktion select an die Variable $gs$ gebunden wird.
     \item Falls die Gruppe nicht leer ist, wird durch den Aufruf von $edge$ das gemeinsame Präfix und die Liste von Restwörter berechnet.
 \end{enumerate}
-Implementierung:
+
 \begin{lstlisting}[
     caption = Algorithmus zur Suffix Tree Konstruktion,
     label = lst:AlgorithmusZurSuffixTreeKonstruktion,
@@ -1119,11 +1123,26 @@ Weiter wird das worst-case vom WOTD-Algoritmus bestimmt. Dieses produziert z.B. 
 \label{sec:Teilwortsuche}
 %////////////////////////////////////////////////////////////////////////////
 
-Zum Abschluss des Kapitels möchten wir zeigen, dass mit dem erzeugten Suffixbaum kann man nicht nur Suffixe effezient suchen, sondern auch Teilwörter vom gegebenen Wort. Dafür definieren wir eine Hilfsfunkktion, die ähnlich wie die $edge$-Funktion arbeitet:
+Zum Abschluss des Kapitels möchten wir zeigen, dass mit dem erzeugten Suffixbaum kann man nicht nur Suffixe effezient suchen, sondern auch Teilwörter vom gegebenen Wort. Dafür definieren wir eine Hilfsfunkktion $commonPrefix$, die ähnlich wie die $edge$-Funktion arbeitet. Die Implementierung wird in Listing \ref{lst:SucheImSuffixTree} gezeigt. Die Funktion bestimmt das längste gemeinsame Präfix von zwei Wörter und liefert zurück ein Tripel $(w1',\: w2',\: cp)$, wobei $cp$ das längste gemeinsame Präfix ist, $w1'$ und $w2'$ sind Ergebnisse der Entfernung $cp$ von $w1$ bzw. $w2$.
 
-Die Funktion bestimmt das längste gemeinsame Präfix von zwei Wörter und liefert zurück ein Tripel $(w1',\: w2',\: cp)$, wobei $cp$ das längste gemeinsame Präfix ist, $w1'$ und $w2'$ sind Ergebnisse der Entfernung $cp$ von $w1$ bzw. $w2$.
+Die tatsächliche Teilwortsuche haben wir mit der Funktion $search$ gelöst (siehe Listing \ref{lst:SucheImSuffixTree}). Die Eingabe ist ein Teilwort und ein Baum, wo das Teilwort gesucht werden muss. Die Funktion erledigt die Suche wie folgt:
 
-Die tatsächliche Teilwortsuche haben wir mit der Funktion $search$ gelöst:
+    - Falls der Baum leer ist, dann ist die Suche nicht möglich.
+
+    - Falls der Baum eine Verzweigung ist, dann wird eine Hilfsfunktion $g$ mit dem gesuchten Wort und der Liste von Kanten aufgerufen.
+
+Fallunterscheidung der Funktion $g$:
+\begin{enumerate}
+    \item Wenn die Liste von Kanten leer ist, dann ist das Wort im Baum nicht enthalten.
+    \item Im anderen Fall suchen wir die passende Kante indem wir das gemeinsame Präfix des gesuchten Wortes und jeweilige Kante berechnen. Das wird mit der Funktion $commonPrefix$ gemacht. Wenn das gesuchte Wort und jeweilige Kante kein gemeinsames Präfix haben, dann gehen wir zu der nächste Kante $\rightarrow$ der Fall $falsche$ $Kante$.
+    \item Wenn es keine Kanten mehr gibt, dann ist das gesuchte Teilwort nicht im Baum enthalten $\rightarrow$ der Fall $g$ $ss$ $[\:]$ $=$ $False$.
+    \item Wenn das gesuchte Teilwort und die Kante das gemeinsame Präfix haben, dann müssen drei Fälle betrachtet werden:
+    \begin{enumerate}
+        \item Die Kante ist ein Teil von dem gesuchten Teilwort $\rightarrow$ der Fall $richtige$ $Kante$.
+        \item Das gesuchte Teilwort ist ein Teil von der Kantenbeschriftung $\rightarrow$ der Fall $ss$ $ist$ $leer$.
+        \item Das gemeinsame Präfix ist nicht leer, aber enthält weder komplette Kantenbeschriftung, noch das komplette gesuchte Wort $\rightarrow$ der Fall $cp\:!=\:[\:]\mid l \mid ss$.
+    \end{enumerate}
+\end{enumerate}
 
 \begin{lstlisting}[
     caption = Suche im Suffix Tree,
@@ -1147,26 +1166,16 @@ search ss (Branch es) =  g ss es
          (_, _, [])   -> g ss es       -- falsche Kante
          (ss', [], _) -> search ss' st -- richtige Kante
          _            -> False         -- cp != []|l|ss
+
+--| Beispielsuche
+let alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
+    word = "agcgacgag"
+in  search "cgac" (lazy_cst edge alphabet word)
 \end{lstlisting}
 
-Die Eingabe ist ein Teilwort und ein Baum, wo das Teilwort gesucht werden muss. Die Funktion erledigt die Suche wie folgt:
+Dank der laziness-Eigenschaft, werden nur die Kanten vom Suffixbaum während der Suche konstruiert, die für die Suche relevant sind. Der Rest vom Suffixbaum wird gar nicht angeschaut. Diese Eigenschaft zeigen wir an einem Beispiel.
 
-    - Falls der Baum leer ist, dann ist die Suche nicht möglich.
-
-    - Falls der Baum eine Verzweigung ist, dann wird eine Hilfsfunktion $g$ mit dem gesuchten Wort und der Liste von Kanten aufgerufen.
-
-Fallunterscheidung der Funktion $g$:
-\begin{enumerate}
-    \item Wenn die Liste von Kanten leer ist, dann ist das Wort im Baum nicht enthalten.
-    \item Im anderen Fall suchen wir die passende Kante indem wir das gemeinsame Präfix des gesuchten Wortes und jeweilige Kante berechnen. Das wird mit der Funktion $commonPrefix$ gemacht. Wenn das gesuchte Wort und jeweilige Kante kein gemeinsames Präfix haben, dann gehen wir zu der nächste Kante $\rightarrow$ der Fall $falsche$ $Kante$.
-    \item Wenn es keine Kanten mehr gibt, dann ist das gesuchte Teilwort nicht im Baum enthalten $\rightarrow$ der Fall $g$ $ss$ $[\:]$ $=$ $False$.
-    \item Wenn das gesuchte Teilwort und die Kante das gemeinsame Präfix haben, dann müssen drei Fälle betrachtet werden:
-    \begin{enumerate}
-        \item Die Kante ist ein Teil von dem gesuchten Teilwort $\rightarrow$ der Fall $richtige$ $Kante$.
-        \item Das gesuchte Teilwort ist ein Teil von der Kantenbeschriftung $\rightarrow$ der Fall $ss$ $ist$ $leer$.
-        \item Das gemeinsame Präfix ist nicht leer, aber enthält weder komplette Kantenbeschriftung, noch das komplette gesuchte Wort $\rightarrow$ der Fall $cp\:!=\:[\:]\mid l \mid ss$.
-    \end{enumerate}
-\end{enumerate}
+Sei ein Teilwort $cgac$ im Wort $agcgacgag$ gesucht.
 
 %////////////////////////////////////////////////////////////////////////////
 \chapter{Suffix Array}
@@ -1180,7 +1189,7 @@ Fallunterscheidung der Funktion $g$:
 
 %////////////////////////////////////////////////////////////////////////////
 \section{Terminologie}
-\label{sec:SuffixArrayTerminologie}
+\label{sec:Terminologie}
 %////////////////////////////////////////////////////////////////////////////
 
 %////////////////////////////////////////////////////////////////////////////
