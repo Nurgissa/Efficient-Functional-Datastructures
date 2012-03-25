@@ -1040,9 +1040,10 @@ type Label alf = [alf]
 type EdgeFunction alf = [[alf]] -> ([alf], [[alf]])
 \end{lstlisting}
 
-Auswahl einer Gruppe, die mit einer Buchstabe anfängt, die im Parameter $a$ gebunden ist:
+Zuerst besprechen wir benötige Hilfsfunktionen. Esrte Funktion ist $suffixes$, die eine Suffixliste von einem gegebenen Wort zurückliefert. Die Implementierung der Funktion wird in Listing \ref{lst:cstImplementierung} gezeigt.
+Auswahl einer Gruppe, die mit einer Buchstabe anfängt, die im Parameter $a$ gebunden ist, wird mit der Funktion 
 
-Die folgende Funktion bestimmt das längste gemeinsame Präfix für eine Gruppe der Wörter. Die Gruppe wird als Eingabeliste übergeben. Zuerst wird geprüft, ob alle Wörter mit der gleichen Buchstabe anfangen. Falls es der Fall ist, dann wird die Buchstabe an $cp$ angehängt und eine neue Liste ohne das erste Buchstabe erzeugt. Falls ein Wort sich endet, dann wird es weggelassen. Die Fkt terminiert falls es nur ein Wort in der Gruppe bleibt oder wenn nicht alle Restwörter in der Gruppe mit der gleichen Buchstabe anfangen. Die Funktion gibt ein Tupel zurück, wobei erstes Element vom Tupel das längste gemeinsame Präfix der Wörter in der Eingabeliste ist und zweites Element eine Liste von restlichen Wörter, von denen das längste gemeinsame Präfix entfernt wurde. Implementierung:
+Die folgende Funktion bestimmt das längste gemeinsame Präfix für eine Gruppe der Wörter. Die Gruppe wird als Eingabeliste übergeben. Zuerst wird geprüft, ob alle Wörter mit der gleichen Buchstabe anfangen. Falls es der Fall ist, dann wird die Buchstabe an $cp$ angehängt und eine neue Liste ohne das erste Buchstabe erzeugt. Falls ein Wort sich endet, dann wird es weggelassen. Die Funktion terminiert falls es nur ein Wort in der Gruppe bleibt oder wenn nicht alle Restwörter in der Gruppe mit der gleichen Buchstabe anfangen. Die Funktion gibt ein Tupel zurück, wobei erstes Element vom Tupel das längste gemeinsame Präfix der Wörter in der Eingabeliste ist und zweites Element eine Liste von restlichen Wörter, von denen das längste gemeinsame Präfix entfernt wurde. Implementierung:
 
 Nächste Funktion setzt die oben besprochene Funktionen zusammen und erzeugt den kompletten Baum. Als Eingabe wird die Funktion $edge$, einen Alphabet des gegebenen Wort in der Form einer Liste von Buchstaben und ein Wort t, für das Siffixbaum aufgebaut werden soll, gegeben. Die Suffixliste von $t$ wird an einer Hilfsfunktion $sTr$ geliefert, die den Baum wie folgt rekursiv aufbaut:
 
@@ -1091,6 +1092,7 @@ lazy_cst edge alpha t = sTr (suffixes t)
                                      length gs > 0,
                                      let (cp,rss) = edge gs]
 \end{lstlisting}
+\label{lst:cstImplementierung}
 
 %////////////////////////////////////////////////////////////////////////////
 \subsection{Laufzeitanalyse}
@@ -1101,7 +1103,7 @@ Um die Laufzeit von dem gesamten Algorithmus zu betrachten, wird zuerst die Kost
 
 Die Kostenfunktion für $edge$ ist von zwei Parameter abhängig: die Länge der Wörterliste und die Länge des gemeinsamen Präfix dieser Wörter. Die Funktion wird so oft rekursiv aufgerufen wie die Länge des gemeinsamen Präfix von der gegebenen Wörterliste ist. In jedem Aufruf von $edge$ werden zwei andere Funkrionen aufgerufen, deren Laufzeit von der Länge der Eingabeliste linear abhängig ist. Eine der Funktionen ist lambda-Ausdruck, wir haben zur Vereinfachung sie als $isEqual$ bei der Laufzeitanalyse bezeichnet. Zweite Funktion ist als List-comprehension gegeben, sie wird als $newList$ bezeichnet.
 
-Die Kosten der Funktion $edge$ setzen sich zusammen aus den Kosten der Fkt $isEqual$ für $n - 1$, den Kosten der Funktion $newList$ für $n$ und den Kosten des rekursiven Aufrufs von $edge$ für $n - 1$ und $\abs{cp} - 1$.
+Die Kosten der Funktion $edge$ setzen sich zusammen aus den Kosten der Funktion $isEqual$ für $n - 1$, den Kosten der Funktion $newList$ für $n$ und den Kosten des rekursiven Aufrufs von $edge$ für $n - 1$ und $\abs{cp} - 1$.
 
 Insgesamt:
 \begin{align*}
@@ -1156,7 +1158,7 @@ Die Eingabe ist ein Teilwort und ein Baum, wo das Teilwort gesucht werden muss. 
 Fallunterscheidung der Funktion $g$:
 \begin{enumerate}
     \item Wenn die Liste von Kanten leer ist, dann ist das Wort im Baum nicht enthalten.
-    \item Im anderen Fall suchen wir die passende Kante indem wir das gemeinsame Präfix des gesuchten Wortes und jeweilige Kante berechnen. Das wird mit der Fkt $commonPrefix$ gemacht. Wenn das gesuchte Wort und jeweilige Kante kein gemeinsames Präfix haben, dann gehen wir zu der nächste Kante $\rightarrow$ der Fall $falsche$ $Kante$.
+    \item Im anderen Fall suchen wir die passende Kante indem wir das gemeinsame Präfix des gesuchten Wortes und jeweilige Kante berechnen. Das wird mit der Funktion $commonPrefix$ gemacht. Wenn das gesuchte Wort und jeweilige Kante kein gemeinsames Präfix haben, dann gehen wir zu der nächste Kante $\rightarrow$ der Fall $falsche$ $Kante$.
     \item Wenn es keine Kanten mehr gibt, dann ist das gesuchte Teilwort nicht im Baum enthalten $\rightarrow$ der Fall $g$ $ss$ $[\:]$ $=$ $False$.
     \item Wenn das gesuchte Teilwort und die Kante das gemeinsame Präfix haben, dann müssen drei Fälle betrachtet werden:
     \begin{enumerate}
