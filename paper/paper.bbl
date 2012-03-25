@@ -18,6 +18,12 @@ Robert Giegerich, Stefan Kurtz, and Jens Stoye.
 \newblock In {\em Proceedings of the 3rd International Workshop on Algorithm
   Engineering}, WAE '99, pages 30--42, London, UK, 1999. Springer-Verlag.
 
+\bibitem[Gus97]{Gusfield1997}
+Dan Gusfield.
+\newblock {\em Algorithms on strings, trees, and sequences: computer science
+  and computational biology}.
+\newblock Cambridge University Press, New York, NY, USA, 1997.
+
 \bibitem[KSB03]{Karkkainen2003}
 Juha K\"arkk\"ainen, Peter Sanders, and Stefan Burkhardt.
 \newblock Simple linear work suffix array construction.
