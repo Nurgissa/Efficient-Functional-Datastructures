@@ -1195,66 +1195,14 @@ In dem zweiten Ansatz wird der Baum rekursiv aufgebaut, indem zuerst Kanten von 
 
 Der Algorithmus, der wir uns in dieser Arbeit anschauen, verwendet den zweiten Ansatz. Dieser Algorithmus ist als ''Write only top down suffix tree construction''\footnote{Der Algorithmus wurde von R. Giegerich und S. Kurtz entwickelt. Siehe \cite{Giegerich1995}.}, kurz geschrieben WOTD-Algorithmus, genannt worden. ''Write only'' steht für die Eigenschaft, dass die Knoten im Baum nur konstruiert werden und danach nicht mehr gelesen. ''Top down'' steht für den Art des Aufbaus: rekursive Konstruktion, beginnend an der Wurzel mit allen Suffixen. Der Algorithmus eignet sich für die funktionale Implementierung und insbesondere für die Benutzung der laziness-Eigenschaft. Aus diesen Gründen wird für die Implementierung des Algorithmus Haskell benutzt\footnote{wir haben die Implementierung von \cite{Giegerich1995} genommen und leciht bearbeitet.}.
 
-\textbf{[Alternative 1]}
+Die Schritte des Algorithmus werden mit einem Beispiel für das Wort $t$ = $agcgacgag$ veranschaulicht. Der Algoritmus wird wie folgt ausgeführt:
 
-Die Schritte des Algoritmus kann man wie folgt zusammenfassen:
-
-\begin{enumerate}
-    \item Erzeuge alle Suffixe eines gegebenen Wortes.
-    \item Gruppiere nach den Anfangsbuchstaben, erzeuge einen Knoten.
-    \item Für jede Gruppe:
-    \begin{enumerate}
-        \item Berechne das längste gemeinsame Präfix, erzeuge eine Kante mit der Beschriftung von dem Präfix, entferne das Präfix von den Wörtern der Gruppe.
-        \item Falls die Gruppe von Restwörter leer ist, erzeuge ein Blatt. Falls die Gruppe noch Wörter enthält, kehre zu Schritt 2 zurück.
-    \end{enumerate}
-\end{enumerate}
-
-Weiter schauen wir uns ein Beispiel an, das zeigt wie der Algorithmus einen kompakten Suffixbaum für das Wort $t$ = $agcgacgag$ konstruiert:
-\begin{enumerate}
-    \item Die Suffixliste von gegebenen Wort ist $[agcgacgag$, $gcgacgag$, $cgacgag$, $gacgag$, $acgag$, $cgag$, $gag$, $ag$, $g]$
-    \item Die Suffixliste wird anhand ersten Buchstaben wie folgt gruppiert:
-        \begin{center}
-        \begin{tabular}{l l l}
-            \toprule
-            Gruppe 1                 & Gruppe 2               & Gruppe 3                \\
-            \midrule
-            $\boldsymbol{a}gcgacgag$ & $\boldsymbol{c}gacgag$ & $\boldsymbol{g}cgacgag$ \\
-            $\boldsymbol{a}cgag$     & $\boldsymbol{c}gag$    & $\boldsymbol{g}acgag$   \\
-            $\boldsymbol{a}g$        &                        & $\boldsymbol{g}ag$      \\
-            \bottomrule
-        \end{tabular}
-        \end{center}
-    \item Füe jede Gruppe wird das längste gemeinsame Präfix berechnet und eine Kante mit der Beschriftung von dem Päfix erzeugt:
-        \begin{center}
-        \begin{tabular}{l l l}
-            \toprule
-            Gruppe 1                 & Gruppe 2               & Gruppe 3                \\
-            \midrule
-            $\boldsymbol{a}gcgacgag$ & $\boldsymbol{cga}cgag$ & $\boldsymbol{g}cgacgag$ \\
-            $\boldsymbol{a}cgag$     & $\boldsymbol{cga}g$    & $\boldsymbol{g}acgag$   \\
-            $\boldsymbol{a}g$        &                        & $\boldsymbol{g}ag$      \\
-                                     &                        & $\boldsymbol{g}$        \\
-            \midrule
-            $a$                      & $cga$                  & $g$                     \\
-            \bottomrule
-        \end{tabular}
-        \end{center}
-        Wie in der Abb. \ref{fig:cstKonstruktion} gezeigt ist, wird nach dem Schritt das esrte Level des Suffixbaums konstruiert.
-    \item Weiter wird der Algorithmus ab Schritt 2 für die restlichen Gruppen rekursiv verwendet bis keine restliche Wörtet unter allen Kantnet mehr gibt. Die Ergebnisse von rekursiven Schritten und den aufgebauten kompakten Suffixbaum zeigt die Abb. \ref{fig:cstKonstruktion}
-\end{enumerate}
-
-\textbf{[Alternative 2]}
-
-Die Schritte des Algorithmus werden mit einem Beispiel für das Wort $t$ = $agcgacgag$ veranschaulicht.
-
-Der Algoritmus wird wie folgt ausgeführt:
-
-\textbf{Schritt 0: Die Konstruktion der Suffixliste}
+\paragraph{Schritt 1: Die Konstruktion der Suffixliste.}
 
 Es wird eine Suffixliste eines gegebenen Wortes erzeugt. Die Suffixliste für das Wort $t$ = $agcgacgag$ ist
 $[agcgacgag$, $gcgacgag$, $cgacgag$, $gacgag$, $acgag$, $cgag$, $gag$, $ag$, $g]$.
 
-\textbf{Schritt 1: Die Gruppierung der Suffixliste}
+\paragraph{Schritt 2: Die Gruppierung der Suffixliste.}
 
 Die Suffixliste wird nach den Anfangsbuchstaben gruppiert, einen Knoten wird erzeugt. Die Gruppen, die für unseres Beispiel erzeugt werden:
 $$
@@ -1268,9 +1216,9 @@ $$
     \bottomrule
 \end{tabular}
 $$
-\textbf{Schritt 2: Die Berechnung des gemeinsamen Präfixes für eine Gruppe}
+\paragraph{Schritt 3: Die Berechnung des gemeinsamen Präfixes für eine Gruppe.}
 
-Für jede Gruppe aus dem Schritt 1 wird das längste gemeinsame Präfix berechnet und eine Kante mit der Beschriftung von dem Präfix erzeugt. Die Gruppen aus dem Beispiel haben folgende Präfixe:
+Für jede Gruppe aus dem Schritt 2 wird das längste gemeinsame Präfix berechnet und eine Kante mit der Beschriftung von dem Präfix erzeugt. Die Gruppen aus dem Beispiel haben folgende Präfixe:
 $$
 \begin{tabular}{l l l}
     \toprule
@@ -1285,9 +1233,7 @@ $$
     \bottomrule
 \end{tabular}
 $$
-Das jeweilige Präfix wird von den Wörtern der Gruppe entfernt und eine neue Liste wird aus den Restwörter erzeugt. Falls die neue Liste leer ist, wird der Schritt 2 für die nächste Gruppe aus dem Schritt 1 wiederholt. Falls die neue Liste noch Wörter enthält, wird der Schritt 1 für diese Liste ausgeführt. Sukzessiver Aufbau von dem Suffixbaum für das Beispiel wird in Abb. \ref{fig:cstKonstruktion} gezeigt\footnote{für eine bessere Veranschaulichung wird der Aufbau mit Levels repräsentiert}.
-
-\textbf{[Alternative]:Ende}
+Das jeweilige Präfix wird von den Wörtern der Gruppe entfernt und eine neue Liste wird aus den Restwörter erzeugt. Falls die neue Liste leer ist, wird der Schritt 3 für die nächste Gruppe aus dem Schritt 2 wiederholt. Falls die neue Liste noch Wörter enthält, wird der Schritt 2 für diese Liste ausgeführt. Sukzessiver Aufbau von dem Suffixbaum für das Beispiel wird in Abb. \ref{fig:cstKonstruktion} gezeigt\footnote{für eine bessere Veranschaulichung wird der Aufbau mit Levels repräsentiert}.
 
 % [h]: here, [t]: top, [b]: bottom
 \begin{figure}[h]
@@ -1636,13 +1582,7 @@ Sei ein Teilwort $cgac$ in dem Wort $agcgacgag$ gesucht. Wir definieren ein pass
 %////////////////////////////////////////////////////////////////////////////
 Im Folgenden benutzen wir die Notation, die in \cite{Karkkainen2006} eingeführt worden ist.
 
-Intervalle werden mit $[i,j] = \{ i, \dots, j\}$ und $[i,j) = [i,j-1]$ bezeichnet.
-
-Ein Wort über ein Alphabet wird als $T = T[0,n) = t_0 t_1 \dots t_{n-1}$ dargestellt, wobei $t_i$ Buchstaben des Alphabets sind. Es wird die Konvention verwendet, dass $t_j = 0$ für $j \ge n$ ist.
-
-Für ein $i \in [0,n]$ wird ein Suffix $S_i = T[i,n) = t_i t_{i+1} \dots t_n$ definiert.
-
-Für eine Menge $C \subseteq [0,n]$ wird eine Suffixmenge $S_C = \{ S_i \mid i \in C\}$ eingeführt.
+Intervalle werden mit $[i,j] = \{ i, \dots, j\}$ und $[i,j) = [i,j-1]$ bezeichnet. Ein Wort über ein Alphabet wird als $T = T[0,n) = t_0 t_1 \dots t_{n-1}$ dargestellt, wobei $t_i$ Buchstaben des Alphabets sind. Es wird die Konvention verwendet, dass $t_j = 0$ für $j \ge n$ ist. Für ein $i \in [0,n]$ wird ein Suffix $S_i = T[i,n) = t_i t_{i+1} \dots t_n$ definiert. Für eine Menge $C \subseteq [0,n]$ wird eine Suffixmenge $S_C = \{ S_i \mid i \in C\}$ eingeführt.
 
 \begin{definition}[Suffix Array]
 Ein Suffix Array $SA[0,n)$ für ein gegebenes Wort $T[0,n)$ ist eine Permutation von $[0,n)$ mit $S_{SA[0]} \prec S_{SA[1]} \prec \dots \prec S_{SA[n-1]}$, wobei $\prec$ die lexikographische Ordnung auf Zeichenketten bezeichnet.
@@ -1653,8 +1593,47 @@ Ein Suffix Array $SA[0,n)$ für ein gegebenes Wort $T[0,n)$ ist eine Permutation
 \label{sec:DC3Algorithmus}
 %////////////////////////////////////////////////////////////////////////////
 
-Der Algorithmus, den wir uns zu der Konstruktion des Suffixarrays anschauen, ist DC3\footnote{Der Algorithmus ist in \cite{Karkkainen2006} vorgestellt worden ist.} (Difference Cover modulo 3) genannt worden. Die Schritte des Algorithmus werden mit einem Beispiel veranschaulicht. Als Eingabe haben wir das Wort
+Der Algorithmus, den wir uns zu der Konstruktion des Suffixarrays anschauen, ist DC3\footnote{Der Algorithmus ist in \cite{Karkkainen2006} vorgestellt worden ist.} (Difference Cover modulo 3) genannt worden. Die Schritte des Algorithmus werden mit einem Beispiel veranschaulicht. Die Struktur des DC3-Algorithmus haben wir in Abb. \ref{fig:strukturDC3} gezeigt.
 
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[
+    font = \small,
+    level 1/.style = {level distance = 20mm, sibling distance = 45mm},
+    level 2/.style = {level distance = 20mm, sibling distance = 45mm},
+    level 3/.style = {level distance = 20mm, sibling distance = 45mm},
+    edge from parent/.style = {->, draw}
+    ]
+    \node (n1) {
+        \begin{tabular}{c}
+            Schritt 1: Divide yabbadabbado \\
+            \midrule
+            \color{black}Schritt 4: Merge \\
+        \end{tabular}}
+    child {
+        node {Schritt 3: Sort}
+        edge from parent[]
+        node[left, xshift = -2mm]{i mod 3 = 0}
+        node[right, xshift = 2mm]{$\sfrac{1}{3}$}
+    }
+    child {
+        node {Schritt 2: Sort recursive}
+        child {
+            edge from parent[dotted]
+        }
+        child {
+            edge from parent[dotted]
+        }
+        edge from parent[]
+        node[right, xshift = 2mm]{i mod 3 = 1 o. 2}
+        node[left, xshift = -2mm]{$\sfrac{2}{3}$}
+    };
+\end{tikzpicture}
+\caption{Struktur des DC3-Algorithmus}
+\label{fig:strukturDC3}
+\end{figure}
+
+Als Eingabe haben wir das Wort
 $$
 \begin{tabular}{l|c c c c c c c c c c c c}
     \toprule
@@ -1665,15 +1644,7 @@ $$
 \end{tabular}
 $$
 
-Der Algorithmus gibt das folgende Suffixarray für das Wort aus:
-
-$$
-SA = (1,6,4,9,3,8,2,7,5,10,11,0)
-$$
-
-\textbf{[Alternative 1]}
-
-\textbf{Schritt 0: Die Konstruktion der Sample-Suffixe}
+\paragraph{Schritt 1: Die Konstruktion der Sample-Suffixe.}
 
 Für $k = 0,1,2$ werden Mengen wie folgt definiert:
 $$
@@ -1685,7 +1656,7 @@ $$
 B_1 = \{1,4,7,10\},\;B_2 = \{2,5,8,11\},\;C = \{1,4,7,10,2,5,8,11\}
 $$
 
-\textbf{Schritt 1: Das Sortieren der Sample-Suffixe}
+\paragraph{Schritt 2: Das Sortieren der Sample-Suffixe.}
 
 Für k = 1,2 werden folgende Zeichenketten konstruiert:
 $$
@@ -1693,11 +1664,11 @@ R_k = [t_k t_{k+1} t_{k+2}][t_{k+3} t_{k+4} t_{k+5}] \dots [t_{max\:B_k} t_{max\
 $$
 wobei jedes Tripel der Form $[t_i t_{i+1} t_{i+2}]$ ein Sample ist. Sei $R = R_1 \odot R_2$ die Konkatenation von $R_1$ und $R_2$. Die Samples von $R$ korrespondieren mit der Menge $S_C$ von Sample-Suffixen, so dass $[t_i t_{i+1} t_{i+2}] \dots$ korrespondiert mit $S_i$. In unserem Beispiel:
 $$
-\begin{tikzpicture}
-    \node (n1) {\color{black}$R_1$ = [abb][ada]][bba][do0], $R_2$ = [bba][dab][bad][o00]};
-    \node[below = 1cm] (n2) at (n1) {$R$ = [abb][ada]][bba][do0][bba][dab][bad][o00]};
-    \path[->] (n1) edge (n2);
-\end{tikzpicture}
+R_1 = [abb][ada]][bba][do0],\;R_2 = [bba][dab][bad][o00] 
+$$
+werden konkateniert zu
+$$
+R = [abb][ada]][bba][do0][bba][dab][bad][o00]
 $$
 Die Samples von $R$ werden mit Radixsort sortiert und es wird jedem Sample sein Rang zugewiesen:
 $$
@@ -1710,30 +1681,30 @@ $$
     }]
     \matrix[ampersand replacement = \&, column sep = -2mm, matrix of nodes]
     {
-        1 \&
-        2 \&
-        3 \&
-        4 \&
-        5 \&
-        6 \&
-        7 \\
-        \color{black}[abb] \&
-        \color{black}[ada] \&
-        \color{black}[bad] \&
-        \color{black}[bba] \&
-        \color{black}[dab] \&
-        \color{black}[do0] \&
-        \color{black}[o00] \\
+        $1$ \&
+        $2$\&
+        $3$ \&
+        $4$ \&
+        $5$ \&
+        $6$ \&
+        $7$ \\
+        \color{black}$[abb]$ \&
+        \color{black}$[ada]$ \&
+        \color{black}$[bad]$ \&
+        \color{black}$[bba]$ \&
+        \color{black}$[dab]$ \&
+        \color{black}$[do0]$ \&
+        \color{black}$[o00]$ \\
     };
 \end{tikzpicture}
 $$
 Dann wird eine neue Zeichenkette $R'$ erzeugt, indem jedes Sample in $R$ durch sein Rang ersetzt wird:
 $$
-\begin{tikzpicture}
-    \node (n1) {\color{black}$R$ = [abb][ada]][bba][do0][bba][dab][bad][o00]};
-    \node[below = 1cm] (n2) at (n1) {$R'$ = 12464537};
-    \path[->] (n1) edge (n2);
-\end{tikzpicture}
+R = [abb][ada]][bba][do0][bba][dab][bad][o00]
+$$
+wird umgewandelt zu
+$$
+R' = 12464537
 $$
 Wenn jedes Zeichen in $R'$ eindeutig ist, dann sind die Sample-Suffixe sortiert und $R'$ ist das Suffixarray für $S_C$. Anderfalls wird der Algorithmus rekursiv für die Zeichenkette $R'$ verwendet. In unserem Beispiel findet es ein rekursiver Aufruf von DC3 mit $R' = 12464537$ statt, der in Abb. \ref{fig:sortRecursive} veranschaulicht wird.
 
@@ -1754,7 +1725,7 @@ $$
 \end{tabular}
 $$
 
-\textbf{Schritt 2: Das Sortieren der Nicht-Sample-Suffixe}
+\paragraph{Schritt 3: Das Sortieren der Nicht-Sample-Suffixe.}
 
 Das sind die Suffixe aus der Menge $S_{B_0} = \{S_i \mid i \in B_0\}$. Jedes Suffix $S_i \in S_{B_0}$ wird mit dem Tupel $(t_i,rank(S_{i+1}))$ repräsentiert. Die Tupel werden mit Radixsort sortiert, indem:
 $$
@@ -1765,7 +1736,7 @@ $$
 S_6 < S_9 < S_3 < S_0 \mbox{, weil }(a,5) < (a,7) < (b,2) < (y,1)
 $$
 
-\textbf{Schritt 3: Merge}
+\paragraph{Schritt 4: Merge.}
 
 Zu diesem Schritt haben wir zwei sortierte Mengen, die jetzt vereinigt werden müssen. Um die Sample-Suffixe $S_i \in S_C$ mit Nicht-Sample-Suffixe $S_j \in S_{B_0}$ zu vergleichen, wird folgende Ordnung benutzt:
 
@@ -1773,167 +1744,9 @@ Zu diesem Schritt haben wir zwei sortierte Mengen, die jetzt vereinigt werden m�
 
     - Falls $i \in B_2$, dann $S_i \le S_j \leftrightarrow (t_i,t_{i+1},rank(S_{i+2})) \le (t_j,t_{j+1},rank(S_{j+2}))$. Z.B. $S_3 = badabbado$ und $S_8 = bado$: $S_3 \rightarrow (b,a,6)$ und $S_8 \rightarrow (b,a,7)$, $(b,a,6) < (b,a,7) \rightarrow S_3 < S_8$
 
-Nach dem die komplette Ordnung bestimmt ist und die zwei Mengen vereinigt worden sind, kann man das gesuchte Suffixarray ablesen:
-$$
-\begin{tikzpicture}
-    \node (n1) {
-        \begin{tabular}{l|c c c c c c c c c c c c}
-            \toprule
-            $i$    & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 \\
-            \midrule
-            $T[0,n)$ & y  & a & b & b & a & d & a & b & b & a & d  & o  \\
-            \midrule
-            $rank(S_i)$ & 12 & 1 & 7 & 5 & 3 & 9 & 2 & 8 & 6 & 4 & 10 & 11 \\
-            \bottomrule
-        \end{tabular}
-    };
-    \node[below = 2cm] (n2) {
-        \begin{tabular}{l l|l l}
-            \toprule
-            $S_1$       & $a b b a d a b b a d o$ & $S_2$    & $b b a d a b b a d o$     \\
-            $S_6$       & $a b b a d o$           & $S_7$    & $b b a d o$               \\
-            $S_4$       & $a d a b b a d o$       & $S_5$    & $d a b b a d o$           \\
-            $S_9$       & $a d o$                 & $S_{10}$ & $d o$                     \\
-            $S_3$       & $b a d a b b a d o$     & $S_{11}$ & $o$                       \\
-            $S_8$       & $b a d o$               & $S_0$    & $y a b b a d a b b a d o$ \\
-            \bottomrule
-        \end{tabular}
-    };
-    \path[->] (n1) edge (n2);
-\end{tikzpicture}
-$$
+Nach dem der Rang von jedem Suffix bestimmt ist und die zwei Mengen vereinigt worden sind, kann man das gesuchte Suffixarray ablesen. Die Abb. \ref{fig:Suffixarray} veranschaulicht der Schritt für das Beispiel.
 
-\textbf{[Alternative 2]}
-
-Der Algorithmus wird wie folgt ausgeführt:
-\begin{enumerate}
-    \item Die Konstruktion der Sample-Suffixe.
-    Für $k = 0,1,2$ werden Mengen wie folgt definiert:
-    $$
-    B_k = \{ i \in [0,n] \mid i \bmod{3} = k\}
-    $$
-
-    Sei $C = B_1 \cup B_2$ die Menge der Sample-Positionen und $S_C$ ist die Menge der Sample-Suffixe. In unserem Beispiel:
-    $$
-    B_1 = \{1,4,7,10\},\;B_2 = \{2,5,8,11\},\;C = \{1,4,7,10,2,5,8,11\}
-    $$
-    \item Das Sortieren der Sample-Suffixe.
-    Für k = 1,2 werden folgende Zeichenketten konstruiert:
-    $$
-    R_k = [t_k t_{k+1} t_{k+2}][t_{k+3} t_{k+4} t_{k+5}] \dots [t_{max\:B_k} t_{max\:B_k + 1} t_{max\:B_k + 2}]
-    $$
-    wobei jedes Tripel der Form $[t_i t_{i+1} t_{i+2}]$ ein Sample ist. Sei $R = R_1 \odot R_2$ die Konkatenation von $R_1$ und $R_2$. Die Samples von $R$ korrespondieren mit der Menge $S_C$ von Sample-Suffixen, so dass $[t_i t_{i+1} t_{i+2}] \dots$ korrespondiert mit $S_i$. In unserem Beispiel:
-    $$
-    \begin{tikzpicture}
-        \node (n1) {\color{black}$R_1$ = [abb][ada]][bba][do0], $R_2$ = [bba][dab][bad][o00]};
-        \node[below = 1cm] (n2) at (n1) {$R$ = [abb][ada]][bba][do0][bba][dab][bad][o00]};
-        \path[->] (n1) edge (n2);
-    \end{tikzpicture}
-    $$
-    Die Samples von $R$ werden mit Radixsort sortiert und es wird jedem Sample sein Rang zugewiesen:
-    $$
-    \centering
-    \begin{tikzpicture}
-        [
-            matrix of nodes/.style = {
-            execute at begin cell = \node\bgroup,
-            execute at end cell = \egroup;%
-        }]
-        \matrix[ampersand replacement = \&, column sep = -2mm, matrix of nodes]
-        {
-            1 \&
-            2 \&
-            3 \&
-            4 \&
-            5 \&
-            6 \&
-            7 \\
-            \color{black}[abb] \&
-            \color{black}[ada] \&
-            \color{black}[bad] \&
-            \color{black}[bba] \&
-            \color{black}[dab] \&
-            \color{black}[do0] \&
-            \color{black}[o00] \\
-        };
-    \end{tikzpicture}
-    $$
-    Dann wird eine neue Zeichenkette $R'$ erzeugt, indem jedes Sample in $R$ durch sein Rang ersetzt wird:
-    $$
-    \begin{tikzpicture}
-        \node (n1) {\color{black}$R$ = [abb][ada]][bba][do0][bba][dab][bad][o00]};
-        \node[below = 1cm] (n2) at (n1) {$R'$ = 12464537};
-        \path[->] (n1) edge (n2);
-    \end{tikzpicture}
-    $$
-    Wenn jedes Zeichen in $R'$ eindeutig ist, dann sind die Sample-Suffixe sortiert und $R'$ ist das Suffixarray für $S_C$. Anderfalls wird der Algorithmus rekursiv für die Zeichenkette $R'$ verwendet. In unserem Beispiel findet es ein rekursiver Aufruf von DC3 mit $R' = 12464537$ statt, der in Abb. \ref{fig:sortRecursive} veranschaulicht wird.
-
-    Der rekursive Aufruf liefert das Suffixarray für $R'$. In unserem Beispiel ist
-    $$
-    SA_{R'} = (0,1,6,4,2,5,3,7)
-    $$
-    Wenn die Sample-Suffixe sortiert sind, es wird jedem Sample-Suffix sein Rang zugewiesen. Für $i \in C$ bezeichnet $rank(S_i)$ den Rang von $S_i$ in der Menge $S_C$. Für $i \in B_0$ ist $rank(S_i)$ noch undefiniert. In unserem Beispiel:
-    $$
-    \begin{tabular}{l|c c c c c c c c c c c c}
-        \toprule
-        $i$    & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 \\
-        \midrule
-        $T[0,n)$ & y & a & b & b & a & d & a & b & b & a & d  & o  \\
-        \midrule
-        $rank(S_i)$ & ? & 1 & 4 & ? & 2 & 6 & ? & 5 & 3 & ? & 7  & 8 \\
-        \bottomrule
-    \end{tabular}
-    $$
-    \item Das Sortieren der Nicht-Sample-Suffixe.
-    Das sind die Suffixe aus der Menge $S_{B_0} = \{S_i \mid i \in B_0\}$. Jedes Suffix $S_i \in S_{B_0}$ wird mit dem Tupel $(t_i,rank(S_{i+1}))$ repräsentiert. Die Tupel werden mit Radixsort sortiert, indem:
-    $$
-    S_i \le S_j \; \leftrightarrow \; (t_i,rank(S_{i+1})) \le (t_j,rank(S_{j+1}))
-    $$
-    Im Beispiel:
-    $$
-    S_6 < S_9 < S_3 < S_0 \mbox{, weil }(a,5) < (a,7) < (b,2) < (y,1)
-    $$
-    \item Merge.
-    Zu diesem Schritt haben wir zwei sortierte Mengen, die jetzt vereinigt werden müssen. Um die Sample-Suffixe $S_i \in S_C$ mit Nicht-Sample-Suffixe $S_j \in S_{B_0}$ zu vergleichen, wird folgende Ordnung benutzt:
-
-        - Falls $i \in B_1$, dann $S_i \le S_j \leftrightarrow (t_i,rank(S_{i+1})) \le (t_j,rank(S_{j+1}))$. Z.B. $S_1 = abbadabbado$ und $S_6 = abbado$: $S_1 \rightarrow (a,4)$ und $S_6 \rightarrow (a,5)$, $(a,4) < (a,5) \rightarrow S_1 < S_6$
-
-        - Falls $i \in B_2$, dann $S_i \le S_j \leftrightarrow (t_i,t_{i+1},rank(S_{i+2})) \le (t_j,t_{j+1},rank(S_{j+2}))$. Z.B. $S_3 = badabbado$ und $S_8 = bado$: $S_3 \rightarrow (b,a,6)$ und $S_8 \rightarrow (b,a,7)$, $(b,a,6) < (b,a,7) \rightarrow S_3 < S_8$
-
-    Nach dem die komplette Ordnung bestimmt ist und die zwei Mengen vereinigt worden sind, kann man das gesuchte Suffixarray ablesen:
-    $$
-    \begin{tikzpicture}
-        \node (n1) {
-            \begin{tabular}{l|c c c c c c c c c c c c}
-                \toprule
-                $i$    & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 \\
-                \midrule
-                $T[0,n)$ & y  & a & b & b & a & d & a & b & b & a & d  & o  \\
-                \midrule
-                $rank(S_i)$ & 12 & 1 & 7 & 5 & 3 & 9 & 2 & 8 & 6 & 4 & 10 & 11 \\
-                \bottomrule
-            \end{tabular}
-        };
-        \node[below = 2cm] (n2) {
-            \begin{tabular}{l l|l l}
-                \toprule
-                $S_1$       & $a b b a d a b b a d o$ & $S_2$    & $b b a d a b b a d o$     \\
-                $S_6$       & $a b b a d o$           & $S_7$    & $b b a d o$               \\
-                $S_4$       & $a d a b b a d o$       & $S_5$    & $d a b b a d o$           \\
-                $S_9$       & $a d o$                 & $S_{10}$ & $d o$                     \\
-                $S_3$       & $b a d a b b a d o$     & $S_{11}$ & $o$                       \\
-                $S_8$       & $b a d o$               & $S_0$    & $y a b b a d a b b a d o$ \\
-                \bottomrule
-            \end{tabular}
-        };
-        \path[->] (n1) edge (n2);
-    \end{tikzpicture}
-    $$
-\end{enumerate}
-
-\textbf{[Alternative]: Ende}
-
-\begin{figure}
+\begin{figure}[htb]
 \centering
 \begin{tikzpicture}
     [
@@ -1985,7 +1798,39 @@ Der Algorithmus wird wie folgt ausgeführt:
 \label{fig:sortRecursive}
 \end{figure}
 
-\textbf{Eigenschaften von DC3}
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}
+    \node (n1) {
+        \begin{tabular}{l|c c c c c c c c c c c c}
+            \toprule
+            $i$    & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 \\
+            \midrule
+            $T[0,n)$ & y  & a & b & b & a & d & a & b & b & a & d  & o  \\
+            \midrule
+            $rank(S_i)$ & 12 & 1 & 7 & 5 & 3 & 9 & 2 & 8 & 6 & 4 & 10 & 11 \\
+            \bottomrule
+        \end{tabular}
+    };
+    \node[below = 2cm] (n2) {
+        \begin{tabular}{l l|l l}
+            \toprule
+            $S_1$       & $a b b a d a b b a d o$ & $S_2$    & $b b a d a b b a d o$     \\
+            $S_6$       & $a b b a d o$           & $S_7$    & $b b a d o$               \\
+            $S_4$       & $a d a b b a d o$       & $S_5$    & $d a b b a d o$           \\
+            $S_9$       & $a d o$                 & $S_{10}$ & $d o$                     \\
+            $S_3$       & $b a d a b b a d o$     & $S_{11}$ & $o$                       \\
+            $S_8$       & $b a d o$               & $S_0$    & $y a b b a d a b b a d o$ \\
+            \bottomrule
+        \end{tabular}
+    };
+    \path[->] (n1) edge (n2);
+\end{tikzpicture}
+\caption{Suffixarray}
+\label{fig:Suffixarray}
+\end{figure}
+
+\paragraph{Eigenschaften von DC3.}
 
 Laufzeit des Algorithmus ist $O(n)$ im Worst case, das ist der schnellste Algorithmus in der Klasse $O(n)$ für den Aufbau des Suffixarrays. Die schnellere Algorithmen, wie z.B. qsufsort \cite{Larsson2007}, haben einen schlechteren Worst case $O(n \log n)$.
 
