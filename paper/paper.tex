@@ -141,6 +141,7 @@
 \newtheorem{remark}{Bemerkung}
 \newtheorem{definition}{Definition}
 \newtheorem{lemma}{Lemma}
+\newtheorem*{problem}{Problemstellung}
 
 \newcommand{\coloneqq}{\mathrel{\mathop:}=}
 
@@ -991,7 +992,27 @@ Suffix Trees eignen sich insbesondere für Problemlösungen im Bereich der Strin
 \label{sec:LongestCommonSubstring}
 %////////////////////////////////////////////////////////////////////////////
 
-\begin{figure}
+In diesem Abschnitt möchten wir eines der vielen Anwendungsgebiete von Suffix Trees exemplarisch vorstellen.
+
+\begin{problem}[$k$-common substring]
+Gegeben eine Menge von Strings $S = \{s_1, \dots, s_K\}$ aus $\Sigma^*$ mit $n = \sum_{i = 1}^K \abs{s_i}$. Für jedes $2 \leq k \leq K$ wird das längste gemeinsame Teilwort der Strings $s_i$ mit $i \leq k$ gesucht.
+\end{problem}
+
+Die Vorstellung der Lösung des allgemeinen $k$-common substring Problem würde den Umfang dieses als motivierendes Beispiel gedachten Abschnittes sprengen. Deshalb beschränken wir uns auf den Spezialfall für $k = 2$.
+
+\begin{problem}[Longest common substring]
+Gegeben zwei Strings $s_1, s_2 \in \Sigma^*$. Gesucht wird die Länge des längsten gemeinsamen Teilworts von $s_1$ und $s_2$.
+\end{problem}
+
+Der Aufwand für das $k$-common substring Problem beträgt unter Zuhilfenahme eines Generalized Suffix Trees $O(nK)$\footnote{Mithilfe eines weiteren Vorverarbeitungsschrittes des $GST$ kann dieser Aufwand auf $O(n)$ gesenkt werden. Weitere Details können \cite{Gusfield1997} entnommen werden.}. Für den Spezialfall mit $k = 2$ erhalten wir demzufolge $O(\abs{s_1} + \abs{s_2})$.
+
+Wir verzichten an dieser Stelle bewußt auf eine Implementierung, da diese unserer Meinung nicht zu einem besseren Verständnis des Sachverhalts beiträgt.
+
+\begin{description}
+    \item[Schritt 1: $\boldsymbol{GST}$ für $\boldsymbol{s_1}$ und $\boldsymbol{s_2}$ konstruieren]
+\end{description}
+
+\begin{figure}[htb]
 \centering
 \begin{tikzpicture}[
     level 1/.style = {level distance = 10mm, sibling distance = 60mm},
@@ -1051,7 +1072,7 @@ Suffix Trees eignen sich insbesondere für Problemlösungen im Bereich der Strin
 \label{fig:LaengstesGemeinsamesTeilwortW}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[htb]
 \centering
 \begin{tikzpicture}[
     level 1/.style = {level distance = 10mm, sibling distance = 60mm},
