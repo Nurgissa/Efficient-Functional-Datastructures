@@ -1144,6 +1144,8 @@ In dem zweiten Ansatz wird der Baum rekursiv aufgebaut, indem zuerst Kanten von 
 
 Der Algorithmus, der wir uns in dieser Arbeit anschauen, verwendet den zweiten Ansatz. Dieser Algorithmus ist als ''Write only top down suffix tree construction''\footnote{Der Algorithmus wurde von R. Giegerich und S. Kurtz entwickelt. Siehe \cite{Giegerich1995}.}, kurz geschrieben WOTD-Algorithmus, genannt worden. ''Write only'' steht für die Eigenschaft, dass die Knoten im Baum nur konstruiert werden und danach nicht mehr gelesen. ''Top down'' steht für den Art des Aufbaus: rekursive Konstruktion, beginnend an der Wurzel mit allen Suffixen. Der Algorithmus eignet sich für die funktionale Implementierung und insbesondere für die Benutzung der laziness-Eigenschaft. Aus diesen Gründen wird für die Implementierung des Algorithmus Haskell benutzt\footnote{wir haben die Implementierung von \cite{Giegerich1995} genommen und leciht bearbeitet.}.
 
+\textbf{[Alternative 1]}
+
 Die Schritte des Algoritmus kann man wie folgt zusammenfassen:
 
 \begin{enumerate}
@@ -1190,7 +1192,8 @@ Weiter schauen wir uns ein Beispiel an, das zeigt wie der Algorithmus einen komp
     \item Weiter wird der Algorithmus ab Schritt 2 für die restlichen Gruppen rekursiv verwendet bis keine restliche Wörtet unter allen Kantnet mehr gibt. Die Ergebnisse von rekursiven Schritten und den aufgebauten kompakten Suffixbaum zeigt die Abb. \ref{fig:cstKonstruktion}
 \end{enumerate}
 
-\textbf{[Alternative]}
+\textbf{[Alternative 2]}
+
 Die Schritte des Algorithmus werden mit einem Beispiel für das Wort $t$ = $agcgacgag$ veranschaulicht.
 
 Der Algoritmus wird wie folgt ausgeführt:
@@ -1231,7 +1234,7 @@ $$
     \bottomrule
 \end{tabular}
 $$
-Das jeweilige Präfix wird von den Wörtern der Gruppe entfernt und eine neue Liste mit den Restwörter erzeugt wird. Falls die neue Liste leer ist, wird der Schritt 2 für die nächste Gruppe aus dem Schritt 1 wiederholt. Falls die neue Liste noch Wörter enthält, wird der Schritt 1 für diese Liste ausgeführt. Sukzessiver Aufbau von dem Suffixbaum für das Beispiel wird in Abb. \ref{fig:cstKonstruktion} gezeigt\footnote{für eine bessere Veranschaulichung wird der Aufbau mit Levels repräsentiert}.
+Das jeweilige Präfix wird von den Wörtern der Gruppe entfernt und eine neue Liste wird aus den Restwörter erzeugt. Falls die neue Liste leer ist, wird der Schritt 2 für die nächste Gruppe aus dem Schritt 1 wiederholt. Falls die neue Liste noch Wörter enthält, wird der Schritt 1 für diese Liste ausgeführt. Sukzessiver Aufbau von dem Suffixbaum für das Beispiel wird in Abb. \ref{fig:cstKonstruktion} gezeigt\footnote{für eine bessere Veranschaulichung wird der Aufbau mit Levels repräsentiert}.
 
 \textbf{[Alternative]:Ende}
 
@@ -1602,7 +1605,7 @@ Ein Suffix Array $SA[0,n)$ für ein gegebenes Wort $T[0,n)$ ist eine Permutation
 \label{sec:DC3Algorithmus}
 %////////////////////////////////////////////////////////////////////////////
 
-Der Algorithmus, den wir uns zu der Konstruktion des Suffixarrays anschauen, ist DC3\footnote{Der Algorithmus ist in \cite{Karkkainen2006} vorgestellt worden ist.} (steht für Difference Cover modulo 3) genannt worden. Die Schritte des Algorithmus werden mit einem Beispiel veranschaulicht. Als Eingabe haben wir das Wort
+Der Algorithmus, den wir uns zu der Konstruktion des Suffixarrays anschauen, ist DC3\footnote{Der Algorithmus ist in \cite{Karkkainen2006} vorgestellt worden ist.} (Difference Cover modulo 3) genannt worden. Die Schritte des Algorithmus werden mit einem Beispiel veranschaulicht. Als Eingabe haben wir das Wort
 
 $$
 \begin{tabular}{l|c c c c c c c c c c c c}
@@ -1619,6 +1622,8 @@ Der Algorithmus gibt das folgende Suffixarray für das Wort aus:
 $$
 SA = (1,6,4,9,3,8,2,7,5,10,11,0)
 $$
+
+\textbf{[Alternative 1]}
 
 \textbf{Schritt 0: Die Konstruktion der Sample-Suffixe}
 
@@ -1640,9 +1645,12 @@ R_k = [t_k t_{k+1} t_{k+2}][t_{k+3} t_{k+4} t_{k+5}] \dots [t_{max\:B_k} t_{max\
 $$
 wobei jedes Tripel der Form $[t_i t_{i+1} t_{i+2}]$ ein Sample ist. Sei $R = R_1 \odot R_2$ die Konkatenation von $R_1$ und $R_2$. Die Samples von $R$ korrespondieren mit der Menge $S_C$ von Sample-Suffixen, so dass $[t_i t_{i+1} t_{i+2}] \dots$ korrespondiert mit $S_i$. In unserem Beispiel:
 $$
-R = [abb][ada]][bba][do0][bba][dab][bad][o00]
+\begin{tikzpicture}
+    \node (n1) {\color{black}$R_1$ = [abb][ada]][bba][do0], $R_2$ = [bba][dab][bad][o00]};
+    \node[below = 1cm] (n2) at (n1) {$R$ = [abb][ada]][bba][do0][bba][dab][bad][o00]};
+    \path[->] (n1) edge (n2);
+\end{tikzpicture}
 $$
-
 Die Samples von $R$ werden mit Radixsort sortiert und es wird jedem Sample sein Rang zugewiesen:
 $$
 \centering
@@ -1674,12 +1682,12 @@ $$
 Dann wird eine neue Zeichenkette $R'$ erzeugt, indem jedes Sample in $R$ durch sein Rang ersetzt wird:
 $$
 \begin{tikzpicture}
-    \node (n1) {\color{black}R = [abb][ada]][bba][do0][bba][dab][bad][o00]};
-    \node[below = 1cm] (n2) at (n1) {R' = 12464537};
+    \node (n1) {\color{black}$R$ = [abb][ada]][bba][do0][bba][dab][bad][o00]};
+    \node[below = 1cm] (n2) at (n1) {$R'$ = 12464537};
     \path[->] (n1) edge (n2);
 \end{tikzpicture}
 $$
-Wenn jedes Zeichen in $R'$ eindeutig ist, dann sind die Sample-Suffixe sortiert und $R'$ ist das Suffixarray für $S_C$. Anderfalls wird der Algorithmus rekursiv für die Zeichenkette $R'$ verwendet. In unserem Beispiel findet es ein rekursiver Aufruf von DC3 mit $R = 12464537$ statt, der in Abb. \ref{fig:sortRecursive} veranschaulicht wird.
+Wenn jedes Zeichen in $R'$ eindeutig ist, dann sind die Sample-Suffixe sortiert und $R'$ ist das Suffixarray für $S_C$. Anderfalls wird der Algorithmus rekursiv für die Zeichenkette $R'$ verwendet. In unserem Beispiel findet es ein rekursiver Aufruf von DC3 mit $R' = 12464537$ statt, der in Abb. \ref{fig:sortRecursive} veranschaulicht wird.
 
 Der rekursive Aufruf liefert das Suffixarray für $R'$. In unserem Beispiel ist
 $$
@@ -1697,58 +1705,6 @@ $$
     \bottomrule
 \end{tabular}
 $$
-
-\begin{figure}
-\centering
-\begin{tikzpicture}
-    [
-        matrix of nodes/.style = {
-        execute at begin cell = \node\bgroup,
-        execute at end cell = \egroup;%
-        }
-    ]
-    \matrix[ampersand replacement = \&, column sep = -2mm, matrix of nodes] (m) {
-        \color{black}[ \& \color{aquamarine}a\color{gray}bb\color{black} \& ] \&
-        \color{black}[ \& \color{aquamarine}a\color{gray}da\color{black}\color{black} \& ] \&
-        \color{black}[ \& \color{aquamarine}b\color{gray}ba\color{black} \& ] \&
-        \color{black}[ \& \color{aquamarine}d\color{gray}o0\color{black} \& ] \&
-        \color{black}[ \& \color{blue}b\color{gray}ba\color{black} \& ] \&
-        \color{black}[ \& \color{blue}d\color{gray}ab\color{black} \& ] \&
-        \color{black}[ \& \color{blue}b\color{gray}ad\color{black} \& ] \&
-        \color{black}[ \& \color{blue}o\color{gray}00\color{black} \& ] \& \\
-        \color{black}[ \& 1 \& ] \&
-        \color{black}[ \& 2 \& ] \&
-        \color{black}[ \& 4 \& ] \&
-        \color{black}[ \& 6 \& ] \&
-        \color{black}[ \& 4 \& ] \&
-        \color{black}[ \& 5 \& ] \&
-        \color{black}[ \& 3 \& ] \&
-        \color{black}[ \& 7 \& ] \& \\
-                       \&   \&   \&
-                       \&   \&   \&
-        \color{black}[ \& 4 \&   \&
-                       \& 6 \&   \&
-                       \& 4 \& ] \&
-                       \&   \&   \&
-                       \&   \&   \&
-                       \&   \&   \& \\
-                       \&   \&   \&
-                       \&   \&   \&
-                       \&   \&   \&
-                       \&   \&   \&
-        \color{black}[ \& 4 \&   \&
-                       \& 5 \&   \&
-                       \& 3 \& ] \&
-                       \&   \&   \& \\
-    };
-    \node[left = 2cm, above = 2cm] (n1) at (m) {\color{gray}y\color{aquamarine}a\color{gray}bb\color{aquamarine}a\color{gray}da\color{aquamarine}b\color{gray}ba\color{aquamarine}d\color{gray}o};
-    \node[right = 2cm, above = 2cm] (n2) at (m) {\color{gray}ya\color{blue}b\color{gray}ba\color{blue}d\color{gray}ab\color{blue}b\color{gray}ad\color{blue}o};
-    \fill[aquamarine!30] (-1.8, 2.1) -- (-0.75, 2.1) -- (0, 1.25) -- (-1.8, 1.25) -- cycle;
-    \fill[blue!30] (1.25, 2.1) -- (3.15, 2.1) -- (3.9, 1.25) -- (0.15, 1.25) -- cycle;
-\end{tikzpicture}
-\caption{Sort recursive}
-\label{fig:sortRecursive}
-\end{figure}
 
 \textbf{Schritt 2: Das Sortieren der Nicht-Sample-Suffixe}
 
@@ -1799,31 +1755,9 @@ $$
 \end{tikzpicture}
 $$
 
-\textbf{[Alternativ]}
-%////////////////////////////////////////////////////////////////////////////
-\section{DC3-Algorithmus}
-\label{sec:DC3Algorithmus}
-%////////////////////////////////////////////////////////////////////////////
+\textbf{[Alternative 2]}
 
-Der Algorithmus, den wir uns zu der Konstruktion des Suffixarrays anschauen, ist DC3\footnote{Der Algorithmus ist in \cite{Karkkainen2006} vorgestellt worden ist.} (steht für Difference Cover modulo 3) genannt worden. Die Schritte des Algorithmus werden mit einem Beispiel veranschaulicht. Als Eingabe haben wir das Wort
-
-$$
-\begin{tabular}{l|c c c c c c c c c c c c}
-    \toprule
-    i    & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 \\
-    \midrule
-    T[0,n) & y & a & b & b & a & d & a & b & b & a & d  & o  \\
-    \bottomrule
-\end{tabular}
-$$
-
-Der Algorithmus gibt das folgende Suffixarray für das Wort aus:
-
-$$
-SA = (1,6,4,9,3,8,2,7,5,10,11,0)
-$$
-
-Die Schritte des Algorithmus wird wie folgt ausgeführt:
+Der Algorithmus wird wie folgt ausgeführt:
 \begin{enumerate}
     \item Die Konstruktion der Sample-Suffixe.
     Für $k = 0,1,2$ werden Mengen wie folgt definiert:
@@ -1842,9 +1776,12 @@ Die Schritte des Algorithmus wird wie folgt ausgeführt:
     $$
     wobei jedes Tripel der Form $[t_i t_{i+1} t_{i+2}]$ ein Sample ist. Sei $R = R_1 \odot R_2$ die Konkatenation von $R_1$ und $R_2$. Die Samples von $R$ korrespondieren mit der Menge $S_C$ von Sample-Suffixen, so dass $[t_i t_{i+1} t_{i+2}] \dots$ korrespondiert mit $S_i$. In unserem Beispiel:
     $$
-    R = [abb][ada]][bba][do0][bba][dab][bad][o00]
+    \begin{tikzpicture}
+        \node (n1) {\color{black}$R_1$ = [abb][ada]][bba][do0], $R_2$ = [bba][dab][bad][o00]};
+        \node[below = 1cm] (n2) at (n1) {$R$ = [abb][ada]][bba][do0][bba][dab][bad][o00]};
+        \path[->] (n1) edge (n2);
+    \end{tikzpicture}
     $$
-
     Die Samples von $R$ werden mit Radixsort sortiert und es wird jedem Sample sein Rang zugewiesen:
     $$
     \centering
@@ -1876,12 +1813,12 @@ Die Schritte des Algorithmus wird wie folgt ausgeführt:
     Dann wird eine neue Zeichenkette $R'$ erzeugt, indem jedes Sample in $R$ durch sein Rang ersetzt wird:
     $$
     \begin{tikzpicture}
-        \node (n1) {\color{black}R = [abb][ada]][bba][do0][bba][dab][bad][o00]};
-        \node[below = 1cm] (n2) at (n1) {R' = 12464537};
+        \node (n1) {\color{black}$R$ = [abb][ada]][bba][do0][bba][dab][bad][o00]};
+        \node[below = 1cm] (n2) at (n1) {$R'$ = 12464537};
         \path[->] (n1) edge (n2);
     \end{tikzpicture}
     $$
-    Wenn jedes Zeichen in $R'$ eindeutig ist, dann sind die Sample-Suffixe sortiert und $R'$ ist das Suffixarray für $S_C$. Anderfalls wird der Algorithmus rekursiv für die Zeichenkette $R'$ verwendet. In unserem Beispiel findet es ein rekursiver Aufruf von DC3 mit $R = 12464537$ statt, der in Abb. \ref{fig:sortRecursive} veranschaulicht wird.
+    Wenn jedes Zeichen in $R'$ eindeutig ist, dann sind die Sample-Suffixe sortiert und $R'$ ist das Suffixarray für $S_C$. Anderfalls wird der Algorithmus rekursiv für die Zeichenkette $R'$ verwendet. In unserem Beispiel findet es ein rekursiver Aufruf von DC3 mit $R' = 12464537$ statt, der in Abb. \ref{fig:sortRecursive} veranschaulicht wird.
 
     Der rekursive Aufruf liefert das Suffixarray für $R'$. In unserem Beispiel ist
     $$
@@ -1946,6 +1883,8 @@ Die Schritte des Algorithmus wird wie folgt ausgeführt:
     $$
 \end{enumerate}
 
+\textbf{[Alternative]: Ende}
+
 \begin{figure}
 \centering
 \begin{tikzpicture}
@@ -1997,8 +1936,6 @@ Die Schritte des Algorithmus wird wie folgt ausgeführt:
 \caption{Sort recursive}
 \label{fig:sortRecursive}
 \end{figure}
-
-\textbf{[Alternativ]: Ende}
 
 \textbf{Eigenschaften von DC3}
 
