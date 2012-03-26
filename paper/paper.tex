@@ -56,7 +56,7 @@
 %\renewcommand{\baselinestretch}{1.5} 	% Uncomment for 1.5 spacing between lines
 \parindent 0pt		  	 % sets leading space for paragraphs
 
-%--Figure-Konfiguartion------------------------------------------------------
+%--Figure-Konfiguration------------------------------------------------------
 
 \setlength{\abovecaptionskip}{5mm}
 
@@ -995,7 +995,7 @@ Suffix Trees eignen sich insbesondere für Problemlösungen im Bereich der Strin
 In diesem Abschnitt möchten wir eines der vielen Anwendungsgebiete von Suffix Trees exemplarisch vorstellen.
 
 \begin{problem}[$k$-common substring]
-Gegeben eine Menge von Strings $S = \{s_1, \dots, s_K\}$ aus $\Sigma^*$ mit $n = \sum_{i = 1}^K \abs{s_i}$. Für jedes $2 \leq k \leq K$ wird das längste gemeinsame Teilwort der Strings $s_i$ mit $i \leq k$ gesucht.
+Gegeben eine Menge von Strings $S = \{s_1, \dots, s_K\}$ aus $\Sigma^*$ mit $n = \sum_{i = 1}^K \abs{s_i}$. Für jedes $2 \leq k \leq K$ wird die Länge des längsten gemeinsamen Teilwortes der Strings $s_i$ mit $i \leq k$ gesucht.
 \end{problem}
 
 Die Vorstellung der Lösung des allgemeinen $k$-common substring Problem würde den Umfang dieses als motivierendes Beispiel gedachten Abschnittes sprengen. Deshalb beschränken wir uns auf den Spezialfall für $k = 2$.
@@ -1010,142 +1010,145 @@ Wir verzichten an dieser Stelle bewußt auf eine Implementierung, da diese unser
 
 \begin{description}
     \item[Schritt 1: $\boldsymbol{GST}$ für $\boldsymbol{s_1}$ und $\boldsymbol{s_2}$ konstruieren]
+        Im ersten Schritt wird ein $GST_D$ für $D = \{s_1, s_2\}$ und $T = \{\$, \#\}$ konstruiert.
+        \begin{figure}[htb]
+        \centering
+        \begin{tikzpicture}[
+            level 1/.style = {level distance = 10mm, sibling distance = 60mm},
+            level 2/.style = {level distance = 10mm, sibling distance = 30mm},
+            level 3/.style = {level distance = 10mm, sibling distance = 20mm},
+            edge from parent/.style = {->, draw}
+            ]
+            \node[branch]{}
+            child {
+                node[branch]{}
+                child {
+                    node[branch] (w1) {}
+                    child {
+                        edge from parent
+                        node[left]{$a\$$}
+                    }
+                    child {
+                        edge from parent
+                        node[right, xshift = 1mm]{$ga\#$}
+                    }
+                    edge from parent
+                    node[left]{$g$}
+                }
+                child {
+                    edge from parent
+                    node[right, xshift = 1mm]{$\$, \#$}
+                }
+                edge from parent
+                node[above]{$a$}
+            }
+            child {
+                node[branch]{}
+                child {
+                    node[branch] (w2) {}
+                    child {
+                        edge from parent
+                        node[left]{$ga\$$}
+                    }
+                    child {
+                        edge from parent
+                        node[right]{$\$, \#$}
+                    }
+                    edge from parent
+                    node[left]{$a$}
+                }
+                child {
+                    edge from parent
+                    node[right, xshift = 2mm]{$ga\#$}
+                }
+                edge from parent
+                node[above]{$g$}
+            };
+            \node[yshift = 3mm, xshift = -7mm] at (w1.center) {$\overline{w}$} edge [dotted] (w1);
+            \node[yshift = 3mm, xshift = -7mm] at (w2.center) {$\overline{w}$} edge [dotted] (w2);
+        \end{tikzpicture}
+        \caption{Längstes gemeinsames Teilwort $w$}
+        \label{fig:LaengstesGemeinsamesTeilwortW}
+        \end{figure}
+    \item[Schritt 2: Zugehörigkeit bestimmen]
+        \begin{figure}[htb]
+        \centering
+        \begin{tikzpicture}[
+            level 1/.style = {level distance = 10mm, sibling distance = 60mm},
+            level 2/.style = {level distance = 10mm, sibling distance = 30mm},
+            level 3/.style = {level distance = 10mm, sibling distance = 20mm},
+            edge from parent/.style = {->, draw}
+            ]
+            \node[branch] (b1) {}
+            child {
+                node[branch] (b2) {}
+                child {
+                    node[branch] (b3) {}
+                    child {
+                        node[leaf] (l1) {}
+                        edge from parent
+                        node[left]{$a\$$}
+                    }
+                    child {
+                        node[leaf] (l2) {}
+                        edge from parent
+                        node[right, xshift = 1mm]{$ga\#$}
+                    }
+                    edge from parent
+                    node[left]{$g$}
+                }
+                child {
+                    node[leaf] (l3) {}
+                    edge from parent
+                    node[right, xshift = 1mm]{$\$, \#$}
+                }
+                edge from parent
+                node[above]{$a$}
+            }
+            child {
+                node[branch] (b4) {}
+                child {
+                    node[branch] (b5) {}
+                    child {
+                        node[leaf] (l4) {}
+                        edge from parent
+                        node[left]{$ga\$$}
+                    }
+                    child {
+                        node[leaf] (l5) {}
+                        edge from parent
+                        node[right]{$\$, \#$}
+                    }
+                    edge from parent
+                    node[left]{$a$}
+                }
+                child {
+                    node[leaf] (l6) {}
+                    edge from parent
+                    node[right, xshift = 2mm]{$ga\#$}
+                }
+                edge from parent
+                node[above]{$g$}
+            };
+            \node[yshift = 8mm] at (b1) {$(1, 1)$} edge [dotted] (b1);
+            \node[yshift = 3mm, xshift = -10mm] at (b2) {$(1, 1)$} edge [dotted] (b2);
+            \node[yshift = 3mm, xshift = -10mm] at (b3) {$(1, 1)$} edge [dotted] (b3);
+            \node[yshift = 3mm, xshift = 10mm] at (b4) {$(1, 1)$} edge [dotted] (b4);
+            \node[yshift = 3mm, xshift = -10mm] at (b5) {$(1, 1)$} edge [dotted] (b5);
+            \node[yshift = -8mm] at (l1) {$(1, 0)$} edge [dotted] (l1);
+            \node[yshift = -8mm] at (l2) {$0, 1)$} edge [dotted] (l2);
+            \node[yshift = -18mm] at (l3) {$(1, 1)$} edge [dotted] (l3);
+            \node[yshift = -8mm] at (l4) {$(1, 0)$} edge [dotted] (l4);
+            \node[yshift = -8mm] at (l5) {$(1, 1)$} edge [dotted] (l5);
+            \node[yshift = -18mm] at (l6) {$(0, 1)$} edge [dotted] (l6);
+        \end{tikzpicture}
+        \caption{Zuordnung der Bitvektoren}
+        \label{ZuordnungDerBitvektoren}
+        \end{figure}
+    \item[Schritt 3: Knoten mit maximaler Tiefe finden]
 \end{description}
 
-\begin{figure}[htb]
-\centering
-\begin{tikzpicture}[
-    level 1/.style = {level distance = 10mm, sibling distance = 60mm},
-    level 2/.style = {level distance = 10mm, sibling distance = 30mm},
-    level 3/.style = {level distance = 10mm, sibling distance = 20mm},
-    edge from parent/.style = {->, draw}
-    ]
-    \node[branch]{}
-    child {
-        node[branch]{}
-        child {
-            node[branch] (w1) {}
-            child {
-                edge from parent
-                node[left]{$a\$$}
-            }
-            child {
-                edge from parent
-                node[right, xshift = 1mm]{$ga\#$}
-            }
-            edge from parent
-            node[left]{$g$}
-        }
-        child {
-            edge from parent
-            node[right, xshift = 1mm]{$\$, \#$}
-        }
-        edge from parent
-        node[above]{$a$}
-    }
-    child {
-        node[branch]{}
-        child {
-            node[branch] (w2) {}
-            child {
-                edge from parent
-                node[left]{$ga\$$}
-            }
-            child {
-                edge from parent
-                node[right]{$\$, \#$}
-            }
-            edge from parent
-            node[left]{$a$}
-        }
-        child {
-            edge from parent
-            node[right, xshift = 2mm]{$ga\#$}
-        }
-        edge from parent
-        node[above]{$g$}
-    };
-    \node[yshift = 3mm, xshift = -7mm] at (w1.center) {$\overline{w}$} edge [dotted] (w1);
-    \node[yshift = 3mm, xshift = -7mm] at (w2.center) {$\overline{w}$} edge [dotted] (w2);
-\end{tikzpicture}
-\caption{Längstes gemeinsames Teilwort $w$}
-\label{fig:LaengstesGemeinsamesTeilwortW}
-\end{figure}
 
-\begin{figure}[htb]
-\centering
-\begin{tikzpicture}[
-    level 1/.style = {level distance = 10mm, sibling distance = 60mm},
-    level 2/.style = {level distance = 10mm, sibling distance = 30mm},
-    level 3/.style = {level distance = 10mm, sibling distance = 20mm},
-    edge from parent/.style = {->, draw}
-    ]
-    \node[branch] (b1) {}
-    child {
-        node[branch] (b2) {}
-        child {
-            node[branch] (b3) {}
-            child {
-                node[leaf] (l1) {}
-                edge from parent
-                node[left]{$a\$$}
-            }
-            child {
-                node[leaf] (l2) {}
-                edge from parent
-                node[right, xshift = 1mm]{$ga\#$}
-            }
-            edge from parent
-            node[left]{$g$}
-        }
-        child {
-            node[leaf] (l3) {}
-            edge from parent
-            node[right, xshift = 1mm]{$\$, \#$}
-        }
-        edge from parent
-        node[above]{$a$}
-    }
-    child {
-        node[branch] (b4) {}
-        child {
-            node[branch] (b5) {}
-            child {
-                node[leaf] (l4) {}
-                edge from parent
-                node[left]{$ga\$$}
-            }
-            child {
-                node[leaf] (l5) {}
-                edge from parent
-                node[right]{$\$, \#$}
-            }
-            edge from parent
-            node[left]{$a$}
-        }
-        child {
-            node[leaf] (l6) {}
-            edge from parent
-            node[right, xshift = 2mm]{$ga\#$}
-        }
-        edge from parent
-        node[above]{$g$}
-    };
-    \node[yshift = 8mm] at (b1) {$(1, 1)$} edge [dotted] (b1);
-    \node[yshift = 3mm, xshift = -10mm] at (b2) {$(1, 1)$} edge [dotted] (b2);
-    \node[yshift = 3mm, xshift = -10mm] at (b3) {$(1, 1)$} edge [dotted] (b3);
-    \node[yshift = 3mm, xshift = 10mm] at (b4) {$(1, 1)$} edge [dotted] (b4);
-    \node[yshift = 3mm, xshift = -10mm] at (b5) {$(1, 1)$} edge [dotted] (b5);
-    \node[yshift = -8mm] at (l1) {$(1, 0)$} edge [dotted] (l1);
-    \node[yshift = -8mm] at (l2) {$0, 1)$} edge [dotted] (l2);
-    \node[yshift = -18mm] at (l3) {$(1, 1)$} edge [dotted] (l3);
-    \node[yshift = -8mm] at (l4) {$(1, 0)$} edge [dotted] (l4);
-    \node[yshift = -8mm] at (l5) {$(1, 1)$} edge [dotted] (l5);
-    \node[yshift = -18mm] at (l6) {$(0, 1)$} edge [dotted] (l6);
-\end{tikzpicture}
-\caption{Zuordnung der Bitvektoren}
-\label{ZuordnungDerBitvektoren}
-\end{figure}
 
 %////////////////////////////////////////////////////////////////////////////
 \section{Suffix Tree Konstruktion}
@@ -1219,7 +1222,7 @@ Die Schritte des Algorithmus werden mit einem Beispiel für das Wort $t$ = $agcg
 
 Der Algoritmus wird wie folgt ausgeführt:
 
-\textbf{Schritt 0: Die Konstruktion der Suffixliste} 
+\textbf{Schritt 0: Die Konstruktion der Suffixliste}
 
 Es wird eine Suffixliste eines gegebenen Wortes erzeugt. Die Suffixliste für das Wort $t$ = $agcgacgag$ ist
 $[agcgacgag$, $gcgacgag$, $cgacgag$, $gacgag$, $acgag$, $cgag$, $gag$, $ag$, $g]$.
@@ -1526,7 +1529,7 @@ Fallunterscheidung der Funktion $g$:
     caption = Suche im Suffix Tree,
     label = lst:SucheImSuffixTree,
     captionpos = b,
-    float = hb
+    float = htb
     ]
 commonPrefix :: (Eq alph) => Word alph -> Word alph -> (Word alph, Word alph, Word alph)
 commonPrefix w1 w2 = g w1 w2 []
@@ -1555,41 +1558,38 @@ Dank der laziness-Eigenschaft, werden nur die Kanten von dem Suffixbaum während
 
 Sei ein Teilwort $cgac$ in dem Wort $agcgacgag$ gesucht. Wir definieren ein passendes Alphabet und übergeben es mit dem Teilwort und dem Wort an der Funktion $search$ (siehe Listing \ref{lst:SucheImSuffixTree}). Die Abb. \ref{fig:teilwortuche} zeigt das Teil des Suffixbaums, das während der Suche konstruiert wird.
 
-\begin{figure}[b]
+\begin{figure}[htb]
 \centering
 \begin{tikzpicture}[
-    font = \small,
-    level 1/.style = {level distance = 7mm, sibling distance = 30mm},
-    level 2/.style = {level distance = 7mm, sibling distance = 15mm},
-    level 3/.style = {level distance = 7mm, sibling distance = 10mm},
+    level 1/.style = {level distance = 12mm, sibling distance = 50mm},
+    level 2/.style = {level distance = 12mm, sibling distance = 35mm},
+    level 3/.style = {level distance = 12mm, sibling distance = 20mm},
     edge from parent/.style = {->, draw}
     ]
-    { [yshift = 0cm]
-        \node[branch]{}
+    \node[branch]{}
+    child[child anchor = north] {
+        node[subtree] (a) {}
+        edge from parent
+        node[above]{$a$}
+    }
+    child[child anchor = north, level distance = 16mm] {
+        node[branch]{}
         child {
-            node[branch] (a) {}
+            node[subtree]{}
             edge from parent
-            node[above]{$a$}
-        }
-        child[level distance = 16mm] {
-            node[branch]{}
-            child {
-                edge from parent
-                node[left]{$\boldsymbol{c}gag$}
-            }
-            child[child anchor = north] {
-                edge from parent[dotted]
-            }
-            edge from parent
-            node[left]{$\boldsymbol{cga}$}
+            node[left]{$\boldsymbol{c}gag$}
         }
         child[child anchor = north] {
             edge from parent[dotted]
-        };
+        }
+        edge from parent
+        node[left]{$\boldsymbol{cga}$}
     }
-    \node[subtree] at (a.center) {};
+    child[child anchor = north] {
+        edge from parent[dotted]
+    };
 \end{tikzpicture}
-\caption{Beispiel für die Teilwortsuche}
+\caption{Teilwortsuche im Suffix Tree}
 \label{fig:teilwortuche}
 \end{figure}
 
