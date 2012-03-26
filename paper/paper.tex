@@ -1573,7 +1573,47 @@ Ein Suffix Array $SA[0,n)$ f체r ein gegebenes Wort $T[0,n)$ ist eine Permutation
 \label{sec:DC3Algorithmus}
 %////////////////////////////////////////////////////////////////////////////
 
-Der Algorithmus, den wir uns zu der Konstruktion des Suffixarrays anschauen, ist DC3\footnote{Der Algorithmus ist in \cite{Karkkainen2006} vorgestellt worden ist.} (Difference Cover modulo 3) genannt worden. Die Schritte des Algorithmus werden mit einem Beispiel veranschaulicht. Als Eingabe haben wir das Wort
+Der Algorithmus, den wir uns zu der Konstruktion des Suffixarrays anschauen, ist DC3\footnote{Der Algorithmus ist in \cite{Karkkainen2006} vorgestellt worden ist.} (Difference Cover modulo 3) genannt worden. Die Schritte des Algorithmus werden mit einem Beispiel veranschaulicht. Die Struktur des DC3-Algorithmus haben wir in Abb. \ref{fig:strukturDC3} gezeigt.
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[
+    font = \small,
+    level 1/.style = {level distance = 20mm, sibling distance = 45mm},
+    level 2/.style = {level distance = 20mm, sibling distance = 45mm},
+    level 3/.style = {level distance = 20mm, sibling distance = 45mm},
+    edge from parent/.style = {->, draw}
+    ]
+    \node (n1) {
+        \begin{tabular}{c}
+            Schritt 1: Divide yabbadabbado \\
+            \midrule
+            \color{black}Schritt 4: Merge \\
+        \end{tabular}}
+    child {
+        node {Schritt 3: Sort}
+        edge from parent[]
+        node[left, xshift = -2mm]{i mod 3 = 0}
+        node[right, xshift = 2mm]{$\sfrac{1}{3}$}
+    }
+    child {
+        node {Schritt 2: Sort recursive}
+        child {
+            edge from parent[dotted]
+        }
+        child {
+            edge from parent[dotted]
+        }
+        edge from parent[]
+        node[right, xshift = 2mm]{i mod 3 = 1 o. 2}
+        node[left, xshift = -2mm]{$\sfrac{2}{3}$}
+    };
+\end{tikzpicture}
+\caption{Struktur des DC3-Algorithmus}
+\label{fig:strukturDC3}
+\end{figure}
+
+Als Eingabe haben wir das Wort
 $$
 \begin{tabular}{l|c c c c c c c c c c c c}
     \toprule
@@ -1582,11 +1622,6 @@ $$
     T[0,n) & y & a & b & b & a & d & a & b & b & a & d  & o  \\
     \bottomrule
 \end{tabular}
-$$
-
-Der Algorithmus gibt das folgende Suffixarray f체r das Wort aus:
-$$
-SA = (1,6,4,9,3,8,2,7,5,10,11,0)
 $$
 
 \paragraph{Schritt 1: Die Konstruktion der Sample-Suffixe.}
@@ -1609,11 +1644,11 @@ R_k = [t_k t_{k+1} t_{k+2}][t_{k+3} t_{k+4} t_{k+5}] \dots [t_{max\:B_k} t_{max\
 $$
 wobei jedes Tripel der Form $[t_i t_{i+1} t_{i+2}]$ ein Sample ist. Sei $R = R_1 \odot R_2$ die Konkatenation von $R_1$ und $R_2$. Die Samples von $R$ korrespondieren mit der Menge $S_C$ von Sample-Suffixen, so dass $[t_i t_{i+1} t_{i+2}] \dots$ korrespondiert mit $S_i$. In unserem Beispiel:
 $$
-\begin{tikzpicture}
-    \node (n1) {\color{black}$R_1$ = [abb][ada]][bba][do0], $R_2$ = [bba][dab][bad][o00]};
-    \node[below = 1cm] (n2) at (n1) {$R$ = [abb][ada]][bba][do0][bba][dab][bad][o00]};
-    \path[->] (n1) edge (n2);
-\end{tikzpicture}
+R_1 = [abb][ada]][bba][do0],\;R_2 = [bba][dab][bad][o00] 
+$$
+werden konkateniert zu
+$$
+R = [abb][ada]][bba][do0][bba][dab][bad][o00]
 $$
 Die Samples von $R$ werden mit Radixsort sortiert und es wird jedem Sample sein Rang zugewiesen:
 $$
@@ -1626,30 +1661,30 @@ $$
     }]
     \matrix[ampersand replacement = \&, column sep = -2mm, matrix of nodes]
     {
-        1 \&
-        2 \&
-        3 \&
-        4 \&
-        5 \&
-        6 \&
-        7 \\
-        \color{black}[abb] \&
-        \color{black}[ada] \&
-        \color{black}[bad] \&
-        \color{black}[bba] \&
-        \color{black}[dab] \&
-        \color{black}[do0] \&
-        \color{black}[o00] \\
+        $1$ \&
+        $2$\&
+        $3$ \&
+        $4$ \&
+        $5$ \&
+        $6$ \&
+        $7$ \\
+        \color{black}$[abb]$ \&
+        \color{black}$[ada]$ \&
+        \color{black}$[bad]$ \&
+        \color{black}$[bba]$ \&
+        \color{black}$[dab]$ \&
+        \color{black}$[do0]$ \&
+        \color{black}$[o00]$ \\
     };
 \end{tikzpicture}
 $$
 Dann wird eine neue Zeichenkette $R'$ erzeugt, indem jedes Sample in $R$ durch sein Rang ersetzt wird:
 $$
-\begin{tikzpicture}
-    \node (n1) {\color{black}$R$ = [abb][ada]][bba][do0][bba][dab][bad][o00]};
-    \node[below = 1cm] (n2) at (n1) {$R'$ = 12464537};
-    \path[->] (n1) edge (n2);
-\end{tikzpicture}
+R = [abb][ada]][bba][do0][bba][dab][bad][o00]
+$$
+wird umgewandelt zu
+$$
+R' = 12464537
 $$
 Wenn jedes Zeichen in $R'$ eindeutig ist, dann sind die Sample-Suffixe sortiert und $R'$ ist das Suffixarray f체r $S_C$. Anderfalls wird der Algorithmus rekursiv f체r die Zeichenkette $R'$ verwendet. In unserem Beispiel findet es ein rekursiver Aufruf von DC3 mit $R' = 12464537$ statt, der in Abb. \ref{fig:sortRecursive} veranschaulicht wird.
 
@@ -1689,37 +1724,9 @@ Zu diesem Schritt haben wir zwei sortierte Mengen, die jetzt vereinigt werden m�
 
     - Falls $i \in B_2$, dann $S_i \le S_j \leftrightarrow (t_i,t_{i+1},rank(S_{i+2})) \le (t_j,t_{j+1},rank(S_{j+2}))$. Z.B. $S_3 = badabbado$ und $S_8 = bado$: $S_3 \rightarrow (b,a,6)$ und $S_8 \rightarrow (b,a,7)$, $(b,a,6) < (b,a,7) \rightarrow S_3 < S_8$
 
-Nach dem die komplette Ordnung bestimmt ist und die zwei Mengen vereinigt worden sind, kann man das gesuchte Suffixarray ablesen:
-$$
-\begin{tikzpicture}
-    \node (n1) {
-        \begin{tabular}{l|c c c c c c c c c c c c}
-            \toprule
-            $i$    & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 \\
-            \midrule
-            $T[0,n)$ & y  & a & b & b & a & d & a & b & b & a & d  & o  \\
-            \midrule
-            $rank(S_i)$ & 12 & 1 & 7 & 5 & 3 & 9 & 2 & 8 & 6 & 4 & 10 & 11 \\
-            \bottomrule
-        \end{tabular}
-    };
-    \node[below = 2cm] (n2) {
-        \begin{tabular}{l l|l l}
-            \toprule
-            $S_1$       & $a b b a d a b b a d o$ & $S_2$    & $b b a d a b b a d o$     \\
-            $S_6$       & $a b b a d o$           & $S_7$    & $b b a d o$               \\
-            $S_4$       & $a d a b b a d o$       & $S_5$    & $d a b b a d o$           \\
-            $S_9$       & $a d o$                 & $S_{10}$ & $d o$                     \\
-            $S_3$       & $b a d a b b a d o$     & $S_{11}$ & $o$                       \\
-            $S_8$       & $b a d o$               & $S_0$    & $y a b b a d a b b a d o$ \\
-            \bottomrule
-        \end{tabular}
-    };
-    \path[->] (n1) edge (n2);
-\end{tikzpicture}
-$$
+Nach dem der Rang von jedem Suffix bestimmt ist und die zwei Mengen vereinigt worden sind, kann man das gesuchte Suffixarray ablesen. Die Abb. \ref{fig:Suffixarray} veranschaulicht der Schritt f체r das Beispiel.
 
-\begin{figure}
+\begin{figure}[htb]
 \centering
 \begin{tikzpicture}
     [
@@ -1769,6 +1776,38 @@ $$
 \end{tikzpicture}
 \caption{Sort recursive}
 \label{fig:sortRecursive}
+\end{figure}
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}
+    \node (n1) {
+        \begin{tabular}{l|c c c c c c c c c c c c}
+            \toprule
+            $i$    & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 \\
+            \midrule
+            $T[0,n)$ & y  & a & b & b & a & d & a & b & b & a & d  & o  \\
+            \midrule
+            $rank(S_i)$ & 12 & 1 & 7 & 5 & 3 & 9 & 2 & 8 & 6 & 4 & 10 & 11 \\
+            \bottomrule
+        \end{tabular}
+    };
+    \node[below = 2cm] (n2) {
+        \begin{tabular}{l l|l l}
+            \toprule
+            $S_1$       & $a b b a d a b b a d o$ & $S_2$    & $b b a d a b b a d o$     \\
+            $S_6$       & $a b b a d o$           & $S_7$    & $b b a d o$               \\
+            $S_4$       & $a d a b b a d o$       & $S_5$    & $d a b b a d o$           \\
+            $S_9$       & $a d o$                 & $S_{10}$ & $d o$                     \\
+            $S_3$       & $b a d a b b a d o$     & $S_{11}$ & $o$                       \\
+            $S_8$       & $b a d o$               & $S_0$    & $y a b b a d a b b a d o$ \\
+            \bottomrule
+        \end{tabular}
+    };
+    \path[->] (n1) edge (n2);
+\end{tikzpicture}
+\caption{Suffixarray}
+\label{fig:Suffixarray}
 \end{figure}
 
 \paragraph{Eigenschaften von DC3.}
