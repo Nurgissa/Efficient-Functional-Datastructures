@@ -1018,7 +1018,8 @@ Wir verzichten an dieser Stelle bewußt auf eine Implementierung, da diese unser
 Während der Erklärung des Lösungsansatzes wählen wir $s_1 = gaga$ und $s_2 = agga$ um die einzelnen Schritte zu veranschaulichen.
 
 \paragraph{Schritt 1: $\boldsymbol{GST}$ für $\boldsymbol{s_1}$ und $\boldsymbol{s_2}$ konstruieren}
-Im ersten Schritt wird ein $GST_D$ für $D = \{s_1, s_2\}$ und $T = \{\$, \#\}$ konstruiert. Abb. \ref{fig:BestimmungDesLaengstesGemeinsamesTeilwortW} zeigt den zugehörigen Generalized Suffix Tree.
+Im ersten Schritt wird ein $GST_D$ für $D = \{s_1, s_2\}$ und $T = \{\$, \#\}$ konstruiert. Abb. \ref{fig:BestimmungDesLaengstesGemeinsamesTeilwortW} zeigt den zugehörigen Generalized Suffix Tree. In den folgenden Abbildungen werden Kanten eines Knoten, deren Kantenbeschriftungen nur aus Terminalsymbolen bestehen, zu einer Kante zusammengefasst. Die Kantenbeschriftung dieser neuen Kante setzt sich aus den Beschriftungen der zusammengefassten Kanten durch Kommata getrennt zusammen.
+
 \begin{figure}[htb]
 \centering
 \begin{tikzpicture}[
@@ -1079,8 +1080,19 @@ Im ersten Schritt wird ein $GST_D$ für $D = \{s_1, s_2\}$ und $T = \{\$, \#\}$ 
 \label{fig:BestimmungDesLaengstesGemeinsamesTeilwortW}
 \end{figure}
 
+Um die weitere Herangehensweise zu verstehen, muss man sich den Aufbau des $GST$ nochmals vergegenwärtigen. Der $GST$ enthält alle Suffixe der beiden Strings $s_1$ und $s_2$. Jedes Blatt eines $GST$ kann durch die Verwendung der Terminalsymbole genau einem String aus der Menge $D$ zugeordnet werden. Der Pfad von der Wurzel bis zu einem Knoten $\overline{w}$ im $GST$, der als Nachfahren sowohl ein Blatt von $s_1$ als auch ein Blatt von $s_2$ besitzt, repräsentiert somit ein gemeinsames Teilwort von $s_1$ und $s_2$. Demzufolge entspricht ein Knoten mit maximaler Tiefe, der diese Eigenschaft erfüllt, dem längsten gemeinsamen Teilwort von $s_1$ und $s_2$. In Abb. \ref{fig:BestimmungDesLaengstesGemeinsamesTeilwortW} sind die entsprechenden Knoten mit $\overline{w}$ gekennzeichnet.
+
 \paragraph{Schritt 2: Zugehörigkeit bestimmen}
-\begin{figure}[htb]
+
+In diesem Schritt berechnen wir für jeden Knoten im $GST$ seine Zugehörigkeit zu den Strings $s_1$ und $s_2$, indem wir die Blätter in den Teilbäumen dieses Knoten betrachten. Dazu definieren wir eine Abbildung $f$, die jedem Knoten $\overline{v}$ im $GST_D$ einen zweidimensionalen Bitvektor $(b_1, b_2)$ zuordnet, wobei
+\begin{gather*}
+    b_i = \begin{cases}
+        1 &\text{falls ein Teilbaum von } \overline{v} \text{ ein Blatt von } s_i \text{ besitzt} \\
+        0 &\text{sonst}
+    \end{cases}
+\end{gather*}
+Abb. \ref{ZuordnungDerBitvektoren} zeigt den $GST_D$ mit dem jeweiligen Bitvektor für jeden Knoten.
+\begin{figure}[b]
 \centering
 \begin{tikzpicture}[
     level 1/.style = {level distance = 10mm, sibling distance = 60mm},
@@ -1154,6 +1166,14 @@ Im ersten Schritt wird ein $GST_D$ für $D = \{s_1, s_2\}$ und $T = \{\$, \#\}$ 
 \caption{Zuordnung der Bitvektoren}
 \label{ZuordnungDerBitvektoren}
 \end{figure}
+Durch bitweise Veroderung der Bitvektoren der Kindknoten $c_1, \dots, c_l$, kann der Bitvektor des Vaterknotens $\overline{v}$ berechnet werden. Somit lässt sich $f$ wie folgt rekursiv definieren.
+\begin{gather*}
+    f(\overline{v}) = \begin{cases}
+        (b_1, b_2)                    &\text{falls } \overline{v} \text{ ein Blatt} \\
+        f(c_1) \vee \dots \vee f(c_l) &\text{sonst}
+    \end{cases}
+\end{gather*}
+Falls $\overline{v}$ ein Blatt ist, lassen sich $b_1$ und $b_2$ direkt anhand der Terminalsymbole in den Kantenbeschriftungen bestimmen. Aufgrund der linearen Größe von $csts$ beträgt der Aufwand zur Berechnung der Funktion $f$ $O(\abs{s_1} + \abs{s_2})$, was dem Gesamtaufwand dieses Schrittes entspricht.
 
 \paragraph{Schritt 3: Knoten mit maximaler Tiefe finden}
 
