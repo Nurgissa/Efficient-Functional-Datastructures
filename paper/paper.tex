@@ -316,7 +316,7 @@ Mithilfe der obigen Definition \ref{def:Pfad}, lässt sich eine elegante Notatio
 \label{fig:NotationZurKnotenbezeichnung}
 \end{figure}
 
-Einen Knoten $\overline{w}$ nennen wir Verzweigung, wenn von ihm mehr als eine Kante ausgeht. Alle Kanten, die nicht zu einem Blattknoten führen, bezeichnen wir als innere Kanten eines Baumes. Ein Wort $w$ ist genau dann in einem $\Sigma^+$-Baum $T$ enthalten, wenn ein Knoten $\overline{wu}$ in diesem Baum existiert, d.h. $w$ ist Präfix eines Wortes, dass durch die Konkatenation der Kantenbeschriftungen eines Pfades in $T$ gebildet werden kann.
+Einen Knoten $\overline{w}$ nennen wir Verzweigung, wenn von ihm mehr als eine Kante ausgeht. Eine Kante, die nicht zu einem Blattknoten führt, bezeichnen wir als innere Kante eines Baumes. Ein Wort $w$ ist genau dann in einem $\Sigma^+$-Baum $T$ enthalten, wenn ein Knoten $\overline{wu}$ in diesem Baum existiert, d.h. $w$ ist Präfix eines Wortes, dass durch die Konkatenation der Kantenbeschriftungen eines Pfades in $T$ gebildet werden kann.
 
 %////////////////////////////////////////////////////////////////////////////
 \subsection{Suffix Tree Klassen}
@@ -422,7 +422,7 @@ Kantenverschmelzung ist eine Relation auf $\Sigma^+$-Bäumen, die durch ihre Kan
 \end{gather*}
 wenn $\overline{w} \xrightarrow{u'} \overline{v}$ ist die einzige ausgehende Kante von $\overline{w}$. Die Umkehrrelation bezeichnen wir als Kantenteilung.
 \end{definition}
-Abb. \ref{fig:Kantenverschmelzung} zeigt, wie der Knoten $w$ mittels Kantenverschmelzung aus dem Baum entfernt wird. Es ist darauf zu achten, dass der Knoten $w$ keine Verzweigung ist.
+Abb. \ref{fig:Kantenverschmelzung} zeigt, wie der Knoten $\overline{w}$ mittels Kantenverschmelzung aus dem Baum entfernt wird, wobei darauf zu achten ist, dass der Knoten $\overline{w}$ keine Verzweigung ist.
 
 \begin{figure}[htb]
 \centering
@@ -492,7 +492,7 @@ Abb. \ref{fig:Kantenverschmelzung} zeigt, wie der Knoten $w$ mittels Kantenversc
 \label{fig:Kantenverschmelzung}
 \end{figure}
 
-Während $ast$ eine Normalform bezüglich Kantenteilung und $cst$ eine Normalform bezüglich Kantenverschmelzung darstellen, repräsentiert der $pst$ ein Hybridstadium zwischen $ast$ und $pst$. \textbf{TODO} Beziehung zwischen ast, pst und cst bezüglich Kantenverschmelzung ausführlicher beschreiben. Abb. \ref{fig:SuffixTreeKlassen} zeigt alle drei Suffix Tree Klassen für diesselbe Zeichenkette $agcgacgag$.
+Während $ast$ eine Normalform bezüglich Kantenteilung und $cst$ eine Normalform bezüglich Kantenverschmelzung darstellen, repräsentiert der $pst$ ein Hybridstadium zwischen $ast$ und $pst$. Ein gebener $ast$ kann in einen $pst$ umgewandelt werden, indem die Kanten ausgehend von den Blattknoten des Baumes bis zur ersten Verzweigung sukzessive verschmolzen werden. Durch weitere Anwendung der Kantenverschmelzung auf den $pst$ gelangt man schließlich zum $cst$. Abb. \ref{fig:SuffixTreeKlassen} zeigt alle drei Suffix Tree Klassen für diesselbe Zeichenkette $agcgacgag$.
 
 \begin{figure}[htb]
 \centering
@@ -1006,7 +1006,7 @@ In diesem Abschnitt möchten wir eines der vielen Anwendungsgebiete von Suffix T
 Gegeben eine Menge von Strings $S = \{s_1, \dots, s_K\}$ aus $\Sigma^*$ mit $n = \sum_{i = 1}^K \abs{s_i}$. Für jedes $2 \leq k \leq K$ wird die Länge des längsten gemeinsamen Teilwortes der Strings $s_i$ mit $i \leq k$ gesucht.
 \end{problem}
 
-Die Vorstellung der Lösung des allgemeinen $k$-common substring Problem würde den Umfang dieses als motivierendes Beispiel gedachten Abschnittes sprengen\footnote{In \cite{Gusfield1997} wird das $k$-common substring Problem ausführlich behandelt.}. Deshalb beschränken wir uns auf den Spezialfall für $k = 2$.
+Die Thematisierung des allgemeinen $k$-common substring Problem würde den Umfang dieses als motivierendes Beispiel gedachten Abschnittes sprengen\footnote{In \cite{Gusfield1997} wird das $k$-common substring Problem ausführlich behandelt.}. Deshalb beschränken wir uns auf den Spezialfall für $k = 2$.
 
 \begin{problem}[Longest common substring]
 Gegeben zwei Strings $s_1, s_2 \in \Sigma^*$. Gesucht wird die Länge des längsten gemeinsamen Teilworts von $s_1$ und $s_2$.
@@ -1014,10 +1014,10 @@ Gegeben zwei Strings $s_1, s_2 \in \Sigma^*$. Gesucht wird die Länge des längs
 
 Der Aufwand für das $k$-common substring Problem beträgt unter Zuhilfenahme eines Generalized Suffix Trees $O(nK)$\footnote{Mithilfe eines weiteren Vorverarbeitungsschrittes des $GST$ kann dieser Aufwand auf $O(n)$ gesenkt werden. Weitere Details können \cite{Gusfield1997} entnommen werden.}. Für den Spezialfall mit $k = 2$ erhalten wir demzufolge $O(\abs{s_1} + \abs{s_2})$.
 
-Wir verzichten an dieser Stelle bewußt auf eine Implementierung, da diese unserer Meinung nach nicht zu einem besseren Verständnis des Sachverhalts beiträgt. Während der Erklärung des Lösungsansatzes wählen wir $s_1 = gaga$ und $s_2 = agga$ um die einzelnen Schritte zu veranschaulichen. In den folgenden Abbildungen werden Kanten eines Knoten, deren Kantenbeschriftungen nur aus Terminalsymbolen bestehen, zu einer Kante zusammengefasst. Die Kantenbeschriftung dieser neuen Kante setzt sich aus den Beschriftungen der zusammengefassten Kanten durch Kommata getrennt zusammen.
+Wir verzichten an dieser Stelle bewußt auf eine Implementierung, da diese unserer Meinung nach nicht zu einem besseren Verständnis des Sachverhalts beiträgt. Während der Erklärung des Lösungsansatzes wählen wir $s_1 = gaga$ und $s_2 = agga$ um die einzelnen Schritte zu veranschaulichen. In den folgenden Abbildungen werden Kanten eines Knoten, deren Kantenbeschriftungen nur aus Terminalsymbolen bestehen, aus Gründen der Übersichtlichkeit zu einer Kante zusammengefasst. Die Kantenbeschriftung dieser neuen Kante setzt sich aus den Beschriftungen der zusammengefassten Kanten durch Kommata getrennt zusammen.
 
-\paragraph{Schritt 1: $\boldsymbol{GST}$ für $\boldsymbol{s_1}$ und $\boldsymbol{s_2}$ konstruieren}
-Im ersten Schritt wird ein $GST_D$ für $D = \{s_1, s_2\}$ und $T = \{\$, \#\}$ konstruiert. Abb. \ref{fig:BestimmungDesLaengstesGemeinsamesTeilwortW} zeigt den zugehörigen Generalized Suffix Tree.
+\paragraph{Schritt 1: $\boldsymbol{GST}$ konstruieren}
+Im ersten Schritt wird ein $GST_D$ für $D = \{s_1, s_2\}$ und $T = \{\$, \#\}$ konstruiert, welcher in Abb. \ref{fig:BestimmungDesLaengstesGemeinsamesTeilwortW} dargestellt ist. Die Konstruktion des $GST_D$ ist mithilfe des in \cite{Ukkonen1995} vorgestellten Algorithmus in $O(\abs{s_1} + \abs{s_2})$ möglich.
 
 \begin{figure}[htb]
 \centering
@@ -1179,7 +1179,9 @@ Im letzten Schritt muss nun der Knoten mit maximaler Tiefe im $GST_D$ gefunden w
 \begin{gather*}
    lcs = max \{level(\overline{w}) \mid f(\overline{w}) = (1, 1) \text{ und } \overline{w} \in GST_D\}
 \end{gather*}
-Dafür genügt ein Baumdurchlauf mit einem Akkumulatorparameter, der das bisher gefundene Maximum enthält. Analog zu Schritt 2 liegt der Aufwand dieses Schrittes bei $O(\abs{s_1} + \abs{s_2})$.
+Dafür genügt ein Baumdurchlauf mit einem Akkumulatorparameter, der das bisher gefundene Maximum enthält. In unserem Beispiel ist $lcs(s_1, s_2) = 2$ (vgl. Abb. \ref{fig:BestimmungDesLaengstesGemeinsamesTeilwortW}). Analog zu Schritt 2 liegt der Aufwand dieses Schrittes bei $O(\abs{s_1} + \abs{s_2})$, wenn die Funktion $f$ für den gesamten Baum im Voraus berechnet wurde.
+
+Der Aufwand für jeden der drei Schritte beträgt $O(\abs{s_1} + \abs{s_2})$ und damit auch für das gesamte Verfahren.
 
 %////////////////////////////////////////////////////////////////////////////
 \section{Suffix Tree Konstruktion}
@@ -1201,12 +1203,12 @@ Der Algorithmus, der wir uns in dieser Arbeit anschauen, verwendet den zweiten A
 
 Die Schritte des Algorithmus werden mit einem Beispiel für das Wort $t$ = $agcgacgag$ veranschaulicht. Der Algoritmus wird wie folgt ausgeführt:
 
-\paragraph{Schritt 1: Die Konstruktion der Suffixliste.}
+\paragraph{Schritt 1: Konstruktion der Suffixliste}
 
 Es wird eine Suffixliste eines gegebenen Wortes erzeugt. Die Suffixliste für das Wort $t$ = $agcgacgag$ ist
 $[agcgacgag$, $gcgacgag$, $cgacgag$, $gacgag$, $acgag$, $cgag$, $gag$, $ag$, $g]$.
 
-\paragraph{Schritt 2: Die Gruppierung der Suffixliste.}
+\paragraph{Schritt 2: Gruppierung der Suffixliste}
 
 Die Suffixliste wird nach den Anfangsbuchstaben gruppiert, einen Knoten wird erzeugt. Die Gruppen, die für unseres Beispiel erzeugt werden:
 $$
@@ -1220,7 +1222,7 @@ $$
     \bottomrule
 \end{tabular}
 $$
-\paragraph{Schritt 3: Die Berechnung des gemeinsamen Präfixes für eine Gruppe.}
+\paragraph{Schritt 3: Längstes gemeinsames Präfix einer Gruppe}
 
 Für jede Gruppe aus dem Schritt 2 wird das längste gemeinsame Präfix berechnet und eine Kante mit der Beschriftung von dem Präfix erzeugt. Die Gruppen aus dem Beispiel haben folgende Präfixe:
 $$
