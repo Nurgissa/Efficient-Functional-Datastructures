@@ -1,5 +1,10 @@
 \begin{thebibliography}{DKMS08}
 
+\bibitem[AKO04]{Abouelhoda2004}
+Mohamed~Ibrahim Abouelhoda, Stefan Kurtz, and Enno Ohlebusch.
+\newblock Replacing suffix trees with enhanced suffix arrays.
+\newblock {\em J. of Discrete Algorithms}, 2(1):53--86, March 2004.
+
 \bibitem[DKMS08]{Dementiev2008}
 Roman Dementiev, Juha K\"arkk\"ainen, Jens Mehnert, and Peter Sanders.
 \newblock Better external memory suffix array construction.

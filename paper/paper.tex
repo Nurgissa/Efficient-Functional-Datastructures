@@ -181,7 +181,7 @@
 \tableofcontents
 
 \begin{abstract}
-TODO: Einleitung
+\textbf{TODO} Einleitung
 \end{abstract}
 
 %////////////////////////////////////////////////////////////////////////////
@@ -492,7 +492,7 @@ Abb. \ref{fig:Kantenverschmelzung} zeigt, wie der Knoten $w$ mittels Kantenversc
 \label{fig:Kantenverschmelzung}
 \end{figure}
 
-Während $ast$ eine Normalform bezüglich Kantenteilung und $cst$ eine Normalform bezüglich Kantenverschmelzung darstellen, repräsentiert der $pst$ ein Hybridstadium zwischen $ast$ und $pst$. Abb. \ref{fig:SuffixTreeKlassen} zeigt alle drei Suffix Tree Klassen für diesselbe Zeichenkette $agcgacgag$.
+Während $ast$ eine Normalform bezüglich Kantenteilung und $cst$ eine Normalform bezüglich Kantenverschmelzung darstellen, repräsentiert der $pst$ ein Hybridstadium zwischen $ast$ und $pst$. \textbf{TODO} Beziehung zwischen ast, pst und cst bezüglich Kantenverschmelzung ausführlicher beschreiben. Abb. \ref{fig:SuffixTreeKlassen} zeigt alle drei Suffix Tree Klassen für diesselbe Zeichenkette $agcgacgag$.
 
 \begin{figure}[htb]
 \centering
@@ -808,9 +808,9 @@ $cst$ besitzt eine Speicherplatzkomplexität von $O(n)$, $ast$ und $pst$ liegen 
 \end{lemma}
 
 \begin{proof}[Beweis des Lemma \ref{lem:SpeicherplatzkomplexitaetCst}]
-Ein Wort $t$ der Länge $n$ besitzt $n$ Suffixe. Jedes Blatt in einem Suffixbaum repräsentiert genau ein Suffix von $t$. Somit besitzt ein $cst$ für $t$ höchstens $n$ Blätter. Alle inneren Knoten eines $cst$ sind Verzweigungen. Aus dieser Beobachtung folgt, dass nicht mehr als $n$ innere Knoten im Baum existieren. Die Zahl der Kanten kann damit auf $2n$ abgeschätzt werden. Um im Worst Case tatsächlich die geforderte Speicherplatzkomplexität zu erreichen, werden die Kantenbeschriftungen durch Paare $(i, j) \in \mathbb{N} \times \mathbb{N}$ dargestellt, wobei $i$ den Anfang und $j$ das Ende der Kantenbeschriftung im Wort $t$ festlegen. Der Speicherplatzbedarf einer Kante kann dadurch auf $O(1)$ gesenkt werden. Insgesamt erhalten wir damit die gewünschte Speicherplatzkomplexität von $O(n)$.
+Ein Wort $t$ der Länge $n$ besitzt $n$ Suffixe. Jedes Blatt in einem Suffixbaum repräsentiert genau ein Suffix von $t$. Somit besitzt ein $cst$ für $t$ höchstens $n$ Blätter. Alle inneren Knoten eines $cst$ sind Verzweigungen. Aus dieser Beobachtung folgt, dass nicht mehr als $n$ innere Knoten im Baum existieren. Die Zahl der Kanten kann damit auf $2n$ abgeschätzt werden. Um im Worst-Case tatsächlich die geforderte Speicherplatzkomplexität zu erreichen, werden die Kantenbeschriftungen durch Paare $(i, j) \in \mathbb{N} \times \mathbb{N}$ dargestellt, wobei $i$ den Anfang und $j$ das Ende der Kantenbeschriftung im Wort $t$ festlegen. Der Speicherplatzbedarf einer Kante kann dadurch auf $O(1)$ gesenkt werden. Insgesamt erhalten wir damit die gewünschte Speicherplatzkomplexität von $O(n)$.
 
-Die Beweisidee für den $ast$ ist in Abb. \ref{fig:SpeicherplatzbedarfAst} skizziert. Der Worst Case tritt für diesen Baumtypen beispielsweise für das Wort $a^nb^n$ ein. In diesem Fall enthält der $ast$ $n + 1$ Knoten, die durch $a$-Kanten miteinander verbunden sind. Von jedem dieser Knoten zweigt ein Teilbaum mit einem Speicherplatzbedarf von $O(n)$ ab, wodurch wir insgesamt eine Speicherplatzkomplexität von $O(n^2)$ für den gesamten $ast$ erhalten.
+Die Beweisidee für den $ast$ ist in Abb. \ref{fig:SpeicherplatzbedarfAst} skizziert. Der Worst-Case tritt für diesen Baumtypen beispielsweise für das Wort $a^nb^n$ ein. In diesem Fall enthält der $ast$ $n + 1$ Knoten, die durch $a$-Kanten miteinander verbunden sind. Von jedem dieser Knoten zweigt ein Teilbaum mit einem Speicherplatzbedarf von $O(n)$ ab, wodurch wir insgesamt eine Speicherplatzkomplexität von $O(n^2)$ für den gesamten $ast$ erhalten.
 
 \begin{figure}
 \centering
@@ -885,7 +885,7 @@ Die Beweisidee für den $ast$ ist in Abb. \ref{fig:SpeicherplatzbedarfAst} skizz
 Der Beweis für die Speicherplatzkomplexität des $pst$ erfolgt analog für das Wort $a^nb^na^nb^n$.
 \end{proof}
 
-Obwohl der Speicherplatzbedarf eines $pst$ im Worst Case in $O(n^2)$ liegt, wird in der Praxis meistens nur $O(n)$ benötigt.
+Obwohl der Speicherplatzbedarf eines $pst$ im Worst-Case in $O(n^2)$ liegt, wird in der Praxis meistens nur $O(n)$ benötigt.
 Aufgrund der optimalen Speicherplatzcharakteristik des $cst$ konzentrieren wir uns im Folgenden auf diese Suffix Tree Klasse.
 
 %////////////////////////////////////////////////////////////////////////////
@@ -1006,7 +1006,7 @@ In diesem Abschnitt möchten wir eines der vielen Anwendungsgebiete von Suffix T
 Gegeben eine Menge von Strings $S = \{s_1, \dots, s_K\}$ aus $\Sigma^*$ mit $n = \sum_{i = 1}^K \abs{s_i}$. Für jedes $2 \leq k \leq K$ wird die Länge des längsten gemeinsamen Teilwortes der Strings $s_i$ mit $i \leq k$ gesucht.
 \end{problem}
 
-Die Vorstellung der Lösung des allgemeinen $k$-common substring Problem würde den Umfang dieses als motivierendes Beispiel gedachten Abschnittes sprengen. Deshalb beschränken wir uns auf den Spezialfall für $k = 2$.
+Die Vorstellung der Lösung des allgemeinen $k$-common substring Problem würde den Umfang dieses als motivierendes Beispiel gedachten Abschnittes sprengen\footnote{In \cite{Gusfield1997} wird das $k$-common substring Problem ausführlich behandelt.}. Deshalb beschränken wir uns auf den Spezialfall für $k = 2$.
 
 \begin{problem}[Longest common substring]
 Gegeben zwei Strings $s_1, s_2 \in \Sigma^*$. Gesucht wird die Länge des längsten gemeinsamen Teilworts von $s_1$ und $s_2$.
@@ -1014,11 +1014,10 @@ Gegeben zwei Strings $s_1, s_2 \in \Sigma^*$. Gesucht wird die Länge des längs
 
 Der Aufwand für das $k$-common substring Problem beträgt unter Zuhilfenahme eines Generalized Suffix Trees $O(nK)$\footnote{Mithilfe eines weiteren Vorverarbeitungsschrittes des $GST$ kann dieser Aufwand auf $O(n)$ gesenkt werden. Weitere Details können \cite{Gusfield1997} entnommen werden.}. Für den Spezialfall mit $k = 2$ erhalten wir demzufolge $O(\abs{s_1} + \abs{s_2})$.
 
-Wir verzichten an dieser Stelle bewußt auf eine Implementierung, da diese unserer Meinung nicht zu einem besseren Verständnis des Sachverhalts beiträgt.
-Während der Erklärung des Lösungsansatzes wählen wir $s_1 = gaga$ und $s_2 = agga$ um die einzelnen Schritte zu veranschaulichen.
+Wir verzichten an dieser Stelle bewußt auf eine Implementierung, da diese unserer Meinung nach nicht zu einem besseren Verständnis des Sachverhalts beiträgt. Während der Erklärung des Lösungsansatzes wählen wir $s_1 = gaga$ und $s_2 = agga$ um die einzelnen Schritte zu veranschaulichen. In den folgenden Abbildungen werden Kanten eines Knoten, deren Kantenbeschriftungen nur aus Terminalsymbolen bestehen, zu einer Kante zusammengefasst. Die Kantenbeschriftung dieser neuen Kante setzt sich aus den Beschriftungen der zusammengefassten Kanten durch Kommata getrennt zusammen.
 
 \paragraph{Schritt 1: $\boldsymbol{GST}$ für $\boldsymbol{s_1}$ und $\boldsymbol{s_2}$ konstruieren}
-Im ersten Schritt wird ein $GST_D$ für $D = \{s_1, s_2\}$ und $T = \{\$, \#\}$ konstruiert. Abb. \ref{fig:BestimmungDesLaengstesGemeinsamesTeilwortW} zeigt den zugehörigen Generalized Suffix Tree. In den folgenden Abbildungen werden Kanten eines Knoten, deren Kantenbeschriftungen nur aus Terminalsymbolen bestehen, zu einer Kante zusammengefasst. Die Kantenbeschriftung dieser neuen Kante setzt sich aus den Beschriftungen der zusammengefassten Kanten durch Kommata getrennt zusammen.
+Im ersten Schritt wird ein $GST_D$ für $D = \{s_1, s_2\}$ und $T = \{\$, \#\}$ konstruiert. Abb. \ref{fig:BestimmungDesLaengstesGemeinsamesTeilwortW} zeigt den zugehörigen Generalized Suffix Tree.
 
 \begin{figure}[htb]
 \centering
@@ -1080,7 +1079,7 @@ Im ersten Schritt wird ein $GST_D$ für $D = \{s_1, s_2\}$ und $T = \{\$, \#\}$ 
 \label{fig:BestimmungDesLaengstesGemeinsamesTeilwortW}
 \end{figure}
 
-Um die weitere Herangehensweise zu verstehen, muss man sich den Aufbau des $GST$ nochmals vergegenwärtigen. Der $GST$ enthält alle Suffixe der beiden Strings $s_1$ und $s_2$. Jedes Blatt eines $GST$ kann durch die Verwendung der Terminalsymbole genau einem String aus der Menge $D$ zugeordnet werden. Der Pfad von der Wurzel bis zu einem Knoten $\overline{w}$ im $GST$, der als Nachfahren sowohl ein Blatt von $s_1$ als auch ein Blatt von $s_2$ besitzt, repräsentiert somit ein gemeinsames Teilwort von $s_1$ und $s_2$. Demzufolge entspricht ein Knoten mit maximaler Tiefe, der diese Eigenschaft erfüllt, dem längsten gemeinsamen Teilwort von $s_1$ und $s_2$. In Abb. \ref{fig:BestimmungDesLaengstesGemeinsamesTeilwortW} sind die entsprechenden Knoten mit $\overline{w}$ gekennzeichnet.
+Um die weitere Herangehensweise zu verstehen, muss man sich den Aufbau des $GST_D$ nochmals vergegenwärtigen. Der $GST$ enthält alle Suffixe der beiden Strings $s_1$ und $s_2$. Jedes Blatt eines $GST_D$ kann durch die Verwendung der Terminalsymbole genau einem String aus der Menge $D$ zugeordnet werden. Der Pfad von der Wurzel bis zu einem Knoten $\overline{w}$, der als Nachfahren sowohl ein Blatt von $s_1$ als auch ein Blatt von $s_2$ besitzt, repräsentiert somit ein gemeinsames Teilwort von $s_1$ und $s_2$. Demzufolge entspricht ein Knoten mit maximaler Tiefe, der diese Eigenschaft erfüllt, dem längsten gemeinsamen Teilwort von $s_1$ und $s_2$. In Abb. \ref{fig:BestimmungDesLaengstesGemeinsamesTeilwortW} sind die entsprechenden Knoten mit $\overline{w}$ gekennzeichnet.
 
 \paragraph{Schritt 2: Zugehörigkeit bestimmen}
 
@@ -1173,9 +1172,14 @@ Durch bitweise Veroderung der Bitvektoren der Kindknoten $c_1, \dots, c_l$, kann
         f(c_1) \vee \dots \vee f(c_l) &\text{sonst}
     \end{cases}
 \end{gather*}
-Falls $\overline{v}$ ein Blatt ist, lassen sich $b_1$ und $b_2$ direkt anhand der Terminalsymbole in den Kantenbeschriftungen bestimmen. Aufgrund der linearen Größe von $csts$ beträgt der Aufwand zur Berechnung der Funktion $f$ $O(\abs{s_1} + \abs{s_2})$, was dem Gesamtaufwand dieses Schrittes entspricht.
+Für den Fall, dass es sich bei $\overline{v}$ um ein Blatt handelt, lassen sich $b_1$ und $b_2$ direkt anhand der Terminalsymbole in den Kantenbeschriftungen bestimmen. Aufgrund der linearen Größe von $csts$ beträgt der Aufwand zur Berechnung der Funktion $f$ $O(\abs{s_1} + \abs{s_2})$, was dem Gesamtaufwand dieses Schrittes entspricht.
 
 \paragraph{Schritt 3: Knoten mit maximaler Tiefe finden}
+Im letzten Schritt muss nun der Knoten mit maximaler Tiefe im $GST_D$ gefunden werden, d.h.
+\begin{gather*}
+   lcs = max \{level(\overline{w}) \mid f(\overline{w}) = (1, 1) \text{ und } \overline{w} \in GST_D\}
+\end{gather*}
+Dafür genügt ein Baumdurchlauf mit einem Akkumulatorparameter, der das bisher gefundene Maximum enthält. Analog zu Schritt 2 liegt der Aufwand dieses Schrittes bei $O(\abs{s_1} + \abs{s_2})$.
 
 %////////////////////////////////////////////////////////////////////////////
 \section{Suffix Tree Konstruktion}
@@ -1469,7 +1473,6 @@ Insgesamt:
                   &= \sum_{i = 1}^{\abs{cp}}{isEqual(n-1)} + \sum_{i = 1}^{\abs{cp}}{newList(n)}\\
                   &= \abs{cp} (n - 1) + \abs{cp} n \in O(\abs{cp} \cdot n)
 \end{align*}
-
 Weiter wird das worst-case des WOTD-Algoritmus bestimmt. Dieses produziert z.B. das Wort $a^n$, indem es als der Parameter $t$ an der Funktion $lazy\_cst$ gegeben wird. Zuerst wird $sTr$ mit $ss = [a^n,\:a^{n-1}, \dots ,\:a]$ aufgerufen, dann wird dem Parameter $gs$ komplette Liste $ss$ zugewiesen und die Funktion $edge$ mit dem Parameter $gs$ aufgerufen. Die Funktion $edge$ liefert das Ergebnis $(cp,rss) = (a^n, [[\:]])$. Weiter wird $sTr$ mit mit dem Parameter $rss = [[\:]]$ aufgerufen und damit terminiert die Funktion $lazy\_cst$. Weil $|cp| = n$, ist die Laufzeit von $edge$ und von dem gesamten Algorithmus $O(n^2)$.
 
 %////////////////////////////////////////////////////////////////////////////
@@ -1576,6 +1579,19 @@ Sei ein Teilwort $cgac$ in dem Wort $agcgacgag$ gesucht. Wir definieren ein pass
 \label{sec:Motivation}
 %////////////////////////////////////////////////////////////////////////////
 
+Trotz der vielen Problemstellungen, die mithilfe von Suffix Trees effizient gelöst werden können, werden diese nach unserem Kenntnisstand bis zum heutigen Zeitpunkt kaum in der Praxis eingesetzt. Diese Tatsache wird durch zwei gravierende Nachteile der bisherigen Implementierungen von Suffix Trees bedingt.
+\begin{enumerate}
+    \item Obwohl der Speicherplatzbedarf von Suffix Trees nur linear mit der Länge des Eingabestrings wächst, ist der Speicherplatzverbrauch von Suffix Trees enorm. Für jedes Eingabezeichen des zu indizierenden Strings werden $20$ Byte benötigt. Das macht Suffix Trees für viele Real-Welt-Anwendungen mit hohem Datenaufkommen unbrauchbar.
+    \item Die Form eines Suffix Trees hängt stark von der Wahl des zu indizierenden Strings ab. Aus diesem Grund lassen sich Suffix Trees sehr schlecht extern implementieren.
+\end{enumerate}
+Suffix Arrays stellen einen Versuch dar, diese Problematik zu lösen.
+\begin{enumerate}
+    \item Der Speicherplatzbedarf beträgt bei Suffix Arrays nur noch $5$ Byte pro Eingabezeichen.
+    \item Es exisitieren vielversprechende Algorithmen zur externen Konstruktion von Suffix Arrays. In \cite{Dementiev2008} wird eine Weiterentwicklung des im Folgenden Abschnitt thematisierten Algorithmus vorgestellt, der sich nicht nur für die externe, sondern auch für die parallelisierte Berechnung auf verteilten Systemen eignet.
+    \item Jeder Algorithmus, der einen Suffix Tree nutzt, kann unter Beibehaltung derselben Laufzeitkomplexität durch einen Algorithmus ersetzt werden, der ein Suffix Array benutzt. Die entsprechende Methodik wird in \cite{Abouelhoda2004} vorgestellt.
+\end{enumerate}
+Da Suffix Arrays immer noch Gegenstand aktueller Forschung sind, bleibt abzuwarten, welche Fortschritte in diesem Bereich noch erzielt werden können.
+
 %////////////////////////////////////////////////////////////////////////////
 \section{Terminologie}
 \label{sec:Terminologie}
@@ -1589,8 +1605,8 @@ Ein Suffix Array $SA[0,n)$ für ein gegebenes Wort $T[0,n)$ ist eine Permutation
 \end{definition}
 
 %////////////////////////////////////////////////////////////////////////////
-\section{DC3-Algorithmus}
-\label{sec:DC3Algorithmus}
+\section{Suffix Array Konstruktion}
+\label{sec:SuffixArrayKonstruktion}
 %////////////////////////////////////////////////////////////////////////////
 
 Der Algorithmus, den wir uns zu der Konstruktion des Suffixarrays anschauen, ist DC3\footnote{Der Algorithmus ist in \cite{Karkkainen2006} vorgestellt worden ist.} (Difference Cover modulo 3) genannt worden. Die Schritte des Algorithmus werden mit einem Beispiel veranschaulicht. Die Struktur des DC3-Algorithmus haben wir in Abb. \ref{fig:strukturDC3} gezeigt.
@@ -1664,7 +1680,7 @@ R_k = [t_k t_{k+1} t_{k+2}][t_{k+3} t_{k+4} t_{k+5}] \dots [t_{max\:B_k} t_{max\
 $$
 wobei jedes Tripel der Form $[t_i t_{i+1} t_{i+2}]$ ein Sample ist. Sei $R = R_1 \odot R_2$ die Konkatenation von $R_1$ und $R_2$. Die Samples von $R$ korrespondieren mit der Menge $S_C$ von Sample-Suffixen, so dass $[t_i t_{i+1} t_{i+2}] \dots$ korrespondiert mit $S_i$. In unserem Beispiel:
 $$
-R_1 = [abb][ada]][bba][do0],\;R_2 = [bba][dab][bad][o00] 
+R_1 = [abb][ada]][bba][do0],\;R_2 = [bba][dab][bad][o00]
 $$
 werden konkateniert zu
 $$
@@ -1832,7 +1848,7 @@ Nach dem der Rang von jedem Suffix bestimmt ist und die zwei Mengen vereinigt wo
 
 \paragraph{Eigenschaften von DC3.}
 
-Laufzeit des Algorithmus ist $O(n)$ im Worst case, das ist der schnellste Algorithmus in der Klasse $O(n)$ für den Aufbau des Suffixarrays. Die schnellere Algorithmen, wie z.B. qsufsort \cite{Larsson2007}, haben einen schlechteren Worst case $O(n \log n)$.
+Laufzeit des Algorithmus ist $O(n)$ im Worst-Case, das ist der schnellste Algorithmus in der Klasse $O(n)$ für den Aufbau des Suffixarrays. Die schnellere Algorithmen, wie z.B. qsufsort \cite{Larsson2007}, haben einen schlechteren Worst-Case $O(n \log n)$.
 
 %////////////////////////////////////////////////////////////////////////////
 % Literaturverzeichnis
