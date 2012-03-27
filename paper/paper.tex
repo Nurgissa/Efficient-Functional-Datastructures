@@ -185,7 +185,7 @@ Suffix Trees und die damit eng verwandten Suffix Arrays ermöglichen die effizie
 
 Aufgrund fehlender Algorithmen zur effizienten Konstruktion von Suffix Trees verblieben diese lange Zeit im Stadium eines theoretischen Konzeptes. Dies änderte sich mit der Veröffentlichung des ersten Algorithmus zur Konstruktion von Suffix Trees in linearer Zeit durch \textit{P. Weiner} 1973 \cite{Weiner1973}. 3 Jahre später stellte \textit{E. M. McCreight} in \cite{McCreight1976} einen ähnlichen Algorithmus mit gleicher Laufzeitkomplexität aber wesentlich geringerem Speicherplatzverbrauch vor. Diese Algorithmen konnten sich aber, wegen ihrer komplexen Implementierung und den hohen Laufzeitkonstanten nicht durchsetzen.
 
-Der Durchbruch gelang erst zwei Jahrzehnte später mit
+Der Durchbruch gelang erst zwei Jahrzehnte später mit einem völlig neuen Ansatz von \textit{E. Ukkonen} \cite{Ukkonen1995}, der sogar eine Online-Konstruktion von Suffix Trees in linearer Zeit erlaubt.
 \end{abstract}
 
 %////////////////////////////////////////////////////////////////////////////
@@ -212,7 +212,7 @@ Sei $t = uvw$ mit $u, v, w \in \Sigma^*$. Dann ist $u$ ein Präfix und $w$ ein S
 \end{definition}
 
 \begin{definition}[$\Sigma^+$-Baum]
-Ein $\Sigma^+$-Baum ist ein Baum, dessen Kanten mit Wörtern aus $\Sigma^+$ beschriftet sind. Die Kanten eines $\Sigma^+$-Baums erfüllen folgendes Eindeutigkeitskriterium: Für alle Kanten $k \xrightarrow{aw} k'$ und $k \xrightarrow{bv} k''$ folgt $a = b$.
+Ein $\Sigma^+$-Baum ist ein Baum, dessen Kanten mit Wörtern aus $\Sigma^+$ beschriftet sind. Die Kanten eines $\Sigma^+$-Baums erfüllen folgendes Eindeutigkeitskriterium: Für alle Kanten $k \xrightarrow{aw} k'$ und $k \xrightarrow{bv} k''$ mit $a = b$ folgt $k' = k''$.
 \label{def:SigmaPlusBaum}
 \end{definition}
 
