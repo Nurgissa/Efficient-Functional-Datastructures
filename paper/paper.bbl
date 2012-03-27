@@ -5,6 +5,12 @@ Mohamed~Ibrahim Abouelhoda, Stefan Kurtz, and Enno Ohlebusch.
 \newblock Replacing suffix trees with enhanced suffix arrays.
 \newblock {\em J. of Discrete Algorithms}, 2(1):53--86, March 2004.
 
+\bibitem[Alu06]{Aluru2006}
+S.~Aluru.
+\newblock {\em Handbook of computational molecular biology}.
+\newblock Chapman \& Hall/CRC computer and information science series. Chapman
+  \& Hall/CRC, 2006.
+
 \bibitem[DKMS08]{Dementiev2008}
 Roman Dementiev, Juha K\"arkk\"ainen, Jens Mehnert, and Peter Sanders.
 \newblock Better external memory suffix array construction.
@@ -29,6 +35,13 @@ Dan Gusfield.
   and computational biology}.
 \newblock Cambridge University Press, New York, NY, USA, 1997.
 
+\bibitem[Ko07]{Ko2007}
+Pang Ko.
+\newblock {\em Suffix trees and suffix arrays in primary and secondary
+  storage}.
+\newblock PhD thesis, Ames, IA, USA, 2007.
+\newblock AAI3274885.
+
 \bibitem[KSB03]{Karkkainen2003}
 Juha K\"arkk\"ainen, Peter Sanders, and Stefan Burkhardt.
 \newblock Simple linear work suffix array construction.
@@ -44,9 +57,21 @@ N.~Jesper Larsson and Kunihiko Sadakane.
 \newblock Faster suffix sorting.
 \newblock {\em Theor. Comput. Sci.}, 387(3):258--272, November 2007.
 
+\bibitem[McC76]{McCreight1976}
+Edward~M. McCreight.
+\newblock A space-economical suffix tree construction algorithm.
+\newblock {\em J. ACM}, 23(2):262--272, April 1976.
+
 \bibitem[Ukk95]{Ukkonen1995}
 Esko Ukkonen.
 \newblock On-line construction of suffix trees.
 \newblock 1995.
+
+\bibitem[Wei73]{Weiner1973}
+Peter Weiner.
+\newblock Linear pattern matching algorithms.
+\newblock In {\em Proceedings of the 14th Annual Symposium on Switching and
+  Automata Theory (swat 1973)}, SWAT '73, pages 1--11, Washington, DC, USA,
+  1973. IEEE Computer Society.
 
 \end{thebibliography}
