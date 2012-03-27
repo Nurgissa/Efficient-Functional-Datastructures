@@ -145,7 +145,6 @@
 
 %--Benutzerdefinierte Makros-------------------------------------------------
 
-% Umgebung Bemerkung
 \newtheorem{remark}{Bemerkung}
 \newtheorem{definition}{Definition}
 \newtheorem{lemma}{Lemma}
@@ -180,12 +179,21 @@
 %--Seite: Inhaltsverzeichnis-------------------------------------------------
 \tableofcontents
 
+\renewcommand{\abstractname}{Einführung}
 \begin{abstract}
-Suffix Trees und die damit eng verwandten Suffix Arrays ermöglichen die effiziente Lösung vieler Suchprobleme im Hinblick auf Zeichenketten, wie z.B. natürlichsprachlichen Texten, Genomsequenzen und Bitströmen. Verwendung finden diese Datenstrukturen beispielsweise in der Bioinformatik bei der Musteranalyse von DNA-Sequenzen \cite{Aluru2006} oder bei der Berechnung der Levenshtein-Distanz \cite{Gusfield1997}.
+Suffix Trees und die damit eng verwandten Suffix Arrays ermöglichen die effiziente Lösung vieler Suchprobleme im Hinblick auf Zeichenketten, wie z.B. natürlichsprachliche Texte, Genomsequenzen und Bitströme. Verwendung finden diese Datenstrukturen beispielsweise in der Bioinformatik bei der Musteranalyse von DNA-Sequenzen \cite{Aluru2006} oder bei der Berechnung der Levenshtein-Distanz \cite{Gusfield1997}.
 
-Aufgrund fehlender Algorithmen zur effizienten Konstruktion von Suffix Trees verblieben diese lange Zeit im Stadium eines theoretischen Konzeptes. Dies änderte sich mit der Veröffentlichung des ersten Algorithmus zur Konstruktion von Suffix Trees in linearer Zeit durch \textit{P. Weiner} 1973 \cite{Weiner1973}. 3 Jahre später stellte \textit{E. M. McCreight} in \cite{McCreight1976} einen ähnlichen Algorithmus mit gleicher Laufzeitkomplexität aber wesentlich geringerem Speicherplatzverbrauch vor. Diese Algorithmen konnten sich aber, wegen ihrer komplexen Implementierung und den hohen Laufzeitkonstanten nicht durchsetzen.
+Aufgrund fehlender Algorithmen zur effizienten Konstruktion von Suffix Trees verblieben diese lange Zeit im Stadium eines theoretischen Konzeptes. Dies änderte sich mit der Veröffentlichung des ersten Algorithmus zur Konstruktion von Suffix Trees in linearer Zeit durch \textit{P. Weiner} 1973 \cite{Weiner1973}. 3 Jahre später stellte \textit{E. M. McCreight} in \cite{McCreight1976} einen ähnlichen Algorithmus mit gleicher Laufzeitkomplexität aber wesentlich geringerem Speicherplatzverbrauch vor. Diese Algorithmen konnten sich aber wegen ihrer komplexen Implementierung und den hohen Laufzeitkonstanten nicht durchsetzen.
 
-Der Durchbruch gelang erst zwei Jahrzehnte später mit einem völlig neuen Ansatz von \textit{E. Ukkonen} \cite{Ukkonen1995}, der sogar eine Online-Konstruktion von Suffix Trees in linearer Zeit erlaubt.
+Der Durchbruch gelang erst 1995 mit einem völlig neuen Ansatz von \textit{E. Ukkonen} \cite{Ukkonen1995}, der sogar eine Online-Konstruktion von Suffix Trees in linearer Zeit und linearem Speicherplatzbedarf erlaubt. Im gleichen Jahr veröffentlichten \textit{R. Giegerich} und \textit{Stefan Kurtz} \cite{Giegerich1995} den ersten funktionalen Algorithmus, der den Vorteil besitzt, dass er den Baum nur so weit aufbaut, wie für einer Suchanfrage notwendig ist. Allerdings weist diese Umsetzung quadratisches Laufzeitverhalten auf.
+
+Obwohl der Lösungsansatz von \textit{E. Ukkonen} wenig Wünsche an den Algorithmus selbst offen lässt, blieb die Speicherplatzproblematik der Suffix Trees ungelöst. Auch die in der 1999 erschienen Publikation \cite{Giegerich1999} vorgeschlagene Verbesserung, die den Speicherplatzverbrauch von Suffix Trees um ein Drittel senkt, hat diese Problematik nicht entscheidend verbessert.
+
+Bereits 1990 wurden Suffix Arrays \cite{Manber1990} von \textit{U. Manber} und \textit{Gene Myers} als speicherplatzeffiziente Alternative zu Suffix Trees vorgestellt. Seitdem bei den Suffix Trees bezüglich des Speichplatzbedarfs keine nennenswerten Fortschritte mehr erzielt wurden, verschiebt sich der Schwerpunkt der Forschung immmer mehr in Richtung Suffix Arrays. Anfangs existierten wie bei den Suffix Trees keine effizienten Konstruktionalgorithmen. 2003 wurden gleich drei Algorithmen veröffentlicht, die das Konstruktionsproblem in linearer Zeit lösen, darunter auch \cite{Karkkainen2003}.
+
+Auf den folgenden Seiten betrachten wir Suffix Trees und Suffix Arrays aus der Perspektive der funktionalen Programmierung. Zunächst beschäftigen wir uns mit den Suffix Trees. Nachdem wir in Abschnitt \ref{sec:Terminologie} die notwendigen Grundlagen und die verschieden Suffix Tree Typen besprochen haben, gehen wir im nächsten Abschnitt \ref{sec:Anwendungsgebiete} auf die Anwendungsgebiete von Suffix Trees näher ein und schließen das Kapitel \ref{chap:SuffixTree} mit einer Erläuterung des funktionalen Suffix Tree Konstruktionsalgorithmus aus \cite{Giegerich1995} ab.
+
+In Kapitel \ref{sec:SuffixArray} befassen wir uns mit den Suffix Arrays. Zuerst diskutieren wir in Abschnitt \ref{sec:Motivation} die Gründe für den Fokuswechsel von Suffix Trees zu Suffix Arrays und stellen anschließend den in \cite{Karkkainen2003} publizierten Suffix Array Konstruktionsalgorithmus vor.
 \end{abstract}
 
 %////////////////////////////////////////////////////////////////////////////
@@ -229,13 +237,11 @@ Abb. \ref{fig:SigmaPlusTree} zeigt einen $\Sigma^+$-Baum für das Alphabet $\Sig
     \node[branch]{}
     child {
         node[branch]{}
-        child[child anchor = north] {
-            node[subtree]{}
+        child {
             edge from parent
             node[left, yshift = 0.5mm]{$ad$}
         }
-        child[child anchor = north] {
-            node[subtree]{}
+        child {
             edge from parent
             node[right, yshift = 0.5mm]{$gd$}
         }
@@ -244,8 +250,7 @@ Abb. \ref{fig:SigmaPlusTree} zeigt einen $\Sigma^+$-Baum für das Alphabet $\Sig
     }
     child {
         node[branch]{}
-        child[child anchor = north] {
-            node[subtree]{}
+        child {
             edge from parent
             node[left, yshift = 0.5mm]{$a$}
         }
@@ -254,13 +259,11 @@ Abb. \ref{fig:SigmaPlusTree} zeigt einen $\Sigma^+$-Baum für das Alphabet $\Sig
     }
     child {
         node[branch]{}
-        child[child anchor = north] {
-            node[subtree]{}
+        child {
             edge from parent
             node[left, yshift = 0.5mm]{$ga$}
         }
-        child[child anchor = north] {
-            node[subtree]{}
+        child {
             edge from parent
             node[right, yshift = 0.5mm]{$ad$}
         }
@@ -308,13 +311,13 @@ Mithilfe der obigen Definition \ref{def:Pfad}, lässt sich eine elegante Notatio
             node[right] {$u$}
         }
         edge from parent
-        node[left] {$v$}
+        node[left] {$w$}
     }
     child[child anchor = north] {
         node[subtree] {}
         edge from parent[dotted]
     };
-    \node[left = 2mm] at (n) {$\overline{vu}$};
+    \node[left = 2mm] at (n) {$\overline{wu}$};
 \end{tikzpicture}
 \caption{Notation zur Knotenbezeichnung}
 \label{fig:NotationZurKnotenbezeichnung}
@@ -329,11 +332,11 @@ Einen Knoten $\overline{w}$ nennen wir Verzweigung, wenn von ihm mehr als eine K
 
 Zu Beginn dieses Abschnitts geben wir eine allgemeine Definition für Suffix Trees, die später durch den Begriff der Suffix Tree Klassen\footnote{Diese Art der Klassifizierung von Suffix Trees stammt aus \cite{Giegerich1995}.} weiter differenziert wird.
 
-Suffix Trees bilden eine Teilmenge der $\Sigma^+$-Bäume. Analog zu anderen Suchbäumen ist auch der Aufbau des Suffix Tree durch die Anforderungen an die Suchoperation motiviert. Suffix Trees wurden primär für das Problem der exakten Teilwortsuche entwickelt, welches in Kapitel \ref{sec:Teilwortsuche} detailliert behandelt wird. Man nutzt hier die Tatsache, dass sich jedes Teilwort $w$ eines Wortes $t$ als Präfix eines Suffix darstellen lässt:
+Suffix Trees bilden eine Teilmenge der $\Sigma^+$-Bäume. Analog zu anderen Suchbäumen ist auch der Aufbau des Suffix Tree durch die Anforderungen an die Suchoperation motiviert. Suffix Trees wurden primär für das Problem der exakten Teilwortsuche entwickelt, welches in Kapitel \ref{sec:ExakteTeilwortsuche} detailliert behandelt wird. Man nutzt hier die Tatsache, dass sich jedes Teilwort $w$ eines Wortes $t$ als Präfix eines Suffix darstellen lässt:
 \begin{gather*}
     t = a \dots b \underbrace{\overbrace{c \dots d}^{\text{Präfix }w} e \dots f}_{\text{Suffix }s}
 \end{gather*}
-Somit kann das Problem der exakten Teilwortsuche auf eine Präfixsuche auf den Suffixen eines Wortes zurückgeführt werden. Diese Beobachtung führt zur zentralen Charakteristik von Suffix Trees, die in Abb. \ref{fig:suffixTreeAgcgacgag} leicht zu erkennen ist. Jeder Pfad von der Wurzel bis zu einem Blatt des Baumes korrespondiert mit einem Suffix des Wortes, für das der Suffix Tree aufgebaut wurde. Diese Überlegungen führen zu folgender formalen Definition für Suffix Trees.
+Somit kann das Problem der exakten Teilwortsuche auf eine Präfixsuche in den Suffixen eines Wortes zurückgeführt werden. Diese Beobachtung führt zur zentralen Charakteristik von Suffix Trees, die in Abb. \ref{fig:suffixTreeAgcgacgag} leicht zu erkennen ist. Jeder Pfad von der Wurzel bis zu einem Blatt des Baumes korrespondiert mit einem Suffix des Wortes, für das der Suffix Tree aufgebaut wurde. Diese Überlegungen führen zu folgender formalen Definition für Suffix Trees.
 
 \begin{figure}[htb]
 \centering
@@ -496,7 +499,7 @@ Abb. \ref{fig:Kantenverschmelzung} zeigt, wie der Knoten $\overline{w}$ mittels 
 \label{fig:Kantenverschmelzung}
 \end{figure}
 
-Während $ast$ eine Normalform bezüglich Kantenteilung und $cst$ eine Normalform bezüglich Kantenverschmelzung darstellen, repräsentiert der $pst$ ein Hybridstadium zwischen $ast$ und $pst$. Ein gebener $ast$ kann in einen $pst$ umgewandelt werden, indem die Kanten ausgehend von den Blattknoten des Baumes bis zur ersten Verzweigung sukzessive verschmolzen werden. Durch weitere Anwendung der Kantenverschmelzung auf den $pst$ gelangt man schließlich zum $cst$. Abb. \ref{fig:SuffixTreeKlassen} zeigt alle drei Suffix Tree Klassen für diesselbe Zeichenkette $agcgacgag$.
+Während $ast$ eine Normalform bezüglich Kantenteilung und $cst$ eine Normalform bezüglich Kantenverschmelzung darstellen, repräsentiert der $pst$ ein Hybridstadium zwischen $ast$ und $pst$. Ein gegebener $ast$ kann in einen $pst$ umgewandelt werden, indem die Kanten ausgehend von den Blattknoten des Baumes bis zur ersten Verzweigung sukzessive verschmolzen werden. Durch weitere Anwendung der Kantenverschmelzung auf den $pst$ gelangt man schließlich zum $cst$. Abb. \ref{fig:SuffixTreeKlassen} zeigt alle drei Suffix Tree Klassen für diesselbe Zeichenkette $agcgacgag$.
 
 \begin{figure}[htb]
 \centering
@@ -814,7 +817,7 @@ $cst$ besitzt eine Speicherplatzkomplexität von $O(n)$, $ast$ und $pst$ liegen 
 \begin{proof}[Beweis des Lemma \ref{lem:SpeicherplatzkomplexitaetCst}]
 Ein Wort $t$ der Länge $n$ besitzt $n$ Suffixe. Jedes Blatt in einem Suffixbaum repräsentiert genau ein Suffix von $t$. Somit besitzt ein $cst$ für $t$ höchstens $n$ Blätter. Alle inneren Knoten eines $cst$ sind Verzweigungen. Aus dieser Beobachtung folgt, dass nicht mehr als $n$ innere Knoten im Baum existieren. Die Zahl der Kanten kann damit auf $2n$ abgeschätzt werden. Um im Worst-Case tatsächlich die geforderte Speicherplatzkomplexität zu erreichen, werden die Kantenbeschriftungen durch Paare $(i, j) \in \mathbb{N} \times \mathbb{N}$ dargestellt, wobei $i$ den Anfang und $j$ das Ende der Kantenbeschriftung im Wort $t$ festlegen. Der Speicherplatzbedarf einer Kante kann dadurch auf $O(1)$ gesenkt werden. Insgesamt erhalten wir damit die gewünschte Speicherplatzkomplexität von $O(n)$.
 
-Die Beweisidee für den $ast$ ist in Abb. \ref{fig:SpeicherplatzbedarfAst} skizziert. Der Worst-Case tritt für diesen Baumtypen beispielsweise für das Wort $a^nb^n$ ein. In diesem Fall enthält der $ast$ $n + 1$ Knoten, die durch $a$-Kanten miteinander verbunden sind. Von jedem dieser Knoten zweigt ein Teilbaum mit einem Speicherplatzbedarf von $O(n)$ ab, wodurch wir insgesamt eine Speicherplatzkomplexität von $O(n^2)$ für den gesamten $ast$ erhalten.
+Die Beweisidee für den $ast$ ist in Abb. \ref{fig:SpeicherplatzbedarfAst} skizziert. Der Worst-Case tritt für diesen Baumtyp beispielsweise für das Wort $a^nb^n$ ein. In diesem Fall enthält der $ast$ $n + 1$ Knoten, die durch $a$-Kanten miteinander verbunden sind. Von jedem dieser Knoten zweigt ein Teilbaum mit einem Speicherplatzbedarf von $O(n)$ ab, wodurch wir insgesamt eine Speicherplatzkomplexität von $O(n^2)$ für den gesamten $ast$ erhalten.
 
 \begin{figure}
 \centering
@@ -897,7 +900,7 @@ Aufgrund der optimalen Speicherplatzcharakteristik des $cst$ konzentrieren wir u
 \label{sec:GeneralizedSuffixTree}
 %////////////////////////////////////////////////////////////////////////////
 
-Bisher haben wir uns auf Suffix Trees für eine gegebene Zeichenkette beschränkt. Viele Anwendungsgebiete erfordern jedoch eine Verallgemeinerung dieses Konzepts um Suffix Trees für eine Menge von Zeichenketten konstruieren zu können. In der Literatur\footnote{Eine Definition von Generalized Suffix Trees kann beispielsweise in \cite{Gusfield1997} gefunden werden.} werden diese Bäume als Generalized Suffix Trees $GST$ bezeichnet.
+Bisher haben wir uns auf Suffix Trees für eine gegebene Zeichenkette beschränkt. Viele Anwendungsgebiete erfordern, jedoch eine Verallgemeinerung dieses Konzepts um Suffix Trees für eine Menge von Zeichenketten konstruieren zu können. In der Literatur\footnote{Eine Definition von Generalized Suffix Trees kann beispielsweise in \cite{Gusfield1997} gefunden werden.} werden diese Bäume als Generalized Suffix Trees $GST$ bezeichnet.
 
 \begin{definition}[Generalized Suffix Tree]
 Sei $D = \{s_1, \dots, s_n\}$ eine Menge von Strings über $\Sigma$, $T = \{t_1, \dots, t_n\}$ eine Menge von Terminalsymbolen mit $T \cap \Sigma = \emptyset$. Ein $GST_D$ ist ein $\Sigma^+$-Baum, sodass für alle $i \leq n$ gilt:
@@ -1176,7 +1179,7 @@ Durch bitweise Veroderung der Bitvektoren der Kindknoten $c_1, \dots, c_l$, kann
         f(c_1) \vee \dots \vee f(c_l) &\text{sonst}
     \end{cases}
 \end{gather*}
-Für den Fall, dass es sich bei $\overline{v}$ um ein Blatt handelt, lassen sich $b_1$ und $b_2$ direkt anhand der Terminalsymbole in den Kantenbeschriftungen bestimmen. Aufgrund der linearen Größe von $csts$ beträgt der Aufwand zur Berechnung der Funktion $f$ $O(\abs{s_1} + \abs{s_2})$, was dem Gesamtaufwand dieses Schrittes entspricht.
+Für den Fall, dass es sich bei $\overline{v}$ um ein Blatt handelt, lassen sich $b_1$ und $b_2$ direkt anhand der Terminalsymbole in den Kantenbeschriftungen bestimmen. Aufgrund der linearen Größe eines $csts$ beträgt der Aufwand zur Berechnung der Funktion $f$ $O(\abs{s_1} + \abs{s_2})$, was dem Gesamtaufwand dieses Schrittes entspricht.
 
 \paragraph{Schritt 3: Knoten mit maximaler Tiefe finden}
 Im letzten Schritt muss nun der Knoten mit maximaler Tiefe im $GST_D$ gefunden werden, d.h.
@@ -1482,8 +1485,8 @@ Insgesamt:
 Weiter wird das worst-case des WOTD-Algoritmus bestimmt. Dieses produziert z.B. das Wort $a^n$, indem es als der Parameter $t$ an der Funktion $lazy\_cst$ gegeben wird. Zuerst wird $sTr$ mit $ss = [a^n,\:a^{n-1}, \dots ,\:a]$ aufgerufen, dann wird dem Parameter $gs$ komplette Liste $ss$ zugewiesen und die Funktion $edge$ mit dem Parameter $gs$ aufgerufen. Die Funktion $edge$ liefert das Ergebnis $(cp,rss) = (a^n, [[\:]])$. Weiter wird $sTr$ mit mit dem Parameter $rss = [[\:]]$ aufgerufen und damit terminiert die Funktion $lazy\_cst$. Weil $|cp| = n$, ist die Laufzeit von $edge$ und von dem gesamten Algorithmus $O(n^2)$.
 
 %////////////////////////////////////////////////////////////////////////////
-\section{Teilwortsuche}
-\label{sec:Teilwortsuche}
+\section{Exakte Teilwortsuche}
+\label{sec:ExakteTeilwortsuche}
 %////////////////////////////////////////////////////////////////////////////
 
 Zum Abschluss des Kapitels möchten wir zeigen, dass mit dem erzeugten Suffixbaum man nicht nur Suffixe effezient suchen kann, sondern auch Teilwörter von einem gegebenen Wort. Dafür definieren wir eine Hilfsfunkktion $commonPrefix$, die ähnlich wie die $edge$-Funktion arbeitet. Die Implementierung wird in Listing \ref{lst:SucheImSuffixTree} gezeigt. Die Funktion bestimmt das längste gemeinsame Präfix von zwei Wörter und liefert ein Tripel $(w1',\: w2',\: cp)$ zurück, wobei $cp$ das längste gemeinsame Präfix ist, $w1'$ und $w2'$ Ergebnisse der Entfernung $cp$ von $w1$ bzw. $w2$ sind.
