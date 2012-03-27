@@ -183,7 +183,9 @@
 \begin{abstract}
 Suffix Trees und die damit eng verwandten Suffix Arrays ermöglichen die effiziente Lösung vieler Suchprobleme im Hinblick auf Zeichenketten, wie z.B. natürlichsprachlichen Texten, Genomsequenzen und Bitströmen. Verwendung finden diese Datenstrukturen beispielsweise in der Bioinformatik bei der Musteranalyse von DNA-Sequenzen \cite{Aluru2006} oder bei der Berechnung der Levenshtein-Distanz \cite{Gusfield1997}.
 
-Aufgrund fehlender Algorithmen zur effizienten Konstruktion von Suffix Trees verblieben diese lange Zeit im Stadium eines theoretischen Konzeptes. Dies änderte sich mit der Veröffentlichung des ersten Algorithmus zur Konstruktion von Suffix Trees in linearer Zeit durch \textit{P. Weiner} 1973 \cite{Weiner1973}. 3 Jahre später stellte \textit{E. M. McCreight} in \cite{McCreight1976} einen ähnlichen Algorithmus mit gleicher Laufzeitkomplexität aber wesentlich geringerem Speicherplatzverbrauch vor.
+Aufgrund fehlender Algorithmen zur effizienten Konstruktion von Suffix Trees verblieben diese lange Zeit im Stadium eines theoretischen Konzeptes. Dies änderte sich mit der Veröffentlichung des ersten Algorithmus zur Konstruktion von Suffix Trees in linearer Zeit durch \textit{P. Weiner} 1973 \cite{Weiner1973}. 3 Jahre später stellte \textit{E. M. McCreight} in \cite{McCreight1976} einen ähnlichen Algorithmus mit gleicher Laufzeitkomplexität aber wesentlich geringerem Speicherplatzverbrauch vor. Diese Algorithmen konnten sich aber, wegen ihrer komplexen Implementierung und den hohen Laufzeitkonstanten nicht durchsetzen.
+
+Der Durchbruch gelang erst zwei Jahrzehnte später mit
 \end{abstract}
 
 %////////////////////////////////////////////////////////////////////////////
@@ -203,10 +205,10 @@ Aufgrund fehlender Algorithmen zur effizienten Konstruktion von Suffix Trees ver
 
 Zunächst möchten wir auf die grundlegende Notation eingehen, die in dieser Abhandlung Verwendung findet.
 
-Sei $\Sigma$ ein endliches Alphabet. Das leere Wort bezeichnen wir mit $\epsilon$. Wie gewohnt bezeichnet $\Sigma^*$ die Kleen'sche Hülle von $\Sigma$ und $\Sigma^+ \coloneqq \Sigma^* \setminus \{\epsilon\}$. Zur besseren Übersichtlichkeit verwenden wir im Folgenden $a - g$ auschließlich für Buchstaben aus $\Sigma$ und $t - z$ für Wörter über $\Sigma^*$. Mit $uv$ bezeichnen wir die Konkatenation der Wörter $u$ und $v$.
+Sei $\Sigma$ ein endliches Alphabet. Das leere Wort bezeichnen wir mit $\epsilon$. Wie gewohnt bezeichnet $\Sigma^*$ die Kleen'sche Hülle von $\Sigma$ und $\Sigma^+ \coloneqq \Sigma^* \setminus \{\epsilon\}$. Zur besseren Übersichtlichkeit verwenden wir im Folgenden $a - g$ auschließlich für Buchstaben aus $\Sigma$ und $t - z$ für Wörter aus $\Sigma^*$. Mit $uv$ bezeichnen wir die Konkatenation der Wörter $u$ und $v$.
 
 \begin{definition}[Präfix, Suffix, $t$-Wort]
-Sei $t = uvw$ mit $u, v, w \in \Sigma^*$. Dann ist $u$ ein Präfix und $w$ ein Suffix von $t$. $v$ wird als $t$-Wort bezeichnet.
+Sei $t = uvw$  eine beliebige Zerlegung von $t$ mit $u, v, w \in \Sigma^*$. Dann ist $u$ ein Präfix und $w$ ein Suffix von $t$. $v$ wird als $t$-Wort bezeichnet.
 \end{definition}
 
 \begin{definition}[$\Sigma^+$-Baum]
