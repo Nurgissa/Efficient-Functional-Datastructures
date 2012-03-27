@@ -1581,12 +1581,12 @@ Sei ein Teilwort $cgac$ in dem Wort $agcgacgag$ gesucht. Wir definieren ein pass
 
 Trotz der vielen Problemstellungen, die mithilfe von Suffix Trees effizient gelöst werden können, werden diese nach unserem Kenntnisstand bis zum heutigen Zeitpunkt kaum in der Praxis eingesetzt. Diese Tatsache wird durch zwei gravierende Nachteile der bisherigen Implementierungen von Suffix Trees bedingt.
 \begin{enumerate}
-    \item Obwohl der Speicherplatzbedarf von Suffix Trees nur linear mit der Länge des Eingabestrings wächst, ist der Speicherplatzverbrauch von Suffix Trees enorm. Für jedes Eingabezeichen des zu indizierenden Strings werden $20$ Byte benötigt. Das macht Suffix Trees für viele Real-Welt-Anwendungen mit hohem Datenaufkommen unbrauchbar.
+    \item Obwohl der Speicherplatzbedarf von Suffix Trees nur linear mit der Länge des Eingabestrings wächst, ist der Speicherplatzverbrauch von Suffix Trees enorm. Für jedes Eingabezeichen des zu indizierenden Strings werden im Worst-Case $20$ Bytes\footnote{vgl. \cite{Giegerich1999}} benötigt. Das macht Suffix Trees für viele Real-Welt-Anwendungen mit hohem Datenaufkommen unbrauchbar.
     \item Die Form eines Suffix Trees hängt stark von der Wahl des zu indizierenden Strings ab. Aus diesem Grund lassen sich Suffix Trees sehr schlecht extern implementieren.
 \end{enumerate}
 Suffix Arrays stellen einen Versuch dar, diese Problematik zu lösen.
 \begin{enumerate}
-    \item Der Speicherplatzbedarf beträgt bei Suffix Arrays nur noch $5$ Byte pro Eingabezeichen.
+    \item Der Speicherplatzbedarf beträgt bei Suffix Arrays nur noch $4$ Bytes\footnote{vgl. \cite{Abouelhoda2004}} pro Eingabenzeichen im Worst-Case.
     \item Es exisitieren vielversprechende Algorithmen zur externen Konstruktion von Suffix Arrays. In \cite{Dementiev2008} wird eine Weiterentwicklung des im Folgenden Abschnitt thematisierten Algorithmus vorgestellt, der sich nicht nur für die externe, sondern auch für die parallelisierte Berechnung auf verteilten Systemen eignet.
     \item Jeder Algorithmus, der einen Suffix Tree nutzt, kann unter Beibehaltung derselben Laufzeitkomplexität durch einen Algorithmus ersetzt werden, der ein Suffix Array benutzt. Die entsprechende Methodik wird in \cite{Abouelhoda2004} vorgestellt.
 \end{enumerate}
@@ -1660,7 +1660,7 @@ $$
 \end{tabular}
 $$
 
-\paragraph{Schritt 1: Die Konstruktion der Sample-Suffixe.}
+\paragraph{Schritt 1: Divide}
 
 Für $k = 0,1,2$ werden Mengen wie folgt definiert:
 $$
@@ -1672,7 +1672,7 @@ $$
 B_1 = \{1,4,7,10\},\;B_2 = \{2,5,8,11\},\;C = \{1,4,7,10,2,5,8,11\}
 $$
 
-\paragraph{Schritt 2: Das Sortieren der Sample-Suffixe.}
+\paragraph{Schritt 2: Sort recursive}
 
 Für k = 1,2 werden folgende Zeichenketten konstruiert:
 $$
@@ -1741,7 +1741,7 @@ $$
 \end{tabular}
 $$
 
-\paragraph{Schritt 3: Das Sortieren der Nicht-Sample-Suffixe.}
+\paragraph{Schritt 3: Sort}
 
 Das sind die Suffixe aus der Menge $S_{B_0} = \{S_i \mid i \in B_0\}$. Jedes Suffix $S_i \in S_{B_0}$ wird mit dem Tupel $(t_i,rank(S_{i+1}))$ repräsentiert. Die Tupel werden mit Radixsort sortiert, indem:
 $$
@@ -1752,7 +1752,7 @@ $$
 S_6 < S_9 < S_3 < S_0 \mbox{, weil }(a,5) < (a,7) < (b,2) < (y,1)
 $$
 
-\paragraph{Schritt 4: Merge.}
+\paragraph{Schritt 4: Merge}
 
 Zu diesem Schritt haben wir zwei sortierte Mengen, die jetzt vereinigt werden müssen. Um die Sample-Suffixe $S_i \in S_C$ mit Nicht-Sample-Suffixe $S_j \in S_{B_0}$ zu vergleichen, wird folgende Ordnung benutzt:
 
