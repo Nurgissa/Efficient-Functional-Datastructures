@@ -189,11 +189,9 @@ Der Durchbruch gelang erst 1995 mit einem völlig neuen Ansatz von \textit{E. Uk
 
 Obwohl der Lösungsansatz von \textit{E. Ukkonen} wenig Wünsche an den Algorithmus selbst offen lässt, blieb die Speicherplatzproblematik der Suffix Trees ungelöst. Auch die in der 1999 erschienen Publikation \cite{Giegerich1999} vorgeschlagene Verbesserung, die den Speicherplatzverbrauch von Suffix Trees um ein Drittel senkt, hat diese Problematik nicht entscheidend verbessert.
 
-Bereits 1990 wurden Suffix Arrays \cite{Manber1990} von \textit{U. Manber} und \textit{Gene Myers} als speicherplatzeffiziente Alternative zu Suffix Trees vorgestellt. Seitdem bei den Suffix Trees bezüglich des Speichplatzbedarfs keine nennenswerten Fortschritte mehr erzielt wurden, verschiebt sich der Schwerpunkt der Forschung immmer mehr in Richtung Suffix Arrays. Anfangs existierten wie bei den Suffix Trees keine effizienten Konstruktionalgorithmen. 2003 wurden gleich drei Algorithmen veröffentlicht, die das Konstruktionsproblem in linearer Zeit lösen, darunter auch \cite{Karkkainen2003}.
+Bereits 1990 wurden Suffix Arrays \cite{Manber1990} von \textit{U. Manber} und \textit{Gene Myers} als speicherplatzeffiziente Alternative zu Suffix Trees vorgestellt. Anfangs existierten wie bei den Suffix Trees keine effizienten Konstruktionalgorithmen. 2003 wurden gleich drei Algorithmen veröffentlicht, die dieses Konstruktionsproblem in linearer Zeit lösen, darunter auch \cite{Karkkainen2003}.
 
-Auf den folgenden Seiten betrachten wir Suffix Trees und Suffix Arrays aus der Perspektive der funktionalen Programmierung. Zunächst beschäftigen wir uns mit den Suffix Trees. Nachdem wir in Abschnitt \ref{sec:Terminologie} die notwendigen Grundlagen und die verschieden Suffix Tree Typen besprochen haben, gehen wir im nächsten Abschnitt \ref{sec:Anwendungsgebiete} auf die Anwendungsgebiete von Suffix Trees näher ein und schließen das Kapitel \ref{chap:SuffixTree} mit einer Erläuterung des funktionalen Suffix Tree Konstruktionsalgorithmus aus \cite{Giegerich1995} ab.
-
-In Kapitel \ref{sec:SuffixArray} befassen wir uns mit den Suffix Arrays. Zuerst diskutieren wir in Abschnitt \ref{sec:Motivation} die Gründe für den Fokuswechsel von Suffix Trees zu Suffix Arrays und stellen anschließend den in \cite{Karkkainen2003} publizierten Suffix Array Konstruktionsalgorithmus vor.
+Auf den folgenden Seiten betrachten wir Suffix Trees und Suffix Arrays aus der Perspektive der funktionalen Programmierung. Zunächst beschäftigen wir uns mit den Suffix Trees. Nachdem wir in Abschnitt \ref{sec:Terminologie} die notwendigen Grundlagen und die verschiedenen Suffix Tree Typen besprochen haben, gehen wir im nächsten Abschnitt \ref{sec:Anwendungsgebiete} auf die Anwendungsgebiete von Suffix Trees näher ein. Anschließend erläutern wir den funktionalen Suffix Tree Konstruktionsalgorithmus aus \cite{Giegerich1995} und schließen das Kapitel \ref{chap:SuffixTree} mit einer Implementierung des Problem der exakten Teilwortsuche ab. In Kapitel \ref{sec:SuffixArray} befassen wir uns mit den Suffix Arrays. Zuerst diskutieren wir in Abschnitt \ref{sec:Motivation} die Gründe für die Entwicklung von Suffix Arrays und stellen anschließend den in \cite{Karkkainen2003} publizierten Suffix Array Konstruktionsalgorithmus vor.
 \end{abstract}
 
 %////////////////////////////////////////////////////////////////////////////
@@ -211,7 +209,7 @@ In Kapitel \ref{sec:SuffixArray} befassen wir uns mit den Suffix Arrays. Zuerst 
 \label{sec:Grundlagen}
 %////////////////////////////////////////////////////////////////////////////
 
-Zunächst möchten wir auf die grundlegende Notation eingehen, die in dieser Abhandlung Verwendung findet.
+Zunächst möchten wir auf die grundlegende Notation eingehen, die in diesem Kapitel Verwendung findet.
 
 Sei $\Sigma$ ein endliches Alphabet. Das leere Wort bezeichnen wir mit $\epsilon$. Wie gewohnt bezeichnet $\Sigma^*$ die Kleen'sche Hülle von $\Sigma$ und $\Sigma^+ \coloneqq \Sigma^* \setminus \{\epsilon\}$. Zur besseren Übersichtlichkeit verwenden wir im Folgenden $a - g$ auschließlich für Buchstaben aus $\Sigma$ und $t - z$ für Wörter aus $\Sigma^*$. Mit $uv$ bezeichnen wir die Konkatenation der Wörter $u$ und $v$.
 
@@ -1195,30 +1193,49 @@ Der Aufwand für jeden der drei Schritte beträgt $O(\abs{s_1} + \abs{s_2})$ und
 \label{sec:SuffixTreeKonstruktion}
 %////////////////////////////////////////////////////////////////////////////
 
-In diesem Abschnitt wird ein Algorithmus dargestellt, der einen kompakten Suffixbaum für ein Wort $t$ aufbaut. Es gibt zwei prinzipiell unterschiedlichen Ansätze dafür.
+In diesem Abschnitt stellen wir den von \textit{R. Giegerich} und \textit{S. Kurtz} in \cite{Giegerich1995} entwickelten funktionalen Algorithmus zur Suffixbaumkonstruktion vor.
 
-Erster Ansatz ist sukzessive Einfügung der Suffixe von $t$ in einen Baum, der als leer initialisiert wird. Die Konstruktion wird erfolgen mittels Iterationen über das Wort $t$, indem Suffixe von links nach rechts (oder auch umgekehrt) jedes Mal abgelesen werden.
+Bisher existieren zwei prinzipiell unterschiedliche Ansätze für die Suffix Tree Konstruktion.
+\begin{enumerate}
+     \item Der erste Ansatz fügt sukzessive alle Suffixe eines Wortes $t$ in den Anfangs leeren Baum ein. Die Struktur des Baumes wird dabei fortwährend verändert bis alle benötigten Verzweigungen im Baum vorhanden sind.
+     \item Der zweite Ansatz verfolgt im Gegensatz zum Ersten einen Breitenansatz, bei dem zuerst die Kanten von der Wurzel ausgehend und nachfolgend jeder Unterbaum rekursiv aufgebaut wird. Wie bei einem Scan-Line-Algorithmus werden alle Suffixe gleichzeitig gelesen und der Baum dementsprechend aufgebaut. Nachträgliche Änderungen der Baumstruktur werden so vermieden.
+ \end{enumerate}
 
-In dem zweiten Ansatz wird der Baum rekursiv aufgebaut, indem zuerst Kanten von der Wurzel aufgebaut werden und dann für jeden Unterbaum das Verfahren wiederholt wird.
+% In diesem Abschnitt wird ein Algorithmus dargestellt, der einen kompakten Suffixbaum für ein Wort $t$ aufbaut. Es gibt zwei prinzipiell unterschiedlichen Ansätze dafür.
+
+% Erster Ansatz ist sukzessive Einfügung der Suffixe von $t$ in einen Baum, der als leer initialisiert wird. Die Konstruktion wird erfolgen mittels Iterationen über das Wort $t$, indem Suffixe von links nach rechts (oder auch umgekehrt) jedes Mal abgelesen werden.
+
+% In dem zweiten Ansatz wird der Baum rekursiv aufgebaut, indem zuerst Kanten von der Wurzel aufgebaut werden und dann für jeden Unterbaum das Verfahren wiederholt wird.
 
 %////////////////////////////////////////////////////////////////////////////
 \subsection{WOTD-Algorithmus}
 \label{sec:WOTDAlgorithmus}
 %////////////////////////////////////////////////////////////////////////////
 
-Der Algorithmus, der wir uns in dieser Arbeit anschauen, verwendet den zweiten Ansatz. Dieser Algorithmus ist als ''Write only top down suffix tree construction''\footnote{Der Algorithmus wurde von R. Giegerich und S. Kurtz entwickelt. Siehe \cite{Giegerich1995}.}, kurz geschrieben WOTD-Algorithmus, genannt worden. ''Write only'' steht für die Eigenschaft, dass die Knoten im Baum nur konstruiert werden und danach nicht mehr gelesen. ''Top down'' steht für den Art des Aufbaus: rekursive Konstruktion, beginnend an der Wurzel mit allen Suffixen. Der Algorithmus eignet sich für die funktionale Implementierung und insbesondere für die Benutzung der laziness-Eigenschaft. Aus diesen Gründen wird für die Implementierung des Algorithmus Haskell benutzt\footnote{wir haben die Implementierung von \cite{Giegerich1995} genommen und leciht bearbeitet.}.
+Der im Folgenden betrachtete WOTD-Algorithmus verwendet letzteren der beiden vorgestellten Suffix Tree Konstruktionansätze. Während sich dieser Abschnitt mit der generellen Vorgehensweise des Algorithmus beschäftigt, gehen wir im nächsten Abschnitt \ref{sec:ImplementierungInHaskell} auf eine konkrete Implementierung ein.
 
-Die Schritte des Algorithmus werden mit einem Beispiel für das Wort $t$ = $agcgacgag$ veranschaulicht. Der Algoritmus wird wie folgt ausgeführt:
+Das Akronym WOTD steht für ''Write only top down suffix tree construction''. ''Write only'' bezeichnet die Eigenschaft des Algorithmus, die Baumstruktur während des Aufbaus nicht fortwährend zu verändern. ''Top down'' beschreibt den von der Wurzel ausgehenden rekursiven Baumaufbau.
 
+% Der Algorithmus, der wir uns in dieser Arbeit anschauen, verwendet den zweiten Ansatz. Dieser Algorithmus ist als ''Write only top down suffix tree construction''\footnote{Der Algorithmus wurde von R. Giegerich und S. Kurtz entwickelt. Siehe \cite{Giegerich1995}.}, kurz geschrieben WOTD-Algorithmus, genannt worden. ''Write only'' steht für die Eigenschaft, dass die Knoten im Baum nur konstruiert werden und danach nicht mehr gelesen. ''Top down'' steht für den Art des Aufbaus: rekursive Konstruktion, beginnend an der Wurzel mit allen Suffixen. Der Algorithmus eignet sich für die funktionale Implementierung und insbesondere für die Benutzung der laziness-Eigenschaft. Aus diesen Gründen wird für die Implementierung des Algorithmus Haskell benutzt\footnote{wir haben die Implementierung von \cite{Giegerich1995} genommen und leciht bearbeitet.}.
+
+Die einzelnen Schritte des Algorithmus veranschaulichen wir anhand des Wortes $t$ = $agcgacgag$.
+
+% Die Schritte des Algorithmus werden mit einem Beispiel für das Wort $t$ = $agcgacgag$ veranschaulicht. Der Algoritmus wird wie folgt ausgeführt:
 \paragraph{Schritt 1: Konstruktion der Suffixliste}
 
-Es wird eine Suffixliste eines gegebenen Wortes erzeugt. Die Suffixliste für das Wort $t$ = $agcgacgag$ ist
-$[agcgacgag$, $gcgacgag$, $cgacgag$, $gacgag$, $acgag$, $cgag$, $gag$, $ag$, $g]$.
+Im ersten Schritt wird eine Liste aller Suffixe des gegebenen Wortes $t$ erzeugt. In unserem Beispiel erhalten wir:
+\begin{gather*}
+[agcgacgag, gcgacgag, cgacgag, gacgag, acgag, cgag, gag, ag, g]
+\end{gather*}
 
+% Es wird eine Suffixliste eines gegebenen Wortes erzeugt. Die Suffixliste für das Wort $t$ = $agcgacgag$ ist
+% $[agcgacgag$, $gcgacgag$, $cgacgag$, $gacgag$, $acgag$, $cgag$, $gag$, $ag$, $g]$.
 \paragraph{Schritt 2: Gruppierung der Suffixliste}
 
-Die Suffixliste wird nach den Anfangsbuchstaben gruppiert, einen Knoten wird erzeugt. Die Gruppen, die für unseres Beispiel erzeugt werden:
-$$
+Die Suffixliste wird nach den Anfangsbuchstaben der Suffixe gruppiert. Ist die Suffixliste nicht leer, erzeugen wir eine Verzweigung im Baum, deren Kanten im nächsten Schritt aufgebaut werden. Sonst wird ein Blattknoten erzeugt und der Algorithmus terminiert. In unserem Beispiel entstehen drei Gruppen mit den Anfangsbuchstaben $a$, $c$ und $g$:
+
+% Die Suffixliste wird nach den Anfangsbuchstaben gruppiert, einen Knoten wird erzeugt. Die Gruppen, die für unseres Beispiel erzeugt werden:
+\begin{center}
 \begin{tabular}{l l l}
     \toprule
     Gruppe 1                 & Gruppe 2               & Gruppe 3                \\
@@ -1228,11 +1245,14 @@ $$
     $\boldsymbol{a}g$        &                        & $\boldsymbol{g}ag$      \\
     \bottomrule
 \end{tabular}
-$$
+\end{center}
+
 \paragraph{Schritt 3: Längstes gemeinsames Präfix einer Gruppe}
 
-Für jede Gruppe aus dem Schritt 2 wird das längste gemeinsame Präfix berechnet und eine Kante mit der Beschriftung von dem Präfix erzeugt. Die Gruppen aus dem Beispiel haben folgende Präfixe:
-$$
+Für jede Gruppe aus Schritt 2 wird das längste gemeinsame Präfix berechnet und eine Kante erzeugt, die mit dem längsten gemeinsamen Präfix der Gruppe beschriftet wird. Für die Gruppen in unserem Beispiel werden folgende Präfixe berechnet:
+
+% Für jede Gruppe aus dem Schritt 2 wird das längste gemeinsame Präfix berechnet und eine Kante mit der Beschriftung von dem Präfix erzeugt. Die Gruppen aus dem Beispiel haben folgende Präfixe:
+\begin{center}
 \begin{tabular}{l l l}
     \toprule
     Gruppe 1                 & Gruppe 2               & Gruppe 3                \\
@@ -1245,10 +1265,12 @@ $$
     $a$                      & $cga$                  & $g$                     \\
     \bottomrule
 \end{tabular}
-$$
-Das jeweilige Präfix wird von den Wörtern der Gruppe entfernt und eine neue Liste wird aus den Restwörter erzeugt. Falls die neue Liste leer ist, wird der Schritt 3 für die nächste Gruppe aus dem Schritt 2 wiederholt. Falls die neue Liste noch Wörter enthält, wird der Schritt 2 für diese Liste ausgeführt. Sukzessiver Aufbau von dem Suffixbaum für das Beispiel wird in Abb. \ref{fig:cstKonstruktion} gezeigt\footnote{für eine bessere Veranschaulichung wird der Aufbau mit Levels repräsentiert}.
+\end{center}
+Das jeweilige Präfix wird von den Wörtern der Gruppe entfernt. Die verbliebenen Restwörter werden in einer neuen Liste gespeichert. Falls diese Liste leer ist, wird Schritt 3 für die nächste Gruppe aus Schritt 2 wiederholt. Sonst wird Schritt 2 für diese Liste ausgeführt.
 
-% [h]: here, [t]: top, [b]: bottom
+Abb. \ref{fig:cstKonstruktion} zeigt den schrittweisen Aufbau des Suffix Trees für $t = agcgacgag$. Die verblieben Restwörter nach Schritt 3 haben wir zur besseren Veranschaulichung an die Blätter des noch unfertigen Baumes angehängt. Durch wiederholtes Anwenden der oben beschrieben Schritte erhält man schließlich den fertigen $cst$ (vgl. Abb. \ref{fig:cstKonstruktion} unten).
+
+% Das jeweilige Präfix wird von den Wörtern der Gruppe entfernt und eine neue Liste wird aus den Restwörter erzeugt. Falls die neue Liste leer ist, wird der Schritt 3 für die nächste Gruppe aus dem Schritt 2 wiederholt. Falls die neue Liste noch Wörter enthält, wird der Schritt 2 für diese Liste ausgeführt. Sukzessiver Aufbau von dem Suffixbaum für das Beispiel wird in Abb. \ref{fig:cstKonstruktion} gezeigt\footnote{für eine bessere Veranschaulichung wird der Aufbau mit Levels repräsentiert}.
 \begin{figure}[h]
 \centering
 \begin{tikzpicture}[
@@ -1381,7 +1403,7 @@ Das jeweilige Präfix wird von den Wörtern der Gruppe entfernt und eine neue Li
         };
     }
 \end{tikzpicture}
-\caption{cst-Konstruktion für $t$ = $agcgacgag$}
+\caption{Schrittweise cst-Konstruktion für $t = agcgacgag$}
 \label{fig:cstKonstruktion}
 \end{figure}
 
@@ -1390,9 +1412,14 @@ Das jeweilige Präfix wird von den Wörtern der Gruppe entfernt und eine neue Li
 \label{sec:ImplementierungInHaskell}
 %////////////////////////////////////////////////////////////////////////////
 
-Zuerst werden benötige Datentypen im Listing \ref{lst:typdefinitionen} beschrieben. Ein Baum ist entweder ein Blatt oder eine Verzweigung. Eine Verzweigung ist eine Liste von Tupeln, wobei erstes Element vom Tupel eine Kante (also, eine Kantenbeschriftung) ist, und zweites Element ist der Unterbaum, der von der Kante ausgeht. $alf$ ist Typparameter vom Alphabet, $Label\:alf$ ist ein Liste von Elementen des Alphabets.
-Typ der EdgeFunktion bedeutet, dass man eine Liste von Wörter nimmt und auf ein Tupel abbildet, wobei erstes Element vom Tupel das längste gemeinsame Präfix der Wörter ist und zweites Element eine Liste von Wörter, von denen das längste gemeinsame Präfix entfernt wurde.
+In diesem Abschnitt erläutern wir die Implementierung des im vorangegangen Abschnitt beschriebenen WOTD-Algorithmus. Die in \cite{Giegerich1995} vorgestellte Implementierung des WOTD-Algorithmus konstruiert den Baum \textit{lazy}, d.h. der Baum wird erst bei der Suche und nur soweit wie benötigt aufgebaut. Diese Eigenschaft veranschaulichen wir am Ende dieses Abschnitts anhand eines Beispiels. Wie \textit{R. Giegerich} und \textit{S. Kurtz} in \cite{Giegerich1995} verwenden auch wir für unsere Implementierung die Sprache \textit{Haskell}, welche durch ihre Auswertungstrategie namens \textit{Lazy Evaluation} den Implementierungsprozess deutlich vereinfacht. Unsere Implementierung stellt eine leicht überarbeitete Fassung der in \cite{Giegerich1995} publizierten Implementierung dar.
 
+Zunächst möchten wir auf die für den Suffix Tree benötigten Datentypen eingehen, welche in Listing \ref{lst:typdefinitionen} aufgeführt sind. Ein Suffix Tree ist entweder ein Blatt oder eine Verzweigung. Eine Verzweigung besteht aus einer Tupelliste, welche die Kanten ausgehend von der Verzweigung zu den Unterbäumen repräsentiert. Jede Kante setzt sich aus einer Beschriftung (erste Tupelkomponente) und einem Unterbaum (zweite Tupelkomponente) zusammen, zu dem diese Kante führt. $alf$ ist der Typparameter des Alphabets. Die Kantenbeschriftungen $Label\:alf$ werden durch eine Liste von Buchstaben des Typs $alf$ dargestellt.
+
+Der Typ $EdgeFunction$ zu deutsch Kantenfunktion wird für Funktionen eingeführt, die zur Berechnung der Kantenbeschriftungen verwendet werden. Kantenfunktionen bilden eine Liste von Wörtern auf ein Tupel bestehend aus dem längsten gemeinsamen Präfix dieser Wörter in der ersten Komponente und einer Liste der verbliebenen Restwörter in der zweiten Komponente ab (vgl. Schritt 3 in Abschnitt \ref{sec:WOTDAlgorithmus}).
+
+% Zuerst werden benötige Datentypen im Listing \ref{lst:typdefinitionen} beschrieben. Ein Baum ist entweder ein Blatt oder eine Verzweigung. Eine Verzweigung ist eine Liste von Tupeln, wobei erstes Element vom Tupel eine Kante (also, eine Kantenbeschriftung) ist, und zweites Element ist der Unterbaum, der von der Kante ausgeht. $alf$ ist Typparameter vom Alphabet, $Label\:alf$ ist ein Liste von Elementen des Alphabets.
+% Typ der EdgeFunktion bedeutet, dass man eine Liste von Wörter nimmt und auf ein Tupel abbildet, wobei erstes Element vom Tupel das längste gemeinsame Präfix der Wörter ist und zweites Element eine Liste von Wörter, von denen das längste gemeinsame Präfix entfernt wurde.
 \begin{lstlisting}[
     caption = Typdefinitionen,
     label = lst:typdefinitionen,
