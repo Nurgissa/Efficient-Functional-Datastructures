@@ -1414,9 +1414,9 @@ Abb. \ref{fig:cstKonstruktion} zeigt den schrittweisen Aufbau des Suffix Trees f
 
 In diesem Abschnitt erläutern wir die Implementierung des im vorangegangen Abschnitt beschriebenen WOTD-Algorithmus. Die in \cite{Giegerich1995} vorgestellte Implementierung des WOTD-Algorithmus konstruiert den Baum \textit{lazy}, d.h. der Baum wird erst bei der Suche und nur soweit wie benötigt aufgebaut. Diese Eigenschaft veranschaulichen wir am Ende dieses Abschnitts anhand eines Beispiels. Wie \textit{R. Giegerich} und \textit{S. Kurtz} in \cite{Giegerich1995} verwenden auch wir für unsere Implementierung die Sprache \textit{Haskell}, welche durch ihre Auswertungstrategie namens \textit{Lazy Evaluation} den Implementierungsprozess deutlich vereinfacht. Unsere Implementierung stellt eine leicht überarbeitete Fassung der in \cite{Giegerich1995} publizierten Implementierung dar.
 
-Zunächst möchten wir auf die für den Suffix Tree benötigten Datentypen eingehen, welche in Listing \ref{lst:typdefinitionen} aufgeführt sind. Ein Suffix Tree ist entweder ein Blatt oder eine Verzweigung. Eine Verzweigung besteht aus einer Tupelliste, welche die Kanten ausgehend von der Verzweigung zu den Unterbäumen repräsentiert. Jede Kante setzt sich aus einer Beschriftung (erste Tupelkomponente) und einem Unterbaum (zweite Tupelkomponente) zusammen, zu dem diese Kante führt. $alf$ ist der Typparameter des Alphabets. Die Kantenbeschriftungen $Label\:alf$ werden durch eine Liste von Buchstaben des Typs $alf$ dargestellt.
+Zunächst möchten wir auf die für den Suffix Tree benötigten Datentypen eingehen, welche in Listing \ref{lst:typdefinitionen} aufgeführt sind. Ein Suffix Tree ist entweder ein Blatt oder eine Verzweigung. Eine Verzweigung besteht aus einer Tupelliste, welche die Kanten ausgehend von der Verzweigung zu den Unterbäumen repräsentiert. Jede Kante setzt sich aus einer Beschriftung (erste Tupelkomponente) und einem Unterbaum (zweite Tupelkomponente) zusammen, zu dem diese Kante führt. \textit{alf} ist der Typparameter des Alphabets. Die Kantenbeschriftungen \textit{Label alf} werden durch eine Liste von Buchstaben des Typs \textit{alf} dargestellt.
 
-Der Typ $EdgeFunction$ zu deutsch Kantenfunktion wird für Funktionen eingeführt, die zur Berechnung der Kantenbeschriftungen verwendet werden. Kantenfunktionen bilden eine Liste von Wörtern auf ein Tupel bestehend aus dem längsten gemeinsamen Präfix dieser Wörter in der ersten Komponente und einer Liste der verbliebenen Restwörter in der zweiten Komponente ab (vgl. Schritt 3 in Abschnitt \ref{sec:WOTDAlgorithmus}).
+Der Typ $EdgeFunction$ zu deutsch Kantenfunktion wird für Funktionen eingeführt, die zur Berechnung der Kantenbeschriftungen verwendet werden. Kantenfunktionen bilden eine Liste von Wörtern auf ein Tupel bestehend aus dem längsten gemeinsamen Präfix dieser Wörter in der ersten Komponente und einer Liste der verbliebenen Restwörter in der zweiten Komponente ab (vgl. Schritt 3 in Abschnitt \ref{sec:WOTDAlgorithmus}). Durch den Einsatz verschiedener Kantenfunktionen kann so, wahlweise ein $ast$, $pst$ oder $cst$ aufgebaut werden.
 
 % Zuerst werden benötige Datentypen im Listing \ref{lst:typdefinitionen} beschrieben. Ein Baum ist entweder ein Blatt oder eine Verzweigung. Eine Verzweigung ist eine Liste von Tupeln, wobei erstes Element vom Tupel eine Kante (also, eine Kantenbeschriftung) ist, und zweites Element ist der Unterbaum, der von der Kante ausgeht. $alf$ ist Typparameter vom Alphabet, $Label\:alf$ ist ein Liste von Elementen des Alphabets.
 % Typ der EdgeFunktion bedeutet, dass man eine Liste von Wörter nimmt und auf ein Tupel abbildet, wobei erstes Element vom Tupel das längste gemeinsame Präfix der Wörter ist und zweites Element eine Liste von Wörter, von denen das längste gemeinsame Präfix entfernt wurde.
@@ -1436,7 +1436,15 @@ type Label alf = [alf]
 type EdgeFunction alf = [[alf]] -> ([alf], [[alf]])
 \end{lstlisting}
 
-Im Folgenden besprechen wir Funktionen, die einzelne Schritte des Algorithmus erledigen. Die Implementierung der Funktionen wird in Listing \ref{lst:AlgorithmusZurSuffixTreeKonstruktion} gezeigt.
+Die Implementierung des eigentlichen Algorithmus wird in Listing \ref{lst:AlgorithmusZurSuffixTreeKonstruktion} gezeigt. Bevor wir auf Hauptfunktion \textit{lazy\_cst} zu sprechen kommen, gehen wir auf die benötigten Hilfsfunktionen ein.
+
+Die erste Hilfsfunktion \textit{suffixes} generiert die Liste aller Suffixes eines gebenenen Wortes. Mit \textit{select} wird die übergebene Liste nach allen Worten, die mit dem Buchstaben \textit{a} beginnen gefiltert. Die Funktion \textit{edge} ist eine der oben beschriebenen Kantenfunktionen, wobei die hier aufgeführte Implementierung zum Aufbau eines $cst$ dient. Dies geschieht durch die Berechnung des längsten gemeinsamen Präfix der übergebenen Liste von Wörtern. Zuerst wird überprüft, ob alle Wörter mit dem gleichen Buchstaben beginnen. Ist das der Fall, wird der Buchstabe an \textit{cp} angehängt und eine neue Liste ohne den ersten Buchstaben erzeugt, wobei leere Wörter aus der Liste herausgefiltert werden. Die Funktion liefert wie oben beschrieben ein Tupel mit dem längsten gemeinsamen Präfix aller Wörter und einer Liste der Restwörter, von denen das längste gemeinsame Präfix entfernt wurde.
+
+\textit{lazy\_cst} benutzt die oben beschriebenen Hilfsfunktionen, um den WOTD-Algorithmus zu realisieren. Als Parameter erhält diese Funktion eine Kantenfunktion, die darüber entscheidet, ob welche Suffix Tree Klasse aufgebaut wird, ein Alphabet in Form einer Liste von Buchstaben und ein Wort $t$, für das der Suffix Tree aufgebaut werden soll. Die Suffixliste von $t$ wird an einer Hilfsfunktion $sTr$ übergeben, die den Baum wie folgt rekursiv aufbaut.
+
+Für den Fall, dass die Suffixliste leer ist, wird ein Blatt erzeugt. Sonst wird eine Verzweigung in den Baum eingefügt. Die Kantenliste der Verzweigung wird, wie in Abschnitt \ref{sec:WOTDAlgorithmus} beschrieben, in zwei Schritten aufgebaut. Im ersten Schritt wird jeder Buchstabe des Alphabets an \textit{a} gebunden und eine Gruppe mit Anfangsbuchstaben \textit{a} durch die Funktion \textit{select} ausgewählt. Im zweiten Schritt wird mithilfe von \textit{edge} das gemeinsame Präfix dieser Gruppe und die Liste der Restwörter berechnet.
+
+% Im Folgenden besprechen wir Funktionen, die einzelne Schritte des Algorithmus erledigen. Die Implementierung der Funktionen wird in Listing \ref{lst:AlgorithmusZurSuffixTreeKonstruktion} gezeigt.
 
 \begin{lstlisting}[
     caption = Algorithmus zur Suffix Tree Konstruktion,
@@ -1471,45 +1479,49 @@ lazy_cst edge alpha t = sTr (suffixes t)
                                      let (cp,rss) = edge gs]
 \end{lstlisting}
 
-Erste Funktion ist $suffixes$, die eine Suffixliste von einem gegebenen Wort zurückliefert.
+% Erste Funktion ist $suffixes$, die eine Suffixliste von einem gegebenen Wort zurückliefert.
 
-Auswahl einer Gruppe, die mit einer Buchstabe anfängt, wird mit der Funktion $select$ erledigt. Die Buchstabe wird an dem Parameter $a$ gebunden.
+% Auswahl einer Gruppe, die mit einer Buchstabe anfängt, wird mit der Funktion $select$ erledigt. Die Buchstabe wird an dem Parameter $a$ gebunden.
 
-Die nächste Funktion $edge$ bestimmt das längste gemeinsame Präfix für eine Gruppe der Wörter. Die Gruppe wird als Eingabeliste übergeben. Zuerst wird geprüft, ob alle Wörter mit der gleichen Buchstabe anfangen. Falls es der Fall ist, dann wird die Buchstabe an $cp$ angehängt und eine neue Liste ohne das erste Buchstabe erzeugt. Falls ein Wort sich endet, dann wird es weggelassen. Die Funktion terminiert falls es nur ein Wort in der Gruppe bleibt oder wenn nicht alle Restwörter in der Gruppe mit der gleichen Buchstabe anfangen. Die Funktion gibt ein Tupel zurück, wobei erstes Element von dem Tupel das längste gemeinsame Präfix der Wörter in der Eingabeliste ist und zweites Element eine Liste von restlichen Wörter, von denen das längste gemeinsame Präfix entfernt wurde.
+% Die nächste Funktion $edge$ bestimmt das längste gemeinsame Präfix für eine Gruppe der Wörter. Die Gruppe wird als Eingabeliste übergeben. Zuerst wird geprüft, ob alle Wörter mit der gleichen Buchstabe anfangen. Falls es der Fall ist, dann wird die Buchstabe an $cp$ angehängt und eine neue Liste ohne das erste Buchstabe erzeugt. Falls ein Wort sich endet, dann wird es weggelassen. Die Funktion terminiert falls es nur ein Wort in der Gruppe bleibt oder wenn nicht alle Restwörter in der Gruppe mit der gleichen Buchstabe anfangen. Die Funktion gibt ein Tupel zurück, wobei erstes Element von dem Tupel das längste gemeinsame Präfix der Wörter in der Eingabeliste ist und zweites Element eine Liste von restlichen Wörter, von denen das längste gemeinsame Präfix entfernt wurde.
 
-Die letzte Funktion $lazy\_cst$ setzt die oben besprochene Funktionen zusammen und erzeugt den kompletten Baum. Als Eingabe wird die Funktion $edge$, einen Alphabet des gegebenen Wort in der Form einer Liste von Buchstaben und ein Wort t, für das Siffixbaum aufgebaut werden soll, gegeben. Die Suffixliste von $t$ wird an einer Hilfsfunktion $sTr$ geliefert, die den Baum wie folgt rekursiv aufbaut:
+% Die letzte Funktion $lazy\_cst$ setzt die oben besprochene Funktionen zusammen und erzeugt den kompletten Baum. Als Eingabe wird die Funktion $edge$, einen Alphabet des gegebenen Wort in der Form einer Liste von Buchstaben und ein Wort t, für das Siffixbaum aufgebaut werden soll, gegeben. Die Suffixliste von $t$ wird an einer Hilfsfunktion $sTr$ geliefert, die den Baum wie folgt rekursiv aufbaut:
 
-    - Wenn die Suffixliste leer ist, dann wird ein Blatt erstellt.
+%     - Wenn die Suffixliste leer ist, dann wird ein Blatt erstellt.
 
-    - Wenn die Suffixliste nicht leer ist, dann wird eine Verzweigung erstellt.
+%     - Wenn die Suffixliste nicht leer ist, dann wird eine Verzweigung erstellt.
 
-Eine Verzweigung besteht aus $n \ge 2$ Tupeln, die in der esten Komponente das längste gemeinsame Präfix von jeder Gruppe als Kantenbeschriftung und einen entsprechenden Unterbaum in der zweiten Komponente enthalten. Der entsprechende Unterbaum wird rekursiv erzeugt.
+% Eine Verzweigung besteht aus $n \ge 2$ Tupeln, die in der esten Komponente das längste gemeinsame Präfix von jeder Gruppe als Kantenbeschriftung und einen entsprechenden Unterbaum in der zweiten Komponente enthalten. Der entsprechende Unterbaum wird rekursiv erzeugt.
 
-Die Kantenliste wird aufgebaut, indem:
-\begin{enumerate}
-    \item Jede Buchstabe des Alphabets an der Variable $a$ gebunden wird.
-    \item Die entsprechende Liste durch den Aufruf der Funktion $select$ an der Variable $gs$ gebunden wird.
-    \item Falls die Gruppe nicht leer ist, wird durch den Aufruf von $edge$ das gemeinsame Präfix und die Liste von Restwörter berechnet.
-\end{enumerate}
+% Die Kantenliste wird aufgebaut, indem:
+% \begin{enumerate}
+%     \item Jede Buchstabe des Alphabets an der Variable $a$ gebunden wird.
+%     \item Die entsprechende Liste durch den Aufruf der Funktion $select$ an der Variable $gs$ gebunden wird.
+%     \item Falls die Gruppe nicht leer ist, wird durch den Aufruf von $edge$ das gemeinsame Präfix und die Liste von Restwörter berechnet.
+% \end{enumerate}
 
 %////////////////////////////////////////////////////////////////////////////
 \subsection{Laufzeitanalyse}
 \label{sec:Laufzeitanalyse}
 %////////////////////////////////////////////////////////////////////////////
 
-Um die Laufzeit von dem gesamten Algorithmus zu betrachten, wird zuerst die Kostenabschätzung von der Funktion $edge$ bestimmt, weil diese Funktion die höchste Laufzeitkomplexität besitzt.
+Um die Laufzeit des gesamten Algorithmus zu bestimmen, konzentrieren wir uns zuerst auf die Kostenabschätzung der Funktion \textit{edge}, da diese die höchste Laufzeitkomplexität besitzt.
 
-Die Kostenfunktion für $edge$ ist von zwei Parameter abhängig: die Länge der Wörterliste und die Länge des gemeinsamen Präfix dieser Wörter. Die Funktion wird so oft rekursiv aufgerufen wie die Länge des gemeinsamen Präfix von der gegebenen Wörterliste ist. In jedem Aufruf von $edge$ werden zwei andere Funktionen aufgerufen, deren Laufzeit von der Länge der Eingabeliste linear abhängig ist. Eine der Funktionen ist lambda-Ausdruck, wir haben zur Vereinfachung sie als $isEqual$ bei der Laufzeitanalyse bezeichnet. Zweite Funktion ist als List-comprehension gegeben, sie wird als $newList$ bezeichnet.
+% Um die Laufzeit von dem gesamten Algorithmus zu betrachten, wird zuerst die Kostenabschätzung von der Funktion $edge$ bestimmt, weil diese Funktion die höchste Laufzeitkomplexität besitzt.
 
-Die Kosten der Funktion $edge$ setzen sich zusammen aus den Kosten der Funktion $isEqual$ für $n - 1$, den Kosten der Funktion $newList$ für $n$ und den Kosten des rekursiven Aufrufs von $edge$ für $n - 1$ und $\abs{cp} - 1$.
+Die Kostenfunktion von \textit{edge} hängt von der Länge der Wortliste $n$ und der Länge des gemeinsamen Präfix $\abs{cp}$ dieser Wörter ab, wobei $\abs{cp} \leq n$. Die Anzahl der Aufrufe der Funktion \textit{edge} wird durch $\abs{cp}$ bestimmt. Im folgenden bezeichnen wir den Aufruf der Funktion \textit{all} mit \textit{isEqual} und die List Comprehension mit \textit{newList}. Das Laufzeitverhalten von \textit{isEqual} und von \textit{newList} hängt linear von der Länge der Eingabeliste \textit{awss} ab.
 
-Insgesamt:
+% Die Kostenfunktion für $edge$ ist von zwei Parameter abhängig: die Länge der Wörterliste und die Länge des gemeinsamen Präfix dieser Wörter. Die Funktion wird so oft rekursiv aufgerufen wie die Länge des gemeinsamen Präfix von der gegebenen Wörterliste ist. In jedem Aufruf von $edge$ werden zwei andere Funktionen aufgerufen, deren Laufzeit von der Länge der Eingabeliste linear abhängig ist. Eine der Funktionen ist lambda-Ausdruck, wir haben zur Vereinfachung sie als $isEqual$ bei der Laufzeitanalyse bezeichnet. Zweite Funktion ist als List-comprehension gegeben, sie wird als $newList$ bezeichnet.
+
+Die Kosten der Funktion $edge$ setzen sich zusammen aus den Kosten der Funktion $isEqual$ für $n - 1$, den Kosten der Funktion $newList$ für $n$ und den Kosten des rekursiven Aufrufs von $edge$ für $n - 1$ und $\abs{cp} - 1$. Damit erhalten wir als Kostenfunktion:
+
 \begin{align*}
     T(n,\abs{cp}) &= isEqual(n - 1) + newList(n) + T(n-1,\abs{cp}-1) \\
                   &= \sum_{i = 1}^{\abs{cp}}{isEqual(n-1)} + \sum_{i = 1}^{\abs{cp}}{newList(n)}\\
                   &= \abs{cp} (n - 1) + \abs{cp} n \in O(\abs{cp} \cdot n)
 \end{align*}
-Weiter wird das worst-case des WOTD-Algoritmus bestimmt. Dieses produziert z.B. das Wort $a^n$, indem es als der Parameter $t$ an der Funktion $lazy\_cst$ gegeben wird. Zuerst wird $sTr$ mit $ss = [a^n,\:a^{n-1}, \dots ,\:a]$ aufgerufen, dann wird dem Parameter $gs$ komplette Liste $ss$ zugewiesen und die Funktion $edge$ mit dem Parameter $gs$ aufgerufen. Die Funktion $edge$ liefert das Ergebnis $(cp,rss) = (a^n, [[\:]])$. Weiter wird $sTr$ mit mit dem Parameter $rss = [[\:]]$ aufgerufen und damit terminiert die Funktion $lazy\_cst$. Weil $|cp| = n$, ist die Laufzeit von $edge$ und von dem gesamten Algorithmus $O(n^2)$.
+
+Mithilfe der Kostenabschätzung von \textit{edge} können wir nun das Worst-Case Verhalten des gesamten WOTD-Algorithmus bestimmen. Dieses produziert z.B. das Wort $a^n$, indem es als der Parameter $t$ an der Funktion $lazy\_cst$ gegeben wird. Zuerst wird $sTr$ mit $ss = [a^n,\:a^{n-1}, \dots ,\:a]$ aufgerufen, dann wird dem Parameter $gs$ komplette Liste $ss$ zugewiesen und die Funktion $edge$ mit dem Parameter $gs$ aufgerufen. Die Funktion $edge$ liefert das Ergebnis $(cp,rss) = (a^n, [[\:]])$. Weiter wird $sTr$ mit mit dem Parameter $rss = [[\:]]$ aufgerufen und damit terminiert die Funktion $lazy\_cst$. Weil $|cp| = n$, ist die Laufzeit von $edge$ und von dem gesamten Algorithmus $O(n^2)$.
 
 %////////////////////////////////////////////////////////////////////////////
 \section{Exakte Teilwortsuche}
