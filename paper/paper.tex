@@ -1588,7 +1588,7 @@ let alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
 Gesucht ist das Teilwort $cgac$ des Wortes $agcgacgag$. In \ref{lst:BedarfsgesteuerterAufbaudesSuffixTrees} definieren wir zuerst das Alphabet als Buchstabenliste und übergeben der Funktion \textit{search} das gesuchte Teilwort und den entsprechenden Suffix Tree, der mithilfe von \textit{lazy\_cst} konstruiert wird. Die Abb. \ref{fig:BedarfsgesteuerterAufbaudesSuffixTrees} zeigt den Teil des Suffix Trees, der während der Suche aufgebaut wird.
 
 % Sei ein Teilwort $cgac$ in dem Wort $agcgacgag$ gesucht. Wir definieren ein passendes Alphabet und übergeben es mit dem Teilwort und dem Wort an der Funktion $search$ (siehe Listing \ref{lst:SucheImSuffixTree}). Die Abb. \ref{fig:teilwortuche} zeigt das Teil des Suffixbaums, das während der Suche konstruiert wird.
-
+\vspace{-1cm}
 \begin{figure}[htb]
 \centering
 \begin{tikzpicture}[
@@ -1656,8 +1656,10 @@ Im Folgenden benutzen wir die Notation, die in \cite{Karkkainen2006} eingeführt
 Intervalle werden mit $[i,j] = \{ i, \dots, j\}$ und $[i,j) = [i,j-1]$ bezeichnet. Ein Wort über ein Alphabet wird als $T = T[0,n) = t_0 t_1 \dots t_{n-1}$ dargestellt, wobei $t_i$ Buchstaben des Alphabets sind. Es wird die Konvention verwendet, dass $t_j = 0$ für $j \ge n$ ist. Für ein $i \in [0,n]$ wird ein Suffix $S_i = T[i,n) = t_i t_{i+1} \dots t_n$ definiert. Für eine Menge $C \subseteq [0,n]$ wird eine Suffixmenge $S_C = \{ S_i \mid i \in C\}$ eingeführt.
 
 \begin{definition}[Suffix Array]
-Ein Suffix Array $SA[0,n)$ für ein gegebenes Wort $T[0,n)$ ist eine Permutation von $[0,n)$ mit $S_{SA[0]} \prec S_{SA[1]} \prec \dots \prec S_{SA[n-1]}$, wobei $\prec$ die lexikographische Ordnung auf Zeichenketten bezeichnet. Anders formuliert, ein Suffixarray ist ein Array, das die Suffixe eines Wortes in lexikographischer Reihenfolge angibt.
+Ein Suffix Array $SA[0,n)$ für ein gegebenes Wort $T[0,n)$ ist eine Permutation von $[0,n)$ mit $S_{SA[0]} \prec S_{SA[1]} \prec \dots \prec S_{SA[n-1]}$, wobei $\prec$ die lexikographische Ordnung auf Zeichenketten bezeichnet.
 \end{definition}
+
+Ein Suffix Array ist somit ein Array, das die Suffixe eines Wortes in lexikographischer Reihenfolge enthält.
 
 %////////////////////////////////////////////////////////////////////////////
 \section{Suffix Array Konstruktion}
@@ -1780,7 +1782,7 @@ wird umgewandelt in
 $$
 R' = 12464537
 $$
-Falls jedes Zeichen in $R'$ eindeutig ist, sind die Sample-Suffixe sortiert und $R'$ ist das Suffix Array für $S_C$. Anderfalls wird der Algorithmus rekursiv für die Zeichenkette $R'$ aufgerufen. In unserem Beispiel findet ein rekursiver Aufruf mit $R' = 12464537$ statt, der in Abb. \ref{fig:sortRecursive} veranschaulicht wird.
+Falls jedes Zeichen in $R'$ eindeutig ist, sind die Sample-Suffixe sortiert und $R'$ ist das Suffix Array für $S_C$. Anderfalls wird der Algorithmus rekursiv für die Zeichenkette $R'$ aufgerufen. In unserem Beispiel findet ein rekursiver Aufruf mit $R' = 12464537$ statt, der in Abb. \ref{fig:sortRecursive} veranschaulicht ist.
 
 Der rekursive Aufruf liefert das Suffixarray für $R'$. In unserem Beispiel erhalten wir:
 $$
@@ -1899,9 +1901,10 @@ Nachdem der Rang jedes Suffixes bestimmt ist und die zwei Mengen vereinigt sind,
 \label{fig:Suffixarray}
 \end{figure}
 
-\paragraph{Eigenschaften des DC3-Algorithmus}
+\vspace{-5mm}
+\paragraph{Laufzeitverhalten des DC3-Algorithmus}
 
-Laufzeit des Algorithmus ist $O(n)$ im Worst Case, das ist der schnellste Algorithmus in der Klasse $O(n)$ für den Aufbau des Suffixarrays. Die schnellere Algorithmen, wie z.B. qsufsort \cite{Larsson2007}, haben einen schlechteren Worst Case $O(n \log n)$.
+Die Laufzeit des Algorithmus beträgt $O(n)$ im Worst Case. In der Praxis existieren allerdings schnellere Algorithmen, wie z.B. qsufsort \cite{Larsson2007}, welcher aber ein schlechteres Worst Case Verhalten von $O(n \log n)$ besitzt.
 
 %////////////////////////////////////////////////////////////////////////////
 % Literaturverzeichnis
