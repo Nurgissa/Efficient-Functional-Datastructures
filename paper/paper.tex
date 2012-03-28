@@ -813,9 +813,9 @@ $cst$ besitzt eine Speicherplatzkomplexität von $O(n)$, $ast$ und $pst$ liegen 
 \end{lemma}
 
 \begin{proof}[Beweis des Lemma \ref{lem:SpeicherplatzkomplexitaetCst}]
-Ein Wort $t$ der Länge $n$ besitzt $n$ Suffixe. Jedes Blatt in einem Suffixbaum repräsentiert genau ein Suffix von $t$. Somit besitzt ein $cst$ für $t$ höchstens $n$ Blätter. Alle inneren Knoten eines $cst$ sind Verzweigungen. Aus dieser Beobachtung folgt, dass nicht mehr als $n$ innere Knoten im Baum existieren. Die Zahl der Kanten kann damit auf $2n$ abgeschätzt werden. Um im Worst-Case tatsächlich die geforderte Speicherplatzkomplexität zu erreichen, werden die Kantenbeschriftungen durch Paare $(i, j) \in \mathbb{N} \times \mathbb{N}$ dargestellt, wobei $i$ den Anfang und $j$ das Ende der Kantenbeschriftung im Wort $t$ festlegen. Der Speicherplatzbedarf einer Kante kann dadurch auf $O(1)$ gesenkt werden. Insgesamt erhalten wir damit die gewünschte Speicherplatzkomplexität von $O(n)$.
+Ein Wort $t$ der Länge $n$ besitzt $n$ Suffixe. Jedes Blatt in einem Suffixbaum repräsentiert genau ein Suffix von $t$. Somit besitzt ein $cst$ für $t$ höchstens $n$ Blätter. Alle inneren Knoten eines $cst$ sind Verzweigungen. Aus dieser Beobachtung folgt, dass nicht mehr als $n$ innere Knoten im Baum existieren. Die Zahl der Kanten kann damit auf $2n$ abgeschätzt werden. Um im Worst Case tatsächlich die geforderte Speicherplatzkomplexität zu erreichen, werden die Kantenbeschriftungen durch Paare $(i, j) \in \mathbb{N} \times \mathbb{N}$ dargestellt, wobei $i$ den Anfang und $j$ das Ende der Kantenbeschriftung im Wort $t$ festlegen. Der Speicherplatzbedarf einer Kante kann dadurch auf $O(1)$ gesenkt werden. Insgesamt erhalten wir damit die gewünschte Speicherplatzkomplexität von $O(n)$.
 
-Die Beweisidee für den $ast$ ist in Abb. \ref{fig:SpeicherplatzbedarfAst} skizziert. Der Worst-Case tritt für diesen Baumtyp beispielsweise für das Wort $a^nb^n$ ein. In diesem Fall enthält der $ast$ $n + 1$ Knoten, die durch $a$-Kanten miteinander verbunden sind. Von jedem dieser Knoten zweigt ein Teilbaum mit einem Speicherplatzbedarf von $O(n)$ ab, wodurch wir insgesamt eine Speicherplatzkomplexität von $O(n^2)$ für den gesamten $ast$ erhalten.
+Die Beweisidee für den $ast$ ist in Abb. \ref{fig:SpeicherplatzbedarfAst} skizziert. Der Worst Case tritt für diesen Baumtyp beispielsweise für das Wort $a^nb^n$ ein. In diesem Fall enthält der $ast$ $n + 1$ Knoten, die durch $a$-Kanten miteinander verbunden sind. Von jedem dieser Knoten zweigt ein Teilbaum mit einem Speicherplatzbedarf von $O(n)$ ab, wodurch wir insgesamt eine Speicherplatzkomplexität von $O(n^2)$ für den gesamten $ast$ erhalten.
 
 \begin{figure}
 \centering
@@ -890,7 +890,7 @@ Die Beweisidee für den $ast$ ist in Abb. \ref{fig:SpeicherplatzbedarfAst} skizz
 Der Beweis für die Speicherplatzkomplexität des $pst$ erfolgt analog für das Wort $a^nb^na^nb^n$.
 \end{proof}
 
-Obwohl der Speicherplatzbedarf eines $pst$ im Worst-Case in $O(n^2)$ liegt, wird in der Praxis meistens nur $O(n)$ benötigt.
+Obwohl der Speicherplatzbedarf eines $pst$ im Worst Case in $O(n^2)$ liegt, wird in der Praxis meistens nur $O(n)$ benötigt.
 Aufgrund der optimalen Speicherplatzcharakteristik des $cst$ konzentrieren wir uns im Folgenden auf diese Suffix Tree Klasse.
 
 %////////////////////////////////////////////////////////////////////////////
@@ -970,35 +970,6 @@ Da die Menge der Terminalsymbole $T$ und das Alphabet $\Sigma$ disjunkt sind, ka
 \section{Anwendungsgebiete}
 \label{sec:Anwendungsgebiete}
 %////////////////////////////////////////////////////////////////////////////
-
-%////////////////////////////////////////////////////////////////////////////
-\subsection{Überblick}
-\label{sec:Ueberblick}
-%////////////////////////////////////////////////////////////////////////////
-
-Suffix Trees eignen sich insbesondere für Problemlösungen im Bereich der Stringverarbeitung.
-
-\begin{table}
-\centering
-\begin{tabular}{l}
-    \toprule
-    All-pairs suffix-prefix matching      \\
-    Construction of DAWGs                 \\
-    Exact set matching                    \\
-    Exact string matching                 \\
-    k-mismatch                            \\
-    Longest common substring              \\
-    Matching statistics                   \\
-    Maximal repeated pairs                \\
-    Maximal repeats                       \\
-    Supermaximal repeats                  \\
-    Ziv–Lempel decomposition              \\
-    ...                                   \\
-    \bottomrule
-\end{tabular}
-\caption{Anwendungsgebiete für Suffix Trees}
-\label{tab:AnwendungsgebieteFuerSuffixTrees}
-\end{table}
 
 %////////////////////////////////////////////////////////////////////////////
 \subsection{Longest common substring}
@@ -1521,9 +1492,9 @@ Die Kosten der Funktion \textit{edge} setzen sich zusammen aus den Kosten der Fu
                   &= \abs{cp} (n - 1) + \abs{cp} n \in O(\abs{cp} \cdot n)
 \end{align*}
 
-Mithilfe der Kostenabschätzung von \textit{edge} können wir nun das Worst-Case-Verhalten des gesamten WOTD-Algorithmus bestimmen. Der Worst-Case tritt beispielsweise für das Wort $a^n$ ein.  Zuerst wird \textit{sTr} mit $ss = [a^n,\:a^{n-1}, \dots ,\:a]$ aufgerufen. Anschließend wird die Funktion \textit{edge} mit $ss = gs$ aufgerufen. Als Ergebnis erhalten wir $(cp,rss) = (a^n, [[\:]])$. Im nächsten Schritt erfolgt der Aufruf von \textit{sTr} mit $rss = [[\:]]$, was zur Terminierung der Funktion \textit{lazy\_cst} führt. Wegen $\abs{cp} = n$, beträgt die Laufzeitkomplexität von \textit{edge} und dem gesamten Algorithmus $O(n^2)$.
+Mithilfe der Kostenabschätzung von \textit{edge} können wir nun das Worst Case-Verhalten des gesamten WOTD-Algorithmus bestimmen. Der Worst Case tritt beispielsweise für das Wort $a^n$ ein.  Zuerst wird \textit{sTr} mit $ss = [a^n,\:a^{n-1}, \dots ,\:a]$ aufgerufen. Anschließend wird die Funktion \textit{edge} mit $ss = gs$ aufgerufen. Als Ergebnis erhalten wir $(cp,rss) = (a^n, [[\:]])$. Im nächsten Schritt erfolgt der Aufruf von \textit{sTr} mit $rss = [[\:]]$, was zur Terminierung der Funktion \textit{lazy\_cst} führt. Wegen $\abs{cp} = n$, beträgt die Laufzeitkomplexität von \textit{edge} und dem gesamten Algorithmus $O(n^2)$.
 
-% Weiter wird das worst-case des WOTD-Algoritmus bestimmt. Dieses produziert z.B. das Wort $a^n$, indem es als der Parameter $t$ an der Funktion $lazy\_cst$ gegeben wird. Zuerst wird $sTr$ mit $ss = [a^n,\:a^{n-1}, \dots ,\:a]$ aufgerufen, dann wird dem Parameter $gs$ komplette Liste $ss$ zugewiesen und die Funktion $edge$ mit dem Parameter $gs$ aufgerufen. Die Funktion $edge$ liefert das Ergebnis $(cp,rss) = (a^n, [[\:]])$. Weiter wird $sTr$ mit mit dem Parameter $rss = [[\:]]$ aufgerufen und damit terminiert die Funktion $lazy\_cst$. Weil $|cp| = n$, ist die Laufzeit von $edge$ und von dem gesamten Algorithmus $O(n^2)$.
+% Weiter wird das Worst Case des WOTD-Algoritmus bestimmt. Dieses produziert z.B. das Wort $a^n$, indem es als der Parameter $t$ an der Funktion $lazy\_cst$ gegeben wird. Zuerst wird $sTr$ mit $ss = [a^n,\:a^{n-1}, \dots ,\:a]$ aufgerufen, dann wird dem Parameter $gs$ komplette Liste $ss$ zugewiesen und die Funktion $edge$ mit dem Parameter $gs$ aufgerufen. Die Funktion $edge$ liefert das Ergebnis $(cp,rss) = (a^n, [[\:]])$. Weiter wird $sTr$ mit mit dem Parameter $rss = [[\:]]$ aufgerufen und damit terminiert die Funktion $lazy\_cst$. Weil $|cp| = n$, ist die Laufzeit von $edge$ und von dem gesamten Algorithmus $O(n^2)$.
 
 %////////////////////////////////////////////////////////////////////////////
 \section{Exakte Teilwortsuche}
@@ -1665,12 +1636,12 @@ Gesucht ist das Teilwort $cgac$ des Wortes $agcgacgag$. In \ref{lst:Bedarfsgeste
 
 Trotz der vielen Problemstellungen, die mithilfe von Suffix Trees effizient gelöst werden können, werden diese nach unserem Kenntnisstand bis zum heutigen Zeitpunkt kaum in der Praxis eingesetzt. Diese Tatsache wird durch zwei gravierende Nachteile der bisherigen Implementierungen von Suffix Trees bedingt.
 \begin{enumerate}
-    \item Obwohl der Speicherplatzbedarf von Suffix Trees nur linear mit der Länge des Eingabestrings wächst, ist der Speicherplatzverbrauch von Suffix Trees enorm. Für jedes Eingabezeichen des zu indizierenden Strings werden im Worst-Case $20$ Bytes\footnote{vgl. \cite{Giegerich1999}} benötigt. Das macht Suffix Trees für viele Real-Welt-Anwendungen mit hohem Datenaufkommen unbrauchbar.
+    \item Obwohl der Speicherplatzbedarf von Suffix Trees nur linear mit der Länge des Eingabestrings wächst, ist der Speicherplatzverbrauch von Suffix Trees enorm. Für jedes Eingabezeichen des zu indizierenden Strings werden im Worst Case $20$ Bytes\footnote{vgl. \cite{Giegerich1999}} benötigt. Das macht Suffix Trees für viele Real-Welt-Anwendungen mit hohem Datenaufkommen unbrauchbar.
     \item Die Form eines Suffix Trees hängt stark von der Wahl des zu indizierenden Strings ab. Aus diesem Grund lassen sich Suffix Trees sehr schlecht extern implementieren.
 \end{enumerate}
 Suffix Arrays stellen einen Versuch dar, diese Problematik zu lösen.
 \begin{enumerate}
-    \item Der Speicherplatzbedarf beträgt bei Suffix Arrays nur noch $4$ Bytes\footnote{vgl. \cite{Abouelhoda2004}} pro Eingabenzeichen im Worst-Case.
+    \item Der Speicherplatzbedarf beträgt bei Suffix Arrays nur noch $4$ Bytes\footnote{vgl. \cite{Abouelhoda2004}} pro Eingabenzeichen im Worst Case.
     \item Es exisitieren vielversprechende Algorithmen zur externen Konstruktion von Suffix Arrays. In \cite{Dementiev2008} wird eine Weiterentwicklung des im Folgenden Abschnitt thematisierten Algorithmus vorgestellt, der sich nicht nur für die externe, sondern auch für die parallelisierte Berechnung auf verteilten Systemen eignet.
     \item Jeder Algorithmus, der einen Suffix Tree nutzt, kann unter Beibehaltung derselben Laufzeitkomplexität durch einen Algorithmus ersetzt werden, der ein Suffix Array benutzt. Die entsprechende Methodik wird in \cite{Abouelhoda2004} vorgestellt.
 \end{enumerate}
@@ -1754,7 +1725,7 @@ $$
 B_k = \{ i \in [0,n] \mid i \bmod{3} = k\}
 $$
 
-Sei $C = B_1 \cup B_2$ die Menge der Sample-Positionen und $S_C$ ist die Menge der Sample-Suffixe. In unserem Beispiel:
+Sei $C = B_1 \cup B_2$ die Menge der Sample-Positionen und $S_C$ die Menge der Sample-Suffixe. In unserem Beispiel:
 $$
 B_1 = \{1,4,7,10\},\;B_2 = \{2,5,8,11\},\;C = \{1,4,7,10,2,5,8,11\}
 $$
@@ -1765,7 +1736,7 @@ Für k = 1,2 werden folgende Zeichenketten konstruiert:
 $$
 R_k = [t_k t_{k+1} t_{k+2}][t_{k+3} t_{k+4} t_{k+5}] \dots [t_{max\:B_k} t_{max\:B_k + 1} t_{max\:B_k + 2}]
 $$
-wobei jedes Tripel der Form $[t_i t_{i+1} t_{i+2}]$ ein Sample ist. Sei $R = R_1 \odot R_2$ die Konkatenation von $R_1$ und $R_2$. Die Samples von $R$ korrespondieren mit der Menge $S_C$ von Sample-Suffixen, so dass $[t_i t_{i+1} t_{i+2}] \dots$ korrespondiert mit $S_i$. In unserem Beispiel:
+wobei jedes Tripel der Form $[t_i t_{i+1} t_{i+2}]$ ein Sample ist. Sei $R = R_1 \odot R_2$ die Konkatenation von $R_1$ und $R_2$. Die Samples von $R$ korrespondieren mit der Menge $S_C$ von Sample-Suffixen, so dass $[t_i t_{i+1} t_{i+2}] \dots$ mit korrespondiert $S_i$. In unserem Beispiel:
 $$
 R_1 = [abb][ada]][bba][do0],\;R_2 = [bba][dab][bad][o00]
 $$
@@ -1773,7 +1744,7 @@ werden konkateniert zu
 $$
 R = [abb][ada]][bba][do0][bba][dab][bad][o00]
 $$
-Die Samples von $R$ werden mit Radixsort sortiert und es wird jedem Sample sein Rang zugewiesen:
+Die Samples von $R$ werden mit Radixsort sortiert und jedem Sample wird sein Rang zugeordnet:
 $$
 \centering
 \begin{tikzpicture}
@@ -1801,21 +1772,21 @@ $$
     };
 \end{tikzpicture}
 $$
-Dann wird eine neue Zeichenkette $R'$ erzeugt, indem jedes Sample in $R$ durch sein Rang ersetzt wird:
+Anschließend wird eine neue Zeichenkette $R'$ erzeugt, in der jedes Sample in $R$ durch seinen Rang ersetzt wird:
 $$
 R = [abb][ada]][bba][do0][bba][dab][bad][o00]
 $$
-wird umgewandelt zu
+wird umgewandelt in
 $$
 R' = 12464537
 $$
-Wenn jedes Zeichen in $R'$ eindeutig ist, dann sind die Sample-Suffixe sortiert und $R'$ ist das Suffixarray für $S_C$. Anderfalls wird der Algorithmus rekursiv für die Zeichenkette $R'$ verwendet. In unserem Beispiel findet es ein rekursiver Aufruf von DC3 mit $R' = 12464537$ statt, der in Abb. \ref{fig:sortRecursive} veranschaulicht wird.
+Falls jedes Zeichen in $R'$ eindeutig ist, sind die Sample-Suffixe sortiert und $R'$ ist das Suffix Array für $S_C$. Anderfalls wird der Algorithmus rekursiv für die Zeichenkette $R'$ aufgerufen. In unserem Beispiel findet ein rekursiver Aufruf mit $R' = 12464537$ statt, der in Abb. \ref{fig:sortRecursive} veranschaulicht wird.
 
-Der rekursive Aufruf liefert das Suffixarray für $R'$. In unserem Beispiel ist
+Der rekursive Aufruf liefert das Suffixarray für $R'$. In unserem Beispiel erhalten wir:
 $$
 SA_{R'} = (0,1,6,4,2,5,3,7)
 $$
-Wenn die Sample-Suffixe sortiert sind, es wird jedem Sample-Suffix sein Rang zugewiesen. Für $i \in C$ bezeichnet $rank(S_i)$ den Rang von $S_i$ in der Menge $S_C$. Für $i \in B_0$ ist $rank(S_i)$ noch undefiniert. In unserem Beispiel:
+Wenn die Sample-Suffixe sortiert sind, wird jedem Sample-Suffix sein Rang zugewiesen. Für $i \in C$ bezeichnet $rank(S_i)$ den Rang von $S_i$ in der Menge $S_C$. Für $i \in B_0$ ist $rank(S_i)$ noch undefiniert. In unserem Beispiel:
 $$
 \begin{tabular}{l|c c c c c c c c c c c c}
     \toprule
@@ -1830,24 +1801,19 @@ $$
 
 \paragraph{Schritt 3: Sort}
 
-Das sind die Suffixe aus der Menge $S_{B_0} = \{S_i \mid i \in B_0\}$. Jedes Suffix $S_i \in S_{B_0}$ wird mit dem Tupel $(t_i,rank(S_{i+1}))$ repräsentiert. Die Tupel werden mit Radixsort sortiert, indem:
-$$
-S_i \le S_j \; \leftrightarrow \; (t_i,rank(S_{i+1})) \le (t_j,rank(S_{j+1}))
-$$
-Im Beispiel:
+Jedes Suffix $S_i$ der Menge $S_{B_0}$ wird durch ein Tupel $(t_i,rank(S_{i+1}))$ repräsentiert. Die Tupel werden mit Radixsort lexikographisch sortiert. In unserem Beispiel entsteht folgende Ordnung:
 $$
 S_6 < S_9 < S_3 < S_0 \mbox{, weil }(a,5) < (a,7) < (b,2) < (y,1)
 $$
 
 \paragraph{Schritt 4: Merge}
 
-Zu diesem Schritt haben wir zwei sortierte Mengen, die jetzt vereinigt werden müssen. Um die Sample-Suffixe $S_i \in S_C$ mit Nicht-Sample-Suffixe $S_j \in S_{B_0}$ zu vergleichen, wird folgende Ordnung benutzt:
-
-    - Falls $i \in B_1$, dann $S_i \le S_j \leftrightarrow (t_i,rank(S_{i+1})) \le (t_j,rank(S_{j+1}))$. Z.B. $S_1 = abbadabbado$ und $S_6 = abbado$: $S_1 \rightarrow (a,4)$ und $S_6 \rightarrow (a,5)$, $(a,4) < (a,5) \rightarrow S_1 < S_6$
-
-    - Falls $i \in B_2$, dann $S_i \le S_j \leftrightarrow (t_i,t_{i+1},rank(S_{i+2})) \le (t_j,t_{j+1},rank(S_{j+2}))$. Z.B. $S_3 = badabbado$ und $S_8 = bado$: $S_3 \rightarrow (b,a,6)$ und $S_8 \rightarrow (b,a,7)$, $(b,a,6) < (b,a,7) \rightarrow S_3 < S_8$
-
-Nach dem der Rang von jedem Suffix bestimmt ist und die zwei Mengen vereinigt worden sind, kann man das gesuchte Suffixarray ablesen. Die Abb. \ref{fig:Suffixarray} veranschaulicht der Schritt für das Beispiel.
+In diesem Schritt vereinigen wir die beiden sortierten Mengen aus Schritt 2 und 3. Um die Sample-Suffixe $S_i \in S_C$ mit Nicht-Sample-Suffixen $S_j \in S_{B_0}$ zu vergleichen, wird folgende Ordnung benutzt:
+\begin{itemize}
+    \item Falls $i \in B_1$, dann $S_i \le S_j \leftrightarrow (t_i,rank(S_{i+1})) \le (t_j,rank(S_{j+1}))$. Z.B. $S_1 = abbadabbado$ und $S_6 = abbado$: $S_1 \rightarrow (a,4)$ und $S_6 \rightarrow (a,5)$, $(a,4) < (a,5) \rightarrow S_1 < S_6$
+    \item Falls $i \in B_2$, dann $S_i \le S_j \leftrightarrow (t_i,t_{i+1},rank(S_{i+2})) \le (t_j,t_{j+1},rank(S_{j+2}))$. Z.B. $S_3 = badabbado$ und $S_8 = bado$: $S_3 \rightarrow (b,a,6)$ und $S_8 \rightarrow (b,a,7)$, $(b,a,6) < (b,a,7) \rightarrow S_3 < S_8$
+\end{itemize}
+Nachdem der Rang jedes Suffixes bestimmt ist und die zwei Mengen vereinigt sind, kann man das gesuchte Suffixarray abgelesen werden. Die Abb. \ref{fig:Suffixarray} veranschaulicht diesen Schritt für unser Beispiel.
 
 \begin{figure}[htb]
 \centering
@@ -1935,7 +1901,7 @@ Nach dem der Rang von jedem Suffix bestimmt ist und die zwei Mengen vereinigt wo
 
 \paragraph{Eigenschaften des DC3-Algorithmus}
 
-Laufzeit des Algorithmus ist $O(n)$ im Worst-Case, das ist der schnellste Algorithmus in der Klasse $O(n)$ für den Aufbau des Suffixarrays. Die schnellere Algorithmen, wie z.B. qsufsort \cite{Larsson2007}, haben einen schlechteren Worst-Case $O(n \log n)$.
+Laufzeit des Algorithmus ist $O(n)$ im Worst Case, das ist der schnellste Algorithmus in der Klasse $O(n)$ für den Aufbau des Suffixarrays. Die schnellere Algorithmen, wie z.B. qsufsort \cite{Larsson2007}, haben einen schlechteren Worst Case $O(n \log n)$.
 
 %////////////////////////////////////////////////////////////////////////////
 % Literaturverzeichnis
