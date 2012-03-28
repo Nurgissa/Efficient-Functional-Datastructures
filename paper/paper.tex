@@ -1268,7 +1268,7 @@ Für jede Gruppe aus Schritt 2 wird das längste gemeinsame Präfix berechnet un
 \end{center}
 Das jeweilige Präfix wird von den Wörtern der Gruppe entfernt. Die verbliebenen Restwörter werden in einer neuen Liste gespeichert. Falls diese Liste leer ist, wird Schritt 3 für die nächste Gruppe aus Schritt 2 wiederholt. Sonst wird Schritt 2 für diese Liste ausgeführt.
 
-Abb. \ref{fig:cstKonstruktion} zeigt den schrittweisen Aufbau des Suffix Trees für $t = agcgacgag$. Die verblieben Restwörter nach Schritt 3 haben wir zur besseren Veranschaulichung an die Blätter des noch unfertigen Baumes angehängt. Durch wiederholtes Anwenden der oben beschrieben Schritte erhält man schließlich den fertigen $cst$ (vgl. Abb. \ref{fig:cstKonstruktion} unten).
+Abb. \ref{fig:cstKonstruktion} zeigt den schrittweisen Aufbau des Suffix Trees für $t = agcgacgag$. Die verbliebenen Restwörter nach Schritt 3 haben wir zur besseren Veranschaulichung an die Blätter des noch unfertigen Baumes angehängt. Durch wiederholtes Anwenden der oben beschrieben Schritte erhält man schließlich den fertigen $cst$ (vgl. Abb. \ref{fig:cstKonstruktion} unten).
 
 % Das jeweilige Präfix wird von den Wörtern der Gruppe entfernt und eine neue Liste wird aus den Restwörter erzeugt. Falls die neue Liste leer ist, wird der Schritt 3 für die nächste Gruppe aus dem Schritt 2 wiederholt. Falls die neue Liste noch Wörter enthält, wird der Schritt 2 für diese Liste ausgeführt. Sukzessiver Aufbau von dem Suffixbaum für das Beispiel wird in Abb. \ref{fig:cstKonstruktion} gezeigt\footnote{für eine bessere Veranschaulichung wird der Aufbau mit Levels repräsentiert}.
 \begin{figure}[h]
@@ -1513,7 +1513,7 @@ Die Kostenfunktion von \textit{edge} hängt von der Länge der Wortliste $n$ und
 
 % Die Kostenfunktion für $edge$ ist von zwei Parameter abhängig: die Länge der Wörterliste und die Länge des gemeinsamen Präfix dieser Wörter. Die Funktion wird so oft rekursiv aufgerufen wie die Länge des gemeinsamen Präfix von der gegebenen Wörterliste ist. In jedem Aufruf von $edge$ werden zwei andere Funktionen aufgerufen, deren Laufzeit von der Länge der Eingabeliste linear abhängig ist. Eine der Funktionen ist lambda-Ausdruck, wir haben zur Vereinfachung sie als $isEqual$ bei der Laufzeitanalyse bezeichnet. Zweite Funktion ist als List-comprehension gegeben, sie wird als $newList$ bezeichnet.
 
-Die Kosten der Funktion $edge$ setzen sich zusammen aus den Kosten der Funktion $isEqual$ für $n - 1$, den Kosten der Funktion $newList$ für $n$ und den Kosten des rekursiven Aufrufs von $edge$ für $n - 1$ und $\abs{cp} - 1$. Damit erhalten wir als Kostenfunktion:
+Die Kosten der Funktion \textit{edge} setzen sich zusammen aus den Kosten der Funktion \textit{isEqual} für $n - 1$, den Kosten der Funktion \textit{newList} für $n$ und den Kosten des rekursiven Aufrufs von \textit{edge} für $n - 1$ und $\abs{cp} - 1$. Damit erhalten wir als Kostenfunktion für \textit{egde}:
 
 \begin{align*}
     T(n,\abs{cp}) &= isEqual(n - 1) + newList(n) + T(n-1,\abs{cp}-1) \\
@@ -1521,7 +1521,7 @@ Die Kosten der Funktion $edge$ setzen sich zusammen aus den Kosten der Funktion 
                   &= \abs{cp} (n - 1) + \abs{cp} n \in O(\abs{cp} \cdot n)
 \end{align*}
 
-Mithilfe der Kostenabschätzung von \textit{edge} können wir nun das Worst-Case Verhalten des gesamten WOTD-Algorithmus bestimmen. Der Worst-Case tritt beispielsweise für das Wort $a^n$ ein.  Zuerst wird \textit{sTr} mit $ss = [a^n,\:a^{n-1}, \dots ,\:a]$ aufgerufen. Anschließend wird die Funktion \textit{edge} mit $ss = gs$ aufgerufen. Als Ergebnis erhalten wir $(cp,rss) = (a^n, [[\:]])$. Im nächsten Schritt erfolgt der Aufruf von \textit{sTr} mit $rss = [[\:]]$, was zur Terminierung der Funktion \textit{lazy\_cst} führt. Wegen $\abs{cp} = n$, beträgt die Laufzeitkomplexität von \textit{edge} und dem gesamten Algorithmus $O(n^2)$.
+Mithilfe der Kostenabschätzung von \textit{edge} können wir nun das Worst-Case-Verhalten des gesamten WOTD-Algorithmus bestimmen. Der Worst-Case tritt beispielsweise für das Wort $a^n$ ein.  Zuerst wird \textit{sTr} mit $ss = [a^n,\:a^{n-1}, \dots ,\:a]$ aufgerufen. Anschließend wird die Funktion \textit{edge} mit $ss = gs$ aufgerufen. Als Ergebnis erhalten wir $(cp,rss) = (a^n, [[\:]])$. Im nächsten Schritt erfolgt der Aufruf von \textit{sTr} mit $rss = [[\:]]$, was zur Terminierung der Funktion \textit{lazy\_cst} führt. Wegen $\abs{cp} = n$, beträgt die Laufzeitkomplexität von \textit{edge} und dem gesamten Algorithmus $O(n^2)$.
 
 % Weiter wird das worst-case des WOTD-Algoritmus bestimmt. Dieses produziert z.B. das Wort $a^n$, indem es als der Parameter $t$ an der Funktion $lazy\_cst$ gegeben wird. Zuerst wird $sTr$ mit $ss = [a^n,\:a^{n-1}, \dots ,\:a]$ aufgerufen, dann wird dem Parameter $gs$ komplette Liste $ss$ zugewiesen und die Funktion $edge$ mit dem Parameter $gs$ aufgerufen. Die Funktion $edge$ liefert das Ergebnis $(cp,rss) = (a^n, [[\:]])$. Weiter wird $sTr$ mit mit dem Parameter $rss = [[\:]]$ aufgerufen und damit terminiert die Funktion $lazy\_cst$. Weil $|cp| = n$, ist die Laufzeit von $edge$ und von dem gesamten Algorithmus $O(n^2)$.
 
@@ -1530,30 +1530,48 @@ Mithilfe der Kostenabschätzung von \textit{edge} können wir nun das Worst-Case
 \label{sec:ExakteTeilwortsuche}
 %////////////////////////////////////////////////////////////////////////////
 
-Zum Abschluss des Kapitels möchten wir zeigen, dass mit dem erzeugten Suffixbaum man nicht nur Suffixe effezient suchen kann, sondern auch Teilwörter von einem gegebenen Wort. Dafür definieren wir eine Hilfsfunkktion $commonPrefix$, die ähnlich wie die $edge$-Funktion arbeitet. Die Implementierung wird in Listing \ref{lst:SucheImSuffixTree} gezeigt. Die Funktion bestimmt das längste gemeinsame Präfix von zwei Wörter und liefert ein Tripel $(w1',\: w2',\: cp)$ zurück, wobei $cp$ das längste gemeinsame Präfix ist, $w1'$ und $w2'$ Ergebnisse der Entfernung $cp$ von $w1$ bzw. $w2$ sind.
+Zum Abschluss des Kapitels möchten wir einen selbst implementierten Algorithmus zur exakten Teilwortsuche in Suffix Trees vorstellen.
 
-Die tatsächliche Teilwortsuche haben wir mit der Funktion $search$ gelöst (siehe Listing \ref{lst:SucheImSuffixTree}). Die Eingabe ist ein Teilwort und ein Baum, in dem das Teilwort gesucht wird. Die Funktion erledigt die Suche wie folgt:
+Die Implementierung kann Listing \ref{lst:ExakteTeilwortsucheImSuffixTree} entnommen werden.
+Die Hilfsfunktion \textit{commonPrefix} liefert für zwei gegebene Wörter $w_1$ und $w_2$ ein Tripel $(w_1',\: w_2',\: cp)$ zurück, wobei $cp$ das längste gemeinsame Präfix von $w_1$ und $w_2$ ist und $w_1'$ bzw. $w_2'$ die Reste von $w_1$ bzw. $w_2$ ohne $cp$ enthalten, d.h. $w_1 = cp \, w_1'$ bzw. $w_2 = cp \, w_2' $.
+% Zum Abschluss des Kapitels möchten wir zeigen, dass mit dem erzeugten Suffixbaum man nicht nur Suffixe effezient suchen kann, sondern auch Teilwörter von einem gegebenen Wort. Dafür definieren wir eine Hilfsfunkktion $commonPrefix$, die ähnlich wie die $edge$-Funktion arbeitet. Die Implementierung wird in Listing \ref{lst:SucheImSuffixTree} gezeigt. Die Funktion bestimmt das längste gemeinsame Präfix von zwei Wörter und liefert ein Tripel $(w1',\: w2',\: cp)$ zurück, wobei $cp$ das längste gemeinsame Präfix ist, $w1'$ und $w2'$ Ergebnisse der Entfernung $cp$ von $w1$ bzw. $w2$ sind.
 
-    - Falls der Baum leer ist, dann ist die Suche nicht möglich.
-
-    - Falls der Baum eine Verzweigung ist, dann wird eine Hilfsfunktion $g$ mit dem gesuchten Wort und der Liste von Kanten aufgerufen.
-
-Fallunterscheidung der Funktion $g$:
+Die Funktion \textit{search} erhält als Parameter das gesuchte $t$-Wort und einen Suffix Tree $S_t$, in dem das Teilwort gesucht wird. Falls der aktuelle Knoten ein Blatt ist, geben wir \textit{False} zurück. Sonst rufen wir die Hilfsfunktion \textit{g} mit dem gesuchten Teilwort und der noch zu betrachtenden Kantenliste auf. Für \textit{g} müssen folgende Fälle unterschieden werden:
 \begin{enumerate}
-    \item Wenn die Liste von Kanten leer ist, dann ist das Wort in dem Baum nicht enthalten.
-    \item Im anderen Fall wird die passende Kante gesucht, indem das gemeinsame Präfix des gesuchten Wortes und jeweilige Kante berechnet werden. Das wird mit der Funktion $commonPrefix$ gemacht. Wenn das gesuchte Wort und jeweilige Kante kein gemeinsames Präfix haben, dann muss die nächste Kante angeschaut werden $\rightarrow$ der Fall $falsche$ $Kante$.
-    \item Wenn es keine Kanten mehr gibt, dann ist das gesuchte Teilwort nicht in dem Baum enthalten $\rightarrow$ der Fall $g$ $ss$ $[\:]$ $=$ $False$.
-    \item Wenn das gesuchte Teilwort und die Kante das gemeinsame Präfix haben, dann müssen drei Fälle betrachtet werden:
+    \item Falls die Kantenliste leer ist, dann ist das Wort im Baum nicht enthalten.
+    \item Sonst wird passende Kante gesucht, indem das gemeinsame Präfix des gesuchten Teilwortes und der jeweiligen Kante mithilfe der Hilfsfunktion \textit{commonPrefix} berechnet wird. Für den Fall, dass das gesuchte Wort und die jeweilige Kante kein gemeinsames Präfix besitzen, wird die nächste Kante betrachtet (vgl. Fall \textit{falsche Kante}).
+    \item Falls keine weitere Kante mehr existiert, ist das gesuchte Teilwort nicht im Baum enthalten (vgl. Fall $g$ $ss$ $[\:]$ $=$ $False$).
+    \item Falls das gesuchte Teilwort und die Kante ein gemeinsames Präfix besitzen, müssen drei Fälle betrachtet werden:
     \begin{enumerate}
-        \item Die Kante ist ein Teil von dem gesuchten Teilwort $\rightarrow$ der Fall $richtige$ $Kante$.
-        \item Das gesuchte Teilwort ist ein Teil von der Kantenbeschriftung $\rightarrow$ der Fall $ss$ $ist$ $leer$.
-        \item Das gemeinsame Präfix ist nicht leer, aber enthält weder komplette Kantenbeschriftung, noch das komplette gesuchte Wort $\rightarrow$ der Fall $cp\:!=\:[\:]\mid l \mid ss$.
+        \item Die Kante ist ein Teilwort des gesuchten Teilworts (vgl. Fall \textit{richtige Kante}).
+        \item Das gesuchte Wort ist Teilwort der Kantenbeschriftung (vgl. Fall \textit{ss ist leer}).
+        \item Das gemeinsame Präfix ist nicht leer, aber enthält weder die ganze Kantenbeschriftung, noch das gesuchte Wort (vgl. Fall $cp\:!=\:[\:]\mid l \mid ss$).
     \end{enumerate}
 \end{enumerate}
 
+
+% Die tatsächliche Teilwortsuche haben wir mit der Funktion $search$ gelöst (siehe Listing \ref{lst:SucheImSuffixTree}). Die Eingabe ist ein Teilwort und ein Baum, in dem das Teilwort gesucht wird. Die Funktion erledigt die Suche wie folgt:
+
+%     - Falls der Baum leer ist, dann ist die Suche nicht möglich.
+
+%     - Falls der Baum eine Verzweigung ist, dann wird eine Hilfsfunktion $g$ mit dem gesuchten Wort und der Liste von Kanten aufgerufen.
+
+% Fallunterscheidung der Funktion $g$:
+% \begin{enumerate}
+%     \item Wenn die Liste von Kanten leer ist, dann ist das Wort in dem Baum nicht enthalten.
+%     \item Im anderen Fall wird die passende Kante gesucht, indem das gemeinsame Präfix des gesuchten Wortes und jeweilige Kante berechnet werden. Das wird mit der Funktion $commonPrefix$ gemacht. Wenn das gesuchte Wort und jeweilige Kante kein gemeinsames Präfix haben, dann muss die nächste Kante angeschaut werden $\rightarrow$ der Fall $falsche$ $Kante$.
+%     \item Wenn es keine Kanten mehr gibt, dann ist das gesuchte Teilwort nicht in dem Baum enthalten $\rightarrow$ der Fall $g$ $ss$ $[\:]$ $=$ $False$.
+%     \item Wenn das gesuchte Teilwort und die Kante das gemeinsame Präfix haben, dann müssen drei Fälle betrachtet werden:
+%     \begin{enumerate}
+%         \item Die Kante ist ein Teil von dem gesuchten Teilwort $\rightarrow$ der Fall $richtige$ $Kante$.
+%         \item Das gesuchte Teilwort ist ein Teil von der Kantenbeschriftung $\rightarrow$ der Fall $ss$ $ist$ $leer$.
+%         \item Das gemeinsame Präfix ist nicht leer, aber enthält weder komplette Kantenbeschriftung, noch das komplette gesuchte Wort $\rightarrow$ der Fall $cp\:!=\:[\:]\mid l \mid ss$.
+%     \end{enumerate}
+% \end{enumerate}
+
 \begin{lstlisting}[
-    caption = Suche im Suffix Tree,
-    label = lst:SucheImSuffixTree,
+    caption = Exakte Teilwortsuche im Suffix Tree,
+    label = lst:ExakteTeilwortSucheImSuffixTree,
     captionpos = b,
     float = htb
     ]
@@ -1577,12 +1595,28 @@ search ss (Branch es) =  g ss es
 --| Beispielsuche
 let alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
     word = "agcgacgag"
-in  search "cgac" (lazy_cst edge alphabet word)
+% in  search "cgac" (lazy_cst edge alphabet word)
 \end{lstlisting}
 
-Dank der laziness-Eigenschaft, werden nur die Kanten von dem Suffixbaum während der Suche konstruiert, die für die Suche relevant sind, und der Rest von dem Suffixbaum wird nicht angeschaut. Diese Eigenschaft zeigen wir an einem Beispiel.
+Dank der bedarfsgesteuerten Auswertungsstrategie von Haskell namens \textit{Lazy evaluation}, werden nur die Kanten des Suffix Trees erzeugt, die für die Suche relevant sind. Dies veranschaulichen wir anhand eines Beispiels.
 
-Sei ein Teilwort $cgac$ in dem Wort $agcgacgag$ gesucht. Wir definieren ein passendes Alphabet und übergeben es mit dem Teilwort und dem Wort an der Funktion $search$ (siehe Listing \ref{lst:SucheImSuffixTree}). Die Abb. \ref{fig:teilwortuche} zeigt das Teil des Suffixbaums, das während der Suche konstruiert wird.
+\begin{lstlisting}[
+    caption = Bedarfsgesteuerter Aufbau des Suffix Trees bei der Teilwortsuche,
+    label = lst:BedarfsgesteuerterAufbaudesSuffixTrees,
+    captionpos = b,
+    float = htb
+    ]
+--| Beispielsuche
+let alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
+    word = "agcgacgag"
+% in  search "cgac" (lazy_cst edge alphabet word)
+\end{lstlisting}
+
+% Dank der laziness-Eigenschaft, werden nur die Kanten von dem Suffixbaum während der Suche konstruiert, die für die Suche relevant sind, und der Rest von dem Suffixbaum wird nicht angeschaut. Diese Eigenschaft zeigen wir an einem Beispiel.
+
+Gesucht ist das Teilwort $cgac$ des Wortes $agcgacgag$. In \ref{lst:BedarfsgesteuerterAufbaudesSuffixTrees} definieren wir zuerst das Alphabet als Buchstabenliste und übergeben der Funktion \textit{search} das gesuchte Teilwort und den entsprechenden Suffix Tree, der mithilfe von \textit{lazy\_cst} konstruiert wird. Die Abb. \ref{fig:BedarfsgesteuerterAufbaudesSuffixTrees} zeigt den Teil des Suffix Trees, der während der Suche aufgebaut wird.
+
+% Sei ein Teilwort $cgac$ in dem Wort $agcgacgag$ gesucht. Wir definieren ein passendes Alphabet und übergeben es mit dem Teilwort und dem Wort an der Funktion $search$ (siehe Listing \ref{lst:SucheImSuffixTree}). Die Abb. \ref{fig:teilwortuche} zeigt das Teil des Suffixbaums, das während der Suche konstruiert wird.
 
 \begin{figure}[htb]
 \centering
@@ -1615,8 +1649,8 @@ Sei ein Teilwort $cgac$ in dem Wort $agcgacgag$ gesucht. Wir definieren ein pass
         edge from parent[dotted]
     };
 \end{tikzpicture}
-\caption{Teilwortsuche im Suffix Tree}
-\label{fig:teilwortuche}
+\caption{Bedarfsgesteuerter Aufbau des Suffix Trees bei der Teilwortsuche}
+\label{fig:BedarfsgesteuerterAufbaudesSuffixTrees}
 \end{figure}
 
 %////////////////////////////////////////////////////////////////////////////
