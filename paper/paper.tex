@@ -1693,8 +1693,11 @@ Ein Suffix Array $SA[0,n)$ für ein gegebenes Wort $T[0,n)$ ist eine Permutation
 \label{sec:SuffixArrayKonstruktion}
 %////////////////////////////////////////////////////////////////////////////
 
-Der Algorithmus, den wir uns zu der Konstruktion des Suffixarrays anschauen, ist DC3\footnote{Der Algorithmus ist in \cite{Karkkainen2006} vorgestellt worden ist.} (Difference Cover modulo 3) genannt worden. Die Schritte des Algorithmus werden mit einem Beispiel veranschaulicht. Die Struktur des DC3-Algorithmus haben wir in Abb. \ref{fig:strukturDC3} gezeigt.
+Zum Abschluss dieses Kapitel erörtern wir den in \cite{Karkkainen2003} veröffentlichten DC3-Algorithmus zur Suffix Array Konstruktion. Dieser Algorithmus ist einer der Ersten, der die direkte Konstruktion von Suffix Arrays mit linearem Zeitaufwand ermöglicht.
 
+Abb. \ref{fig:VorgehensweiseDesDC3} zeigt die Vorgehensweise des Algorithmus, der einen divide and conquer Ansatz verfolgt. Nachdem die Menge der Suffixe des zu indizierenden Wortes $t$ generiert wurde, wird diese Menge im \textit{Divide} Schritt abhängig von der Position der Suffixe in $t$ auf zwei Mengen aufgeteilt. $\sfrac{1}{3}$ der Suffixe, die sich an der Stelle $i$ in $t$ mit $i \mod 3 = 0$ befinden werden der ersten Menge $B_0$, die restlichen Suffixe mit $i \mod 3 = 1$ oder $i \mod 3 = 2$ der zweiten Menge $B_{1,2}$ zugeordnet.. Die beiden Mengen werden nun in Schritt 2 und Schritt 3 unabhängig voneinander lexikographisch sortiert, wobei der Algorithmus in Schritt 3 gegebenenfalls rekursiv aufgerufen wird. Sobald die beiden Teilmengen $B_0$ und $B_{1, 2}$ sortiert sind, werden sie im \textit{Merge} Schritt zu einer sortierten Menge vereinigt.
+
+% Der Algorithmus, den wir uns zu der Konstruktion des Suffixarrays anschauen, ist DC3\footnote{Der Algorithmus ist in \cite{Karkkainen2006} vorgestellt worden ist.} (Difference Cover modulo 3) genannt worden. Die Schritte des Algorithmus werden mit einem Beispiel veranschaulicht. Die Struktur des DC3-Algorithmus haben wir in Abb. \ref{fig:strukturDC3} gezeigt.
 \begin{figure}[htb]
 \centering
 \begin{tikzpicture}[
@@ -1729,12 +1732,12 @@ Der Algorithmus, den wir uns zu der Konstruktion des Suffixarrays anschauen, ist
         node[left, xshift = -2mm]{$\sfrac{2}{3}$}
     };
 \end{tikzpicture}
-\caption{Struktur des DC3-Algorithmus}
-\label{fig:strukturDC3}
+\caption{Vorgehensweise des DC3-Algorithmus}
+\label{fig:VorgehensweiseDesDC3}
 \end{figure}
 
-Als Eingabe haben wir das Wort
-$$
+Im Folgenden betrachten wir die einzelnen Schritte nochmals genauer und veranschaulichen diese anhand des Eingabewortes:
+\begin{center}
 \begin{tabular}{l|c c c c c c c c c c c c}
     \toprule
     i    & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 \\
@@ -1742,11 +1745,11 @@ $$
     T[0,n) & y & a & b & b & a & d & a & b & b & a & d  & o  \\
     \bottomrule
 \end{tabular}
-$$
+\end{center}
 
 \paragraph{Schritt 1: Divide}
 
-Für $k = 0,1,2$ werden Mengen wie folgt definiert:
+Für $k = 0,1,2$ werden folgende Mengen definiert:
 $$
 B_k = \{ i \in [0,n] \mid i \bmod{3} = k\}
 $$
@@ -1930,7 +1933,7 @@ Nach dem der Rang von jedem Suffix bestimmt ist und die zwei Mengen vereinigt wo
 \label{fig:Suffixarray}
 \end{figure}
 
-\paragraph{Eigenschaften von DC3.}
+\paragraph{Eigenschaften des DC3-Algorithmus}
 
 Laufzeit des Algorithmus ist $O(n)$ im Worst-Case, das ist der schnellste Algorithmus in der Klasse $O(n)$ für den Aufbau des Suffixarrays. Die schnellere Algorithmen, wie z.B. qsufsort \cite{Larsson2007}, haben einen schlechteren Worst-Case $O(n \log n)$.
 

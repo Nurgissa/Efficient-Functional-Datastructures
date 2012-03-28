@@ -41,6 +41,20 @@
 % Konfiguration
 %////////////////////////////////////////////////////////////////////////////
 
+\renewcommand{\sectionpage} {
+    \centering%
+    \begin{beamercolorbox}[sep = 8pt, center]{section title}%
+      \usebeamerfont{section title}\insertsection\par%
+    \end{beamercolorbox}%
+}
+
+\renewcommand{\subsectionpage} {
+    \centering%
+    \begin{beamercolorbox}[sep = 8pt, center]{subsection title}%
+      \usebeamerfont{subsection title}\insertsubsection\par%
+    \end{beamercolorbox}%
+}
+
 %--colors--------------------------------------------------------------------
 
 \definecolor{verylightgray}{RGB}{230, 230, 230}
