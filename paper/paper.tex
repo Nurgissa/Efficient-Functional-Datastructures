@@ -1436,7 +1436,7 @@ type Label alf = [alf]
 type EdgeFunction alf = [[alf]] -> ([alf], [[alf]])
 \end{lstlisting}
 
-Die Implementierung des eigentlichen Algorithmus wird in Listing \ref{lst:AlgorithmusZurSuffixTreeKonstruktion} gezeigt. Bevor wir auf Hauptfunktion \textit{lazy\_cst} zu sprechen kommen, gehen wir auf die benötigten Hilfsfunktionen ein.
+Die Implementierung des eigentlichen Algorithmus wird in Listing \ref{lst:AlgorithmusZurSuffixTreeKonstruktion} gezeigt. Bevor wir auf die Hauptfunktion \textit{lazy\_cst} zu sprechen kommen, gehen wir auf die benötigten Hilfsfunktionen ein.
 
 Die erste Hilfsfunktion \textit{suffixes} generiert die Liste aller Suffixes eines gebenenen Wortes. Mit \textit{select} wird die übergebene Liste nach allen Worten, die mit dem Buchstaben \textit{a} beginnen gefiltert. Die Funktion \textit{edge} ist eine der oben beschriebenen Kantenfunktionen, wobei die hier aufgeführte Implementierung zum Aufbau eines $cst$ dient. Dies geschieht durch die Berechnung des längsten gemeinsamen Präfix der übergebenen Liste von Wörtern. Zuerst wird überprüft, ob alle Wörter mit dem gleichen Buchstaben beginnen. Ist das der Fall, wird der Buchstabe an \textit{cp} angehängt und eine neue Liste ohne den ersten Buchstaben erzeugt, wobei leere Wörter aus der Liste herausgefiltert werden. Die Funktion liefert wie oben beschrieben ein Tupel mit dem längsten gemeinsamen Präfix aller Wörter und einer Liste der Restwörter, von denen das längste gemeinsame Präfix entfernt wurde.
 
@@ -1505,7 +1505,7 @@ lazy_cst edge alpha t = sTr (suffixes t)
 \label{sec:Laufzeitanalyse}
 %////////////////////////////////////////////////////////////////////////////
 
-Um die Laufzeit des gesamten Algorithmus zu bestimmen, konzentrieren wir uns zuerst auf die Kostenabschätzung der Funktion \textit{edge}, da diese die höchste Laufzeitkomplexität besitzt.
+Um die Laufzeit des gesamten Algorithmus zu bestimmen, konzentrieren wir uns zuerst auf die Kostenabschätzung der Funktion \textit{edge}, da diese das Laufzeitverhalten des Algorithmus maßgeblich bestimmt.
 
 % Um die Laufzeit von dem gesamten Algorithmus zu betrachten, wird zuerst die Kostenabschätzung von der Funktion $edge$ bestimmt, weil diese Funktion die höchste Laufzeitkomplexität besitzt.
 
@@ -1521,7 +1521,9 @@ Die Kosten der Funktion $edge$ setzen sich zusammen aus den Kosten der Funktion 
                   &= \abs{cp} (n - 1) + \abs{cp} n \in O(\abs{cp} \cdot n)
 \end{align*}
 
-Mithilfe der Kostenabschätzung von \textit{edge} können wir nun das Worst-Case Verhalten des gesamten WOTD-Algorithmus bestimmen. Dieses produziert z.B. das Wort $a^n$, indem es als der Parameter $t$ an der Funktion $lazy\_cst$ gegeben wird. Zuerst wird $sTr$ mit $ss = [a^n,\:a^{n-1}, \dots ,\:a]$ aufgerufen, dann wird dem Parameter $gs$ komplette Liste $ss$ zugewiesen und die Funktion $edge$ mit dem Parameter $gs$ aufgerufen. Die Funktion $edge$ liefert das Ergebnis $(cp,rss) = (a^n, [[\:]])$. Weiter wird $sTr$ mit mit dem Parameter $rss = [[\:]]$ aufgerufen und damit terminiert die Funktion $lazy\_cst$. Weil $|cp| = n$, ist die Laufzeit von $edge$ und von dem gesamten Algorithmus $O(n^2)$.
+Mithilfe der Kostenabschätzung von \textit{edge} können wir nun das Worst-Case Verhalten des gesamten WOTD-Algorithmus bestimmen. Der Worst-Case tritt beispielsweise für das Wort $a^n$ ein.  Zuerst wird \textit{sTr} mit $ss = [a^n,\:a^{n-1}, \dots ,\:a]$ aufgerufen. Anschließend wird die Funktion \textit{edge} mit $ss = gs$ aufgerufen. Als Ergebnis erhalten wir $(cp,rss) = (a^n, [[\:]])$. Im nächsten Schritt erfolgt der Aufruf von \textit{sTr} mit $rss = [[\:]]$, was zur Terminierung der Funktion \textit{lazy\_cst} führt. Wegen $\abs{cp} = n$, beträgt die Laufzeitkomplexität von \textit{edge} und dem gesamten Algorithmus $O(n^2)$.
+
+% Weiter wird das worst-case des WOTD-Algoritmus bestimmt. Dieses produziert z.B. das Wort $a^n$, indem es als der Parameter $t$ an der Funktion $lazy\_cst$ gegeben wird. Zuerst wird $sTr$ mit $ss = [a^n,\:a^{n-1}, \dots ,\:a]$ aufgerufen, dann wird dem Parameter $gs$ komplette Liste $ss$ zugewiesen und die Funktion $edge$ mit dem Parameter $gs$ aufgerufen. Die Funktion $edge$ liefert das Ergebnis $(cp,rss) = (a^n, [[\:]])$. Weiter wird $sTr$ mit mit dem Parameter $rss = [[\:]]$ aufgerufen und damit terminiert die Funktion $lazy\_cst$. Weil $|cp| = n$, ist die Laufzeit von $edge$ und von dem gesamten Algorithmus $O(n^2)$.
 
 %////////////////////////////////////////////////////////////////////////////
 \section{Exakte Teilwortsuche}
