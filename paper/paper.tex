@@ -1442,7 +1442,7 @@ Die erste Hilfsfunktion \textit{suffixes} generiert die Liste aller Suffixes ein
 
 \textit{lazy\_cst} benutzt die oben beschriebenen Hilfsfunktionen, um den WOTD-Algorithmus zu realisieren. Als Parameter erhält diese Funktion eine Kantenfunktion, die darüber entscheidet, ob welche Suffix Tree Klasse aufgebaut wird, ein Alphabet in Form einer Liste von Buchstaben und ein Wort $t$, für das der Suffix Tree aufgebaut werden soll. Die Suffixliste von $t$ wird an einer Hilfsfunktion $sTr$ übergeben, die den Baum wie folgt rekursiv aufbaut.
 
-Für den Fall, dass die Suffixliste leer ist, wird ein Blatt erzeugt. Sonst wird eine Verzweigung in den Baum eingefügt. Die Kantenliste der Verzweigung wird, wie in Abschnitt \ref{sec:WOTDAlgorithmus} beschrieben, in zwei Schritten aufgebaut. Im ersten Schritt wird jeder Buchstabe des Alphabets an \textit{a} gebunden und eine Gruppe mit Anfangsbuchstaben \textit{a} durch die Funktion \textit{select} ausgewählt. Im zweiten Schritt wird mithilfe von \textit{edge} das gemeinsame Präfix dieser Gruppe und die Liste der Restwörter berechnet.
+Für den Fall, dass die Suffixliste leer ist, wird ein Blatt erzeugt. Sonst wird eine Verzweigung in den Baum eingefügt. Die Kantenliste der Verzweigung wird, wie in Abschnitt \ref{sec:WOTDAlgorithmus} beschrieben, in zwei Schritten aufgebaut. Im ersten Schritt wird jeder Buchstabe des Alphabets an \textit{a} gebunden und eine Gruppe mit Anfangsbuchstaben \textit{a} durch die Funktion \textit{select} ausgewählt. Im zweiten Schritt wird mithilfe von \textit{edge} das gemeinsame Präfix dieser Gruppe und die Liste der Restwörter berechnet, die als Eingabeliste an $sTr$ übergeben wird.
 
 % Im Folgenden besprechen wir Funktionen, die einzelne Schritte des Algorithmus erledigen. Die Implementierung der Funktionen wird in Listing \ref{lst:AlgorithmusZurSuffixTreeKonstruktion} gezeigt.
 
@@ -1685,7 +1685,7 @@ Im Folgenden benutzen wir die Notation, die in \cite{Karkkainen2006} eingeführt
 Intervalle werden mit $[i,j] = \{ i, \dots, j\}$ und $[i,j) = [i,j-1]$ bezeichnet. Ein Wort über ein Alphabet wird als $T = T[0,n) = t_0 t_1 \dots t_{n-1}$ dargestellt, wobei $t_i$ Buchstaben des Alphabets sind. Es wird die Konvention verwendet, dass $t_j = 0$ für $j \ge n$ ist. Für ein $i \in [0,n]$ wird ein Suffix $S_i = T[i,n) = t_i t_{i+1} \dots t_n$ definiert. Für eine Menge $C \subseteq [0,n]$ wird eine Suffixmenge $S_C = \{ S_i \mid i \in C\}$ eingeführt.
 
 \begin{definition}[Suffix Array]
-Ein Suffix Array $SA[0,n)$ für ein gegebenes Wort $T[0,n)$ ist eine Permutation von $[0,n)$ mit $S_{SA[0]} \prec S_{SA[1]} \prec \dots \prec S_{SA[n-1]}$, wobei $\prec$ die lexikographische Ordnung auf Zeichenketten bezeichnet.
+Ein Suffix Array $SA[0,n)$ für ein gegebenes Wort $T[0,n)$ ist eine Permutation von $[0,n)$ mit $S_{SA[0]} \prec S_{SA[1]} \prec \dots \prec S_{SA[n-1]}$, wobei $\prec$ die lexikographische Ordnung auf Zeichenketten bezeichnet. Anders formuliert, ein Suffixarray ist ein Array, das die Suffixe eines Wortes in lexikographischer Reihenfolge angibt.
 \end{definition}
 
 %////////////////////////////////////////////////////////////////////////////
